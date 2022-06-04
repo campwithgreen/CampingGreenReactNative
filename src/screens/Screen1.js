@@ -14,6 +14,11 @@ export const Screen1 = (props) => {
             <TouchableOpacity onPress={() => { navigateTo("Screen2") }}>
                 <Text>Screen1</Text>
             </TouchableOpacity>
+            <View style={{ backgroundColor: "green" }}>
+                <Text>
+                    HELLO WORLD
+                </Text>
+            </View>
         </View>
     )
 }

@@ -1,18 +1,33 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
+import MainPageCard from '../components/MainPageCard'
 import { goBack } from '../navigation/utils/RootNavigation'
 
 
-/**
-* @author
-* @function Screen2
-**/
+const data = [
+    {
+        "id": 1,
+        "image": "this is image 1",
+        "text": "this is text 1",
+        "address": "this is address 1"
+    },
+    {
+        "id": 2,
+        "image": "this is image 2",
+        "text": "this is text 2",
+        "address": "this is address 2"
+    },
+]
+
+
 export const Screen2 = (props) => {
 
     const { container } = styles
     return (
         <View style={container}>
-            <Text onPress={() => { goBack() }}>Screen2</Text>
+            {data.map((item) => {
+                return <MainPageCard key={item.id} data={item} />
+            })}
         </View>
     )
 }

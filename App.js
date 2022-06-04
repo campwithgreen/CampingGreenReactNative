@@ -1,7 +1,5 @@
-import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import React, { useEffect } from 'react'
 import { MainNavigation } from './src/navigation/MainNavigation';
-import { navigateTo } from './src/navigation/utils/RootNavigation';
 import SplashScreen from 'react-native-splash-screen'
 
 /**
@@ -10,7 +8,7 @@ import SplashScreen from 'react-native-splash-screen'
 **/
 const App = (props) => {
 
-  React.useEffect(() => {
+  useEffect(() => {
     SplashScreen.hide()
   }, [])
 

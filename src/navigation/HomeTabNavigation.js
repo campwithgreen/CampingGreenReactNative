@@ -2,7 +2,10 @@ import React from 'react'
 import { Image, StyleSheet } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { HomeNavigation } from './HomeNavigation';
-import { Screen2 } from '../screens/Screen2';
+import { HeartScreen } from '../screens/HeartScreen';
+import { LocationScreen } from '../screens/LocationScreen';
+import { ChatScreen } from '../screens/ChatScreen';
+import { ProfileScreen } from '../screens/ProfileScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -19,6 +22,7 @@ export const HomeTabNavigation = (props) => {
     const { tabIcon } = styles
     return (
         <Tab.Navigator
+            initialRouteName='Home'
             screenOptions={(tabs) => {
                 const { name } = tabs.route
                 if (name === "Home") {
@@ -95,10 +99,10 @@ export const HomeTabNavigation = (props) => {
             }}
         >
             <Tab.Screen name="Home" component={HomeNavigation} />
-            <Tab.Screen name="Heart" component={Screen2} />
-            <Tab.Screen name="Location" component={HomeNavigation} />
-            <Tab.Screen name="Chat" component={Screen2} />
-            <Tab.Screen name="Profile" component={Screen2} />
+            <Tab.Screen name="Heart" component={HeartScreen} />
+            <Tab.Screen name="Location" component={LocationScreen} />
+            <Tab.Screen name="Chat" component={ChatScreen} />
+            <Tab.Screen name="Profile" component={ProfileScreen} />
         </Tab.Navigator >
     )
 }

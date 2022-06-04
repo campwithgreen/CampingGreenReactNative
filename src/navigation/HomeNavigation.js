@@ -1,7 +1,10 @@
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Screen1 } from '../screens/Screen1';
-import { Screen2 } from '../screens/Screen2';
+import { HeartScreen } from '../screens/HeartScreen';
+import { HomeScreen } from '../screens/HomeScreen';
+import { ProfileScreen } from '../screens/ProfileScreen';
+import { ChatScreen } from '../screens/ChatScreen';
+import { LocationScreen } from '../screens/LocationScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -18,9 +21,12 @@ const AppNavigatorOptions = {
 export const HomeNavigation = (props) => {
 
     return (
-        <Stack.Navigator screenOptions={AppNavigatorOptions} initialRouteName="Screen1">
-            <Stack.Screen name="Screen1" component={Screen1} />
-            <Stack.Screen name="Screen2" component={Screen2} />
+        <Stack.Navigator initialRouteName="HomeScreen" screenOptions={AppNavigatorOptions}>
+            <Stack.Screen name="HomeScreen" component={HomeScreen} />
+            <Stack.Screen name="HeartScreen" component={HeartScreen} />
+            <Stack.Screen name="LocationScreen" component={LocationScreen} />
+            <Stack.Screen name="ChatScreen" component={ChatScreen} />
+            <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
         </Stack.Navigator>
     )
 }

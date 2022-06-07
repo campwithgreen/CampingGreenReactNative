@@ -3,19 +3,29 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   ImageBackground,
   TouchableOpacity,
 } from 'react-native';
-import MainPageCard from '../components/MainPageCard';
 import Header from '../layout/Header';
-import {goBack, navigateTo} from '../navigation/utils/RootNavigation';
+import { navigateTo } from '../navigation/utils/RootNavigation';
+
+const headerContent = {
+  leftItemContents: {
+    type: "text",
+    content: "CAMPING GREEEN"
+  },
+  rightItemContents: {
+    type: "image",
+    content: require("../assets/images/cart.png")
+  },
+}
+
 
 export const HomeScreen = props => {
-  const {container} = styles;
+  const { container } = styles;
   return (
     <View style={container}>
-      <Header />
+      <Header headerContent={headerContent} />
       <TouchableOpacity
         onPress={() => {
           navigateTo('HomeScreenDetail1');
@@ -36,7 +46,7 @@ export const HomeScreen = props => {
               </Text>
             </View>
             <View>
-              <Text style={{paddingRight: 92, fontSize: 14, fontWeight: '300'}}>
+              <Text style={{ paddingRight: 92, fontSize: 14, fontWeight: '300' }}>
                 바퀴달린집 출연 캠핑장 최대 할인가로{'\n'}떠나보면 어때요?
               </Text>
             </View>

@@ -9,12 +9,13 @@ import {
 } from 'react-native';
 import HomeScreenDetail1List from '../components/HomeScreenDetail1List';
 import Header from '../layout/Header';
-import { goBack } from '../navigation/utils/RootNavigation';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import { RFPercentage } from 'react-native-responsive-fontsize'
+
+
 
 const HomeScreenDetail1Data = [
   {
@@ -46,11 +47,23 @@ const HomeScreenDetail1Data = [
   },
 ];
 
+
+const headerContent = {
+  leftItemContents: {
+    type: "image",
+    content: require("../assets/images/cancel.png")
+  },
+  middleItemContents: {
+    type: "text",
+    content: "캠핑그린 매거진"
+  }
+}
+
 export const HomeScreenDetail1 = props => {
   const { container } = styles;
   return (
     <View style={container}>
-      <Header />
+      <Header headerContent={headerContent} />
       <ScrollView>
         <View>
           <ImageBackground

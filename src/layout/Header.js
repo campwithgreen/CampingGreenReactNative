@@ -16,47 +16,44 @@ import {
 
 const Header = (props) => {
     const { initial, wrapper, headerIcon, container, headerTitle } = styles
-    const { home } = props
+    const { headerContent } = props
+
+    const renderItem = (itemContents) => {
+        switch (itemContents.type) {
+            case "text":
+                return <View>
+                    <TouchableOpacity
+                        onPress={() => {
+                            goBack()
+                        }}
+                    >
+                        <Text style={headerTitle}>{itemContents.content}</Text>
+                    </TouchableOpacity>
+                </View>
+            case "image":
+                return <View>
+                    <TouchableOpacity
+                        onPress={() => {
+                            goBack()
+                        }}
+                    >
+                        <Image source={itemContents.content} style={headerIcon} />
+                    </TouchableOpacity>
+                </View>
+            default:
+                break;
+        }
+    }
+
+
     return (
         <SafeAreaView>
             <View style={initial}>
                 <View style={wrapper}>
                     <View style={container}>
-                        <View>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    goBack()
-                                }}
-                            >
-                                <Image source={require("../assets/images/cancel.png")} style={headerIcon} />
-                            </TouchableOpacity>
-                        </View>
-
-                        {home ? (
-                            <View>
-                                <Image source={require("../assets/images/cancel.png")} style={headerIcon} />
-                            </View>
-                        ) : (
-                            <View>
-                                <TouchableOpacity
-                                    onPress={() => {
-                                        navigateTo('LocationScreen');
-                                    }}
-                                >
-                                    <Text style={headerTitle}>카테고리</Text>
-                                </TouchableOpacity>
-                            </View>
-                        )}
-
-                        <View>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    navigateTo('ProfileScreen');
-                                }}
-                            >
-                                <Image source={require("../assets/images/cart.png")} style={headerIcon} />
-                            </TouchableOpacity>
-                        </View>
+                        {headerContent.leftItemContents ? renderItem(headerContent.leftItemContents) : <View></View>}
+                        {headerContent.middleItemContents ? renderItem(headerContent.middleItemContents) : <View></View>}
+                        {headerContent.rightItemContents ? renderItem(headerContent.rightItemContents) : <View></View>}
                     </View>
                 </View>
             </View>

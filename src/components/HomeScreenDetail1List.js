@@ -1,9 +1,9 @@
-import {StyleSheet, Text, View, Image, ImageBackground} from 'react-native';
+import { StyleSheet, Text, View, Image, ImageBackground } from 'react-native';
 import React from 'react';
 
 export default function HomeScreenDetail1List(props) {
-  const {HomeScreenDetail1Data} = props;
-  const {container} = styles;
+  const { HomeScreenDetail1Data } = props;
+  const { container } = styles;
   return (
     <View style={container}>
       <View>
@@ -18,9 +18,10 @@ export default function HomeScreenDetail1List(props) {
         </Text>
       </View>
       <View>
+        {console.log(HomeScreenDetail1Data.image)}
         <ImageBackground
-          source={require('../assets/images/martin.png')}
-          style={{height: 208}}
+          source={HomeScreenDetail1Data.image}
+          style={{ height: 208 }}
         />
       </View>
       <View>

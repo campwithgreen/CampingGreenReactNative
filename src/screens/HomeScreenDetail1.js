@@ -14,12 +14,13 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
+import { RFPercentage } from 'react-native-responsive-fontsize'
 
 const HomeScreenDetail1Data = [
   {
     id: 1,
     heading: '01 홍천 보리울 캠핑장',
-    image: '../assets/images/homeScreenDetail1Page.png',
+    image: require('../assets/images/homeScreenDetail1Page.png'),
     content:
       '우선 UX writer가 카피라이터와 비슷한지 의문을 갖는 분들도 있을 것 같습니다. 카피라이터의 주요 목표는 제품, 서비스, 도구 및 창의적인 물건 등 무언가를 판매하는 텍스트를 만드는 것입니다.',
     location: '홍천군 서면 밤벌길 131-53',
@@ -28,7 +29,7 @@ const HomeScreenDetail1Data = [
   {
     id: 2,
     heading: '02 홍천 보리울 캠핑장',
-    image: '../assets/images/homeScreenDetail1Page.png',
+    image: require('../assets/images/martin.png'),
     content:
       '우선 UX writer가 카피라이터와 비슷한지 의문을 갖는 분들도 있을 것 같습니다. 카피라이터의 주요 목표는 제품, 서비스, 도구 및 창의적인 물건 등 무언가를 판매하는 텍스트를 만드는 것입니다.',
     location: '홍천군 서면 밤벌길 131-53',
@@ -37,7 +38,7 @@ const HomeScreenDetail1Data = [
   {
     id: 3,
     heading: '03 홍천 보리울 캠핑장',
-    image: '../assets/images/homeScreenDetail1Page.png',
+    image: require('../assets/images/martin.png'),
     content:
       '우선 UX writer가 카피라이터와 비슷한지 의문을 갖는 분들도 있을 것 같습니다. 카피라이터의 주요 목표는 제품, 서비스, 도구 및 창의적인 물건 등 무언가를 판매하는 텍스트를 만드는 것입니다.',
     location: '홍천군 서면 밤벌길 131-53',
@@ -58,8 +59,8 @@ export const HomeScreenDetail1 = props => {
             <View>
               <Text
                 style={{
-                  paddingBottom: 14,
-                  fontSize: 21,
+                  paddingBottom: hp('2%'),
+                  fontSize: RFPercentage(2.7),
                   fontWeight: 'bold',
                   color: "#ffff"
                 }}>

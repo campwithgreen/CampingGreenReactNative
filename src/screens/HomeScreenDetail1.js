@@ -14,6 +14,7 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import { RFPercentage } from 'react-native-responsive-fontsize'
+import { goBack } from '../navigation/utils/RootNavigation';
 
 
 
@@ -51,11 +52,13 @@ const HomeScreenDetail1Data = [
 const headerContent = {
   leftItemContents: {
     type: "image",
-    content: require("../assets/images/cancel.png")
+    content: require("../assets/images/cancel.png"),
+    navigateScreen: () => goBack()
   },
   middleItemContents: {
     type: "text",
-    content: "캠핑그린 매거진"
+    content: "캠핑그린 매거진",
+    navigateScreen: null
   }
 }
 

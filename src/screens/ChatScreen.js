@@ -12,7 +12,7 @@ export const ChatScreen = (props) => {
     const { container } = styles
     return (
         <View style={container}>
-            <Header />
+            <Header headerContent={{}} />
             <TouchableOpacity onPress={() => { navigateTo("Home") }}>
                 <Text>ChatScreen</Text>
             </TouchableOpacity>

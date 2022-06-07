@@ -7,16 +7,17 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Header from '../layout/Header';
-import { navigateTo } from '../navigation/utils/RootNavigation';
+import { goBack, navigateTo } from '../navigation/utils/RootNavigation';
 
 const headerContent = {
   leftItemContents: {
     type: "text",
-    content: "CAMPING GREEEN"
+    content: "CAMPING GREEEN",
   },
   rightItemContents: {
     type: "image",
-    content: require("../assets/images/cart.png")
+    content: require("../assets/images/cart.png"),
+    navigateScreen: "LoginScreen"
   },
 }
 

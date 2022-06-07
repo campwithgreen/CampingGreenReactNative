@@ -12,6 +12,7 @@ import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
+import { navigateHandler } from '../utils/global';
 
 
 const Header = (props) => {
@@ -19,12 +20,13 @@ const Header = (props) => {
     const { headerContent } = props
 
     const renderItem = (itemContents) => {
+        console.log("HELLO", itemContents);
         switch (itemContents.type) {
             case "text":
                 return <View>
                     <TouchableOpacity
                         onPress={() => {
-                            goBack()
+                            navigateHandler(itemContents)
                         }}
                     >
                         <Text style={headerTitle}>{itemContents.content}</Text>
@@ -34,7 +36,7 @@ const Header = (props) => {
                 return <View>
                     <TouchableOpacity
                         onPress={() => {
-                            goBack()
+                            navigateHandler(itemContents)
                         }}
                     >
                         <Image source={itemContents.content} style={headerIcon} />
@@ -68,7 +70,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     wrapper: {
-        height: hp('8%'),
+        height: hp('9%'),
         backgroundColor: "#ffff",
         width: '100%',
     },

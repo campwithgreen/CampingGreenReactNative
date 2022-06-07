@@ -12,7 +12,7 @@ export const LocationScreen = (props) => {
     const { container } = styles
     return (
         <View style={container}>
-            <Header />
+            <Header headerContent={{}} />
             <TouchableOpacity onPress={() => { navigateTo("HomeScreen") }}>
                 <Text>LocationScreen</Text>
             </TouchableOpacity>

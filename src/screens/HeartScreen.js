@@ -12,7 +12,7 @@ export const HeartScreen = (props) => {
     const { container } = styles
     return (
         <View style={container}>
-            <Header />
+            <Header headerContent={{}} />
             <TouchableOpacity onPress={() => { navigateTo("Chat") }}>
                 <Text>HeartScreen</Text>
             </TouchableOpacity>

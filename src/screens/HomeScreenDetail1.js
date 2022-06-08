@@ -13,16 +13,14 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import { RFPercentage } from 'react-native-responsive-fontsize'
-import { goBack } from '../navigation/utils/RootNavigation';
-
-
+import {RFPercentage} from 'react-native-responsive-fontsize';
+import {goBack} from '../navigation/utils/RootNavigation';
 
 const HomeScreenDetail1Data = [
   {
     id: 1,
     heading: '01 홍천 보리울 캠핑장',
-    image: require('../assets/images/homeScreenDetail1Page.png'),
+    image: require('../assets/images/martin.png'),
     content:
       '우선 UX writer가 카피라이터와 비슷한지 의문을 갖는 분들도 있을 것 같습니다. 카피라이터의 주요 목표는 제품, 서비스, 도구 및 창의적인 물건 등 무언가를 판매하는 텍스트를 만드는 것입니다.',
     location: '홍천군 서면 밤벌길 131-53',
@@ -31,16 +29,7 @@ const HomeScreenDetail1Data = [
   {
     id: 2,
     heading: '02 홍천 보리울 캠핑장',
-    image: require('../assets/images/martin.png'),
-    content:
-      '우선 UX writer가 카피라이터와 비슷한지 의문을 갖는 분들도 있을 것 같습니다. 카피라이터의 주요 목표는 제품, 서비스, 도구 및 창의적인 물건 등 무언가를 판매하는 텍스트를 만드는 것입니다.',
-    location: '홍천군 서면 밤벌길 131-53',
-    number: '010-1234-5678',
-  },
-  {
-    id: 3,
-    heading: '03 홍천 보리울 캠핑장',
-    image: require('../assets/images/martin.png'),
+    image: require('../assets/images/elephant.png'),
     content:
       '우선 UX writer가 카피라이터와 비슷한지 의문을 갖는 분들도 있을 것 같습니다. 카피라이터의 주요 목표는 제품, 서비스, 도구 및 창의적인 물건 등 무언가를 판매하는 텍스트를 만드는 것입니다.',
     location: '홍천군 서면 밤벌길 131-53',
@@ -48,22 +37,21 @@ const HomeScreenDetail1Data = [
   },
 ];
 
-
 const headerContent = {
   leftItemContents: {
-    type: "image",
-    content: require("../assets/images/cancel.png"),
-    navigateScreen: () => goBack()
+    type: 'image',
+    content: require('../assets/images/cancel.png'),
+    navigateScreen: () => goBack(),
   },
   middleItemContents: {
-    type: "text",
-    content: "캠핑그린 매거진",
-    navigateScreen: null
-  }
-}
+    type: 'text',
+    content: '캠핑그린 매거진',
+    navigateScreen: null,
+  },
+};
 
 export const HomeScreenDetail1 = props => {
-  const { container } = styles;
+  const {container} = styles;
   return (
     <View style={container}>
       <Header headerContent={headerContent} />
@@ -76,17 +64,20 @@ export const HomeScreenDetail1 = props => {
               <Text
                 style={{
                   paddingBottom: hp('2%'),
-                  fontSize: RFPercentage(2.7),
+                  fontSize: RFPercentage(3.5),
                   fontWeight: 'bold',
-                  color: "#ffff"
+                  color: '#ffff',
                 }}>
                 주말에 가기 좋은{'\n'}도심탈출 여행!
               </Text>
             </View>
             <View>
-              <Text style={{
-                fontSize: 14, fontWeight: '300', color: "#ffff"
-              }}>
+              <Text
+                style={{
+                  fontSize: RFPercentage(2.24),
+                  fontWeight: '300',
+                  color: '#ffff',
+                }}>
                 서울근교 서울캠핑장 뷰TOP5
               </Text>
             </View>
@@ -94,12 +85,12 @@ export const HomeScreenDetail1 = props => {
         </View>
         <View
           style={{
-            paddingTop: 31,
-            paddingLeft: 20,
-            paddingRight: 27,
-            paddingBottom: 48,
+            paddingTop: hp('3%'),
+            paddingBottom: hp('5%'),
+            paddingLeft: wp('5%'),
+            paddingRight: wp('5%'),
           }}>
-          <Text style={{ color: '#454C53', fontSize: 14 }}>
+          <Text style={{color: '#454C53', fontSize: RFPercentage(2)}}>
             우선 UX writer가 카피라이터와 비슷한지 의문을 갖는 분들도 있을 것
             같습니다. 카피라이터의 주요 목표는 제품, 서비스, 도구 및 창의적인
             물건 등 무언가를 판매하는 텍스트를 만드는 것입니다. UX writer의
@@ -120,11 +111,11 @@ export const HomeScreenDetail1 = props => {
         <View>
           <Text
             style={{
-              fontSize: 20,
+              fontSize: RFPercentage(2.25),
               color: '#55C595',
-              paddingLeft: 20,
+              paddingLeft: wp('5%'),
               fontFamily: 'PP Monument Extended',
-              marginVertical: hp("10%")
+              marginVertical: hp('10%'),
             }}>
             by.{'\n'}Camping Green
           </Text>
@@ -138,12 +129,12 @@ const styles = StyleSheet.create({
   container: {
     color: 'black',
     flex: 1,
-    backgroundColor: "#ffff"
+    backgroundColor: '#ffff',
   },
   backgroundImage: {
     display: 'flex',
-    height: 342,
-    paddingLeft: 76,
-    paddingTop: 111,
+    height: hp('46%'),
+    paddingLeft: wp('17%'),
+    paddingTop: hp('15%'),
   },
 });

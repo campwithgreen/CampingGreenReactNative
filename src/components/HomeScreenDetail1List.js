@@ -1,46 +1,50 @@
-import { StyleSheet, Text, View, Image, ImageBackground } from 'react-native';
+import {StyleSheet, Text, View, Image, ImageBackground} from 'react-native';
 import React from 'react';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
+import {RFPercentage} from 'react-native-responsive-fontsize';
 
 export default function HomeScreenDetail1List(props) {
-  const { HomeScreenDetail1Data } = props;
-  const { container } = styles;
+  const {HomeScreenDetail1Data} = props;
+  const {container} = styles;
   return (
     <View style={container}>
       <View>
         <Text
           style={{
             color: '#1B1D1F',
-            fontSize: 18,
-            paddingLeft: 20,
-            paddingBottom: 9,
+            fontSize: RFPercentage(2.5),
+            paddingLeft: wp('5%'),
+            paddingBottom: hp('1.5%'),
           }}>
           {HomeScreenDetail1Data.heading}
         </Text>
       </View>
       <View>
-        {console.log(HomeScreenDetail1Data.image)}
         <ImageBackground
           source={HomeScreenDetail1Data.image}
-          style={{ height: 208 }}
+          style={{height: hp('28%')}}
         />
       </View>
       <View>
         <Text
           style={{
             color: '#454C53',
-            fontSize: 14,
-            paddingLeft: 20,
-            paddingRight: 34,
-            paddingTop: 24,
-            paddingBottom: 41,
+            fontSize: RFPercentage(2),
+            paddingLeft: wp('5%'),
+            paddingRight: wp('10%'),
+            paddingTop: hp('3%'),
+            paddingBottom: hp('4.5%'),
           }}>
           {HomeScreenDetail1Data.content}
         </Text>
       </View>
       <View
         style={{
-          paddingLeft: 20,
-          paddingBottom: 10,
+          paddingLeft: wp('5%'),
+          paddingBottom: hp('1%'),
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
@@ -49,9 +53,9 @@ export default function HomeScreenDetail1List(props) {
         <Text
           style={{
             color: '#9EA4AA',
-            fontSize: 14,
-            paddingLeft: 12,
-            paddingRight: 11,
+            fontSize: RFPercentage(2),
+            paddingLeft: wp('5%'),
+            paddingRight: wp('5%'),
           }}>
           {HomeScreenDetail1Data.location}
         </Text>
@@ -59,8 +63,8 @@ export default function HomeScreenDetail1List(props) {
       </View>
       <View
         style={{
-          paddingLeft: 20,
-          paddingBottom: 40,
+          paddingLeft: wp('5%'),
+          paddingBottom: hp('5%'),
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
@@ -69,9 +73,9 @@ export default function HomeScreenDetail1List(props) {
         <Text
           style={{
             color: '#9EA4AA',
-            fontSize: 14,
-            paddingLeft: 12,
-            paddingRight: 8,
+            fontSize: RFPercentage(2),
+            paddingLeft: wp('5%'),
+            paddingRight: wp('5%'),
           }}>
           {HomeScreenDetail1Data.number}
         </Text>

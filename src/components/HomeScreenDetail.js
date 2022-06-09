@@ -11,17 +11,18 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {RFPercentage} from 'react-native-responsive-fontsize';
-import navigateTo from '../navigation/utils/RootNavigation';
+import { RFPercentage } from 'react-native-responsive-fontsize';
+import { navigateTo } from '../navigation/utils/RootNavigation';
 
 export default function HomeScreenDetail(props) {
-  const {HomeScreenDetailData} = props;
-  const {container} = styles;
+  const { HomeScreenDetailData } = props;
+  const { container } = styles;
   return (
     <View style={container}>
       <ImageBackground
         source={HomeScreenDetailData.image}
-        style={{height: hp('34.8%')}}>
+        style={{ minHeight: hp("40%") }}
+      >
         <View>
           <Text
             style={{
@@ -75,7 +76,7 @@ export default function HomeScreenDetail(props) {
           </Text>
           <TouchableOpacity
             onPress={() => {
-              navigateTo('HomeScreenDetail1');
+              navigateTo('HomeScreenDetail1', { imageId: HomeScreenDetailData.id });
             }}>
             <Image source={require('../assets/images/icon_movepage.png')} />
           </TouchableOpacity>
@@ -87,8 +88,9 @@ export default function HomeScreenDetail(props) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingLeft: hp('2.5%'),
-    paddingRight: hp('2.5%'),
-    paddingTop: hp('3.5%'),
+    borderRadius: wp("5%"),
+    minHeight: hp("40%"),
+    overflow: "hidden",
+    marginVertical: hp("3%")
   },
 });

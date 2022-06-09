@@ -11,3 +11,4 @@ export function navigateTo(name, params) {
 export function goBack() {
     navigationRef.current?.dispatch(CommonActions.goBack());
 }
+

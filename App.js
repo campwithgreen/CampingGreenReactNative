@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import { MainNavigation } from './src/navigation/MainNavigation';
-import SplashScreen from 'react-native-splash-screen'
+// import SplashScreen from 'react-native-splash-screen'
+import { Provider } from 'react-redux';
+import store from './src/redux/store';
 
 /**
 * @author
@@ -8,12 +10,14 @@ import SplashScreen from 'react-native-splash-screen'
 **/
 const App = (props) => {
 
-  useEffect(() => {
-    SplashScreen.hide()
-  }, [])
+  // useEffect(() => {
+  //   SplashScreen.hide()
+  // }, [])
 
   return (
-    <MainNavigation />
+    <Provider store={store}>
+      <MainNavigation />
+    </Provider>
   )
 }
 

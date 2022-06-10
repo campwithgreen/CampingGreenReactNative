@@ -1,0 +1,6 @@
+{
+    "OAUTH":{
+        "LOGIN":"LOGIN",
+        "LOGOUT":"LOGOUT"
+    }
+}

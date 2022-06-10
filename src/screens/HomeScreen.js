@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Image,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import Header from '../layout/Header';
 import HomeScreenDetail from '../components/HomeScreenDetail';
@@ -14,6 +15,9 @@ import {
 } from 'react-native-responsive-screen';
 import { RFPercentage } from 'react-native-responsive-fontsize';
 import Carousel from '../components/Carousel';
+import { useDispatch, useSelector } from 'react-redux'
+import { login } from '../redux/actions/oauth';
+
 
 const HomeScreenDetailData = [
   {
@@ -49,6 +53,9 @@ const headerContent = {
 
 export const HomeScreen = props => {
   const { container } = styles;
+  const dispatch = useDispatch()
+
+
   return (
     <View style={container}>
       <Header headerContent={headerContent} />
@@ -70,10 +77,12 @@ export const HomeScreen = props => {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            <Image
-              source={require('../assets/images/image_tent.png')}
-              style={{ marginRight: hp('5%') }}
-            />
+            <TouchableOpacity onPress={() => { dispatch(login()) }}>
+              <Image
+                source={require('../assets/images/image_tent.png')}
+                style={{ marginRight: hp('5%') }}
+              />
+            </TouchableOpacity>
             <View style={{ paddingRight: hp('5%') }}>
               <View style={{ paddingBottom: hp('.7%') }}>
                 <Text

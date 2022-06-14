@@ -11,51 +11,56 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import { RFPercentage } from 'react-native-responsive-fontsize';
-import { navigateTo } from '../navigation/utils/RootNavigation';
+import {RFPercentage} from 'react-native-responsive-fontsize';
+import {navigateTo} from '../navigation/utils/RootNavigation';
 
 export default function HomeScreenDetail(props) {
-  const { HomeScreenDetailData } = props;
-  const { container } = styles;
+  const {HomeScreenDetailData} = props;
+  const {container} = styles;
   return (
     <View style={container}>
       <ImageBackground
         source={HomeScreenDetailData.image}
-        style={{ minHeight: hp("40%") }}
-      >
-        <View>
-          <Text
-            style={{
-              color: '#E8EBED',
-              fontSize: RFPercentage(2),
-              paddingTop: hp('2%'),
-              paddingLeft: wp('5%'),
-            }}>
-            {HomeScreenDetailData.heading}
-          </Text>
-        </View>
-        <View>
-          <Text
-            style={{
-              color: '#FFFFFF',
-              fontSize: RFPercentage(3.2),
-              paddingLeft: wp('5%'),
-              paddingTop: hp('1.5%'),
-              paddingBottom: hp('1.5%'),
-            }}>
-            {HomeScreenDetailData.heading2}
-          </Text>
-        </View>
-        <View>
-          <Text
-            style={{
-              color: '#FFFFFF',
-              fontSize: RFPercentage(2),
-              paddingLeft: wp('5%'),
-              paddingBottom: hp('13%'),
-            }}>
-            {HomeScreenDetailData.heading3}
-          </Text>
+        style={{
+          minHeight: hp('27.6%'),
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+        }}>
+        <View
+          style={{
+            paddingLeft: wp('5%'),
+          }}>
+          <View>
+            <Text
+              style={{
+                color: '#E8EBED',
+                fontSize: RFPercentage(2),
+                paddingTop: hp('2%'),
+              }}>
+              {HomeScreenDetailData.heading}
+            </Text>
+          </View>
+          <View>
+            <Text
+              style={{
+                color: '#FFFFFF',
+                fontSize: RFPercentage(3.2),
+                paddingTop: hp('1.5%'),
+                paddingBottom: hp('1.5%'),
+              }}>
+              {HomeScreenDetailData.heading2}
+            </Text>
+          </View>
+          <View>
+            <Text
+              style={{
+                color: '#FFFFFF',
+                fontSize: RFPercentage(2),
+              }}>
+              {HomeScreenDetailData.heading3}
+            </Text>
+          </View>
         </View>
         <View
           style={{
@@ -64,6 +69,7 @@ export default function HomeScreenDetail(props) {
             alignItems: 'center',
             justifyContent: 'flex-end',
             paddingRight: wp('5%'),
+            paddingBottom: hp('1%')
           }}>
           <Text
             style={{
@@ -76,7 +82,9 @@ export default function HomeScreenDetail(props) {
           </Text>
           <TouchableOpacity
             onPress={() => {
-              navigateTo('HomeScreenDetail1', { imageId: HomeScreenDetailData.id });
+              navigateTo('HomeScreenDetail1', {
+                imageId: HomeScreenDetailData.id,
+              });
             }}>
             <Image source={require('../assets/images/icon_movepage.png')} />
           </TouchableOpacity>
@@ -88,9 +96,8 @@ export default function HomeScreenDetail(props) {
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: wp("5%"),
-    minHeight: hp("40%"),
-    overflow: "hidden",
-    marginVertical: hp("3%")
+    borderRadius: wp('5%'),
+    overflow: 'hidden',
+    marginVertical: hp('1.5%'),
   },
 });

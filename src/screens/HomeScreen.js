@@ -60,45 +60,49 @@ export const HomeScreen = props => {
     <View style={container}>
       <Header headerContent={headerContent} />
       <ScrollView>
-        <View >
+        <View>
           <Carousel />
         </View>
-        <View style={{
-          marginHorizontal: wp('5%'),
-        }}>
+        <View
+          style={{
+            marginHorizontal: wp('5%'),
+          }}>
           <View
             style={{
               backgroundColor: '#fff',
-              margin: 25,
-              padding: 25,
+              marginVertical: hp('2.5%'),
+              padding: wp('5%'),
               borderRadius: 10,
               display: 'flex',
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            <TouchableOpacity onPress={() => { dispatch(login()) }}>
+            <TouchableOpacity
+              onPress={() => {
+                dispatch(login());
+              }}>
               <Image
                 source={require('../assets/images/image_tent.png')}
-                style={{ marginRight: hp('5%') }}
+                style={{marginRight: hp('5%')}}
               />
             </TouchableOpacity>
-            <View style={{ paddingRight: hp('5%') }}>
-              <View style={{ paddingBottom: hp('.7%') }}>
+            <View style={{paddingRight: hp('5%')}}>
+              <View style={{paddingBottom: hp('.7%')}}>
                 <Text
                   style={{
                     color: '#1B1D1F',
-                    fontSize: RFPercentage(2),
+                    fontSize: RFPercentage(2.1),
                     fontWeight: 'bold',
                   }}>
                   비싸고 무거운 캠핑장비,{'\n'}이제 사지말고 대여하세요
                 </Text>
               </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Text
                   style={{
                     color: '#454C53',
-                    fontSize: RFPercentage(1.6),
+                    fontSize: RFPercentage(1.8),
                     fontFamily: 'Pretendard',
                   }}>
                   용품대여 홈으로 이동
@@ -115,16 +119,16 @@ export const HomeScreen = props => {
           <View
             style={{
               backgroundColor: '#fff',
-              margin: 25,
-              padding: 25,
+              marginVertical: hp('2.5%'),
+              padding: wp('5%'),
               borderRadius: 10,
               display: 'flex',
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'flex-start',
             }}>
-            <View style={{ paddingRight: wp('20%') }}>
-              <View style={{ paddingBottom: hp('1%') }}>
+            <View style={{paddingRight: wp('20%')}}>
+              <View style={{paddingBottom: hp('1%')}}>
                 <Text
                   style={{
                     color: '#55C595',
@@ -133,12 +137,13 @@ export const HomeScreen = props => {
                   캠핑장 제휴문의
                 </Text>
               </View>
-              <View style={{ paddingBottom: hp('1%') }}>
+              <View style={{paddingBottom: hp('1%')}}>
                 <Text
                   style={{
                     color: '#454C53',
                     fontSize: RFPercentage(2.1),
                     fontFamily: 'Pretendard',
+                    fontWeight: 'bold'
                   }}>
                   6개월동안 누리는 혜택,{'\n'}수수료 0원!
                 </Text>
@@ -158,16 +163,15 @@ export const HomeScreen = props => {
           <View
             style={{
               backgroundColor: '#55C595',
-              margin: 25,
-              marginTop: 5,
-              padding: 25,
+              marginVertical: hp('2.5%'),
+              padding: wp('5%'),
               borderRadius: 10,
               display: 'flex',
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'flex-start',
             }}>
-            <View style={{ paddingRight: wp('20%') }}>
+            <View style={{paddingRight: wp('20%')}}>
               <Text
                 style={{
                   color: '#fff',

@@ -12,8 +12,47 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {RFPercentage} from 'react-native-responsive-fontsize';
-import {navigateTo} from '../navigation/utils/RootNavigation';
+import { RFPercentage } from 'react-native-responsive-fontsize';
+import { navigateTo } from '../navigation/utils/RootNavigation';
+
+
+const RenderItem = ({ item }) => {
+  return <View style={{ marginTop: hp('2.5%') }}>
+    <Image source={item.image} style={{ width: wp('42.5%'), backgroundColor: '#fff', borderRadius: hp('1.5%') }} />
+    <View>
+      <Text
+        style={{
+          color: 'black',
+          fontSize: RFPercentage(2.1),
+          paddingTop: hp('2%'),
+        }}>
+        {item.name}
+      </Text>
+    </View>
+    <View>
+      <Text
+        style={{
+          color: 'black',
+          fontSize: RFPercentage(3),
+          paddingTop: hp('1%'),
+          paddingBottom: hp('.5%'),
+          fontWeight: 'bold'
+        }}>
+        {item.price}
+      </Text>
+    </View>
+    <View>
+      <Text
+        style={{
+          color: 'black',
+          fontSize: RFPercentage(2),
+          paddingBottom: hp('1%'),
+        }}>
+        {item.quantity}
+      </Text>
+    </View>
+  </View>
+}
 
 const ProductDetail = () => {
   const ProductData = [
@@ -49,51 +88,18 @@ const ProductDetail = () => {
 
   //const {container} = styles;
   return (
-      <FlatList
-        style={{paddingBottom: hp('25%')}}
-        numColumns={2}
-        showsHorizontalScrollIndicator={false}
-        data={ProductData}
-        renderItem={({item}) => {
-          return (
-            <View style={{marginLeft: wp('5%'), marginTop: hp('2.5%')}}>
-              <Image source={item.image} style={{ width: wp('42.5%'), backgroundColor: '#fff',borderRadius:hp('1.5%') }} />
-              <View>
-                <Text
-                  style={{
-                    color: 'black',
-                    fontSize: RFPercentage(2.1),
-                    paddingTop: hp('2%'),
-                  }}>
-                  {item.name}
-                </Text>
-              </View>
-              <View>
-                <Text
-                  style={{
-                    color: 'black',
-                    fontSize: RFPercentage(3),
-                    paddingTop: hp('1%'),
-                    paddingBottom: hp('.5%'),
-                    fontWeight: 'bold'
-                  }}>
-                  {item.price}
-                </Text>
-              </View>
-              <View>
-                <Text
-                  style={{
-                    color: 'black',
-                    fontSize: RFPercentage(2),
-                    paddingBottom: hp('1%'),
-                  }}>
-                  {item.quantity}
-                </Text>
-              </View>
-            </View>
-          );
-        }}
-      />
+    <FlatList
+      style={{ paddingBottom: hp('25%') }}
+      numColumns={2}
+      showsHorizontalScrollIndicator={false}
+      data={ProductData}
+      columnWrapperStyle={{ display: "flex", justifyContent: "space-between" }}
+      renderItem={({ item }) => {
+        return (
+          <RenderItem item={item} key={item.id} />
+        );
+      }}
+    />
   );
 };
 

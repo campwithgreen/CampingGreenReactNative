@@ -13,11 +13,11 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import { RFPercentage } from 'react-native-responsive-fontsize';
+import {RFPercentage} from 'react-native-responsive-fontsize';
 import Carousel from '../components/Carousel';
-import { useDispatch, useSelector } from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux';
 import { login } from '../redux/actions/oauth';
-
+import { navigateTo } from '../navigation/utils/RootNavigation';
 
 const HomeScreenDetailData = [
   {
@@ -52,9 +52,8 @@ const headerContent = {
 };
 
 export const HomeScreen = props => {
-  const { container } = styles;
-  const dispatch = useDispatch()
-
+  const {container} = styles;
+  const dispatch = useDispatch();
 
   return (
     <View style={container}>
@@ -143,7 +142,7 @@ export const HomeScreen = props => {
                     color: '#454C53',
                     fontSize: RFPercentage(2.1),
                     fontFamily: 'Pretendard',
-                    fontWeight: 'bold'
+                    fontWeight: 'bold',
                   }}>
                   6개월동안 누리는 혜택,{'\n'}수수료 0원!
                 </Text>
@@ -180,7 +179,12 @@ export const HomeScreen = props => {
                 공간 차지하는 캠핑용품,{'\n'}빌려주고 수익얻기 :)
               </Text>
             </View>
-            <Image source={require('../assets/images/image_tent.png')} />
+            <TouchableOpacity
+              onPress={() => {
+                navigateTo('Product', {});
+              }}>
+              <Image source={require('../assets/images/image_tent.png')} />
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
@@ -189,6 +193,5 @@ export const HomeScreen = props => {
 };
 
 const styles = StyleSheet.create({
-  container: { paddingBottom: hp('10%') },
-
+  container: {paddingBottom: hp('10%')},
 });

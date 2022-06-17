@@ -49,51 +49,64 @@ const ProductDetail = () => {
 
   //const {container} = styles;
   return (
-      <FlatList
-        style={{paddingBottom: hp('25%')}}
-        numColumns={2}
-        showsHorizontalScrollIndicator={false}
-        data={ProductData}
-        renderItem={({item}) => {
-          return (
-            <View style={{marginLeft: wp('5%'), marginTop: hp('2.5%')}}>
-              <Image source={item.image} style={{ width: wp('42.5%'), backgroundColor: '#fff',borderRadius:hp('1.5%') }} />
-              <View>
-                <Text
-                  style={{
-                    color: 'black',
-                    fontSize: RFPercentage(2.1),
-                    paddingTop: hp('2%'),
-                  }}>
-                  {item.name}
-                </Text>
-              </View>
-              <View>
-                <Text
-                  style={{
-                    color: 'black',
-                    fontSize: RFPercentage(3),
-                    paddingTop: hp('1%'),
-                    paddingBottom: hp('.5%'),
-                    fontWeight: 'bold'
-                  }}>
-                  {item.price}
-                </Text>
-              </View>
-              <View>
-                <Text
-                  style={{
-                    color: 'black',
-                    fontSize: RFPercentage(2),
-                    paddingBottom: hp('1%'),
-                  }}>
-                  {item.quantity}
-                </Text>
-              </View>
+    <FlatList
+      style={{paddingBottom: hp('25%')}}
+      numColumns={2}
+      showsHorizontalScrollIndicator={false}
+      data={ProductData}
+      renderItem={({item}) => {
+        return (
+          <View style={{marginLeft: wp('5%'), marginTop: hp('2.5%')}}>
+            <TouchableOpacity
+              onPress={() => {
+                navigateTo('ProductInfo', {});
+              }}>
+              <Image
+                source={item.image}
+                style={{
+                  width: wp('42.5%'),
+                  backgroundColor: '#fff',
+                  borderRadius: hp('1.5%'),
+                }}
+              />
+            </TouchableOpacity>
+
+            <View>
+              <Text
+                style={{
+                  color: 'black',
+                  fontSize: RFPercentage(2.1),
+                  paddingTop: hp('2%'),
+                }}>
+                {item.name}
+              </Text>
             </View>
-          );
-        }}
-      />
+            <View>
+              <Text
+                style={{
+                  color: 'black',
+                  fontSize: RFPercentage(3),
+                  paddingTop: hp('1%'),
+                  paddingBottom: hp('.5%'),
+                  fontWeight: 'bold',
+                }}>
+                {item.price}
+              </Text>
+            </View>
+            <View>
+              <Text
+                style={{
+                  color: 'black',
+                  fontSize: RFPercentage(2),
+                  paddingBottom: hp('1%'),
+                }}>
+                {item.quantity}
+              </Text>
+            </View>
+          </View>
+        );
+      }}
+    />
   );
 };
 

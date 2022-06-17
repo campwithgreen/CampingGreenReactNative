@@ -54,7 +54,6 @@ export const HomeScreenDetail1 = props => {
   const { container } = styles;
   console.log("HOME SCREEN PROPS", props)
   const { route } = props
-  const imageId = route.params.imageId
 
   return (
     <View style={container}>

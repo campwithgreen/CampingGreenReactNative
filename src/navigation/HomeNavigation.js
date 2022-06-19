@@ -8,6 +8,10 @@ import {LocationScreen} from '../screens/LocationScreen';
 import {HomeScreenDetail1} from '../screens/HomeScreenDetail1';
 import LoginScreen from '../screens/LoginScreen';
 import {Product} from '../screens/Product';
+import {MyScreen} from '../screens/MyScreen';
+import SecondScreen from '../screens/SecondScreen';
+import ThirdScreen from '../screens/ThirdScreen';
+import ForthScreen from '../screens/ForthScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +37,10 @@ export const HomeNavigation = props => {
       <Stack.Screen name="HomeScreenDetail1" component={HomeScreenDetail1} />
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="Product" component={Product} />
+      <Stack.Screen name="MyScreen" component={MyScreen} />
+      <Stack.Screen name="SecondScreen" component={SecondScreen} />
+      <Stack.Screen name="ThirdScreen" component={ThirdScreen} />
+      <Stack.Screen name="ForthScreen" component={ForthScreen} />
     </Stack.Navigator>
   );
 };

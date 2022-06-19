@@ -20,7 +20,6 @@ const Header = (props) => {
     const { headerContent } = props
 
     const renderItem = (itemContents) => {
-        console.log("HELLO", itemContents);
         switch (itemContents.type) {
             case "text":
                 return <View>
@@ -53,9 +52,9 @@ const Header = (props) => {
             <View style={initial}>
                 <View style={wrapper}>
                     <View style={container}>
-                        {headerContent.leftItemContents ? renderItem(headerContent.leftItemContents) : <View></View>}
-                        {headerContent.middleItemContents ? renderItem(headerContent.middleItemContents) : <View></View>}
-                        {headerContent.rightItemContents ? renderItem(headerContent.rightItemContents) : <View></View>}
+                        {headerContent?.leftItemContents ? renderItem(headerContent.leftItemContents) : <View></View>}
+                        {headerContent?.middleItemContents ? renderItem(headerContent.middleItemContents) : <View></View>}
+                        {headerContent?.rightItemContents ? renderItem(headerContent.rightItemContents) : <View></View>}
                     </View>
                 </View>
             </View>

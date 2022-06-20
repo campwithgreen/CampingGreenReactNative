@@ -14,23 +14,23 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {RFPercentage} from 'react-native-responsive-fontsize';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 import Carousel from '../components/Carousel';
-import {useDispatch, useSelector} from 'react-redux';
-import {login} from '../redux/actions/oauth';
-import {navigateTo} from '../navigation/utils/RootNavigation';
-import {Dimensions, StatusBar} from 'react-native';
-import {TabView, SceneMap} from 'react-native-tab-view';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../redux/actions/oauth';
+import { navigateTo } from '../navigation/utils/RootNavigation';
+import { Dimensions, StatusBar } from 'react-native';
+import { TabView, SceneMap } from 'react-native-tab-view';
 
 const FirstRoute = () => (
-  <View style={[styles.scene, {backgroundColor: '#ff4081'}]} />
+  <View style={[styles.scene, { backgroundColor: '#ff4081' }]} />
 );
 
 const SecondRoute = () => (
-  <View style={[styles.scene, {backgroundColor: '#673ab7'}]} />
+  <View style={[styles.scene, { backgroundColor: '#673ab7' }]} />
 );
 
-const initialLayout = {width: Dimensions.get('window').width};
+const initialLayout = { width: Dimensions.get('window').width };
 
 const renderScene = SceneMap({
   first: FirstRoute,
@@ -51,15 +51,15 @@ const headerContent = {
 };
 
 export const ProductInfo = props => {
-  const {container} = styles;
+  const { container } = styles;
   const dispatch = useDispatch();
   const item = props.route.params;
   console.log('HELLORitik', item);
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    {key: 'first', title: '상품정보'},
-    {key: 'second', title: '배송/환불'},
+    { key: 'first', title: '상품정보' },
+    { key: 'second', title: '배송/환불' },
   ]);
 
   return (
@@ -67,7 +67,7 @@ export const ProductInfo = props => {
       <Header headerContent={headerContent} />
       <ScrollView>
         <View>
-          <Carousel />
+          <Carousel paginationType="right" />
         </View>
         <View
           style={{
@@ -117,7 +117,7 @@ export const ProductInfo = props => {
                 borderRightWidth: 0.5,
               }}>
               <View>
-                <Text style={{color: '#454C53', fontSize: RFPercentage(2)}}>
+                <Text style={{ color: '#454C53', fontSize: RFPercentage(2) }}>
                   대여 시작일
                 </Text>
               </View>
@@ -142,7 +142,7 @@ export const ProductInfo = props => {
                 borderLeftWidth: 0.5,
               }}>
               <View>
-                <Text style={{color: '#454C53', fontSize: RFPercentage(2)}}>
+                <Text style={{ color: '#454C53', fontSize: RFPercentage(2) }}>
                   반납 예정일
                 </Text>
               </View>
@@ -161,7 +161,7 @@ export const ProductInfo = props => {
           </View>
           <View>
             <TabView
-              navigationState={{index, routes}}
+              navigationState={{ index, routes }}
               renderScene={renderScene}
               onIndexChange={setIndex}
               initialLayout={initialLayout}
@@ -169,7 +169,7 @@ export const ProductInfo = props => {
             />
           </View>
           <View>
-            <View style={{paddingBottom: hp('3%')}}>
+            <View style={{ paddingBottom: hp('3%') }}>
               <Text
                 style={{
                   color: '#1B1D1F',
@@ -183,10 +183,10 @@ export const ProductInfo = props => {
         </View>
         <ImageBackground
           source={require('../assets/images/tentinfo.png')}
-          style={{height: hp('28%')}}
+          style={{ height: hp('28%') }}
         />
         <View
-          style={{display: 'flex', alignItems: 'center', paddingTop: hp('3%')}}>
+          style={{ display: 'flex', alignItems: 'center', paddingTop: hp('3%') }}>
           <View
             style={{
               backgroundColor: '#26282B',
@@ -226,8 +226,8 @@ export const ProductInfo = props => {
             })}
           </View>
         </View>
-        <View style={{marginHorizontal: wp('5%')}}>
-          <View style={{paddingTop: hp('10%')}}>
+        <View style={{ marginHorizontal: wp('5%') }}>
+          <View style={{ paddingTop: hp('10%') }}>
             <Text
               style={{
                 color: '#1B1D1F',
@@ -273,7 +273,7 @@ export const ProductInfo = props => {
         </View>
         <ImageBackground
           source={require('../assets/images/tentinfo1.png')}
-          style={{height: hp('28%')}}
+          style={{ height: hp('28%') }}
         />
         <Text
           style={{
@@ -287,7 +287,7 @@ export const ProductInfo = props => {
         </Text>
         <ImageBackground
           source={require('../assets/images/tentinfo2.png')}
-          style={{height: hp('28%')}}
+          style={{ height: hp('28%') }}
         />
         <Text
           style={{
@@ -301,7 +301,7 @@ export const ProductInfo = props => {
         </Text>
         <ImageBackground
           source={require('../assets/images/tentinfo3.png')}
-          style={{height: hp('28%')}}
+          style={{ height: hp('28%') }}
         />
         <Text
           style={{

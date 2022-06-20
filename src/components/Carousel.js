@@ -8,45 +8,46 @@ import {
 import { RFPercentage } from 'react-native-responsive-fontsize';
 
 
-const renderPagination = (index, total, context) => {
-    return (
-        <View
-            style={{
-                position: 'absolute',
-                justifyContent: 'center',
-                alignItems: 'center',
-                top: hp('30%'),
-                left: 0,
-                right: 0,
-            }}
-        >
-            <View
-                style={{
-                    borderRadius: wp("3%"),
-                    padding: 3,
-                    paddingHorizontal: 8,
-                    backgroundColor: "black",
-                    color: "#ffff"
-                }}
-            >
-                <Text
-                    style={{
-                        color: '#fff',
-                        fontSize: 14
-                    }}
-                >
-                    {index + 1} / {total}
-                </Text>
-            </View>
-        </View>
-    )
-}
 
-const Carousel = ({ type }) => {
+
+const Carousel = ({ paginationType }) => {
 
     let { width, height } = Dimensions.get('window');
     const { backgroundImage } = styles
 
+    const renderPagination = (index, total, context) => {
+        return (
+            <View
+                style={{
+                    position: 'absolute',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    top: hp('30%'),
+                    left: paginationType === "right" ? wp("80%") : 0,
+                    right: 0,
+                }}
+            >
+                <View
+                    style={{
+                        borderRadius: wp("3%"),
+                        padding: 3,
+                        paddingHorizontal: 8,
+                        backgroundColor: paginationType === "right" ? "#fff" : "black",
+                        color: "#ffff",
+                    }}
+                >
+                    <Text
+                        style={{
+                            color: paginationType === "right" ? "black" : '#fff',
+                            fontSize: RFPercentage(1.9)
+                        }}
+                    >
+                        {index + 1} / {total}
+                    </Text>
+                </View>
+            </View >
+        )
+    }
 
     return (
         <Slick

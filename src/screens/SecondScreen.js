@@ -1,15 +1,16 @@
-import {View, Text, ScrollView, StyleSheet} from 'react-native';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {RFPercentage} from 'react-native-responsive-fontsize';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 import React from 'react';
 import Header from '../layout/Header';
 import Carousel from '../components/Carousel';
 import SecondScreen1 from '../components/SecondScreen1';
 import SecondScreen2 from '../components/SecondScreen2';
 import Footer from '../components/Footer';
+import CustomButton from '../components/common/CustomButton';
 
 const headerContent = {
   leftItemContents: {
@@ -29,10 +30,11 @@ const headerContent = {
   },
 };
 const SecondScreen = () => {
+  const { container } = styles
   return (
-    <View style={{backgroundColor: 'white'}}>
+    <View style={container}>
+      <Header headerContent={headerContent} />
       <ScrollView>
-        <Header headerContent={headerContent} />
         <Carousel />
         <Text
           style={[
@@ -46,7 +48,7 @@ const SecondScreen = () => {
           ]}>
           글램핑 A
         </Text>
-        <Text style={[styles.text2, {paddingHorizontal: wp('5%')}]}>
+        <Text style={[styles.text2, { paddingHorizontal: wp('5%') }]}>
           수영장과 가장가까운 객실입니다
         </Text>
         <View style={styles.border1}></View>
@@ -68,7 +70,7 @@ const SecondScreen = () => {
         <View style={styles.view1}>
           <Text style={styles.text2}>구비시설</Text>
           <Text></Text>
-          <Text style={[styles.text2, {textAlign: 'right', lineHeight: 24}]}>
+          <Text style={[styles.text2, { textAlign: 'right', lineHeight: 24 }]}>
             개별바비큐, 식탁, 에어컨, 식기도구, {'\n'}전자레인지, 취사도구,
             선풍기
           </Text>
@@ -80,14 +82,14 @@ const SecondScreen = () => {
         <Text
           style={[
             styles.text1,
-            {paddingHorizontal: wp('5%'), paddingBottom: hp('3%')},
+            { paddingHorizontal: wp('5%'), paddingBottom: hp('3%') },
           ]}>
           추가 옵션
         </Text>
         <View style={styles.view1}>
           <Text style={styles.text2}>인원추가 요금</Text>
           <Text></Text>
-          <Text style={[styles.text2, {textAlign: 'right', lineHeight: 24}]}>
+          <Text style={[styles.text2, { textAlign: 'right', lineHeight: 24 }]}>
             성인 22,000{'\n'}아동 22,000{'\n'}유아 22,000
           </Text>
         </View>
@@ -95,23 +97,23 @@ const SecondScreen = () => {
         <View style={styles.view1}>
           <Text style={styles.text2}>바비큐 추가</Text>
           <Text></Text>
-          <Text style={[styles.text2, {textAlign: 'right', lineHeight: 24}]}>
+          <Text style={[styles.text2, { textAlign: 'right', lineHeight: 24 }]}>
             숯불 포함 15,000{'\n'}숯불 미포함 10,000
           </Text>
         </View>
         <View style={styles.border2}></View>
-        <Text style={[styles.text2, {paddingHorizontal: wp('5%')}]}>
+        <Text style={[styles.text2, { paddingHorizontal: wp('5%') }]}>
           추가 옵션으로 발생하는 요금은 현장에서 결제해주세요
         </Text>
         <View style={styles.border1}></View>
         <Text
           style={[
             styles.text1,
-            {paddingHorizontal: wp('5%'), paddingBottom: hp('3%')},
+            { paddingHorizontal: wp('5%'), paddingBottom: hp('3%') },
           ]}>
           환불 금액
         </Text>
-        <View style={{paddingBottom: hp('18%')}}>
+        <View style={{ paddingBottom: hp('18%') }}>
           <View
             style={{
               display: 'flex',
@@ -123,9 +125,9 @@ const SecondScreen = () => {
               paddingVertical: hp('2%'),
               backgroundColor: '#EFF0F2',
             }}>
-            <Text style={{width: wp('30%'), textAlign: 'center'}}>aaaaaa</Text>
-            <Text style={{width: wp('30%'), textAlign: 'center'}}>bbbbb</Text>
-            <Text style={{width: wp('30%'), textAlign: 'center'}}>cccccc</Text>
+            <Text style={{ width: wp('30%'), textAlign: 'center' }}>aaaaaa</Text>
+            <Text style={{ width: wp('30%'), textAlign: 'center' }}>bbbbb</Text>
+            <Text style={{ width: wp('30%'), textAlign: 'center' }}>cccccc</Text>
           </View>
           <SecondScreen2 t1="aa" t2="bb" t3="cc" />
           <SecondScreen2 t1="aaaaaaaaa" t2="bb" t3="cc" />
@@ -138,7 +140,7 @@ const SecondScreen = () => {
         </View>
         <Footer />
       </ScrollView>
-      <Text style={styles.button1}>예약하기</Text>
+      <CustomButton buttonText={"예약하기"} />
     </View>
   );
 };
@@ -146,6 +148,10 @@ const SecondScreen = () => {
 export default SecondScreen;
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    flex: 1
+  },
   view1: {
     display: 'flex',
     flexDirection: 'row',
@@ -157,8 +163,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'black',
   },
-  text2: {fontWeight: '600', color: '#454C53'},
-  border1: {borderWidth: 4, borderColor: 'lightgrey', marginVertical: hp('5%')},
+  text2: { fontWeight: '600', color: '#454C53' },
+  border1: { borderWidth: 4, borderColor: 'lightgrey', marginVertical: hp('5%') },
   border2: {
     borderWidth: 0.5,
     borderColor: 'lightgrey',

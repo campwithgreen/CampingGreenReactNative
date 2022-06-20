@@ -42,7 +42,7 @@ const headerContent = {
   leftItemContents: {
     type: 'text',
     content: 'CAMPING GREEEN',
-    navigateScreen: 'HomeScreenDetail1',
+    navigateScreen: 'Calendar',
   },
   rightItemContents: {
     type: 'image',

@@ -16,16 +16,22 @@ import {RFPercentage} from 'react-native-responsive-fontsize';
 import {navigateTo} from '../navigation/utils/RootNavigation';
 
 const RenderItem = ({item}) => {
+  console.log('HELLODetailRitik', item);
   return (
-    <View style={{marginTop: hp('2.5%')}}>
-      <Image
-        source={item.image}
-        style={{
-          width: wp('42.5%'),
-          backgroundColor: '#fff',
-          borderRadius: hp('1.5%'),
-        }}
-      />
+    <View style={{marginTop: hp('2.5%'), width: wp('43%')}}>
+      <TouchableOpacity
+        onPress={() => {
+          navigateTo('ProductInfo', item);
+        }}>
+        <Image
+          source={item.image}
+          style={{
+            width: wp('42.5%'),
+            backgroundColor: '#fff',
+            borderRadius: hp('1.5%'),
+          }}
+        />
+      </TouchableOpacity>
       <View>
         <Text
           style={{
@@ -87,10 +93,19 @@ const ProductDetail = () => {
     },
     {
       id: '4',
-      name: '코베마 수동 텐트',
+      name: '[COVEMA] 2인 캠핑 패키지 코베마 수동텐트',
       price: '65,004',
       quantity: '잔여수량 5',
       image: require('../assets/images/tent.png'),
+      detail1: {
+        detail1Title: 'qqqqqqqqqqqqq',
+        detail1Value: {
+          first: 'one',
+          second: 'two',
+          third: 'three',
+          fourth: 'four',
+        },
+      },
     },
   ];
 

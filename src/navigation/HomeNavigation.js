@@ -12,6 +12,7 @@ import { MyScreen } from '../screens/MyScreen';
 import SecondScreen from '../screens/SecondScreen';
 import ThirdScreen from '../screens/ThirdScreen';
 import ForthScreen from '../screens/ForthScreen';
+import { ProductInfo } from '../screens/ProductInfo';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +42,7 @@ export const HomeNavigation = props => {
       <Stack.Screen name="SecondScreen" component={SecondScreen} />
       <Stack.Screen name="ThirdScreen" component={ThirdScreen} />
       <Stack.Screen name="ForthScreen" component={ForthScreen} />
+      <Stack.Screen name="ProductInfo" component={ProductInfo} />
     </Stack.Navigator>
   );
 };

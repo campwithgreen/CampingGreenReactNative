@@ -14,23 +14,23 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import { RFPercentage } from 'react-native-responsive-fontsize';
+import {RFPercentage} from 'react-native-responsive-fontsize';
 import Carousel from '../components/Carousel';
-import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../redux/actions/oauth';
-import { navigateTo } from '../navigation/utils/RootNavigation';
-import { Dimensions, StatusBar } from 'react-native';
-import { TabView, SceneMap } from 'react-native-tab-view';
+import {useDispatch, useSelector} from 'react-redux';
+import {login} from '../redux/actions/oauth';
+import {navigateTo} from '../navigation/utils/RootNavigation';
+import {Dimensions, StatusBar} from 'react-native';
+import {TabView, SceneMap} from 'react-native-tab-view';
 
 const FirstRoute = () => (
-  <View style={[styles.scene, { backgroundColor: '#ff4081' }]} />
+  <View style={[styles.scene, {backgroundColor: '#ff4081'}]} />
 );
 
 const SecondRoute = () => (
-  <View style={[styles.scene, { backgroundColor: '#673ab7' }]} />
+  <View style={[styles.scene, {backgroundColor: '#673ab7'}]} />
 );
 
-const initialLayout = { width: Dimensions.get('window').width };
+const initialLayout = {width: Dimensions.get('window').width};
 
 const renderScene = SceneMap({
   first: FirstRoute,
@@ -50,16 +50,31 @@ const headerContent = {
   },
 };
 
+const imageInfo = [
+  {
+    img: require('../assets/images/tentinfo1.png'),
+    imgtext: '1~2인용 비빅텐트',
+  },
+  {
+    img: require('../assets/images/tentinfo2.png'),
+    imgtext: '커피포트 버너',
+  },
+  {
+    img: require('../assets/images/tentinfo3.png'),
+    imgtext: '경량 테이블',
+  },
+];
+
 export const ProductInfo = props => {
-  const { container } = styles;
+  const {container} = styles;
   const dispatch = useDispatch();
   const item = props.route.params;
   console.log('HELLORitik', item);
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    { key: 'first', title: '상품정보' },
-    { key: 'second', title: '배송/환불' },
+    {key: 'first', title: '상품정보'},
+    {key: 'second', title: '배송/환불'},
   ]);
 
   return (
@@ -117,7 +132,7 @@ export const ProductInfo = props => {
                 borderRightWidth: 0.5,
               }}>
               <View>
-                <Text style={{ color: '#454C53', fontSize: RFPercentage(2) }}>
+                <Text style={{color: '#454C53', fontSize: RFPercentage(2)}}>
                   대여 시작일
                 </Text>
               </View>
@@ -142,7 +157,7 @@ export const ProductInfo = props => {
                 borderLeftWidth: 0.5,
               }}>
               <View>
-                <Text style={{ color: '#454C53', fontSize: RFPercentage(2) }}>
+                <Text style={{color: '#454C53', fontSize: RFPercentage(2)}}>
                   반납 예정일
                 </Text>
               </View>
@@ -161,7 +176,7 @@ export const ProductInfo = props => {
           </View>
           <View>
             <TabView
-              navigationState={{ index, routes }}
+              navigationState={{index, routes}}
               renderScene={renderScene}
               onIndexChange={setIndex}
               initialLayout={initialLayout}
@@ -169,7 +184,7 @@ export const ProductInfo = props => {
             />
           </View>
           <View>
-            <View style={{ paddingBottom: hp('3%') }}>
+            <View style={{paddingBottom: hp('3%')}}>
               <Text
                 style={{
                   color: '#1B1D1F',
@@ -183,10 +198,10 @@ export const ProductInfo = props => {
         </View>
         <ImageBackground
           source={require('../assets/images/tentinfo.png')}
-          style={{ height: hp('28%') }}
+          style={{height: hp('28%')}}
         />
         <View
-          style={{ display: 'flex', alignItems: 'center', paddingTop: hp('3%') }}>
+          style={{display: 'flex', alignItems: 'center', paddingTop: hp('3%')}}>
           <View
             style={{
               backgroundColor: '#26282B',
@@ -204,11 +219,11 @@ export const ProductInfo = props => {
           </View>
           <View
             style={{
-              backgroundColor: 'black',
+              backgroundColor: 'white',
               marginTop: hp('3%'),
-              padding: wp('1.5%'),
+              padding: wp('2%'),
               width: wp('60%'),
-              height: hp('30%'),
+              height: hp('20%'),
             }}>
             {Object.keys(item?.detail1?.detail1Value).map(key => {
               return (
@@ -217,17 +232,31 @@ export const ProductInfo = props => {
                   style={{
                     display: 'flex',
                     flexDirection: 'row',
-                    justifyContent: 'space-between',
                   }}>
-                  <Text>{key}</Text>
-                  <Text>{item?.detail1?.detail1Value[key]}</Text>
+                  <Text
+                    style={{
+                      color: '#454C53',
+                      fontSize: RFPercentage(2),
+                      marginBottom: hp('.5%'),
+                      width: wp('30%'),
+                    }}>
+                    {key}
+                  </Text>
+                  <Text
+                    style={{
+                      color: '#454C53',
+                      fontSize: RFPercentage(2),
+                      marginBottom: hp('.5%'),
+                    }}>
+                    {item?.detail1?.detail1Value[key]}
+                  </Text>
                 </View>
               );
             })}
           </View>
         </View>
-        <View style={{ marginHorizontal: wp('5%') }}>
-          <View style={{ paddingTop: hp('10%') }}>
+        <View style={{marginHorizontal: wp('5%')}}>
+          <View style={{paddingTop: hp('10%')}}>
             <Text
               style={{
                 color: '#1B1D1F',
@@ -256,24 +285,43 @@ export const ProductInfo = props => {
                   fontSize: RFPercentage(2.5),
                   fontWeight: 'bold',
                 }}>
-                2인 캠핑 패키지
+                {item?.details2?.detail2Title}
               </Text>
             </View>
             <View
               style={{
-                backgroundColor: 'black',
+                backgroundColor: 'white',
                 marginTop: hp('3%'),
-                padding: wp('1.5%'),
+                padding: wp('2%'),
                 width: wp('60%'),
-                height: hp('25%'),
+                height: hp('20%'),
               }}>
-              <Text>Details</Text>
+              {Object.keys(item?.details2?.detail2Value).map(key => {
+                return (
+                  <View
+                    key={key}
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                    }}>
+                    <Text
+                      style={{
+                        color: '#454C53',
+                        fontSize: RFPercentage(2),
+                        marginBottom: hp('.5%'),
+                        width: wp('30%'),
+                      }}>
+                      {item?.details2?.detail2Value[key]}
+                    </Text>
+                  </View>
+                );
+              })}
             </View>
           </View>
         </View>
         <ImageBackground
           source={require('../assets/images/tentinfo1.png')}
-          style={{ height: hp('28%') }}
+          style={{height: hp('28%')}}
         />
         <Text
           style={{
@@ -287,7 +335,7 @@ export const ProductInfo = props => {
         </Text>
         <ImageBackground
           source={require('../assets/images/tentinfo2.png')}
-          style={{ height: hp('28%') }}
+          style={{height: hp('28%')}}
         />
         <Text
           style={{
@@ -301,7 +349,7 @@ export const ProductInfo = props => {
         </Text>
         <ImageBackground
           source={require('../assets/images/tentinfo3.png')}
-          style={{ height: hp('28%') }}
+          style={{height: hp('28%')}}
         />
         <Text
           style={{

@@ -76,6 +76,26 @@ const ProductDetail = () => {
       price: '65,001',
       quantity: '잔여수량 4',
       image: require('../assets/images/tentv2.png'),
+      detail1: {
+        detail1Title: '코베마 텐트 상세정보',
+        detail1Value: {
+          색상: '코랄',
+          사이즈: '290*280*115',
+          '수납 사이즈': '45*15*15',
+          중량: '2.3kg',
+          사용인원: '1-2인용',
+          내수압: '50000mm',
+        },
+      },
+      details2: {
+        detail2Title: '2인 캠핑 패키지',
+        detail2Value: {
+          one: '1~2인용 비빅텐트',
+          two: '커피포트 버너',
+          three: '경량 테이블',
+          four: '버너',
+        },
+      },
     },
     {
       id: '2',
@@ -83,6 +103,26 @@ const ProductDetail = () => {
       price: '65,002',
       quantity: '잔여수량 4',
       image: require('../assets/images/bottle.png'),
+      detail1: {
+        detail1Title: '코베마 텐트 상세정보',
+        detail1Value: {
+          색상: '코랄',
+          사이즈: '290*280*115',
+          '수납 사이즈': '45*15*15',
+          중량: '2.3kg',
+          사용인원: '1-2인용',
+          내수압: '50000mm',
+        },
+      },
+      details2: {
+        detail2Title: '2인 캠핑 패키지',
+        detail2Value: {
+          one: '1~2인용 비빅텐트',
+          two: '커피포트 버너',
+          three: '경량 테이블',
+          four: '버너',
+        },
+      },
     },
     {
       id: '3',
@@ -90,6 +130,26 @@ const ProductDetail = () => {
       price: '65,003',
       quantity: '잔여수량 5',
       image: require('../assets/images/sleepbag.png'),
+      detail1: {
+        detail1Title: '코베마 텐트 상세정보',
+        detail1Value: {
+          색상: '코랄',
+          사이즈: '290*280*115',
+          '수납 사이즈': '45*15*15',
+          중량: '2.3kg',
+          사용인원: '1-2인용',
+          내수압: '50000mm',
+        },
+      },
+      details2: {
+        detail2Title: '2인 캠핑 패키지',
+        detail2Value: {
+          one: '1~2인용 비빅텐트',
+          two: '커피포트 버너',
+          three: '경량 테이블',
+          four: '버너',
+        },
+      },
     },
     {
       id: '4',
@@ -98,12 +158,23 @@ const ProductDetail = () => {
       quantity: '잔여수량 5',
       image: require('../assets/images/tent.png'),
       detail1: {
-        detail1Title: 'qqqqqqqqqqqqq',
+        detail1Title: '코베마 텐트 상세정보',
         detail1Value: {
-          first: 'one',
-          second: 'two',
-          third: 'three',
-          fourth: 'four',
+          색상: '코랄',
+          사이즈: '290*280*115',
+          '수납 사이즈': '45*15*15',
+          중량: '2.3kg',
+          사용인원: '1-2인용',
+          내수압: '50000mm',
+        },
+      },
+      details2: {
+        detail2Title: '2인 캠핑 패키지',
+        detail2Value: {
+          one: '1~2인용 비빅텐트',
+          two: '커피포트 버너',
+          three: '경량 테이블',
+          four: '버너',
         },
       },
     },

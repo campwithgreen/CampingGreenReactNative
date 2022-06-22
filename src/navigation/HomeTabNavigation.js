@@ -10,6 +10,7 @@ import {MyScreen} from '../screens/MyScreen';
 import SecondScreen from '../screens/SecondScreen';
 import ThirdScreen from '../screens/ThirdScreen';
 import ForthScreen from '../screens/ForthScreen';
+import RoomScreen from '../screens/RoomScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -130,7 +131,7 @@ export const HomeTabNavigation = props => {
       <Tab.Screen name="Heart" component={ForthScreen} />
       <Tab.Screen name="Location" component={ThirdScreen} />
       <Tab.Screen name="Chat" component={SecondScreen} />
-      <Tab.Screen name="Profile" component={MyScreen} />
+      <Tab.Screen name="Profile" component={RoomScreen} />
     </Tab.Navigator>
   );
 };

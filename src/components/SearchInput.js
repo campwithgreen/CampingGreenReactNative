@@ -23,8 +23,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: wp('5%'),
-    paddingTop: hp('3%'),
-    paddingBottom: hp('1%'),
+    position: 'absolute',
+    zIndex: 22,
+    backgroundColor: 'white',
+    width: wp('100%'),
+    height: 70,
   },
   searchbox: {
     fontSize: 18,

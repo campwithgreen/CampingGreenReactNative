@@ -80,31 +80,32 @@ const RoomScreen = () => {
   return (
     <View style={{backgroundColor: 'white'}}>
       <SearchInput />
-      <ScrollView>
-        <View style={{paddingBottom: 20}}>
-          <Image
-            source={require('../assets/images/map.png')}
-            style={styles.img1}
-          />
-          <Image
-            source={require('../assets/images/map_location.png')}
-            style={styles.img2}
-          />
-        </View>
-        <FlatList
-          numColumns={1}
-          showsHorizontalScrollIndicator={false}
-          data={roomData}
-          renderItem={({item}) => {
-            return <Room item={item} key={item.id} />;
-          }}
-        />
-      </ScrollView>
+      <FlatList
+        numColumns={1}
+        ListHeaderComponent={ListHeaderComponent}
+        showsHorizontalScrollIndicator={false}
+        data={roomData}
+        renderItem={({item}) => {
+          return <Room item={item} key={item.id} />;
+        }}
+      />
     </View>
   );
 };
 
 export default RoomScreen;
+
+const ListHeaderComponent = () => {
+  return (
+    <View style={{paddingBottom: 20, paddingTop: 70}}>
+      <Image source={require('../assets/images/map.png')} style={styles.img1} />
+      <Image
+        source={require('../assets/images/map_location.png')}
+        style={styles.img2}
+      />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   img1: {

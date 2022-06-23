@@ -14,11 +14,10 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import ProductDetail from '../components/ProductDetail';
-import { RFPercentage } from 'react-native-responsive-fontsize';
+import {RFPercentage} from 'react-native-responsive-fontsize';
 import Carousel from '../components/Carousel';
-import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../redux/actions/oauth';
-
+import {useDispatch, useSelector} from 'react-redux';
+import {login} from '../redux/actions/oauth';
 
 const headerContent = {
   leftItemContents: {
@@ -34,13 +33,13 @@ const headerContent = {
 };
 
 export const Product = props => {
-  const { container } = styles;
+  const {container} = styles;
 
   return (
     <View style={container}>
       <Header headerContent={headerContent} />
       <ScrollView>
-        <View style={{ marginHorizontal: wp('5%') }}>
+        <View style={{marginHorizontal: wp('5%')}}>
           <Text
             style={{
               color: '#1B1D1F',
@@ -57,5 +56,5 @@ export const Product = props => {
 };
 
 const styles = StyleSheet.create({
-  container: { paddingBottom: hp('10%') },
+  container: {paddingBottom: hp('10%')},
 });

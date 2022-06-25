@@ -4,13 +4,12 @@ import { HeartScreen } from '../screens/HeartScreen';
 import { HomeScreen } from '../screens/HomeScreen';
 import { ProfileScreen } from '../screens/ProfileScreen';
 import { ChatScreen } from '../screens/ChatScreen';
-import { LocationScreen } from '../screens/LocationScreen';
 import { HomeScreenDetail1 } from '../screens/HomeScreenDetail1';
 import LoginScreen from '../screens/LoginScreen';
 import { Product } from '../screens/Product';
 import { MyScreen } from '../screens/MyScreen';
 import SecondScreen from '../screens/SecondScreen';
-import ThirdScreen from '../screens/ThirdScreen';
+import ThirdScreen from '../screens/OrderSuccessItemScreen';
 import ForthScreen from '../screens/ForthScreen';
 import { ProductInfo } from '../screens/ProductInfo';
 import CalendarScreen from '../screens/CalendarScreen';
@@ -36,7 +35,6 @@ export const HomeNavigation = props => {
       screenOptions={AppNavigatorOptions}>
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="HeartScreen" component={HeartScreen} />
-      <Stack.Screen name="LocationScreen" component={LocationScreen} />
       <Stack.Screen name="ChatScreen" component={ChatScreen} />
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
       <Stack.Screen name="HomeScreenDetail1" component={HomeScreenDetail1} />

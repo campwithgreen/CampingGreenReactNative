@@ -42,12 +42,12 @@ const headerContent = {
   leftItemContents: {
     type: 'text',
     content: 'CAMPING GREEEN',
-    navigateScreen: 'Calendar',
+    navigateScreen: 'RoomScreen',
   },
   rightItemContents: {
     type: 'image',
     content: require('../assets/images/cart.png'),
-    navigateScreen: 'LoginScreen',
+    navigateScreen: 'ReviewScreen',
   },
 };
 

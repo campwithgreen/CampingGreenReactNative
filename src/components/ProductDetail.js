@@ -12,13 +12,13 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {RFPercentage} from 'react-native-responsive-fontsize';
-import {navigateTo} from '../navigation/utils/RootNavigation';
+import { RFPercentage } from 'react-native-responsive-fontsize';
+import { navigateTo } from '../navigation/utils/RootNavigation';
 
-const RenderItem = ({item}) => {
+const RenderItem = ({ item }) => {
   console.log('HELLODetailRitik', item);
   return (
-    <View style={{marginTop: hp('2.5%'), width: wp('43%')}}>
+    <View style={{ marginTop: hp('2.5%'), width: wp('43%') }}>
       <TouchableOpacity
         onPress={() => {
           navigateTo('ProductInfo', item);
@@ -107,17 +107,33 @@ const ProductDetail = () => {
         },
       },
     },
+    {
+      id: '5',
+      name: '[COVEMA] 2인 캠핑 패키지 코베마 수동텐트',
+      price: '65,004',
+      quantity: '잔여수량 5',
+      image: require('../assets/images/tent.png'),
+      detail1: {
+        detail1Title: 'qqqqqqqqqqqqq',
+        detail1Value: {
+          first: 'one',
+          second: 'two',
+          third: 'three',
+          fourth: 'four',
+        },
+      },
+    },
   ];
 
   //const {container} = styles;
   return (
     <FlatList
-      style={{paddingBottom: hp('25%')}}
+      style={{ paddingBottom: hp('25%') }}
       numColumns={2}
       showsHorizontalScrollIndicator={false}
       data={ProductData}
-      columnWrapperStyle={{display: 'flex', justifyContent: 'space-between'}}
-      renderItem={({item}) => {
+      columnWrapperStyle={{ display: 'flex', justifyContent: 'space-between' }}
+      renderItem={({ item }) => {
         return <RenderItem item={item} key={item.id} />;
       }}
     />

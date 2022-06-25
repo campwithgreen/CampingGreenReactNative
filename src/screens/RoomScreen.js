@@ -78,14 +78,14 @@ const RoomScreen = () => {
     },
   ];
   return (
-    <View style={{backgroundColor: 'white'}}>
+    <View style={{ backgroundColor: 'white' }}>
       <SearchInput />
       <FlatList
         numColumns={1}
         ListHeaderComponent={ListHeaderComponent}
         showsHorizontalScrollIndicator={false}
         data={roomData}
-        renderItem={({item}) => {
+        renderItem={({ item }) => {
           return <Room item={item} key={item.id} />;
         }}
       />
@@ -97,7 +97,7 @@ export default RoomScreen;
 
 const ListHeaderComponent = () => {
   return (
-    <View style={{paddingBottom: 20, paddingTop: 70}}>
+    <View style={{ paddingBottom: 20, paddingTop: 70 }}>
       <Image source={require('../assets/images/map.png')} style={styles.img1} />
       <Image
         source={require('../assets/images/map_location.png')}

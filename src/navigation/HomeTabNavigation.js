@@ -1,12 +1,12 @@
 import React from 'react';
-import {Image, StyleSheet} from 'react-native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {HomeNavigation} from './HomeNavigation';
-import {HeartScreen} from '../screens/HeartScreen';
-import {LocationScreen} from '../screens/LocationScreen';
-import {ChatScreen} from '../screens/ChatScreen';
-import {ProfileScreen} from '../screens/ProfileScreen';
-import {MyScreen} from '../screens/MyScreen';
+import { Image, StyleSheet } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { HomeNavigation } from './HomeNavigation';
+import { HeartScreen } from '../screens/HeartScreen';
+import { LocationScreen } from '../screens/LocationScreen';
+import { ChatScreen } from '../screens/ChatScreen';
+import { ProfileScreen } from '../screens/ProfileScreen';
+import { MyScreen } from '../screens/MyScreen';
 import SecondScreen from '../screens/SecondScreen';
 import ThirdScreen from '../screens/ThirdScreen';
 import ForthScreen from '../screens/ForthScreen';
@@ -24,18 +24,18 @@ const AppNavigatorOptions = {
  * @function HomeTabNavigation
  **/
 export const HomeTabNavigation = props => {
-  const {tabIcon} = styles;
+  const { tabIcon } = styles;
   return (
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={tabs => {
-        const {name} = tabs.route;
+        const { name } = tabs.route;
         if (name === 'Home') {
           return {
             tabBarIcon: () => {
               return (
                 <Image
-                  style={{...tabIcon}}
+                  style={{ ...tabIcon }}
                   source={require('../assets/images/home.png')}
                 />
               );

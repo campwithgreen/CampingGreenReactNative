@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -12,7 +12,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {RFPercentage} from 'react-native-responsive-fontsize';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 import MyScreen1 from '../components/MyScreen1';
 import Header from '../layout/Header';
 import Footer from '../components/Footer';
@@ -43,9 +43,9 @@ export const MyScreen = props => {
     },
   };
 
-  const [flag, setFlag] = useState({p1: true, p2: true, p3: true, p4: true});
+  const [flag, setFlag] = useState({ p1: true, p2: true, p3: true, p4: true });
   return (
-    <View style={{backgroundColor: 'white'}}>
+    <View style={{ backgroundColor: 'white' }}>
       <ScrollView>
         <Header headerContent={headerContent} />
         <View style={border2}></View>
@@ -135,33 +135,31 @@ export const MyScreen = props => {
               flexDirection: 'row',
               justifyContent: 'space-between',
               alignContent: 'center',
+              height: '80%',
             }}>
             <TextInput
               style={{
                 borderWidth: 1,
                 width: wp('20%'),
                 borderColor: 'lightgrey',
-                height: '80%',
               }}
               keyboardType="numeric"
             />
-            <Text style={{textAlignVertical: 'center'}}>-</Text>
+            <Text style={{ textAlignVertical: 'center' }}>-</Text>
             <TextInput
               style={{
                 borderWidth: 1,
                 width: wp('20%'),
                 borderColor: 'lightgrey',
-                height: '80%',
               }}
               keyboardType="numeric"
             />
-            <Text style={{textAlignVertical: 'center'}}>-</Text>
+            <Text style={{ textAlignVertical: 'center' }}>-</Text>
             <TextInput
               style={{
                 borderWidth: 1,
                 width: wp('20%'),
                 borderColor: 'lightgrey',
-                height: '80%',
               }}
               keyboardType="numeric"
             />
@@ -183,17 +181,17 @@ export const MyScreen = props => {
               flexDirection: 'row',
               justifyContent: 'space-between',
               alignContent: 'center',
+              height: '80%',
             }}>
             <TextInput
               style={{
                 borderWidth: 1,
                 width: wp('30%'),
                 borderColor: 'lightgrey',
-                height: '80%',
               }}
               keyboardType="numeric"
             />
-            <Text style={{backgroundColor: '#8F9295', width: wp('30%')}}>
+            <Text style={{ backgroundColor: '#8F9295', width: wp('30%') }}>
               bb
             </Text>
           </View>
@@ -207,9 +205,9 @@ export const MyScreen = props => {
           <TextInput
             style={[
               textinput1,
-              {
-                marginBottom: hp('2%'),
-              },
+              // {
+              //   marginBottom: hp('2%'),
+              // },
             ]}
             keyboardType="numeric"
           />
@@ -223,9 +221,9 @@ export const MyScreen = props => {
           <TextInput
             style={[
               textinput1,
-              {
-                marginBottom: hp('2%'),
-              },
+              // {
+              //   marginBottom: hp('2%'),
+              // },
             ]}
             keyboardType="numeric"
           />
@@ -293,9 +291,9 @@ export const MyScreen = props => {
         <View style={view1}>
           <Text style={text2}>최종 결제 금액</Text>
           <Text></Text>
-          <Text style={[text2, {color: '#55C595'}]}>130,000원</Text>
+          <Text style={[text2, { color: '#55C595' }]}>130,000원</Text>
         </View>
-        <Text style={[ph1, {paddingTop: hp('5%')}]}>
+        <Text style={[ph1, { paddingTop: hp('5%') }]}>
           <Text style={text2}>-2022.05.20 23:59:59</Text>
           <Text>까지 결제(입금)되지 않으면 예약이 자동취소 됩니다.</Text>
         </Text>
@@ -304,10 +302,10 @@ export const MyScreen = props => {
         <View
           style={[
             ph1,
-            {display: 'flex', flexDirection: 'row', paddingTop: hp('2%')},
+            { display: 'flex', flexDirection: 'row', paddingTop: hp('2%') },
           ]}>
           <TouchableOpacity
-            onPress={() => setFlag(prev => ({...prev, p1: !prev.p1}))}>
+            onPress={() => setFlag(prev => ({ ...prev, p1: !prev.p1 }))}>
             {flag.p1 ? (
               <Image source={require('../assets/images/green_circle.png')} />
             ) : (
@@ -315,34 +313,34 @@ export const MyScreen = props => {
             )}
           </TouchableOpacity>
 
-          <View style={{marginLeft: wp('3%')}}>
+          <View style={{ marginLeft: wp('3%') }}>
             <Text style={[text2]}>무통장 입금</Text>
-            <Text style={[text2, {paddingTop: hp('1%')}]}>
+            <Text style={[text2, { paddingTop: hp('1%') }]}>
               하나은행 / 1111-1111-111/ 임태영
             </Text>
-            <Text style={{paddingTop: hp('1%')}}>
+            <Text style={{ paddingTop: hp('1%') }}>
               위 계좌로 입금이 완료되면 배송준비가 시작됩니다.
             </Text>
           </View>
         </View>
         <View style={border1}></View>
         <Text style={[text1, ph1]}>결제시 필수사항 동의</Text>
-        <View style={{paddingBottom: hp('20%'), paddingTop: hp('2%')}}>
+        <View style={{ paddingBottom: hp('20%'), paddingTop: hp('2%') }}>
           <View
             style={[
               ph1,
-              {display: 'flex', flexDirection: 'row', paddingTop: hp('1%')},
+              { display: 'flex', flexDirection: 'row', paddingTop: hp('1%') },
             ]}>
             <TouchableOpacity
-              onPress={() => setFlag(prev => ({...prev, p2: !prev.p2}))}>
+              onPress={() => setFlag(prev => ({ ...prev, p2: !prev.p2 }))}>
               {flag.p2 ? (
                 <Image source={require('../assets/images/green_circle.png')} />
               ) : (
                 <Image source={require('../assets/images/white_circle.png')} />
               )}
             </TouchableOpacity>
-            <Text style={[text2, {marginLeft: wp('3%')}]}>
-              <Text style={{color: '#55C595'}}>
+            <Text style={[text2, { marginLeft: wp('3%') }]}>
+              <Text style={{ color: '#55C595' }}>
                 예약 유의사항 및 취소/환불규정{' '}
               </Text>
               <Text>동의 (필수)</Text>
@@ -351,36 +349,36 @@ export const MyScreen = props => {
           <View
             style={[
               ph1,
-              {display: 'flex', flexDirection: 'row', paddingTop: hp('1%')},
+              { display: 'flex', flexDirection: 'row', paddingTop: hp('1%') },
             ]}>
             <TouchableOpacity
-              onPress={() => setFlag(prev => ({...prev, p3: !prev.p3}))}>
+              onPress={() => setFlag(prev => ({ ...prev, p3: !prev.p3 }))}>
               {flag.p3 ? (
                 <Image source={require('../assets/images/green_circle.png')} />
               ) : (
                 <Image source={require('../assets/images/white_circle.png')} />
               )}
             </TouchableOpacity>
-            <Text style={[text2, {marginLeft: wp('3%')}]}>
-              <Text style={{color: '#55C595'}}>개인정보 수집 및 이용 </Text>
+            <Text style={[text2, { marginLeft: wp('3%') }]}>
+              <Text style={{ color: '#55C595' }}>개인정보 수집 및 이용 </Text>
               <Text>동의 (필수)</Text>
             </Text>
           </View>
           <View
             style={[
               ph1,
-              {display: 'flex', flexDirection: 'row', paddingTop: hp('1%')},
+              { display: 'flex', flexDirection: 'row', paddingTop: hp('1%') },
             ]}>
             <TouchableOpacity
-              onPress={() => setFlag(prev => ({...prev, p4: !prev.p4}))}>
+              onPress={() => setFlag(prev => ({ ...prev, p4: !prev.p4 }))}>
               {flag.p4 ? (
                 <Image source={require('../assets/images/green_circle.png')} />
               ) : (
                 <Image source={require('../assets/images/white_circle.png')} />
               )}
             </TouchableOpacity>
-            <Text style={[text2, {marginLeft: wp('3%')}]}>
-              <Text style={{color: '#55C595'}}>개인정보 제3자 제공 </Text>
+            <Text style={[text2, { marginLeft: wp('3%') }]}>
+              <Text style={{ color: '#55C595' }}>개인정보 제3자 제공 </Text>
               <Text>동의 (필수)</Text>
             </Text>
           </View>
@@ -393,7 +391,7 @@ export const MyScreen = props => {
 };
 
 const styles = StyleSheet.create({
-  container: {paddingBottom: hp('10%'), paddingHorizontal: wp('10%')},
+  container: { paddingBottom: hp('10%'), paddingHorizontal: wp('10%') },
   view1: {
     display: 'flex',
     flexDirection: 'row',
@@ -413,15 +411,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'black',
   },
-  text2: {fontWeight: '600', color: '#454C53'},
-  ph1: {paddingHorizontal: wp('5%')},
+  text2: { fontWeight: '600', color: '#454C53' },
+  ph1: { paddingHorizontal: wp('5%') },
   textinput1: {
     width: wp('65%'),
     height: '80%',
     borderWidth: 1,
     borderColor: 'lightgrey',
   },
-  border1: {borderWidth: 4, borderColor: 'lightgrey', marginVertical: hp('5%')},
+  border1: { borderWidth: 4, borderColor: 'lightgrey', marginVertical: hp('5%') },
   border2: {
     borderWidth: 0.5,
     borderColor: 'lightgrey',

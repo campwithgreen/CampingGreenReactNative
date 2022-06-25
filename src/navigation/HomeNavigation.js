@@ -15,6 +15,8 @@ import ForthScreen from '../screens/ForthScreen';
 import { ProductInfo } from '../screens/ProductInfo';
 import CalendarScreen from '../screens/CalendarScreen';
 import RoomScreen from '../screens/RoomScreen';
+import ProductShoppingBagScreen from '../screens/ProductShoppingBagScreen';
+import RoomPaymentScreen from '../screens/RoomPaymentScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +49,11 @@ export const HomeNavigation = props => {
       <Stack.Screen name="ProductInfo" component={ProductInfo} />
       <Stack.Screen name="Calendar" component={CalendarScreen} />
       <Stack.Screen name="RoomScreen" component={RoomScreen} />
+      <Stack.Screen
+        name="ProductShoppingBagScreen"
+        component={ProductShoppingBagScreen}
+      />
+      <Stack.Screen name="RoomPaymentScreen" component={RoomPaymentScreen} />
     </Stack.Navigator>
   );
 };

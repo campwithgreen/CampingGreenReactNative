@@ -11,6 +11,8 @@ import SecondScreen from '../screens/SecondScreen';
 import ThirdScreen from '../screens/ThirdScreen';
 import ForthScreen from '../screens/ForthScreen';
 import RoomScreen from '../screens/RoomScreen';
+import ProductShoppingBagScreen from '../screens/ProductShoppingBagScreen';
+import RoomPaymentScreen from '../screens/RoomPaymentScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -130,8 +132,8 @@ export const HomeTabNavigation = props => {
       <Tab.Screen name="Home" component={HomeNavigation} />
       <Tab.Screen name="Heart" component={ForthScreen} />
       <Tab.Screen name="Location" component={ThirdScreen} />
-      <Tab.Screen name="Chat" component={SecondScreen} />
-      <Tab.Screen name="Profile" component={RoomScreen} />
+      <Tab.Screen name="Chat" component={ProductShoppingBagScreen} />
+      <Tab.Screen name="Profile" component={RoomPaymentScreen} />
     </Tab.Navigator>
   );
 };

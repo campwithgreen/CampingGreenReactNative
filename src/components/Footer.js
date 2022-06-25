@@ -20,7 +20,7 @@ const Footer = () => {
       style={{
         backgroundColor: '#EFF0F2',
         paddingVertical: hp('5%'),
-        marginBottom: 50,
+        paddingBottom: 50,
         paddingHorizontal: wp('5%'),
       }}>
       <Text

@@ -9,7 +9,7 @@ import { ProfileScreen } from '../screens/ProfileScreen';
 import { MyScreen } from '../screens/MyScreen';
 import SecondScreen from '../screens/SecondScreen';
 import ThirdScreen from '../screens/OrderSuccessItemScreen';
-import ForthScreen from '../screens/ForthScreen';
+import ForthScreen from '../screens/OrderSuccessCamp';
 import RoomScreen from '../screens/RoomScreen';
 import ProductShoppingBagScreen from '../screens/ProductShoppingBagScreen';
 import RoomPaymentScreen from '../screens/RoomPaymentScreen';
@@ -132,8 +132,8 @@ export const HomeTabNavigation = props => {
       }}>
       <Tab.Screen name="Home" component={HomeNavigation} />
       <Tab.Screen name="Heart" component={Product} />
-      <Tab.Screen name="Location" component={ThirdScreen} />
-      <Tab.Screen name="Chat" component={ProductShoppingBagScreen} />
+      <Tab.Screen name="Location" component={RoomScreen} />
+      <Tab.Screen name="Chat" component={ChatScreen} />
       <Tab.Screen name="Profile" component={RoomPaymentScreen} />
     </Tab.Navigator>
   );

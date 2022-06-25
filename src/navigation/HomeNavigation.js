@@ -10,7 +10,7 @@ import { Product } from '../screens/Product';
 import { MyScreen } from '../screens/MyScreen';
 import SecondScreen from '../screens/SecondScreen';
 import ThirdScreen from '../screens/OrderSuccessItemScreen';
-import ForthScreen from '../screens/ForthScreen';
+import ForthScreen from '../screens/OrderSuccessCamp';
 import { ProductInfo } from '../screens/ProductInfo';
 import CalendarScreen from '../screens/CalendarScreen';
 import RoomScreen from '../screens/RoomScreen';

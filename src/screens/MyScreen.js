@@ -44,11 +44,35 @@ export const MyScreen = props => {
   };
 
   const [flag, setFlag] = useState({p1: true, p2: true, p3: true, p4: true});
+
+  const Comp = ({t1, t2, p}) => {
+    return (
+      <View
+        style={[
+          styles.ph1,
+          {display: 'flex', flexDirection: 'row', paddingTop: hp('1%')},
+        ]}>
+        <TouchableOpacity
+          onPress={() => setFlag(prev => ({...prev, [p]: !prev[p]}))}>
+          {flag[p] ? (
+            <Image source={require('../assets/images/green_circle.png')} />
+          ) : (
+            <Image source={require('../assets/images/white_circle.png')} />
+          )}
+        </TouchableOpacity>
+        <Text style={[styles.text2, {marginLeft: wp('3%')}]}>
+          <Text style={{color: '#55C595'}}>{t1}</Text>
+          <Text>{t2}</Text>
+        </Text>
+      </View>
+    );
+  };
+
   return (
     <View style={{backgroundColor: 'white'}}>
+      <Header headerContent={headerContent} />
+      <View style={border2}></View>
       <ScrollView>
-        <Header headerContent={headerContent} />
-        <View style={border2}></View>
         <Text style={[text1, ph1]}>주문자</Text>
         <View
           style={[
@@ -249,12 +273,7 @@ export const MyScreen = props => {
               },
             ]}></TextInput>
         </View>
-        <View
-          style={{
-            borderWidth: 4,
-            borderColor: 'lightgrey',
-            marginVertical: hp('5%'),
-          }}></View>
+        <View style={border1}></View>
         <MyScreen1 />
         <MyScreen1 />
         <View style={border1}></View>
@@ -328,62 +347,9 @@ export const MyScreen = props => {
         <View style={border1}></View>
         <Text style={[text1, ph1]}>결제시 필수사항 동의</Text>
         <View style={{paddingBottom: hp('20%'), paddingTop: hp('2%')}}>
-          <View
-            style={[
-              ph1,
-              {display: 'flex', flexDirection: 'row', paddingTop: hp('1%')},
-            ]}>
-            <TouchableOpacity
-              onPress={() => setFlag(prev => ({...prev, p2: !prev.p2}))}>
-              {flag.p2 ? (
-                <Image source={require('../assets/images/green_circle.png')} />
-              ) : (
-                <Image source={require('../assets/images/white_circle.png')} />
-              )}
-            </TouchableOpacity>
-            <Text style={[text2, {marginLeft: wp('3%')}]}>
-              <Text style={{color: '#55C595'}}>
-                예약 유의사항 및 취소/환불규정{' '}
-              </Text>
-              <Text>동의 (필수)</Text>
-            </Text>
-          </View>
-          <View
-            style={[
-              ph1,
-              {display: 'flex', flexDirection: 'row', paddingTop: hp('1%')},
-            ]}>
-            <TouchableOpacity
-              onPress={() => setFlag(prev => ({...prev, p3: !prev.p3}))}>
-              {flag.p3 ? (
-                <Image source={require('../assets/images/green_circle.png')} />
-              ) : (
-                <Image source={require('../assets/images/white_circle.png')} />
-              )}
-            </TouchableOpacity>
-            <Text style={[text2, {marginLeft: wp('3%')}]}>
-              <Text style={{color: '#55C595'}}>개인정보 수집 및 이용 </Text>
-              <Text>동의 (필수)</Text>
-            </Text>
-          </View>
-          <View
-            style={[
-              ph1,
-              {display: 'flex', flexDirection: 'row', paddingTop: hp('1%')},
-            ]}>
-            <TouchableOpacity
-              onPress={() => setFlag(prev => ({...prev, p4: !prev.p4}))}>
-              {flag.p4 ? (
-                <Image source={require('../assets/images/green_circle.png')} />
-              ) : (
-                <Image source={require('../assets/images/white_circle.png')} />
-              )}
-            </TouchableOpacity>
-            <Text style={[text2, {marginLeft: wp('3%')}]}>
-              <Text style={{color: '#55C595'}}>개인정보 제3자 제공 </Text>
-              <Text>동의 (필수)</Text>
-            </Text>
-          </View>
+          <Comp t1="예약 유의사항 및 취소/환불규정 " t2="동의 (필수)" p="p2" />
+          <Comp t1="개인정보 수집 및 이용 " t2="동의 (필수)" p="p3" />
+          <Comp t1="개인정보 제3자 제공 " t2="동의 (필수)" p="p4" />
         </View>
         <Footer />
       </ScrollView>
@@ -421,7 +387,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'lightgrey',
   },
-  border1: {borderWidth: 4, borderColor: 'lightgrey', marginVertical: hp('5%')},
+  border1: {
+    borderBottomWidth: 8,
+    borderColor: 'lightgrey',
+    marginVertical: hp('5%'),
+  },
   border2: {
     borderWidth: 0.5,
     borderColor: 'lightgrey',

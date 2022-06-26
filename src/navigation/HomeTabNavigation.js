@@ -1,19 +1,20 @@
 import React from 'react';
-import { Image, StyleSheet } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { HomeNavigation } from './HomeNavigation';
-import { HeartScreen } from '../screens/HeartScreen';
-import { LocationScreen } from '../screens/LocationScreen';
-import { ChatScreen } from '../screens/ChatScreen';
-import { ProfileScreen } from '../screens/ProfileScreen';
-import { MyScreen } from '../screens/MyScreen';
+import {Image, StyleSheet} from 'react-native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {HomeNavigation} from './HomeNavigation';
+import {HeartScreen} from '../screens/HeartScreen';
+import {LocationScreen} from '../screens/LocationScreen';
+import {ChatScreen} from '../screens/ChatScreen';
+import {ProfileScreen} from '../screens/ProfileScreen';
+import {MyScreen} from '../screens/MyScreen';
 import SecondScreen from '../screens/SecondScreen';
 import ThirdScreen from '../screens/OrderSuccessItemScreen';
 import ForthScreen from '../screens/OrderSuccessCamp';
 import RoomScreen from '../screens/RoomScreen';
 import ProductShoppingBagScreen from '../screens/ProductShoppingBagScreen';
 import RoomPaymentScreen from '../screens/RoomPaymentScreen';
-import { Product } from '../screens/Product';
+import {Product} from '../screens/Product';
+import RoomReservationListScreen from '../screens/RoomReservationListScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -27,18 +28,18 @@ const AppNavigatorOptions = {
  * @function HomeTabNavigation
  **/
 export const HomeTabNavigation = props => {
-  const { tabIcon } = styles;
+  const {tabIcon} = styles;
   return (
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={tabs => {
-        const { name } = tabs.route;
+        const {name} = tabs.route;
         if (name === 'Home') {
           return {
             tabBarIcon: () => {
               return (
                 <Image
-                  style={{ ...tabIcon }}
+                  style={{...tabIcon}}
                   source={require('../assets/images/home.png')}
                 />
               );
@@ -134,7 +135,8 @@ export const HomeTabNavigation = props => {
       <Tab.Screen name="Heart" component={Product} />
       <Tab.Screen name="Location" component={RoomScreen} />
       <Tab.Screen name="Chat" component={ChatScreen} />
-      <Tab.Screen name="Profile" component={RoomPaymentScreen} />
+      {/* <Tab.Screen name="Profile" component={RoomPaymentScreen} /> */}
+      <Tab.Screen name="Profile" component={RoomReservationListScreen} />
     </Tab.Navigator>
   );
 };

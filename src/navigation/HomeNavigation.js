@@ -1,21 +1,22 @@
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { HeartScreen } from '../screens/HeartScreen';
-import { HomeScreen } from '../screens/HomeScreen';
-import { ProfileScreen } from '../screens/ProfileScreen';
-import { ChatScreen } from '../screens/ChatScreen';
-import { HomeScreenDetail1 } from '../screens/HomeScreenDetail1';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {HeartScreen} from '../screens/HeartScreen';
+import {HomeScreen} from '../screens/HomeScreen';
+import {ProfileScreen} from '../screens/ProfileScreen';
+import {ChatScreen} from '../screens/ChatScreen';
+import {HomeScreenDetail1} from '../screens/HomeScreenDetail1';
 import LoginScreen from '../screens/LoginScreen';
-import { Product } from '../screens/Product';
-import { MyScreen } from '../screens/MyScreen';
+import {Product} from '../screens/Product';
+import {MyScreen} from '../screens/MyScreen';
 import SecondScreen from '../screens/SecondScreen';
 import ThirdScreen from '../screens/OrderSuccessItemScreen';
 import ForthScreen from '../screens/OrderSuccessCamp';
-import { ProductInfo } from '../screens/ProductInfo';
+import {ProductInfo} from '../screens/ProductInfo';
 import CalendarScreen from '../screens/CalendarScreen';
 import RoomScreen from '../screens/RoomScreen';
 import ProductShoppingBagScreen from '../screens/ProductShoppingBagScreen';
 import RoomPaymentScreen from '../screens/RoomPaymentScreen';
+import RoomReservationListScreen from '../screens/RoomReservationListScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -52,6 +53,10 @@ export const HomeNavigation = props => {
         component={ProductShoppingBagScreen}
       />
       <Stack.Screen name="RoomPaymentScreen" component={RoomPaymentScreen} />
+      <Stack.Screen
+        name="RoomReservationListScreen"
+        component={RoomReservationListScreen}
+      />
     </Stack.Navigator>
   );
 };

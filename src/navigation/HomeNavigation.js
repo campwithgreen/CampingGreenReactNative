@@ -1,19 +1,22 @@
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { HeartScreen } from '../screens/HeartScreen';
-import { HomeScreen } from '../screens/HomeScreen';
-import { ProfileScreen } from '../screens/ProfileScreen';
-import { ChatScreen } from '../screens/ChatScreen';
-import { LocationScreen } from '../screens/LocationScreen';
-import { HomeScreenDetail1 } from '../screens/HomeScreenDetail1';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {HeartScreen} from '../screens/HeartScreen';
+import {HomeScreen} from '../screens/HomeScreen';
+import {ProfileScreen} from '../screens/ProfileScreen';
+import {ChatScreen} from '../screens/ChatScreen';
+import {HomeScreenDetail1} from '../screens/HomeScreenDetail1';
 import LoginScreen from '../screens/LoginScreen';
-import { Product } from '../screens/Product';
-import { MyScreen } from '../screens/MyScreen';
+import {Product} from '../screens/Product';
+import {MyScreen} from '../screens/MyScreen';
 import SecondScreen from '../screens/SecondScreen';
-import ThirdScreen from '../screens/ThirdScreen';
-import ForthScreen from '../screens/ForthScreen';
-import { ProductInfo } from '../screens/ProductInfo';
+import ThirdScreen from '../screens/OrderSuccessItemScreen';
+import ForthScreen from '../screens/OrderSuccessCamp';
+import {ProductInfo} from '../screens/ProductInfo';
 import CalendarScreen from '../screens/CalendarScreen';
+import RoomScreen from '../screens/RoomScreen';
+import ProductShoppingBagScreen from '../screens/ProductShoppingBagScreen';
+import RoomPaymentScreen from '../screens/RoomPaymentScreen';
+import RoomReservationListScreen from '../screens/RoomReservationListScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,7 +36,6 @@ export const HomeNavigation = props => {
       screenOptions={AppNavigatorOptions}>
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="HeartScreen" component={HeartScreen} />
-      <Stack.Screen name="LocationScreen" component={LocationScreen} />
       <Stack.Screen name="ChatScreen" component={ChatScreen} />
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
       <Stack.Screen name="HomeScreenDetail1" component={HomeScreenDetail1} />
@@ -45,6 +47,16 @@ export const HomeNavigation = props => {
       <Stack.Screen name="ForthScreen" component={ForthScreen} />
       <Stack.Screen name="ProductInfo" component={ProductInfo} />
       <Stack.Screen name="Calendar" component={CalendarScreen} />
+      <Stack.Screen name="RoomScreen" component={RoomScreen} />
+      <Stack.Screen
+        name="ProductShoppingBagScreen"
+        component={ProductShoppingBagScreen}
+      />
+      <Stack.Screen name="RoomPaymentScreen" component={RoomPaymentScreen} />
+      <Stack.Screen
+        name="RoomReservationListScreen"
+        component={RoomReservationListScreen}
+      />
     </Stack.Navigator>
   );
 };

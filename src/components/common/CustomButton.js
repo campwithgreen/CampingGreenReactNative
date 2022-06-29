@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp,
@@ -8,10 +8,12 @@ import { RFPercentage } from 'react-native-responsive-fontsize';
 
 
 export default function CustomButton(props) {
-    const { buttonText } = props
+    const { buttonText, buttonHandler } = props
     const { button1 } = styles
     return (
-        <Text style={button1}>{buttonText}</Text>
+        <TouchableOpacity onClick={() => { buttonHandler() }}>
+            <Text style={button1}>{buttonText}</Text>
+        </TouchableOpacity>
     );
 }
 

@@ -1,10 +1,14 @@
-import {StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {RFPercentage} from 'react-native-responsive-fontsize';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 import React from 'react';
+
+const orderData = {
+
+}
 
 const ThirdScreen1 = () => {
   return (
@@ -20,10 +24,9 @@ const ThirdScreen1 = () => {
         }}>
         예약이 완료되었습니다.
       </Text>
-      <Text style={{textAlign: 'center', marginBottom: hp('5%')}}>
+      <Text style={{ textAlign: 'center', marginBottom: hp('5%') }}>
         <Text style={[styles.text2]}>주문번호</Text>
-        <Text style={[styles.text2, {color: '#56C596'}]}>
-          {'  '}
+        <Text style={[styles.text2, { color: '#56C596' }]}>
           ORD20220718-203094
         </Text>
       </Text>
@@ -33,9 +36,9 @@ const ThirdScreen1 = () => {
         <Text style={styles.text2}>예약기간</Text>
       </View>
       <View style={styles.view2}>
-        <Text style={[styles.text2, {color: '#E8EBED'}]}>예약자</Text>
-        <Text style={[styles.text2, {color: '#E8EBED'}]}>300,000</Text>
-        <Text style={[styles.text2, {color: '#E8EBED'}]}>7.18 - 7.19</Text>
+        <Text style={[styles.text2, { color: '#E8EBED' }]}>예약자</Text>
+        <Text style={[styles.text2, { color: '#E8EBED' }]}>300,000</Text>
+        <Text style={[styles.text2, { color: '#E8EBED' }]}>7.18 - 7.19</Text>
       </View>
     </View>
   );

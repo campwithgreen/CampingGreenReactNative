@@ -1,32 +1,27 @@
-import {StyleSheet, Text, View, ScrollView, Image} from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
 import React from 'react';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {RFPercentage} from 'react-native-responsive-fontsize';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 import ThirdScreen1 from '../components/ThirdScreen1';
 import ThirdScreen2 from '../components/ThirdScreen2';
 import ThirdScreen3 from '../components/ThirdScreen3';
 import Header from '../layout/Header';
 import ThirdScreen5 from '../components/ThirdScreen5';
 import SecondScreen1 from '../components/SecondScreen1';
-import ThirdScreen4 from '../components/ThirdScreen4';
+import ForthScreen1 from '../components/ForthScreen1';
 const headerContent = {
   leftItemContents: {
     type: 'image',
     content: require('../assets/images/icon_cancel.png'),
     navigateScreen: 'LoginScreen',
   },
-  rightItemContents: {
-    type: 'image',
-    content: require('../assets/images/cart.png'),
-    navigateScreen: 'LoginScreen',
-  },
 };
-export default function ThirdScreen() {
+export default function ForthScreen() {
   return (
-    <View style={{backgroundColor: 'white'}}>
+    <View style={{ backgroundColor: 'white' }}>
       <ScrollView>
         <Header headerContent={headerContent} />
         <ThirdScreen1 />
@@ -38,32 +33,41 @@ export default function ThirdScreen() {
             marginHorizontal: wp('5%'),
             paddingTop: hp('6%'),
           }}>
-          주문상품 (2)
+          상품 및 이용정보
         </Text>
         <View style={styles.border1}></View>
-        <ThirdScreen4 />
-        <ThirdScreen4 />
-        <ThirdScreen2 />
+        <ForthScreen1 />
+        <View style={styles.view1}>
+          <Text style={styles.text1}>배송정보 변경은{'  '}</Text>
+          <Text style={[styles.text1, { color: '#56C596' }]}>
+            송정보변경은{'  '}
+          </Text>
+          <Image source={require('../assets/images/white_circle.png')} />
+          <Text style={styles.text1}>{'  '}전화바랍니다.</Text>
+        </View>
         <Text
           style={{
             fontWeight: 'bold',
             color: '#1B1D1F',
             fontSize: 18,
             marginHorizontal: wp('5%'),
-            paddingTop: hp('3%'),
+            paddingTop: hp('6%'),
           }}>
-          결제정보
+          예약자 정보
         </Text>
         <View style={styles.border1}></View>
-        <View style={{paddingTop: hp('3.5%')}}>
-          <SecondScreen1 t1="결제금액" t2="136,000원" />
+        <View style={{ paddingTop: hp('3.5%') }}>
+          <SecondScreen1 t1="예약자" t2="김그린" />
         </View>
         <View style={styles.border2}></View>
-        <SecondScreen1 t1="결제방법" t2="무통장입금" />
+        <SecondScreen1 t1="예약인원" t2="김그린 외 3명" />
         <View style={styles.border2}></View>
-        <SecondScreen1 t1="결제마감일" t2="2022.05.27 23:59:59" />
+        <SecondScreen1 t1="연락처" t2="010 - 5561 - 2550" />
         <View style={styles.border2}></View>
-        <SecondScreen1 t1="현재상태" t2="결제 대기" />
+        <SecondScreen1 t1="차량번호" t2="135다 4867" />
+        <View style={styles.border2}></View>
+        <SecondScreen1 t1="요청사항" t2="픽업 오후2시에 부탁드립니다" />
+        <ThirdScreen2 />
         <Text
           style={{
             fontWeight: 'bold',
@@ -75,25 +79,16 @@ export default function ThirdScreen() {
           배송정보
         </Text>
         <View style={styles.border1}></View>
-        <View style={{paddingTop: hp('3.5%')}}>
-          <SecondScreen1 t1="예약자" t2="김그린" />
+        <View style={{ paddingTop: hp('3.5%') }}>
+          <SecondScreen1 t1="예약금액" t2="300,000원" />
         </View>
         <View style={styles.border2}></View>
-        <SecondScreen1 t1="연락처" t2="010-5561-2550" />
+        <SecondScreen1 t1="결제방법" t2="무통장입금" />
         <View style={styles.border2}></View>
-        <SecondScreen1
-          t1="배송지"
-          t2="세종특별자치시 세종대로 21-9 A동 203호"
-        />
+        <SecondScreen1 t1="결제 마감일" t2="2022.07.19 23:59:59" />
         <View style={styles.border2}></View>
-        <View style={styles.view1}>
-          <Text style={styles.text1}>배송정보 변경은{'  '}</Text>
-          <Text style={[styles.text1, {color: '#56C596'}]}>
-            송정보변경은{'  '}
-          </Text>
-          <Image source={require('../assets/images/white_circle.png')} />
-          <Text style={styles.text1}>{'  '}전화바랍니다.</Text>
-        </View>
+        <SecondScreen1 t1="현재상태" t2="입금대기" />
+        <View style={styles.border2}></View>
         <ThirdScreen3 />
       </ScrollView>
     </View>

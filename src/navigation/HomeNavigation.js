@@ -17,6 +17,7 @@ import CalendarScreen from '../screens/CalendarScreen';
 import RoomScreen from '../screens/RoomScreen';
 import ProductShoppingBagScreen from '../screens/ProductShoppingBagScreen';
 import RoomPaymentScreen from '../screens/RoomPaymentScreen';
+import Rent from '../screens/Rent';
 
 const Stack = createNativeStackNavigator();
 
@@ -40,6 +41,7 @@ export const HomeNavigation = props => {
       <Stack.Screen name="ChatScreen" component={ChatScreen} />
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
       <Stack.Screen name="HomeScreenDetail1" component={HomeScreenDetail1} />
+      <Stack.Screen name="Rent" component={Rent} />
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="Product" component={Product} />
       <Stack.Screen name="MyScreen" component={MyScreen} />

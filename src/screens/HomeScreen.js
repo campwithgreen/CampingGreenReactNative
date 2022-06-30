@@ -83,11 +83,11 @@ export const HomeScreen = props => {
               }}>
               <Image
                 source={require('../assets/images/image_tent.png')}
-                style={{ marginRight: hp('5%') }}
+                style={{marginRight: hp('5%')}}
               />
             </TouchableOpacity>
-            <View style={{ paddingRight: hp('5%') }}>
-              <View style={{ paddingBottom: hp('.7%') }}>
+            <View style={{paddingRight: hp('5%')}}>
+              <View style={{paddingBottom: hp('.7%')}}>
                 <Text
                   style={{
                     color: '#1B1D1F',
@@ -97,7 +97,7 @@ export const HomeScreen = props => {
                   비싸고 무거운 캠핑장비,{'\n'}이제 사지말고 대여하세요
                 </Text>
               </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Text
                   style={{
                     color: '#454C53',
@@ -126,8 +126,8 @@ export const HomeScreen = props => {
               alignItems: 'center',
               justifyContent: 'flex-start',
             }}>
-            <View style={{ paddingRight: wp('20%') }}>
-              <View style={{ paddingBottom: hp('1%') }}>
+            <View style={{paddingRight: wp('20%')}}>
+              <View style={{paddingBottom: hp('1%')}}>
                 <Text
                   style={{
                     color: '#55C595',
@@ -136,7 +136,7 @@ export const HomeScreen = props => {
                   캠핑장 제휴문의
                 </Text>
               </View>
-              <View style={{ paddingBottom: hp('1%') }}>
+              <View style={{paddingBottom: hp('1%')}}>
                 <Text
                   style={{
                     color: '#454C53',
@@ -157,7 +157,12 @@ export const HomeScreen = props => {
                 </Text>
               </View>
             </View>
-            <Image source={require('../assets/images/image_tent.png')} />
+            <TouchableOpacity
+              onPress={() => {
+                navigateTo('Rent');
+              }}>
+              <Image source={require('../assets/images/image_tent.png')} />
+            </TouchableOpacity>
           </View>
           <View
             style={{
@@ -170,7 +175,7 @@ export const HomeScreen = props => {
               alignItems: 'center',
               justifyContent: 'flex-start',
             }}>
-            <View style={{ paddingRight: wp('20%') }}>
+            <View style={{paddingRight: wp('20%')}}>
               <Text
                 style={{
                   color: '#fff',
@@ -181,7 +186,7 @@ export const HomeScreen = props => {
             </View>
             <TouchableOpacity
               onPress={() => {
-                navigateTo('Product', { id: 10 });
+                navigateTo('Product', {id: 10});
               }}>
               <Image source={require('../assets/images/image_tent.png')} />
             </TouchableOpacity>

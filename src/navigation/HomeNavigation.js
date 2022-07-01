@@ -1,22 +1,23 @@
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {HeartScreen} from '../screens/HeartScreen';
-import {HomeScreen} from '../screens/HomeScreen';
-import {ProfileScreen} from '../screens/ProfileScreen';
-import {ChatScreen} from '../screens/ChatScreen';
-import {HomeScreenDetail1} from '../screens/HomeScreenDetail1';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { HeartScreen } from '../screens/HeartScreen';
+import { HomeScreen } from '../screens/HomeScreen';
+import { ProfileScreen } from '../screens/ProfileScreen';
+import { ChatScreen } from '../screens/ChatScreen';
+import { HomeScreenDetail1 } from '../screens/HomeScreenDetail1';
 import LoginScreen from '../screens/LoginScreen';
-import {Product} from '../screens/Product';
-import {MyScreen} from '../screens/MyScreen';
+import { Product } from '../screens/Product';
+import { MyScreen } from '../screens/MyScreen';
 import SecondScreen from '../screens/SecondScreen';
 import ThirdScreen from '../screens/OrderSuccessItemScreen';
 import ForthScreen from '../screens/OrderSuccessCamp';
-import {ProductInfo} from '../screens/ProductInfo';
+import { ProductInfo } from '../screens/ProductInfo';
 import CalendarScreen from '../screens/CalendarScreen';
 import RoomScreen from '../screens/RoomScreen';
 import ProductShoppingBagScreen from '../screens/ProductShoppingBagScreen';
 import RoomPaymentScreen from '../screens/RoomPaymentScreen';
 import RoomReservationListScreen from '../screens/RoomReservationListScreen';
+import Rent from '../screens/Rent';
 
 const Stack = createNativeStackNavigator();
 
@@ -39,6 +40,7 @@ export const HomeNavigation = props => {
       <Stack.Screen name="ChatScreen" component={ChatScreen} />
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
       <Stack.Screen name="HomeScreenDetail1" component={HomeScreenDetail1} />
+      <Stack.Screen name="Rent" component={Rent} />
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="Product" component={Product} />
       <Stack.Screen name="MyScreen" component={MyScreen} />

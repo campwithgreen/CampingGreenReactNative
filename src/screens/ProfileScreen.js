@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import Header from '../layout/Header';
-import { navigateTo } from '../navigation/utils/RootNavigation';
+import { goBack, navigateTo } from '../navigation/utils/RootNavigation';
 import globalStyle from '../global/globalStyle';
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
 import COLOR from '../constants/colors';
@@ -11,12 +11,11 @@ const headerContent = {
     leftItemContents: {
         type: 'image',
         content: require('../assets/images/arrow-left.png'),
-        navigateScreen: 'ReviewScreen',
+        navigateScreen: () => goBack()
     },
     middleItemContents: {
         type: 'text',
         content: '마이페이지',
-        navigateScreen: 'RoomScreen',
     },
     rightItemContents: {
         type: 'image',
@@ -32,16 +31,20 @@ export const ProfileScreen = (props) => {
         secondTextII, secondParentWrapper } = styles;
 
     return (
-        <View >
+        <View>
             <Header headerContent={headerContent} />
-            <ScrollView >
+            <ScrollView>
                 <View>
                     <View style={firstContainer}>
                         <View style={globalStyle.mainContainerWrapper}>
                             <View style={textWrapper}><Text style={companyText}>CAMPING GREEN</Text></View>
                             <View style={textWrapperII}>
                                 <View style={textWrapperIV}>
-                                    <Text style={companyText}>김그린 님</Text>
+                                    <TouchableOpacity onPress={() => {
+                                        navigateTo("LoginScreen");
+                                    }}>
+                                        <Text style={companyText}>김그린 님</Text>
+                                    </TouchableOpacity>
                                 </View>
                                 <View style={textWrapperIII}>
                                     <Text style={[statusText, greyColor]}>김그린 님</Text>
@@ -78,7 +81,7 @@ export const ProfileScreen = (props) => {
                     </View>
                 </View>
             </ScrollView>
-        </View >
+        </View>
     );
 };
 
@@ -135,6 +138,6 @@ const styles = StyleSheet.create({
         fontWeight: "500"
     },
     secondParentWrapper: {
-        height: heightPercentageToDP("70%")
+        height: "100%"
     }
 });

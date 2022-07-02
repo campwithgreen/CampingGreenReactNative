@@ -8,12 +8,12 @@ import {
 
 export default function FormField(props) {
 
-    const { type } = props
+    const { type, onChange, maxLength } = props;
     const { formlabel, inputcontainer } = styles;
-    const [lineColor, setLineColor] = useState("black")
+    const [lineColor, setLineColor] = useState("black");
 
-    const onFocus = () => setLineColor("green")
-    const onBlur = () => setLineColor("black")
+    const onFocus = () => setLineColor("green");
+    const onBlur = () => setLineColor("black");
 
     switch (type) {
         case "textButton":
@@ -50,7 +50,7 @@ export default function FormField(props) {
                         </View>
                     </TouchableHighlight>
                 </View>
-            </View>
+            </View>;
         case "text":
             return <View style={inputcontainer}>
                 <Text style={formlabel}>휴대폰 번호</Text>
@@ -66,16 +66,18 @@ export default function FormField(props) {
                             borderBottomColor: lineColor,
                             width: '100%',
                         }}
+                        maxLength={maxLength}
                         onFocus={() => onFocus()}
                         onBlur={() => onBlur()}
                         keyboardType="number-pad"
                         autoCapitalize="none"
                         onChangeText={value => {
+                            onChange(value);
                         }}
                         placeholder="-없이 숫자만 입력해주세요"
                     />
                 </View>
-            </View>
+            </View>;
     }
 }
 const styles = StyleSheet.create({
@@ -86,4 +88,4 @@ const styles = StyleSheet.create({
     inputcontainer: {
         marginVertical: hp('2%'),
     },
-})
+});

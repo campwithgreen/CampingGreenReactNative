@@ -5,15 +5,18 @@ import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
+import COLOR from '../../constants/colors';
 
 export default function FormField(props) {
 
-    const { type, onChange, maxLength } = props;
+    const { type, onChange, maxLength, label, placeholder, keyboardType, validate } = props;
     const { formlabel, inputcontainer } = styles;
-    const [lineColor, setLineColor] = useState("black");
+    const [lineColor, setLineColor] = useState(COLOR.black);
+    const onFocus = () => setLineColor(COLOR.compGreen);
+    const onBlur = () => {
+        setLineColor(COLOR.black);
+    };
 
-    const onFocus = () => setLineColor("green");
-    const onBlur = () => setLineColor("black");
 
     switch (type) {
         case "textButton":
@@ -53,7 +56,7 @@ export default function FormField(props) {
             </View>;
         case "text":
             return <View style={inputcontainer}>
-                <Text style={formlabel}>휴대폰 번호</Text>
+                <Text style={formlabel}>{label}</Text>
                 <View
                     style={{
                         display: 'flex',
@@ -69,12 +72,12 @@ export default function FormField(props) {
                         maxLength={maxLength}
                         onFocus={() => onFocus()}
                         onBlur={() => onBlur()}
-                        keyboardType="number-pad"
+                        keyboardType={keyboardType}
                         autoCapitalize="none"
                         onChangeText={value => {
                             onChange(value);
                         }}
-                        placeholder="-없이 숫자만 입력해주세요"
+                        placeholder={placeholder}
                     />
                 </View>
             </View>;

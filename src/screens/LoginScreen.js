@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
-    View, Text, StyleSheet, KeyboardAvoidingView,
-    ScrollView, TextInput, TouchableHighlight, Button, Alert, Platform
+    View, Text, StyleSheet,
+    ScrollView, TextInput, Button, Alert, TouchableOpacity, ToastAndroid
 } from 'react-native';
 import { RFPercentage } from 'react-native-responsive-fontsize';
 import {
@@ -13,7 +13,9 @@ import FormField from '../components/common/FormField';
 import COLOR from '../constants/colors';
 import globalStyle from '../global/globalStyle';
 import Header from '../layout/Header';
-import { goBack } from '../navigation/utils/RootNavigation';
+import { goBack, navigateTo } from '../navigation/utils/RootNavigation';
+import { getOtp } from '../apis/auth';
+import { showDefaultErronAlert } from '../global/global';
 
 const headerContent = {
     leftItemContents: {
@@ -30,26 +32,44 @@ export default function LoginScreen() {
     const [phoneNumber, setPhoneNumber] = useState(null);
     const [otp, setOtp] = useState(null);
 
-    const [lineColor, setLineColor] = useState("black");
+    const [lineColor, setLineColor] = useState(COLOR.black);
 
-    const onFocus = () => setLineColor("green");
+    const onFocus = () => setLineColor(COLOR.compGreen);
 
     const onBlur = () => {
         setLineColor("black");
-        if (!validateEmail(phoneNumber)) {
-            console.log("NOT EMAIL");
+    };
+
+
+
+    const handleGetOtp = async (phoneNumber) => {
+        if (phoneNumber.length === 10) {
+            let payload = {
+                "phoneNumber": phoneNumber
+            };
+            await getOtp(payload).then((res) => {
+                if (res.data.formSubmissionRequired) {
+                    Alert.alert(
+                        "Account Not Found",
+                        `You have to register your number ${phoneNumber} first`,
+                        [
+                            {
+                                text: "Cancel",
+                                onPress: () => console.log("Cancel Pressed"),
+                                style: "cancel"
+                            },
+                            { text: "OK", onPress: () => navigateTo("RegisterScreen") }
+                        ]
+                    );
+                }
+            }).catch((err) => {
+                if (err) {
+                    showDefaultErronAlert();
+                }
+            });
         } else {
-            console.log(("EMAIL"));
+            ToastAndroid.showWithGravity("Pls, enter a valid phone number !", ToastAndroid.SHORT, ToastAndroid.TOP);
         }
-    };
-
-    const handleGetOtp = () => {
-        console.log(phoneNumber);
-    };
-
-    const validateEmail = (email) => {
-        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(email);
     };
 
     const getValue = (value) => {
@@ -58,7 +78,6 @@ export default function LoginScreen() {
 
     const handleLogin = () => {
         console.log(phoneNumber, otp);
-        //call api here
     };
 
     const disableButton = () => {
@@ -73,7 +92,7 @@ export default function LoginScreen() {
         <View>
             <View style={container}>
                 <Header headerContent={headerContent} />
-                <ScrollView>
+                <ScrollView keyboardShouldPersistTaps="always">
                     <View style={[globalStyle.mainContainerWrapper, wrapper]}>
                         <View style={mainTextWrapper}>
                             <Text style={mainText}>
@@ -104,23 +123,29 @@ export default function LoginScreen() {
                                             maxLength={10}
                                         />
                                     </View>
-                                    <TouchableHighlight style={{
-                                        alignItems: "flex-end",
-                                        justifyContent: "center",
-                                        borderBottomWidth: 1,
-                                        borderBottomColor: lineColor,
-                                        width: "30%",
-                                    }}
-                                        onPress={(e) => { handleGetOtp(e); }}
+                                    <TouchableOpacity
+                                        style={{
+                                            alignItems: "flex-end",
+                                            justifyContent: "center",
+                                            borderBottomWidth: 1,
+                                            borderBottomColor: lineColor,
+                                            width: "30%",
+                                        }}
+                                        onPress={() => { handleGetOtp(phoneNumber); }}
                                         underlayColor='transparent'
                                     >
                                         <View style={{ borderRadius: 5, borderWidth: 1, borderColor: "grey", padding: 4 }}>
                                             <Text>번인증번</Text>
                                         </View>
-                                    </TouchableHighlight>
+                                    </TouchableOpacity>
                                 </View>
                             </View>
-                            <FormField type="text" onChange={(value) => { getValue(value); }} maxLength={6} />
+                            <FormField
+                                label="휴대폰 번호"
+                                type="text"
+                                keyboardType="numeric"
+                                placeholder="-없이 숫자만 입력해주세요"
+                                nChange={(value) => { getValue(value); }} maxLength={6} />
                             <View style={buttonWrapper}>
                                 <Button
                                     title="login"
@@ -132,10 +157,10 @@ export default function LoginScreen() {
                         </View>
                     </View>
                 </ScrollView>
-            </View>
-        </View>
+            </View >
+        </View >
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {

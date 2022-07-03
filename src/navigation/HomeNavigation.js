@@ -1,6 +1,5 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { HeartScreen } from '../screens/HeartScreen';
 import { HomeScreen } from '../screens/HomeScreen';
 import { ProfileScreen } from '../screens/ProfileScreen';
 import { ChatScreen } from '../screens/ChatScreen';
@@ -18,6 +17,7 @@ import ProductShoppingBagScreen from '../screens/ProductShoppingBagScreen';
 import RoomPaymentScreen from '../screens/RoomPaymentScreen';
 import RoomReservationListScreen from '../screens/RoomReservationListScreen';
 import Rent from '../screens/Rent';
+import { RegisterScreen } from '../screens/RegisterScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -36,7 +36,7 @@ export const HomeNavigation = props => {
       initialRouteName="HomeScreen"
       screenOptions={AppNavigatorOptions}>
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
-      <Stack.Screen name="HeartScreen" component={HeartScreen} />
+      <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
       <Stack.Screen name="ChatScreen" component={ChatScreen} />
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
       <Stack.Screen name="HomeScreenDetail1" component={HomeScreenDetail1} />

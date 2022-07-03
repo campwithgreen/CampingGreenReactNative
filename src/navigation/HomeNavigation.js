@@ -1,23 +1,26 @@
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { HeartScreen } from '../screens/HeartScreen';
-import { HomeScreen } from '../screens/HomeScreen';
-import { ProfileScreen } from '../screens/ProfileScreen';
-import { ChatScreen } from '../screens/ChatScreen';
-import { HomeScreenDetail1 } from '../screens/HomeScreenDetail1';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {HeartScreen} from '../screens/HeartScreen';
+import {HomeScreen} from '../screens/HomeScreen';
+import {ProfileScreen} from '../screens/ProfileScreen';
+import {ChatScreen} from '../screens/ChatScreen';
+import {HomeScreenDetail1} from '../screens/HomeScreenDetail1';
 import LoginScreen from '../screens/LoginScreen';
-import { Product } from '../screens/Product';
-import { MyScreen } from '../screens/MyScreen';
+import {Product} from '../screens/Product';
+import {MyScreen} from '../screens/MyScreen';
 import SecondScreen from '../screens/SecondScreen';
 import ThirdScreen from '../screens/OrderSuccessItemScreen';
 import ForthScreen from '../screens/OrderSuccessCamp';
-import { ProductInfo } from '../screens/ProductInfo';
+import {ProductInfo} from '../screens/ProductInfo';
 import CalendarScreen from '../screens/CalendarScreen';
 import RoomScreen from '../screens/RoomScreen';
 import ProductShoppingBagScreen from '../screens/ProductShoppingBagScreen';
 import RoomPaymentScreen from '../screens/RoomPaymentScreen';
 import RoomReservationListScreen from '../screens/RoomReservationListScreen';
 import Rent from '../screens/Rent';
+import FixRentalSuppliesScreen from '../admin-screens/FixRentalSuppliesScreen';
+import FixRentalEquipmentScreen from '../admin-screens/FixRentalEquipmentScreen';
+import EquipmentRentalScreen from '../admin-screens/EquipmentRentalScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -58,6 +61,18 @@ export const HomeNavigation = props => {
       <Stack.Screen
         name="RoomReservationListScreen"
         component={RoomReservationListScreen}
+      />
+      <Stack.Screen
+        name="FixRentalSuppliesScreen"
+        component={FixRentalSuppliesScreen}
+      />
+      <Stack.Screen
+        name="FixRentalEquipmentScreen"
+        component={FixRentalEquipmentScreen}
+      />
+      <Stack.Screen
+        name="EquipmentRentalScreen"
+        component={EquipmentRentalScreen}
       />
     </Stack.Navigator>
   );

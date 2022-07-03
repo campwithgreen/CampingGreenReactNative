@@ -66,7 +66,7 @@ const data = [
 const RoomReservationListScreen = () => {
   return (
     <View style={{backgroundColor: 'white'}}>
-      <Header headerContent={headerContent} />
+      {/* <Header headerContent={headerContent} /> */}
       <Text
         style={{borderBottomWidth: 1.5, borderBottomColor: 'lightgrey'}}></Text>
       <ScrollView>

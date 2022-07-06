@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Button, ToastAndroid } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Button, ToastAndroid, Alert } from 'react-native';
 import Header from '../layout/Header';
 import { goBack, navigateTo } from '../navigation/utils/RootNavigation';
 import COLOR from "../constants/colors";
@@ -9,6 +9,8 @@ import FormField from '../components/common/FormField';
 import FONTSIZE from '../constants/fontSize';
 import { showDefaultErronAlert, validateEmail } from '../global/global';
 import { register } from '../apis/auth';
+import { useSelector, useDispatch } from "react-redux";
+import { login } from '../redux/actions/oauth';
 
 const headerContent = {
     leftItemContents: {
@@ -21,10 +23,19 @@ const headerContent = {
 
 export const RegisterScreen = (props) => {
 
+    const st = useSelector((st) => st);
+    console.log("STORE", st);
+
+    const dispatch = useDispatch();
     const { container, text, wrapper, formWrapper, buttonWrapper } = styles;
 
     const [name, setname] = useState(null);
     const [email, setemail] = useState(null);
+    const userId = useSelector((st) => st?.oauth?.user_data?.data?._id);
+    const phoneNumber = useSelector((st) => st?.oauth?.user_data?.data?.phoneNumber);
+
+
+    console.log("USER ID", userId);
 
     const getName = (name) => {
         setname(name);
@@ -33,8 +44,6 @@ export const RegisterScreen = (props) => {
     const getEmail = (email) => {
         setemail(email);
     };
-
-
 
     const disableButton = () => !email || !name;
 
@@ -45,12 +54,17 @@ export const RegisterScreen = (props) => {
             } else {
 
                 let data = {
-                    "userId": "62c058f9bd5db22b65105c9d",
+                    "userId": userId,
                     "firstName": name,
                     "email": email
                 };
+
                 await register(data).then((res) => {
-                    console.log("REG", res);
+                    if (res.data.success) {
+                        ToastAndroid.showWithGravity("Successfully Registered And Logged In", ToastAndroid.LONG, ToastAndroid.TOP);
+                        dispatch(login(true));
+                        navigateTo("HomeScreen");
+                    }
                 }).catch((err) => {
                     if (err) {
                         showDefaultErronAlert();

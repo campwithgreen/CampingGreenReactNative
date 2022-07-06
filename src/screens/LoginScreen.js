@@ -14,8 +14,11 @@ import COLOR from '../constants/colors';
 import globalStyle from '../global/globalStyle';
 import Header from '../layout/Header';
 import { goBack, navigateTo } from '../navigation/utils/RootNavigation';
-import { getOtp } from '../apis/auth';
+import { authDoor, verifyOtp } from '../apis/auth';
 import { showDefaultErronAlert } from '../global/global';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, setUserData, setUserToken } from '../redux/actions/oauth';
+import store from '../redux/store';
 
 const headerContent = {
     leftItemContents: {
@@ -26,8 +29,15 @@ const headerContent = {
 };
 
 export default function LoginScreen() {
+
+
+    const st = useSelector((st) => st);
+    console.log("STORE", st);
+
+
     const { container, wrapper, mainTextWrapper,
         mainText, form, formlabel, inputcontainer, buttonWrapper } = styles;
+    const dispatch = useDispatch();
 
     const [phoneNumber, setPhoneNumber] = useState(null);
     const [otp, setOtp] = useState(null);
@@ -40,6 +50,8 @@ export default function LoginScreen() {
         setLineColor("black");
     };
 
+    const formSubmissionRequired = useSelector((st) => st?.oauth?.user_data?.formSubmissionRequired);
+
 
 
     const handleGetOtp = async (phoneNumber) => {
@@ -47,20 +59,12 @@ export default function LoginScreen() {
             let payload = {
                 "phoneNumber": phoneNumber
             };
-            await getOtp(payload).then((res) => {
+            await authDoor(payload).then((res) => {
+                dispatch(setUserData(res.data));
                 if (res.data.formSubmissionRequired) {
-                    Alert.alert(
-                        "Account Not Found",
-                        `You have to register your number ${phoneNumber} first`,
-                        [
-                            {
-                                text: "Cancel",
-                                onPress: () => console.log("Cancel Pressed"),
-                                style: "cancel"
-                            },
-                            { text: "OK", onPress: () => navigateTo("RegisterScreen") }
-                        ]
-                    );
+                    ToastAndroid.showWithGravity("OTP Successfully Sent, Pls verify your number and register you account", ToastAndroid.SHORT, ToastAndroid.TOP);
+                } else {
+                    ToastAndroid.showWithGravity("OTP Successfully Sent", ToastAndroid.LONG, ToastAndroid.TOP);
                 }
             }).catch((err) => {
                 if (err) {
@@ -76,8 +80,44 @@ export default function LoginScreen() {
         setOtp(value);
     };
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
         console.log(phoneNumber, otp);
+        let payload = {
+            "phoneNumber": phoneNumber,
+            "otp": otp
+        };
+        await verifyOtp(payload).then((res) => {
+            if (res.data) {
+                if (res.data.success) {
+                    dispatch(setUserToken(res.data.token));
+                    if (formSubmissionRequired) {
+                        Alert.alert(
+                            "Account Not Found",
+                            `You have to register your number ${phoneNumber} first`,
+                            [
+                                {
+                                    text: "Cancel",
+                                    onPress: () => console.log("Cancel Pressed"),
+                                    style: "cancel"
+                                },
+                                { text: "OK", onPress: () => navigateTo("RegisterScreen") }
+                            ]
+                        );
+                    } else {
+                        dispatch(login(true));
+                        ToastAndroid.showWithGravity("Logged In Successfully", ToastAndroid.LONG, ToastAndroid.TOP);
+                        navigateTo("HomeScreen");
+                    }
+                }
+                else {
+                    ToastAndroid.showWithGravity(res.data.message.toUpperCase(), ToastAndroid.LONG, ToastAndroid.TOP);
+                }
+            }
+        }).catch((err) => {
+            if (err) {
+                showDefaultErronAlert();
+            }
+        });
     };
 
     const disableButton = () => {
@@ -145,7 +185,7 @@ export default function LoginScreen() {
                                 type="text"
                                 keyboardType="numeric"
                                 placeholder="-없이 숫자만 입력해주세요"
-                                nChange={(value) => { getValue(value); }} maxLength={6} />
+                                onChange={(value) => { getValue(value); }} maxLength={6} />
                             <View style={buttonWrapper}>
                                 <Button
                                     title="login"

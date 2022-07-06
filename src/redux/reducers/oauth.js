@@ -1,6 +1,6 @@
 
-import { OAUTH } from "../../utils/constants.json"
-const INITIAL_STATE = { isLogin: false }
+import { OAUTH } from "../../utils/constants.json";
+const INITIAL_STATE = { isLogin: false };
 
 /**
  * Reducer - to update oauth state
@@ -10,11 +10,16 @@ const INITIAL_STATE = { isLogin: false }
  */
 export default function (state = INITIAL_STATE, action) {
     const { payload, type } = action;
+    console.log("RED DATA", payload, type);
     switch (type) {
+        case OAUTH.SET_USER_DATA:
+            return { ...state, user_data: payload };
         case OAUTH.LOGIN:
-            return { ...state, ...payload }
+            return { ...state, isLogin: payload };
         case OAUTH.LOGOUT:
-            return { ...state, isLogin: false }
+            return { ...state, isLogin: false };
+        case OAUTH.SET_USER_TOKEN:
+            return { ...state, userToken: payload };
         default:
             return state;
     }

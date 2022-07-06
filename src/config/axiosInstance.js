@@ -1,12 +1,21 @@
 import axios from "axios";
+import store from "../redux/store";
+
+let PROD_BASE_URL = "https://codinghumans.herokuapp.com/";
+// let DEV_BASE_URL = "http://192.168.225.248:5000/";
+
 const axiosInstance = axios.create({
-    baseURL: "http://192.168.225.248:5000/"
+    baseURL: PROD_BASE_URL
 });
+
+let state = store.getState();
 
 axiosInstance.interceptors.request.use((config) => {
 
-    //TO DO ADD TOKEN FROM STORE
-    config.headers.Authorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzA1OGY5YmQ1ZGIyMmI2NTEwNWM5ZCIsImlhdCI6MTY1Njc3MjkyNywiZXhwIjoxNjU5MzY0OTI3fQ.DZ3UBnhXMHDJIFNCHKFWepnn5prUvq1vwXFtF2L8ZiQ";
+    console.log("STATE", state);
+    let userToken = state.oauth.userToken;
+
+    config.headers.Authorization = `Bearer ${userToken}`;
 
     console.log("CF", config);
     return config;

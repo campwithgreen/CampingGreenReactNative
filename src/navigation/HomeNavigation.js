@@ -18,6 +18,7 @@ import RoomPaymentScreen from '../screens/RoomPaymentScreen';
 import RoomReservationListScreen from '../screens/RoomReservationListScreen';
 import Rent from '../screens/Rent';
 import { RegisterScreen } from '../screens/RegisterScreen';
+import TermsScreen from '../screens/TermsScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -50,6 +51,7 @@ export const HomeNavigation = props => {
       <Stack.Screen name="ProductInfo" component={ProductInfo} />
       <Stack.Screen name="Calendar" component={CalendarScreen} />
       <Stack.Screen name="RoomScreen" component={RoomScreen} />
+      <Stack.Screen name="TermsScreen" component={TermsScreen} />
       <Stack.Screen
         name="ProductShoppingBagScreen"
         component={ProductShoppingBagScreen}

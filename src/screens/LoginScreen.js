@@ -50,8 +50,9 @@ export default function LoginScreen() {
         setLineColor("black");
     };
 
-    const formSubmissionRequired = useSelector((st) => st?.oauth?.user_data?.formSubmissionRequired);
+    const [getOtpButtonEnabled, setGetOtpButtonEnabled] = useState(true);
 
+    const formSubmissionRequired = useSelector((st) => st?.oauth?.user_data?.formSubmissionRequired);
 
 
     const handleGetOtp = async (phoneNumber) => {
@@ -63,8 +64,10 @@ export default function LoginScreen() {
                 dispatch(setUserData(res.data));
                 if (res.data.formSubmissionRequired) {
                     ToastAndroid.showWithGravity("OTP Successfully Sent, Pls verify your number and register you account", ToastAndroid.SHORT, ToastAndroid.TOP);
+                    setGetOtpButtonEnabled(false);
                 } else {
                     ToastAndroid.showWithGravity("OTP Successfully Sent", ToastAndroid.LONG, ToastAndroid.TOP);
+                    setGetOtpButtonEnabled(false);
                 }
             }).catch((err) => {
                 if (err) {
@@ -89,6 +92,7 @@ export default function LoginScreen() {
         await verifyOtp(payload).then((res) => {
             if (res.data) {
                 if (res.data.success) {
+                    console.log("r", res.data);
                     dispatch(setUserToken(res.data.token));
                     if (formSubmissionRequired) {
                         Alert.alert(
@@ -171,7 +175,13 @@ export default function LoginScreen() {
                                             borderBottomColor: lineColor,
                                             width: "30%",
                                         }}
-                                        onPress={() => { handleGetOtp(phoneNumber); }}
+                                        onPress={() => {
+                                            if (getOtpButtonEnabled) {
+                                                handleGetOtp(phoneNumber);
+                                            } else {
+                                                ToastAndroid.showWithGravity("OTP has already sent, Pls use it", ToastAndroid.LONG, ToastAndroid.TOP);
+                                            }
+                                        }}
                                         underlayColor='transparent'
                                     >
                                         <View style={{ borderRadius: 5, borderWidth: 1, borderColor: "grey", padding: 4 }}>

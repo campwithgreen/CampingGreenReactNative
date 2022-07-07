@@ -16,7 +16,7 @@ import { RFPercentage } from 'react-native-responsive-fontsize';
 import { navigateTo } from '../navigation/utils/RootNavigation';
 
 const RenderItem = ({ item }) => {
-  console.log('HELLODetailRitik', item);
+  // console.log('PRODUCT ITEMS', item);
   return (
     <View style={{ marginTop: hp('2.5%'), width: wp('43%') }}>
       <TouchableOpacity

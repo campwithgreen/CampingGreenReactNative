@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -14,10 +14,12 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import ProductDetail from '../components/ProductDetail';
-import {RFPercentage} from 'react-native-responsive-fontsize';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 import Carousel from '../components/Carousel';
-import {useDispatch, useSelector} from 'react-redux';
-import {login} from '../redux/actions/oauth';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../redux/actions/oauth';
+import { getAllProducts } from '../apis/product';
+import { setProductData } from '../redux/actions/product';
 
 const headerContent = {
   leftItemContents: {
@@ -33,13 +35,29 @@ const headerContent = {
 };
 
 export const Product = props => {
-  const {container} = styles;
+  const { container } = styles;
+  const dispatch = useDispatch();
+
+  const st = useSelector((st) => st);
+  console.log("STORE", st);
+
+
+  useEffect(() => {
+    (async function getAllProductsData() {
+      await getAllProducts().then((res) => {
+        console.log("PRODUCTS", res.data.data);
+        if (res) {
+          dispatch(setProductData(res.data.data));
+        }
+      });
+    })();
+  }, []);
 
   return (
     <View style={container}>
       <Header headerContent={headerContent} />
       <ScrollView>
-        <View style={{marginHorizontal: wp('5%')}}>
+        <View style={{ marginHorizontal: wp('5%') }}>
           <Text
             style={{
               color: '#1B1D1F',
@@ -56,5 +74,5 @@ export const Product = props => {
 };
 
 const styles = StyleSheet.create({
-  container: {paddingBottom: hp('10%')},
+  container: { paddingBottom: hp('10%') },
 });

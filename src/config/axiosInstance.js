@@ -8,17 +8,21 @@ const axiosInstance = axios.create({
     baseURL: PROD_BASE_URL
 });
 
-let state = store.getState();
 
-axiosInstance.interceptors.request.use((config) => {
 
-    console.log("STATE", state);
-    let userToken = state.oauth.userToken;
+axiosInstance.interceptors.request.use(async (config) => {
+
+    let state = store.getState();
+    console.log("**AXIOS STATE**", state);
+    let userToken = await state?.oauth?.userToken;
+
+    console.log("US TOKEN", userToken);
 
     config.headers.Authorization = `Bearer ${userToken}`;
 
-    console.log("CF", config);
+    console.log("CONFIG ==>", config);
     return config;
+
 });
 
 

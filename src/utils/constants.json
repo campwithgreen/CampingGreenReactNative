@@ -4,5 +4,8 @@
         "LOGOUT":"LOGOUT",
         "SET_USER_DATA":"SET_USER_DATA",
         "SET_USER_TOKEN":"SET_USER_TOKEN"
+    },
+    "PRODUCT":{
+        "SET_ALL_PRODUCT":"SET_ALL_PRODUCT"
     }
 }

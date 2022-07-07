@@ -6,6 +6,14 @@ export function login(data) {
     };
 }
 
+export function logout() {
+    return (dispatch, getState) => {
+        dispatch({ type: OAUTH.LOGOUT });
+        dispatch({ type: OAUTH.SET_USER_TOKEN, payload: null });
+        dispatch({ type: OAUTH.SET_USER_DATA, payload: null });
+    };
+}
+
 export function setUserData(data) {
     return (dispatch, getState) => {
         dispatch({ type: OAUTH.SET_USER_DATA, payload: data });

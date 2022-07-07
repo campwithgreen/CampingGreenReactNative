@@ -47,7 +47,7 @@ const headerContent = {
   rightItemContents: {
     type: 'image',
     content: require('../assets/images/cart.png'),
-    navigateScreen: 'ReviewScreen',
+    navigateScreen: 'RegisterScreen',
   },
 };
 

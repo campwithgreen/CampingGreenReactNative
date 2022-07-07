@@ -10,7 +10,6 @@ const INITIAL_STATE = { isLogin: false };
  */
 export default function (state = INITIAL_STATE, action) {
     const { payload, type } = action;
-    console.log("RED DATA", payload, type);
     switch (type) {
         case OAUTH.SET_USER_DATA:
             return { ...state, user_data: payload };

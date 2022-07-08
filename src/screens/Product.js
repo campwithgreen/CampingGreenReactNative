@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../redux/actions/oauth';
 import { getAllProducts } from '../apis/product';
 import { setProductData } from '../redux/actions/product';
+import { showDefaultErrorAlert } from '../global/global';
 
 const headerContent = {
   leftItemContents: {
@@ -39,15 +40,19 @@ export const Product = props => {
   const dispatch = useDispatch();
 
   const st = useSelector((st) => st);
+  const product = useSelector((st) => st.product?.product);
   console.log("STORE", st);
 
 
   useEffect(() => {
     (async function getAllProductsData() {
       await getAllProducts().then((res) => {
-        console.log("PRODUCTS", res.data.data);
         if (res) {
           dispatch(setProductData(res.data.data));
+        }
+      }).catch((err) => {
+        if (err) {
+          showDefaultErrorAlert();
         }
       });
     })();
@@ -64,9 +69,9 @@ export const Product = props => {
               fontSize: RFPercentage(2.5),
               fontWeight: 'bold',
             }}>
-            전체 214
+            전체 {product.length}
           </Text>
-          <ProductDetail />
+          <ProductDetail product={product} />
         </View>
       </ScrollView>
     </View>

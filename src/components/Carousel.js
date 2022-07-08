@@ -10,10 +10,10 @@ import { RFPercentage } from 'react-native-responsive-fontsize';
 
 
 
-const Carousel = ({ paginationType }) => {
+const Carousel = ({ paginationType, carouselData }) => {
 
     let { width, height } = Dimensions.get('window');
-    const { backgroundImage } = styles
+    const { backgroundImage } = styles;
 
     const renderPagination = (index, total, context) => {
         return (
@@ -46,8 +46,8 @@ const Carousel = ({ paginationType }) => {
                     </Text>
                 </View>
             </View >
-        )
-    }
+        );
+    };
 
     return (
         <Slick
@@ -114,7 +114,38 @@ const Carousel = ({ paginationType }) => {
                     </View>
                 </ImageBackground>
             </View>
-            <View style={{ width: '100%' }}>
+            {carouselData.map((it) => {
+                return <View style={{ width: '100%' }} key={it}>
+                    <ImageBackground
+                        resizeMethod='scale'
+                        resizeMode='contain'
+                        source={{ uri: it }}
+                        style={backgroundImage}>
+                        <View>
+                            <Text
+                                style={{
+                                    paddingBottom: hp('2%'),
+                                    fontSize: RFPercentage(3.65),
+                                    fontWeight: 'bold',
+                                    color: 'white',
+                                }}>
+                                나만 알고싶은{'\n'}힙한 캠핑장 지금 공개
+                            </Text>
+                        </View>
+                        <View>
+                            <Text
+                                style={{
+                                    fontSize: RFPercentage(2.2),
+                                    fontWeight: '300',
+                                    color: 'white',
+                                }}>
+                                바퀴달린집 출연 캠핑장 최대 할인가로{'\n'}떠나보면 어때요?
+                            </Text>
+                        </View>
+                    </ImageBackground>
+                </View>;
+            })}
+            {/* <View style={{ width: '100%' }}>
                 <ImageBackground
                     resizeMethod='scale'
                     resizeMode='contain'
@@ -169,18 +200,6 @@ const Carousel = ({ paginationType }) => {
                         </Text>
                     </View>
                 </ImageBackground>
-            </View>
-            {/* <View style={{ width: '100%' }}>
-                <Image
-                    style={{
-                        height: '100%',
-                        width: '100%',
-                    }}
-                    resizeMethod='scale'
-                    resizeMode='contain'
-                    // source={{ uri: banner.image }}
-                    source={require("../assets/images/home.png")}
-                />
             </View> */}
         </Slick>
     );
@@ -195,7 +214,7 @@ const styles = StyleSheet.create({
         height: hp('48%'),
         paddingLeft: wp('16%'),
         paddingTop: hp('10%'),
-        // resizeMethod: 'scale',
-        // resizeMode: 'contain'
+        resizeMethod: "repeat",
+        resizeMode: 'repeat'
     },
-})
+});

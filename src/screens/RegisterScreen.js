@@ -7,7 +7,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import globalStyle from '../global/globalStyle';
 import FormField from '../components/common/FormField';
 import FONTSIZE from '../constants/fontSize';
-import { showDefaultErronAlert, validateEmail } from '../global/global';
+import { showDefaultErrorAlert, validateEmail } from '../global/global';
 import { register } from '../apis/auth';
 import { useSelector, useDispatch } from "react-redux";
 import { login, setUserData } from '../redux/actions/oauth';
@@ -143,7 +143,7 @@ export const RegisterScreen = (props) => {
                 }
             }).catch((err) => {
                 if (err) {
-                    showDefaultErronAlert();
+                    showDefaultErrorAlert();
                 }
             });
 

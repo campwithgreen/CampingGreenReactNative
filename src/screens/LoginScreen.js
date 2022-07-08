@@ -15,7 +15,7 @@ import globalStyle from '../global/globalStyle';
 import Header from '../layout/Header';
 import { goBack, navigateTo } from '../navigation/utils/RootNavigation';
 import { authDoor, verifyOtp } from '../apis/auth';
-import { showDefaultErronAlert } from '../global/global';
+import { showDefaultErrorAlert } from '../global/global';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, setUserData, setUserToken } from '../redux/actions/oauth';
 import store from '../redux/store';
@@ -71,7 +71,7 @@ export default function LoginScreen() {
                 }
             }).catch((err) => {
                 if (err) {
-                    showDefaultErronAlert();
+                    showDefaultErrorAlert();
                 }
             });
         } else {
@@ -119,7 +119,7 @@ export default function LoginScreen() {
             }
         }).catch((err) => {
             if (err) {
-                showDefaultErronAlert();
+                showDefaultErrorAlert();
             }
         });
     };

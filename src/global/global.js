@@ -5,12 +5,12 @@ const validateEmail = (email) => {
     return re.test(email);
 };
 
-const showDefaultErronAlert = () => {
+const showDefaultErrorAlert = () => {
     Alert.alert("Something Went Wrong, Pls try again");
 };
 
 
 export {
     validateEmail,
-    showDefaultErronAlert
+    showDefaultErrorAlert
 };

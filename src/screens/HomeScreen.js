@@ -60,7 +60,10 @@ export const HomeScreen = props => {
       <Header headerContent={headerContent} />
       <ScrollView>
         <View>
-          <Carousel paginationType="center" />
+          <Carousel carouselData={[
+            "https://picsum.photos/200/300?grayscale",
+            "https://picsum.photos/seed/picsum/200/300"
+          ]} paginationType="center" />
         </View>
         <View
           style={{

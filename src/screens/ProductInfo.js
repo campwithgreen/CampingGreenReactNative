@@ -13,20 +13,20 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {RFPercentage} from 'react-native-responsive-fontsize';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 import Carousel from '../components/Carousel';
-import {Dimensions, StatusBar} from 'react-native';
-import {TabView, SceneMap} from 'react-native-tab-view';
+import { Dimensions, StatusBar } from 'react-native';
+import { TabView, SceneMap } from 'react-native-tab-view';
 
 const FirstRoute = () => (
-  <View style={[styles.scene, {backgroundColor: '#ff4081'}]} />
+  <View style={[styles.scene, { backgroundColor: '#ff4081' }]} />
 );
 
 const SecondRoute = () => (
-  <View style={[styles.scene, {backgroundColor: '#673ab7'}]} />
+  <View style={[styles.scene, { backgroundColor: '#673ab7' }]} />
 );
 
-const initialLayout = {width: Dimensions.get('window').width};
+const initialLayout = { width: Dimensions.get('window').width };
 
 const renderScene = SceneMap({
   first: FirstRoute,
@@ -62,22 +62,21 @@ const imageInfo = [
 ];
 
 export const ProductInfo = props => {
-  const {container} = styles;
+  const { container } = styles;
   const item = props.route.params;
-  console.log('HELLORitik', item);
+  console.log('ITEM', item);
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    {key: 'first', title: '상품정보'},
-    {key: 'second', title: '배송/환불'},
+    { key: 'first', title: '상품정보' },
+    { key: 'second', title: '배송/환불' },
   ]);
-
   return (
     <View style={container}>
       <Header headerContent={headerContent} />
       <ScrollView>
         <View>
-          <Carousel paginationType="right" />
+          <Carousel carouselData={item.carousel} paginationType="right" />
         </View>
         <View
           style={{
@@ -127,7 +126,7 @@ export const ProductInfo = props => {
                 borderRightWidth: 0.5,
               }}>
               <View>
-                <Text style={{color: '#454C53', fontSize: RFPercentage(2)}}>
+                <Text style={{ color: '#454C53', fontSize: RFPercentage(2) }}>
                   대여 시작일
                 </Text>
               </View>
@@ -152,7 +151,7 @@ export const ProductInfo = props => {
                 borderLeftWidth: 0.5,
               }}>
               <View>
-                <Text style={{color: '#454C53', fontSize: RFPercentage(2)}}>
+                <Text style={{ color: '#454C53', fontSize: RFPercentage(2) }}>
                   반납 예정일
                 </Text>
               </View>
@@ -172,7 +171,7 @@ export const ProductInfo = props => {
         </View>
         <View>
           <TabView
-            navigationState={{index, routes}}
+            navigationState={{ index, routes }}
             renderScene={renderScene}
             onIndexChange={setIndex}
             initialLayout={initialLayout}
@@ -180,7 +179,7 @@ export const ProductInfo = props => {
           />
         </View>
         <View>
-          <View style={{paddingBottom: hp('3%'), marginHorizontal: wp('5%')}}>
+          <View style={{ paddingBottom: hp('3%'), marginHorizontal: wp('5%') }}>
             <Text
               style={{
                 color: '#1B1D1F',
@@ -192,7 +191,7 @@ export const ProductInfo = props => {
           </View>
           <ImageBackground
             source={require('../assets/images/tentinfo.png')}
-            style={{height: hp('28%')}}
+            style={{ height: hp('28%') }}
           />
           <View
             style={{
@@ -212,7 +211,7 @@ export const ProductInfo = props => {
                   fontSize: RFPercentage(2.5),
                   fontWeight: 'bold',
                 }}>
-                {item?.detail1?.detail1Title}
+                {item?.detail1?.detail1Title || "코베마 텐트 상세정보"}
               </Text>
             </View>
             <View
@@ -221,9 +220,8 @@ export const ProductInfo = props => {
                 marginTop: hp('3%'),
                 padding: wp('2%'),
                 width: wp('60%'),
-                height: hp('20%'),
               }}>
-              {Object.keys(item?.detail1?.detail1Value).map(key => {
+              {Object.keys(item?.specifications).map(key => {
                 return (
                   <View
                     key={key}
@@ -246,15 +244,15 @@ export const ProductInfo = props => {
                         fontSize: RFPercentage(2),
                         marginBottom: hp('.5%'),
                       }}>
-                      {item?.detail1?.detail1Value[key]}
+                      {item?.specifications[key]}
                     </Text>
                   </View>
                 );
               })}
             </View>
           </View>
-          <View style={{marginHorizontal: wp('5%')}}>
-            <View style={{paddingTop: hp('10%')}}>
+          <View style={{ marginHorizontal: wp('5%') }}>
+            <View style={{ paddingTop: hp('10%') }}>
               <Text
                 style={{
                   color: '#1B1D1F',
@@ -283,7 +281,7 @@ export const ProductInfo = props => {
                     fontSize: RFPercentage(2.5),
                     fontWeight: 'bold',
                   }}>
-                  {item?.details2?.detail2Title}
+                  {item?.details2?.detail2Title || "코베마 텐트 상세정보"}
                 </Text>
               </View>
               <View
@@ -292,9 +290,8 @@ export const ProductInfo = props => {
                   marginTop: hp('3%'),
                   padding: wp('2%'),
                   width: wp('60%'),
-                  height: hp('20%'),
                 }}>
-                {Object.keys(item?.details2?.detail2Value).map(key => {
+                {Object.keys(item?.specifications).map(key => {
                   return (
                     <View
                       key={key}
@@ -309,7 +306,7 @@ export const ProductInfo = props => {
                           marginBottom: hp('.5%'),
                           width: wp('30%'),
                         }}>
-                        {item?.details2?.detail2Value[key]}
+                        {item?.specifications[key]}
                       </Text>
                     </View>
                   );
@@ -322,7 +319,7 @@ export const ProductInfo = props => {
               <View>
                 <ImageBackground
                   source={item.img}
-                  style={{height: hp('28%')}}
+                  style={{ height: hp('28%') }}
                 />
                 <Text
                   style={{
@@ -338,8 +335,8 @@ export const ProductInfo = props => {
             );
           })}
         </View>
-        <View style={{marginHorizontal: wp('5%')}}>
-          <View style={{paddingBottom: hp('3%')}}>
+        <View style={{ marginHorizontal: wp('5%') }}>
+          <View style={{ paddingBottom: hp('3%') }}>
             <Text
               style={{
                 color: '#1B1D1F',
@@ -349,7 +346,7 @@ export const ProductInfo = props => {
               예약 {'\n'}유의사항
             </Text>
           </View>
-          <View style={{paddingBottom: hp('7%')}}>
+          <View style={{ paddingBottom: hp('7%') }}>
             <Text
               style={{
                 color: '#1B1D1F',
@@ -370,7 +367,7 @@ export const ProductInfo = props => {
               문의바랍니다.
             </Text>
           </View>
-          <View style={{paddingBottom: hp('5%')}}>
+          <View style={{ paddingBottom: hp('5%') }}>
             <Text
               style={{
                 color: '#1B1D1F',
@@ -380,7 +377,7 @@ export const ProductInfo = props => {
               배송 {'\n'}안내사항
             </Text>
           </View>
-          <View style={{paddingBottom: hp('5%')}}>
+          <View style={{ paddingBottom: hp('5%') }}>
             <Text
               style={{
                 color: '#1B1D1F',
@@ -400,7 +397,7 @@ export const ProductInfo = props => {
               있습니다.
             </Text>
           </View>
-          <View style={{paddingBottom: hp('5%')}}>
+          <View style={{ paddingBottom: hp('5%') }}>
             <Text
               style={{
                 color: '#1B1D1F',
@@ -419,7 +416,7 @@ export const ProductInfo = props => {
               다음날, 배송받으셨던 주소로 택배기사님이 방문하여 수거합니다.
             </Text>
           </View>
-          <View style={{paddingBottom: hp('4%')}}>
+          <View style={{ paddingBottom: hp('4%') }}>
             <Text
               style={{
                 color: '#1B1D1F',
@@ -441,7 +438,7 @@ export const ProductInfo = props => {
               캠핑용품은 다른 고객들도 함께 사용하는 대여품입니다. {'\n\n\n'}
               고품질의 서비스를 지속적으로 제공하기 위해서 깨끗이 사용하시고
               사용 후에도 반드시 청소해서 반납해주시길 바랍니다. {'\n\n\n'}
-              <Text style={{fontWeight: 'bold'}}>
+              <Text style={{ fontWeight: 'bold' }}>
                 대여지와 배송지가 다를 경우, 택배사에 직접 전화하여 예약하시거나
                 인터넷을 이용해주세요.
               </Text>

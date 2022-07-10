@@ -11,12 +11,12 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {RFPercentage} from 'react-native-responsive-fontsize';
-import {navigateTo} from '../navigation/utils/RootNavigation';
+import { RFPercentage } from 'react-native-responsive-fontsize';
+import { navigateTo } from '../navigation/utils/RootNavigation';
 
 export default function HomeScreenDetail(props) {
-  const {HomeScreenDetailData} = props;
-  const {container} = styles;
+  const { HomeScreenDetailData } = props;
+  const { container } = styles;
   return (
     <View style={container}>
       <ImageBackground
@@ -82,9 +82,13 @@ export default function HomeScreenDetail(props) {
           </Text>
           <TouchableOpacity
             onPress={() => {
-              navigateTo('HomeScreenDetail1', {
-                imageId: HomeScreenDetailData.id,
-              });
+              if (HomeScreenDetailData.id === 10) {
+                navigateTo('HomeScreenDetail1', {
+                  imageId: HomeScreenDetailData.id,
+                });
+              } else {
+                navigateTo("RoomScreen");
+              }
             }}>
             <Image source={require('../assets/images/icon_movepage.png')} />
           </TouchableOpacity>

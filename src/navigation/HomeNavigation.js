@@ -49,7 +49,7 @@ export const HomeNavigation = props => {
       <Stack.Screen name="ThirdScreen" component={ThirdScreen} />
       <Stack.Screen name="ForthScreen" component={ForthScreen} />
       <Stack.Screen name="ProductInfo" component={ProductInfo} />
-      <Stack.Screen name="Calendar" component={CalendarScreen} />
+      <Stack.Screen name="CalendarScreen" component={CalendarScreen} />
       <Stack.Screen name="RoomScreen" component={RoomScreen} />
       <Stack.Screen name="TermsScreen" component={TermsScreen} />
       <Stack.Screen

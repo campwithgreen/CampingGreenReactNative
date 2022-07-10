@@ -16,7 +16,7 @@ import { RFPercentage } from 'react-native-responsive-fontsize';
 import { navigateTo } from '../navigation/utils/RootNavigation';
 
 const RenderItem = ({ item }) => {
-  // console.log('PRODUCT ITEMS', item);
+
   return (
     <View style={{ marginTop: hp('2.5%'), width: wp('43%') }}>
       <TouchableOpacity
@@ -64,7 +64,7 @@ const RenderItem = ({ item }) => {
             fontSize: RFPercentage(2),
             paddingBottom: hp('1%'),
           }}>
-          {item.stock}
+          {`잔여수량 ${item.stock}`}
         </Text>
       </View>
     </View>
@@ -103,141 +103,33 @@ const ProductDetail = (props) => {
       "createdAt": "2022-07-03T12:27:19.407Z",
       "updatedAt": "2022-07-07T14:36:42.752Z",
       "__v": 1,
-      "allFeatures": []
-    },
-    // {
-    //   id: '1',
-    //   name: '코베마 수동 텐트',
-    //   price: '65,001',
-    //   quantity: '잔여수량 4',
-    //   image: require('../assets/images/tentv2.png'),
-    //   detail1: {
-    //     detail1Title: '코베마 텐트 상세정보',
-    //     detail1Value: {
-    //       색상: '코랄',
-    //       사이즈: '290*280*115',
-    //       '수납 사이즈': '45*15*15',
-    //       중량: '2.3kg',
-    //       사용인원: '1-2인용',
-    //       내수압: '50000mm',
-    //     },
-    //   },
-    //   details2: {
-    //     detail2Title: '2인 캠핑 패키지',
-    //     detail2Value: {
-    //       one: '1~2인용 비빅텐트',
-    //       two: '커피포트 버너',
-    //       three: '경량 테이블',
-    //       four: '버너',
-    //     },
-    //   },
-    // },
-    // {
-    //   id: '2',
-    //   name: '코베마 수동 텐트',
-    //   price: '65,002',
-    //   quantity: '잔여수량 4',
-    //   image: require('../assets/images/bottle.png'),
-    //   detail1: {
-    //     detail1Title: '코베마 텐트 상세정보',
-    //     detail1Value: {
-    //       색상: '코랄',
-    //       사이즈: '290*280*115',
-    //       '수납 사이즈': '45*15*15',
-    //       중량: '2.3kg',
-    //       사용인원: '1-2인용',
-    //       내수압: '50000mm',
-    //     },
-    //   },
-    //   details2: {
-    //     detail2Title: '2인 캠핑 패키지',
-    //     detail2Value: {
-    //       one: '1~2인용 비빅텐트',
-    //       two: '커피포트 버너',
-    //       three: '경량 테이블',
-    //       four: '버너',
-    //     },
-    //   },
-    // },
-    // {
-    //   id: '3',
-    //   name: '코베마 수동 텐트',
-    //   price: '65,003',
-    //   quantity: '잔여수량 5',
-    //   image: require('../assets/images/sleepbag.png'),
-    //   detail1: {
-    //     detail1Title: '코베마 텐트 상세정보',
-    //     detail1Value: {
-    //       색상: '코랄',
-    //       사이즈: '290*280*115',
-    //       '수납 사이즈': '45*15*15',
-    //       중량: '2.3kg',
-    //       사용인원: '1-2인용',
-    //       내수압: '50000mm',
-    //     },
-    //   },
-    //   details2: {
-    //     detail2Title: '2인 캠핑 패키지',
-    //     detail2Value: {
-    //       one: '1~2인용 비빅텐트',
-    //       two: '커피포트 버너',
-    //       three: '경량 테이블',
-    //       four: '버너',
-    //     },
-    //   },
-    // },
-    // {
-    //   id: '4',
-    //   name: '[COVEMA] 2인 캠핑 패키지 코베마 수동텐트',
-    //   price: '65,004',
-    //   quantity: '잔여수량 5',
-    //   image: require('../assets/images/tent.png'),
-    //   detail1: {
-    //     detail1Title: '코베마 텐트 상세정보',
-    //     detail1Value: {
-    //       색상: '코랄',
-    //       사이즈: '290*280*115',
-    //       '수납 사이즈': '45*15*15',
-    //       중량: '2.3kg',
-    //       사용인원: '1-2인용',
-    //       내수압: '50000mm',
-    //     },
-    //   },
-    //   details2: {
-    //     detail2Title: '2인 캠핑 패키지',
-    //     detail2Value: {
-    //       one: '1~2인용 비빅텐트',
-    //       two: '커피포트 버너',
-    //       three: '경량 테이블',
-    //       four: '버너',
-    //     },
-    //   },
-    // },
-    // {
-    //   id: '5',
-    //   name: '[COVEMA] 2인 캠핑 패키지 코베마 수동텐트',
-    //   price: '65,004',
-    //   quantity: '잔여수량 5',
-    //   image: require('../assets/images/tent.png'),
-    //   detail1: {
-    //     detail1Title: 'qqqqqqqqqqqqq',
-    //     detail1Value: {
-    //       first: 'one',
-    //       second: 'two',
-    //       third: 'three',
-    //       fourth: 'four',
-    //     },
-    //   },
-    // },
+      "allFeatures": [
+        {
+
+          feature_name: "1-2freare",
+          image: "https://res.cloudinary.com/dchcqwskd/image/upload/v1657451428/camping-product-items/tentinfo1_gau9ck.png",
+        },
+        {
+
+          feature_name: "1-2freare",
+          image: "https://res.cloudinary.com/dchcqwskd/image/upload/v1657451488/camping-product-items/tentinfo2_kkrcwz.png",
+        },
+        {
+
+          feature_name: "경량 테이블",
+          image: "https://res.cloudinary.com/dchcqwskd/image/upload/v1657451499/camping-product-items/tentinfo3_nyp9dr.png",
+          description: "경량 테이블은 캠핑 장소 어디서나 사용 가능한 가을 감성의 사용자를 위한 캠핑용 감성 의자 입니다. 자세한 정보는 캠핑그린의 사이트에서 확인하세요."
+        }
+      ]
+    }
   ];
 
-  //const {container} = styles;
   return (
     <FlatList
       style={{ paddingBottom: hp('25%') }}
       numColumns={2}
       showsHorizontalScrollIndicator={false}
-      data={ProductData}
+      data={product}
       columnWrapperStyle={{ display: 'flex', justifyContent: 'space-between' }}
       renderItem={({ item }) => {
         return <RenderItem item={item} key={item.id} />;

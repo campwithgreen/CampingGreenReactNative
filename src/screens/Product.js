@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   FlatList,
+
 } from 'react-native';
 import Header from '../layout/Header';
 import {
@@ -17,10 +18,10 @@ import ProductDetail from '../components/ProductDetail';
 import { RFPercentage } from 'react-native-responsive-fontsize';
 import Carousel from '../components/Carousel';
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../redux/actions/oauth';
 import { getAllProducts } from '../apis/product';
 import { setProductData } from '../redux/actions/product';
 import { showDefaultErrorAlert } from '../global/global';
+import Loader from '../components/common/Loader';
 
 const headerContent = {
   leftItemContents: {
@@ -39,6 +40,8 @@ export const Product = props => {
   const { container } = styles;
   const dispatch = useDispatch();
 
+  const [loading, setLoading] = useState(false);
+
   const st = useSelector((st) => st);
   const product = useSelector((st) => st.product?.product);
   console.log("STORE", st);
@@ -46,17 +49,23 @@ export const Product = props => {
 
   useEffect(() => {
     (async function getAllProductsData() {
+      setLoading(true);
       await getAllProducts().then((res) => {
         if (res) {
           dispatch(setProductData(res.data.data));
+          setLoading(false);
         }
       }).catch((err) => {
         if (err) {
           showDefaultErrorAlert();
+          setLoading(false);
         }
       });
     })();
   }, []);
+
+
+  console.log("THE PRODUCT", product);
 
   return (
     <View style={container}>
@@ -71,7 +80,9 @@ export const Product = props => {
             }}>
             전체 {product.length}
           </Text>
-          <ProductDetail product={product} />
+          {loading ?
+            <Loader /> :
+            <ProductDetail product={product} />}
         </View>
       </ScrollView>
     </View>

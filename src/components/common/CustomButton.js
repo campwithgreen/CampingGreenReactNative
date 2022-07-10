@@ -8,10 +8,10 @@ import { RFPercentage } from 'react-native-responsive-fontsize';
 
 
 export default function CustomButton(props) {
-    const { buttonText, buttonHandler } = props
-    const { button1 } = styles
+    const { buttonText, buttonHandler } = props;
+    const { button1 } = styles;
     return (
-        <TouchableOpacity onClick={() => { buttonHandler() }}>
+        <TouchableOpacity onPress={() => { buttonHandler(); }}>
             <Text style={button1}>{buttonText}</Text>
         </TouchableOpacity>
     );

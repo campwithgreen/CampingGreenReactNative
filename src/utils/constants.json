@@ -7,5 +7,10 @@
     },
     "PRODUCT":{
         "SET_ALL_PRODUCT":"SET_ALL_PRODUCT"
+    },
+     "COMMON": {
+        "SET_START_DATE":"SET_START_DATE",
+        "SET_RETURN_DATE":"SET_RETURN_DATE",
+        "SELECTED_ITEM":"SELECTED_ITEM"
     }
-}
+}   

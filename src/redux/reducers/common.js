@@ -1,0 +1,23 @@
+
+import { COMMON } from "../../utils/constants.json";
+const INITIAL_STATE = {};
+
+/**
+ * Reducer - to update oauth state
+ * @param {Object} state initial dafault oauth state
+ * @param {Object} action action to be performed
+ * @returns {Object} new oauth state
+ */
+export default function (state = INITIAL_STATE, action) {
+    const { payload, type } = action;
+    switch (type) {
+        case COMMON.SET_START_DATE:
+            return { ...state, start_date: payload };
+        case COMMON.SET_RETURN_DATE:
+            return { ...state, return_date: payload };
+        case COMMON.SELECTED_ITEM:
+            return { ...state, selected_item: payload };
+        default:
+            return state;
+    }
+}

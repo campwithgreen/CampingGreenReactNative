@@ -22,6 +22,7 @@ import FONTSIZE from '../constants/fontSize';
 import COLOR from "../constants/colors";
 import { navigateTo } from '../navigation/utils/RootNavigation';
 import Footer from '../components/Footer';
+import { useSelector } from 'react-redux';
 
 
 
@@ -41,7 +42,10 @@ const headerContent = {
 
 export const ProductInfo = props => {
   const { container } = styles;
-  const item = props.route.params;
+  const selected_item = useSelector((st) => st.common.selected_item);
+  const startDate = useSelector((st) => st.common.start_date);
+  const returnDate = useSelector((st) => st.common.return_date);
+  const item = props.route.params || selected_item;
   const [tabIndex, setTabIndex] = useState(1);
 
   console.log("PROD ITEMS", item);
@@ -120,7 +124,7 @@ export const ProductInfo = props => {
                       marginTop: wp('.5%'),
                       fontWeight: 'bold',
                     }}>
-                    {"Select Rental Start Date" || "7월 14일 (월)"}
+                    {startDate || "Select Start Date"}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -150,7 +154,7 @@ export const ProductInfo = props => {
                       marginTop: wp('.5%'),
                       fontWeight: 'bold',
                     }}>
-                    {"Select Return Due Date" || " 7월 15일 (월)"}
+                    {returnDate || "Select Return Date"}
                   </Text>
                 </TouchableOpacity>
 
@@ -306,7 +310,8 @@ export const ProductInfo = props => {
                     width: wp('60%'),
                   }}>
                   {item.allFeatures.map((feature) => {
-                    return <View key={feature.feature_name}
+                    return <View
+                      key={feature.feature_name}
                       style={{
                         display: 'flex',
                         flexDirection: 'row',
@@ -325,9 +330,9 @@ export const ProductInfo = props => {
                 </View>
               </View>
             </View>
-            {item.allFeatures.map((feature) => {
-              console.log("IMAGE", feature);
+            {item.allFeatures.map((feature, index) => {
               return <View
+                key={index}
                 style={{
                   paddingVertical: hp("2.5%")
                 }}>
@@ -486,7 +491,6 @@ export const ProductInfo = props => {
 const styles = StyleSheet.create({
   container: {
     paddingBottom: hp('10%'),
-    marginTop: StatusBar.currentHeight,
     backgroundColor: COLOR.white
   },
   scene: {

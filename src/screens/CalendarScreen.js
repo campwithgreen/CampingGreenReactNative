@@ -15,7 +15,7 @@ import {
 } from 'react-native-responsive-screen';
 import { RFPercentage } from 'react-native-responsive-fontsize';
 import CustomCalendar from '../components/common/Calendar';
-import { goBack } from '../navigation/utils/RootNavigation';
+import { goBack, navigateTo } from '../navigation/utils/RootNavigation';
 import CustomButton from '../components/common/CustomButton';
 
 
@@ -41,10 +41,14 @@ const CalendarScreen = props => {
     return (
         <View style={container}>
             <Header headerContent={headerContent} />
-            <ScrollView >
+            <ScrollView keyboardShouldPersistTaps="always">
                 <CustomCalendar />
             </ScrollView>
-            <CustomButton buttonText={"예약하d기"} />
+            <CustomButton
+                buttonText={"예약하d기"}
+                buttonHandler={() => {
+                    navigateTo("ProductInfo");
+                }} />
         </View>
     );
 };

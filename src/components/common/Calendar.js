@@ -3,17 +3,19 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import COLOR from '../../constants/colors';
 import moment from 'moment';
-import { heightPercentageToDP } from 'react-native-responsive-screen';
+import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
+import { useDispatch, useSelector } from 'react-redux';
+import { setReturnDate, setStartDate } from '../../redux/actions/common';
 
 const DateLister = (props) => {
     const { type, date } = props;
     const { dateWrapper } = styles;
-    return <View>
+    return <View style={dateWrapper}>
         <View>
-            <Text>{type}</Text>
+            <Text style={{ textAlign: "center" }}>{type}</Text>
         </View>
         <View>
-            <Text>{date}</Text>
+            <Text style={{ textAlign: "center" }}>{date}</Text>
         </View>
     </View>;
 };
@@ -23,9 +25,13 @@ export default function CustomCalendar() {
     var date = new Date();
     date.setDate(date.getDate() + 1);
     const [dates, setdates] = useState({});
+    const dispatch = useDispatch();
+
+    const rentingDate = useSelector((st) => st.common.start_date);
+    const returningDate = useSelector((st) => st.common.return_date);
+
 
     const selectDate = (day) => {
-
         let selectedDate = day.dateString;
         let newDates = dates;
         if (dates[selectedDate]) {
@@ -53,7 +59,7 @@ export default function CustomCalendar() {
         dueDate = firstDate;
     }
 
-    const createDateRange = (startDate, endDate) => {
+    const createDateRange = (startDate = rentingDate, endDate = returningDate) => {
         const dateRange = {
             [startDate]: { selected: true, startingDay: true, color: COLOR.compGreen },
             [endDate]: { selected: true, endingDay: true, color: COLOR.compGreen },
@@ -69,39 +75,39 @@ export default function CustomCalendar() {
         return dateRange;
     };
 
-    useEffect(() => {
-
-        const setrentStartDate = () => {
-            console.log("RENT START DATE", rentStartDate);
-        };
-
-        const setDueDate = () => {
-            console.log("RENT DUE DATE", dueDate);
-        };
-
-        setrentStartDate();
-        setDueDate();
-
-    }, [dates]);
 
     const { listerWrapper } = styles;
 
     let rentDisplayStartDate;
     if (rentStartDate) {
-        console.log("RSD", new Date(rentStartDate));
-        // let date = new Date(rentStartDate);
-        // let next_date = new Date(date.setDate(date.getDate() - 1));
-        // rentDisplayStartDate = next_date;
-
+        rentDisplayStartDate = new Date(rentStartDate);
+        rentDisplayStartDate.setDate(rentDisplayStartDate.getDate() - 1);
+        if (rentDisplayStartDate) {
+            rentDisplayStartDate = rentDisplayStartDate.toISOString().split('T')[0];
+        }
     }
+
     let dueDisplayDate;
     if (dueDate) {
-        console.log("RSD", dueDate);
-
-        // let date = new Date(dueDate);
-        // let next_date = new Date(date.setDate(date.getDate() + 1));
-        // dueDisplayDate = next_date;
+        dueDisplayDate = new Date(dueDate);
+        dueDisplayDate.setDate(dueDisplayDate.getDate() + 1);
+        if (dueDisplayDate) {
+            dueDisplayDate = dueDisplayDate.toISOString().split('T')[0];
+        }
     }
+
+
+    useEffect(() => {
+        const setrentStartDate = () => {
+            dispatch(setStartDate(rentDisplayStartDate));
+        };
+        const setDueDate = () => {
+            dispatch(setReturnDate(dueDisplayDate));
+        };
+        setrentStartDate();
+        setDueDate();
+    }, [dates]);
+
 
 
     return (
@@ -110,7 +116,7 @@ export default function CustomCalendar() {
                 minDate={date.toISOString().split('T')[0]}
                 markingType={'period'}
                 markedDates={createDateRange(rentStartDate, dueDate)}
-                onDayPress={day => {
+                onDayLongPress={day => {
                     selectDate(day);
                 }}
             />
@@ -124,13 +130,20 @@ export default function CustomCalendar() {
 
 const styles = StyleSheet.create({
     listerWrapper: {
-        marginVertical: heightPercentageToDP("10%"),
+        marginVertical: heightPercentageToDP("5%"),
         display: 'flex',
         flexDirection: "row",
         justifyContent: "space-around"
     },
     dateWrapper: {
-
+        height: heightPercentageToDP("10%"),
+        width: widthPercentageToDP("40%"),
+        padding: 10,
+        borderRadius: 1,
+        elevation: 1,
+        display: "flex",
+        justifyContent: "center",
+        alignContent: "center",
     }
 });
 

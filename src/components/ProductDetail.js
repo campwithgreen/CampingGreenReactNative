@@ -14,13 +14,18 @@ import {
 } from 'react-native-responsive-screen';
 import { RFPercentage } from 'react-native-responsive-fontsize';
 import { navigateTo } from '../navigation/utils/RootNavigation';
+import { useDispatch } from 'react-redux';
+import { setSelectedItem } from '../redux/actions/common';
 
 const RenderItem = ({ item }) => {
+
+  const dispatch = useDispatch();
 
   return (
     <View style={{ marginTop: hp('2.5%'), width: wp('43%') }}>
       <TouchableOpacity
         onPress={() => {
+          dispatch(setSelectedItem(item));
           navigateTo('ProductInfo', item);
         }}>
         <Image

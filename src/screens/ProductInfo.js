@@ -7,6 +7,8 @@ import {
   ScrollView,
   TouchableOpacity,
   ImageBackground,
+  ToastAndroid,
+  Button
 } from 'react-native';
 import Header from '../layout/Header';
 import {
@@ -22,7 +24,13 @@ import FONTSIZE from '../constants/fontSize';
 import COLOR from "../constants/colors";
 import { navigateTo } from '../navigation/utils/RootNavigation';
 import Footer from '../components/Footer';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import CustomButton from '../components/common/CustomButton';
+import ProductShoppingBag from "../components/ProductShoppingBag";
+import Counter from '../components/common/Counter';
+import { createOrUpdateCart } from '../apis/cart';
+import { showDefaultErrorAlert } from '../global/global';
+import { setCurrentCheckoutCartDetails } from '../redux/actions/common';
 
 
 
@@ -45,16 +53,96 @@ export const ProductInfo = props => {
   const selected_item = useSelector((st) => st.common.selected_item);
   const startDate = useSelector((st) => st.common.start_date);
   const returnDate = useSelector((st) => st.common.return_date);
+  const isLoggedIn = useSelector((st) => st.oauth.isLogin);
+  const quantity = useSelector((st) => st.common.quantity);
+
   const item = props.route.params || selected_item;
   const [tabIndex, setTabIndex] = useState(1);
 
-  console.log("PROD ITEMS", item);
+  const [modalVisible, setModalVisible] = useState(false);
 
+  const dispatch = useDispatch();
+
+
+  const enableCheckout = () => {
+    if (startDate && returnDate) {
+      return true;
+    }
+    return false;
+  };
+
+
+  const { centeredView, modalView, termTitle, termsButtonWrapper } = styles;
+
+  let cartItems = {
+    "items": [
+      {
+        "itemId": selected_item._id,
+        "units": quantity,
+        "startDate": startDate,
+        "endDate": returnDate
+      }
+    ]
+  };
+
+  const handleCheckout = async () => {
+    console.log("CHCKOUT ITEMS", cartItems);
+    await createOrUpdateCart(cartItems).then((res) => {
+      if (res) {
+        dispatch(setCurrentCheckoutCartDetails(res.data.data));
+        ToastAndroid.showWithGravity("Checkout In Progress", ToastAndroid.SHORT, ToastAndroid.TOP);
+        navigateTo("RoomPaymentScreen");
+      }
+    }).catch((err) => {
+      if (err) {
+        showDefaultErrorAlert();
+      }
+    });
+  };
 
   return (
     <View style={container}>
+      {modalVisible &&
+        <View style={centeredView}>
+          <View style={modalView}>
+            <View>
+              <Text style={termTitle}>총 상품금액</Text>
+              <View style={termsButtonWrapper}>
+                <View>
+                  <Text style={termTitle}>{quantity ? item.price * quantity : item.price}</Text>
+                </View>
+                <View>
+                  <Counter />
+                </View>
+              </View>
+              <View style={termsButtonWrapper}>
+                <View style={{ width: "47%" }}>
+                  <Button
+                    title="Add to Cart"
+                    onPress={() => {
+                      // navigateTo("SecondScreen") // subarea details
+                      navigateTo("ProductShoppingBagScreen"); // order success screen
+                    }
+                    }
+                    color={COLOR.grey}
+                  />
+                </View>
+                <View style={{ width: "47%" }}>
+                  <Button
+                    title="Checkout"
+                    onPress={() => {
+                      // navigateTo("ThirdScreen");//checkout
+                      handleCheckout();
+                    }}
+                    color={COLOR.compGreen}
+                  />
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>}
       <Header headerContent={headerContent} />
-      <ScrollView>
+      <ScrollView style={{ marginBottom: hp("5%") }}>
         <View>
           <Carousel carouselData={item.carousel} paginationType="right" />
         </View>
@@ -115,7 +203,11 @@ export const ProductInfo = props => {
               </View>
               <View>
                 <TouchableOpacity onPress={() => {
-                  navigateTo("CalendarScreen");
+                  if (isLoggedIn) {
+                    navigateTo("CalendarScreen");
+                  } else {
+                    ToastAndroid.showWithGravity("You have to Login to Proceed with Renting Date", ToastAndroid.LONG, ToastAndroid.TOP);
+                  }
                 }}>
                   <Text
                     style={{
@@ -145,7 +237,11 @@ export const ProductInfo = props => {
               </View>
               <View>
                 <TouchableOpacity onPress={() => {
-                  navigateTo("CalendarScreen");
+                  if (isLoggedIn) {
+                    navigateTo("CalendarScreen");
+                  } else {
+                    ToastAndroid.showWithGravity("You have to Login to Proceed with Renting Date", ToastAndroid.LONG, ToastAndroid.TOP);
+                  }
                 }}>
                   <Text
                     style={{
@@ -311,7 +407,7 @@ export const ProductInfo = props => {
                   }}>
                   {item.allFeatures.map((feature) => {
                     return <View
-                      key={feature.feature_name}
+                      key={feature.featureName}
                       style={{
                         display: 'flex',
                         flexDirection: 'row',
@@ -323,7 +419,7 @@ export const ProductInfo = props => {
                           marginBottom: hp('.5%'),
                           width: wp('30%'),
                         }}>
-                        {feature?.feature_name}
+                        {feature?.featureName}
                       </Text>
                     </View>;
                   })}
@@ -351,7 +447,7 @@ export const ProductInfo = props => {
                     marginHorizontal: wp('5%'),
                     marginVertical: hp('2.5%'),
                   }}>
-                  {feature.feature_name}
+                  {feature.featureName}
                 </Text>
                 {feature.description && <Text
                   style={{
@@ -484,16 +580,72 @@ export const ProductInfo = props => {
           <Footer />
         </View>
       </ScrollView>
+      {!modalVisible && <View>
+        <CustomButton buttonText={"대여하기"} buttonHandler={() => {
+          if (isLoggedIn) {
+            if (enableCheckout()) {
+              setModalVisible(true);
+            } else {
+              ToastAndroid.showWithGravity("Please Select the Date for Checkout", ToastAndroid.LONG, ToastAndroid.TOP);
+            }
+          } else {
+            ToastAndroid.showWithGravity("You have to Login to Proceed Renting", ToastAndroid.LONG, ToastAndroid.TOP);
+            navigateTo("LoginScreen");
+          }
+        }} />
+      </View>}
     </View>
+
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    paddingBottom: hp('10%'),
+    marginBottom: hp('10%'),
     backgroundColor: COLOR.white
   },
-  scene: {
-    flex: 1,
+  centeredView: {
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
+    zIndex: 15,
+    elevation: 50,
+    marginBottom: hp("5%")
   },
+  modalView: {
+    minHeight: hp("30%"),
+    backgroundColor: COLOR.black,
+    borderTopLeftRadius: 30,
+    padding: hp("4%"),
+    borderTopRightRadius: 30,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 100,
+  },
+  termTitle: {
+    color: COLOR.white,
+    fontWeight: "bold",
+    fontSize: FONTSIZE.xll
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  },
+  termsButtonWrapper: {
+    marginVertical: hp("1%"),
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between"
+  }
 });

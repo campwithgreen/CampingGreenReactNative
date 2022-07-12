@@ -22,6 +22,9 @@ import { getAllProducts } from '../apis/product';
 import { setProductData } from '../redux/actions/product';
 import { showDefaultErrorAlert } from '../global/global';
 import Loader from '../components/common/Loader';
+import FONTSIZE from '../constants/fontSize';
+import globalStyle from '../global/globalStyle';
+import COLOR from '../constants/colors';
 
 const headerContent = {
   leftItemContents: {
@@ -49,8 +52,9 @@ export const Product = props => {
 
   useEffect(() => {
     (async function getAllProductsData() {
+      let data = { type: "PRODUCT" };
       setLoading(true);
-      await getAllProducts().then((res) => {
+      await getAllProducts(data).then((res) => {
         if (res) {
           dispatch(setProductData(res.data.data));
           setLoading(false);
@@ -64,22 +68,18 @@ export const Product = props => {
     })();
   }, []);
 
-
-  console.log("THE PRODUCT", product);
-
   return (
     <View style={container}>
       <Header headerContent={headerContent} />
       <ScrollView>
-        <View style={{ marginHorizontal: wp('5%') }}>
-          <Text
+        <View style={[globalStyle.mainContainerWrapper, { marginVertical: hp("4%") }]}>
+          {!loading && <Text
             style={{
-              color: '#1B1D1F',
-              fontSize: RFPercentage(2.5),
+              fontSize: FONTSIZE.xl,
               fontWeight: 'bold',
             }}>
             전체 {product.length}
-          </Text>
+          </Text>}
           {loading ?
             <Loader /> :
             <ProductDetail product={product} />}
@@ -90,5 +90,5 @@ export const Product = props => {
 };
 
 const styles = StyleSheet.create({
-  container: { paddingBottom: hp('10%') },
+  container: { backgroundColor: COLOR.white },
 });

@@ -12,6 +12,7 @@ import Header from '../layout/Header';
 import ThirdScreen5 from '../components/ThirdScreen5';
 import SecondScreen1 from '../components/SecondScreen1';
 import ThirdScreen4 from '../components/ThirdScreen4';
+import { useDispatch, useSelector } from 'react-redux';
 const headerContent = {
   leftItemContents: {
     type: 'image',
@@ -25,11 +26,14 @@ const headerContent = {
   },
 };
 export default function ThirdScreen() {
+
+  const dispatch = useDispatch();
+  const current_cart_details = useSelector((st) => st.common.current_cart_details);
   return (
     <View style={{ backgroundColor: 'white' }}>
       <ScrollView>
         <Header headerContent={headerContent} />
-        <ThirdScreen1 />
+        <ThirdScreen1 currentCartData={current_cart_details} />
         <Text
           style={{
             fontWeight: 'bold',
@@ -38,12 +42,12 @@ export default function ThirdScreen() {
             marginHorizontal: wp('5%'),
             paddingTop: hp('6%'),
           }}>
-          주문상품 (2)
+          주문상품 {current_cart_details?.items.length}
         </Text>
         <View style={styles.border1}></View>
-        <ThirdScreen4 />
-        <ThirdScreen4 />
-        <ThirdScreen2 />
+        {current_cart_details?.items.map((it) => {
+          return <ThirdScreen4 itemData={it} />;
+        })}
         <Text
           style={{
             fontWeight: 'bold',

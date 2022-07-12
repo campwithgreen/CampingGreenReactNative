@@ -12,9 +12,10 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {RFPercentage} from 'react-native-responsive-fontsize';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 
-const ThirdScreen4 = () => {
+const ThirdScreen4 = (props) => {
+  const { itemData } = props;
   return (
     <View
       style={{
@@ -30,18 +31,18 @@ const ThirdScreen4 = () => {
         }}>
         <Image
           source={require('../assets/images/tambu.png')}
-          style={{marginRight: wp('5%'), height: 100, width: 100}}
+          style={{ marginRight: wp('5%'), height: 100, width: 100 }}
         />
-        <View style={{display: 'flex', justifyContent: 'space-between'}}>
+        <View style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Text
-            style={{paddingRight: '5%', color: '#222222', fontWeight: 'bold'}}>
-            [COVEMA] {'\n'}2인 캠핑 패키지 코베마 수동텐트
+            style={{ paddingRight: '5%', color: '#222222', fontWeight: 'bold' }}>
+            [COVEMA] {'\n'}{itemData?._id}
           </Text>
           <View>
-            <Text style={{fontWeight: 'bold', paddingBottom: hp('0.5%')}}>
+            <Text style={{ fontWeight: 'bold', paddingBottom: hp('0.5%') }}>
               65,000원
             </Text>
-            <Text style={{fontWeight: 'bold'}}>수량 1개</Text>
+            <Text style={{ fontWeight: 'bold' }}>수량 1개</Text>
           </View>
         </View>
       </View>

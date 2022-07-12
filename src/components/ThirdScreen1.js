@@ -5,12 +5,16 @@ import {
 } from 'react-native-responsive-screen';
 import { RFPercentage } from 'react-native-responsive-fontsize';
 import React from 'react';
+import moment from 'moment';
 
 const orderData = {
 
-}
+};
 
-const ThirdScreen1 = () => {
+const ThirdScreen1 = (props) => {
+
+  const { currentCartData } = props;
+
   return (
     <View style={styles.view1}>
       <Text
@@ -27,19 +31,23 @@ const ThirdScreen1 = () => {
       <Text style={{ textAlign: 'center', marginBottom: hp('5%') }}>
         <Text style={[styles.text2]}>주문번호</Text>
         <Text style={[styles.text2, { color: '#56C596' }]}>
-          ORD20220718-203094
+          {currentCartData._id}
         </Text>
       </Text>
-      <View style={styles.view2}>
-        <Text style={styles.text2}>예약자</Text>
-        <Text style={styles.text2}>총계</Text>
-        <Text style={styles.text2}>예약기간</Text>
-      </View>
-      <View style={styles.view2}>
-        <Text style={[styles.text2, { color: '#E8EBED' }]}>예약자</Text>
-        <Text style={[styles.text2, { color: '#E8EBED' }]}>300,000</Text>
-        <Text style={[styles.text2, { color: '#E8EBED' }]}>7.18 - 7.19</Text>
-      </View>
+      {currentCartData?.items.map((item) => {
+        return <View>
+          <View style={styles.view2}>
+            <Text style={styles.text2}>예약자</Text>
+            <Text style={styles.text2}>총계</Text>
+            <Text style={styles.text2}>예약기간</Text>
+          </View>
+          <View style={styles.view2}>
+            <Text style={[styles.text2, { color: '#E8EBED' }]}>{item._id}</Text>
+            <Text style={[styles.text2, { color: '#E8EBED' }]}>{currentCartData.totalAmount}</Text>
+            <Text style={[styles.text2, { color: '#E8EBED' }]}>{moment(item.startData).utc().format('MM-DD-YYYY')}-{moment(item.endData).utc().format('MM-DD-YYYY')}</Text>
+          </View>
+        </View>;
+      })}
     </View>
   );
 };

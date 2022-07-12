@@ -111,17 +111,17 @@ const ProductDetail = (props) => {
       "allFeatures": [
         {
 
-          feature_name: "1-2freare",
+          featureName: "1-2freare",
           image: "https://res.cloudinary.com/dchcqwskd/image/upload/v1657451428/camping-product-items/tentinfo1_gau9ck.png",
         },
         {
 
-          feature_name: "1-2freare",
+          featureName: "1-2freare",
           image: "https://res.cloudinary.com/dchcqwskd/image/upload/v1657451488/camping-product-items/tentinfo2_kkrcwz.png",
         },
         {
 
-          feature_name: "경량 테이블",
+          featureName: "경량 테이블",
           image: "https://res.cloudinary.com/dchcqwskd/image/upload/v1657451499/camping-product-items/tentinfo3_nyp9dr.png",
           description: "경량 테이블은 캠핑 장소 어디서나 사용 가능한 가을 감성의 사용자를 위한 캠핑용 감성 의자 입니다. 자세한 정보는 캠핑그린의 사이트에서 확인하세요."
         }

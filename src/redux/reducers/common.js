@@ -17,6 +17,10 @@ export default function (state = INITIAL_STATE, action) {
             return { ...state, return_date: payload };
         case COMMON.SELECTED_ITEM:
             return { ...state, selected_item: payload };
+        case COMMON.SET_QUANTITY:
+            return { ...state, quantity: payload };
+        case COMMON.SET_CURRENT_CART_DETAILS:
+            return { ...state, current_cart_details: payload };
         default:
             return state;
     }

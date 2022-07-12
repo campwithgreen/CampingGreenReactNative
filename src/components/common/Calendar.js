@@ -31,6 +31,7 @@ export default function CustomCalendar() {
     const returningDate = useSelector((st) => st.common.return_date);
 
 
+
     const selectDate = (day) => {
         let selectedDate = day.dateString;
         let newDates = dates;
@@ -116,6 +117,9 @@ export default function CustomCalendar() {
                 minDate={date.toISOString().split('T')[0]}
                 markingType={'period'}
                 markedDates={createDateRange(rentStartDate, dueDate)}
+                onDayPress={day => {
+                    selectDate(day);
+                }}
                 onDayLongPress={day => {
                     selectDate(day);
                 }}

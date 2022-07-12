@@ -1,12 +1,10 @@
 import React from 'react';
 import {
     View,
-
     StyleSheet,
-
     ScrollView,
-    Dimensions
-
+    Dimensions,
+    ToastAndroid
 } from 'react-native';
 import Header from '../layout/Header';
 import {
@@ -17,6 +15,7 @@ import { RFPercentage } from 'react-native-responsive-fontsize';
 import CustomCalendar from '../components/common/Calendar';
 import { goBack, navigateTo } from '../navigation/utils/RootNavigation';
 import CustomButton from '../components/common/CustomButton';
+import { useSelector } from 'react-redux';
 
 
 const headerContent = {
@@ -37,6 +36,15 @@ let ScreenHeight = Dimensions.get("window").height;
 const CalendarScreen = props => {
 
     const { container } = styles;
+    const startDate = useSelector((st) => st.common.start_date);
+    const returnDate = useSelector((st) => st.common.return_date);
+
+    const enableCheckout = () => {
+        if (startDate && returnDate) {
+            return true;
+        }
+        return false;
+    };
 
     return (
         <View style={container}>
@@ -47,7 +55,11 @@ const CalendarScreen = props => {
             <CustomButton
                 buttonText={"예약하d기"}
                 buttonHandler={() => {
-                    navigateTo("ProductInfo");
+                    if (enableCheckout()) {
+                        navigateTo("ProductInfo");
+                    } else {
+                        ToastAndroid.showWithGravity("Please Select the Date for Checkout", ToastAndroid.LONG, ToastAndroid.TOP);
+                    }
                 }} />
         </View>
     );

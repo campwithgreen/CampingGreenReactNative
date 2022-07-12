@@ -2,6 +2,7 @@ import axiosInstance from "../config/axiosInstance";
 
 
 function queryStringBuilder(data) {
+    console.log("DATA", data);
     let { type, filter } = data;
     let queryString = "";
     if (type) {
@@ -16,10 +17,11 @@ function queryStringBuilder(data) {
 
 
 export function getAllProducts(data) {
+    console.log("DATA", data);
     let queryString;
     if (data) {
         queryString = queryStringBuilder(data);
     }
-    let endpoint = `v2/product?${queryString}`;
+    let endpoint = `v2/item?${queryString}`;
     return axiosInstance.get(endpoint);
 }

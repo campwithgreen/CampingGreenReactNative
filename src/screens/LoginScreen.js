@@ -56,9 +56,9 @@ export default function LoginScreen() {
 
 
     const handleGetOtp = async (phoneNumber) => {
-        if (phoneNumber.length === 10) {
+        if (phoneNumber.length === 10 || phoneNumber.length === 11) {
             let payload = {
-                "phoneNumber": phoneNumber
+                "phoneNumber": `+91${phoneNumber}`
             };
             await authDoor(payload).then((res) => {
                 dispatch(setUserData(res.data));
@@ -86,7 +86,7 @@ export default function LoginScreen() {
     const handleLogin = async () => {
         console.log(phoneNumber, otp);
         let payload = {
-            "phoneNumber": phoneNumber,
+            "phoneNumber": `+91${phoneNumber}`,
             "otp": otp
         };
         await verifyOtp(payload).then((res) => {
@@ -239,6 +239,6 @@ const styles = StyleSheet.create({
         marginVertical: hp('2%'),
     },
     buttonWrapper: {
-        marginTop: heightPercentageToDP("30%")
+        marginTop: heightPercentageToDP("25%")
     }
 });

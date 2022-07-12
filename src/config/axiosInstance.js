@@ -13,11 +13,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(async (config) => {
 
     let state = store.getState();
-    console.log("**AXIOS STATE**", state);
     let userToken = await state?.oauth?.userToken;
-
-    console.log("US TOKEN", userToken);
-
     config.headers.Authorization = `Bearer ${userToken}`;
 
     console.log("CONFIG ==>", config);

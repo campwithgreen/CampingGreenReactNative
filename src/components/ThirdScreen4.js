@@ -16,6 +16,7 @@ import { RFPercentage } from 'react-native-responsive-fontsize';
 
 const ThirdScreen4 = (props) => {
   const { itemData } = props;
+  const data = itemData?.itemId;
   return (
     <View
       style={{
@@ -30,19 +31,19 @@ const ThirdScreen4 = (props) => {
           marginVertical: hp('3%'),
         }}>
         <Image
-          source={require('../assets/images/tambu.png')}
+          source={{ uri: data.carousel[0] }}
           style={{ marginRight: wp('5%'), height: 100, width: 100 }}
         />
         <View style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Text
             style={{ paddingRight: '5%', color: '#222222', fontWeight: 'bold' }}>
-            [COVEMA] {'\n'}{itemData?._id}
+            {data.title}
           </Text>
           <View>
             <Text style={{ fontWeight: 'bold', paddingBottom: hp('0.5%') }}>
-              65,000원
+              {data.price * itemData.units}원
             </Text>
-            <Text style={{ fontWeight: 'bold' }}>수량 1개</Text>
+            <Text style={{ fontWeight: 'bold' }}>수량 {itemData.units}개</Text>
           </View>
         </View>
       </View>

@@ -1,56 +1,74 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import React from 'react';
-const Room = ({item}) => {
+import { navigateTo } from '../navigation/utils/RootNavigation';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSelectedLocation } from '../redux/actions/common';
+
+const Room = ({ item }) => {
+  console.log("ITEM", item);
+
+  const dispatch = useDispatch();
+
+  let seatCount = 0;
+  item.subLocations.forEach((sub) => [
+    seatCount = seatCount + sub.stock
+  ]);
+
   return (
-    <View
-      //   elevation={1}
-      style={{
-        marginHorizontal: wp('5%'),
-        marginVertical: hp('2%'),
-        borderRadius: 25,
-        borderWidth: 1,
-        borderColor: 'lightgrey',
-      }}>
-      <View style={styles.view1}>
-        <Text style={styles.button1}>{item.btn1}</Text>
-        <Text style={styles.button1}>{item.btn2}</Text>
-        <Text style={styles.button1}>{item.btn3}</Text>
-      </View>
-      <Image
-        source={item.img}
+    <TouchableOpacity onPress={() => {
+      dispatch(setSelectedLocation(item));
+      navigateTo("Rent", { subLocations: item });
+    }}>
+      <View
         style={{
-          width: wp('90%'),
-          borderTopLeftRadius: 25,
-          borderTopRightRadius: 25,
-          height: 210,
-        }}
-      />
-      <Text
-        style={[styles.text1, {paddingTop: hp('3%'), paddingLeft: wp('5%')}]}>
-        {item.heading}
-      </Text>
-      <Text
-        style={[styles.text2, {paddingTop: hp('1%'), paddingLeft: wp('5%')}]}>
-        {item.subheading}
-      </Text>
-      <View style={styles.view2}>
-        <Text>
-          <Text style={[styles.text1, {fontSize: 20}]}>{item.price}</Text>
-          <Text style={{fontSize: 12, fontWeight: '600'}}>{item.currency}</Text>
+          marginHorizontal: wp('5%'),
+          marginVertical: hp('2%'),
+          borderRadius: 25,
+          borderWidth: 1,
+          borderColor: 'lightgrey',
+        }}>
+        <View style={styles.view1}>
+          {item.category.map((cat) => {
+            return <Text key={cat} style={styles.button1}>{cat}</Text>;
+          })}
+        </View>
+        <Image
+          source={{ uri: item.carousel[0] }}
+          style={{
+            width: wp('90%'),
+            borderTopLeftRadius: 25,
+            borderTopRightRadius: 25,
+            height: 210,
+          }}
+        />
+        <Text
+          style={[styles.text1, { paddingTop: hp('3%'), paddingLeft: wp('5%') }]}>
+          {item.title}
         </Text>
         <Text
-          style={[
-            styles.text2,
-            {color: '#55C595', textAlignVertical: 'bottom'},
-          ]}>
-          {item.greenText}
+          style={[styles.text2, { paddingTop: hp('1%'), paddingLeft: wp('5%') }]}>
+          {item.description}
         </Text>
+        <View style={styles.view2}>
+          <Text>
+            <Text style={[styles.text1, { fontSize: 20 }]}>{item.price}</Text>
+            <Text style={{ fontSize: 12, fontWeight: '600' }}>원~</Text>
+          </Text>
+          <Text
+            style={[
+              styles.text2,
+              { color: '#55C595', textAlignVertical: 'bottom' },
+            ]}>
+            {`남은자리 ${seatCount}개`}
+          </Text>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
+
   );
 };
 
@@ -78,7 +96,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'black',
   },
-  text2: {fontWeight: '600'},
+  text2: { fontWeight: '600' },
   button1: {
     backgroundColor: 'grey',
     color: 'white',

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View, Text, StyleSheet,
     ScrollView, TextInput, Button, Alert, TouchableOpacity, ToastAndroid
@@ -33,6 +33,14 @@ export default function LoginScreen() {
 
     const st = useSelector((st) => st);
     console.log("STORE", st);
+
+    const isLogin = useSelector((st) => st.oauth?.isLogin);
+
+    useEffect(() => {
+        if (isLogin) {
+            navigateTo("HomeScreen");
+        }
+    }, [isLogin]);
 
 
     const { container, wrapper, mainTextWrapper,

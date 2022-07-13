@@ -35,9 +35,13 @@ let ScreenHeight = Dimensions.get("window").height;
 
 const CalendarScreen = props => {
 
+    const { route } = props;
+
     const { container } = styles;
     const startDate = useSelector((st) => st.common.start_date);
     const returnDate = useSelector((st) => st.common.return_date);
+
+    const type = route.params.type || "PRODUCT";
 
     const enableCheckout = () => {
         if (startDate && returnDate) {
@@ -56,7 +60,11 @@ const CalendarScreen = props => {
                 buttonText={"예약하d기"}
                 buttonHandler={() => {
                     if (enableCheckout()) {
-                        navigateTo("ProductInfo");
+                        if (type === "LOCATION") {
+                            navigateTo("Rent");
+                        } else {
+                            navigateTo("ProductInfo");
+                        }
                     } else {
                         ToastAndroid.showWithGravity("Please Select the Date for Checkout", ToastAndroid.LONG, ToastAndroid.TOP);
                     }

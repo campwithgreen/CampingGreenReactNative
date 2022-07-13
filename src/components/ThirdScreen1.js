@@ -43,7 +43,7 @@ const ThirdScreen1 = (props) => {
           </View>
           <View style={styles.view2}>
             <Text style={[styles.text2, { color: '#E8EBED' }]}>{item?.itemId?.title}</Text>
-            <Text style={[styles.text2, { color: '#E8EBED' }]}>{item.unit * item?.itemId?.price}</Text>
+            <Text style={[styles.text2, { color: '#E8EBED' }]}>{item.units * item?.itemId?.price}</Text>
             <Text style={[styles.text2, { color: '#E8EBED' }]}>{moment(item.startData).utc().format('MM-DD-YYYY')}-{moment(item.endData).utc().format('MM-DD-YYYY')}</Text>
           </View>
         </View>;

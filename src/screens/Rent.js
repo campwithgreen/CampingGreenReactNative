@@ -1,14 +1,19 @@
-import React from 'react';
-import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, ToastAndroid } from 'react-native';
 import Header from '../layout/Header';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {RFPercentage} from 'react-native-responsive-fontsize';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 import Carousel from '../components/Carousel';
 import Footer from '../components/Footer';
 import RentDetail from '../components/RentDetail';
+import COLOR from '../constants/colors';
+import { useSelector, useDispatch } from 'react-redux';
+import CustomButton from '../components/common/CustomButton';
+import { navigateTo } from '../navigation/utils/RootNavigation';
+import FONTSIZE from '../constants/fontSize';
 
 const headerContent = {
   leftItemContents: {
@@ -23,24 +28,108 @@ const headerContent = {
   },
 };
 
-const Rent = () => {
-  const {container} = styles;
+
+
+const Rent = (props) => {
+  const { container, centeredView, modalView, termTitle, termsButtonWrapper } = styles;
+  console.log("PROPS", props);
+  const { route } = props;
+  const subLocations = useSelector((st) => st.common.selected_location);
+  const selected_item = useSelector((st) => st.common?.selected_item);
+  const startDate = useSelector((st) => st.common?.start_date);
+  const returnDate = useSelector((st) => st.common?.return_date);
+  const isLoggedIn = useSelector((st) => st.oauth?.isLogin);
+  const quantity = useSelector((st) => st.common?.quantity);
+
+  const [modalVisible, setModalVisible] = useState(false);
+
+
+  const enableCheckout = () => {
+    if (startDate && returnDate) {
+      return true;
+    }
+    return false;
+  };
+
+  const handleCheckout = async () => {
+    let cartItems = {
+      "items": [
+        {
+          "itemId": selected_item?._id,
+          "units": quantity,
+          "startDate": startDate,
+          "endDate": returnDate
+        }
+      ]
+    };
+    console.log("CHCKOUT ITEMS", cartItems);
+    await createOrUpdateCart(cartItems).then((res) => {
+      if (res) {
+        dispatch(setCurrentCheckoutCartDetails(res.data.data));
+        ToastAndroid.showWithGravity("Checkout In Progress", ToastAndroid.SHORT, ToastAndroid.TOP);
+        navigateTo("RoomPaymentScreen");
+      }
+    }).catch((err) => {
+      if (err) {
+        showDefaultErrorAlert();
+      }
+    });
+  };
+
   return (
     <View style={container}>
+      {modalVisible &&
+        <View style={centeredView}>
+          <View style={modalView}>
+            <View>
+              <Text style={termTitle}>총 상품금액</Text>
+              <View style={termsButtonWrapper}>
+                {/* <View>
+                  <Text style={termTitle}>{quantity ? item.price * quantity : item.price}</Text>
+                </View> */}
+                <View>
+                  <Counter />
+                </View>
+              </View>
+              <View style={termsButtonWrapper}>
+                <View style={{ width: "47%" }}>
+                  <Button
+                    title="Add to Cart"
+                    onPress={() => {
+                      navigateTo("ProductShoppingBagScreen"); // order success screen
+                    }
+                    }
+                    color={COLOR.grey}
+                  />
+                </View>
+                <View style={{ width: "47%" }}>
+                  <Button
+                    title="Checkout"
+                    onPress={() => {
+                      // navigateTo("ThirdScreen");//checkout
+                      handleCheckout();
+                    }}
+                    color={COLOR.compGreen}
+                  />
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>}
       <Header headerContent={headerContent} />
       <ScrollView>
         <View>
-          <Carousel paginationType="right" />
+          <Carousel carouselData={subLocations?.carousel} paginationType="right" />
         </View>
-        <View style={{marginHorizontal: wp('5%'),marginBottom:hp('15%')}}>
-          <View style={{marginTop: hp('4%')}}>
+        <View style={{ marginHorizontal: wp('5%'), marginBottom: hp('15%') }}>
+          <View style={{ marginTop: hp('4%') }}>
             <Text
               style={{
                 color: '#1B1D1F',
                 fontSize: RFPercentage(3),
                 fontWeight: 'bold',
               }}>
-              홍천 보리울 캠핑장
+              {subLocations.title}
             </Text>
           </View>
           <View
@@ -59,10 +148,11 @@ const Rent = () => {
                 paddingLeft: wp('5%'),
                 paddingRight: wp('5%'),
               }}>
-              홍천군 서면 밤벌길 131-53
+              홍천군 서면 밤벌길 {subLocations.latitude} {subLocations.longitude}
             </Text>
             <Image source={require('../assets/images/icon_location.png')} />
           </View>
+
           <View
             style={{
               paddingBottom: hp('5%'),
@@ -82,6 +172,8 @@ const Rent = () => {
             </Text>
             <Image source={require('../assets/images/icon_phone.png')} />
           </View>
+
+
           <View
             style={{
               marginTop: wp('5%'),
@@ -100,12 +192,12 @@ const Rent = () => {
                 borderRightWidth: 0.5,
               }}>
               <View>
-                <Text style={{color: '#454C53', fontSize: RFPercentage(2)}}>
+                <Text style={{ color: '#454C53', fontSize: RFPercentage(2) }}>
                   대여 시작일
                 </Text>
               </View>
               <View>
-                <Text
+                {/* <Text
                   style={{
                     color: '#55C595',
                     fontSize: RFPercentage(2.5),
@@ -113,7 +205,24 @@ const Rent = () => {
                     fontWeight: 'bold',
                   }}>
                   7월 14일 (월)
-                </Text>
+                </Text> */}
+                <TouchableOpacity onPress={() => {
+                  if (isLoggedIn) {
+                    navigateTo("CalendarScreen", { type: "LOCATION" });
+                  } else {
+                    ToastAndroid.showWithGravity("You have to Login to Proceed with Renting Date", ToastAndroid.LONG, ToastAndroid.TOP);
+                  }
+                }}>
+                  <Text
+                    style={{
+                      color: '#55C595',
+                      fontSize: RFPercentage(2.5),
+                      marginTop: wp('.5%'),
+                      fontWeight: 'bold',
+                    }}>
+                    {startDate || "Select Start Date"}
+                  </Text>
+                </TouchableOpacity>
               </View>
             </View>
             <View
@@ -125,12 +234,12 @@ const Rent = () => {
                 borderLeftWidth: 0.5,
               }}>
               <View>
-                <Text style={{color: '#454C53', fontSize: RFPercentage(2)}}>
+                <Text style={{ color: '#454C53', fontSize: RFPercentage(2) }}>
                   반납 예정일
                 </Text>
               </View>
               <View>
-                <Text
+                {/* <Text
                   style={{
                     color: '#55C595',
                     fontSize: RFPercentage(2.5),
@@ -138,12 +247,29 @@ const Rent = () => {
                     fontWeight: 'bold',
                   }}>
                   7월 15일 (월)
-                </Text>
+                </Text> */}
+                <TouchableOpacity onPress={() => {
+                  if (isLoggedIn) {
+                    navigateTo("CalendarScreen", { type: "LOCATION" });
+                  } else {
+                    ToastAndroid.showWithGravity("You have to Login to Proceed with Renting Date", ToastAndroid.LONG, ToastAndroid.TOP);
+                  }
+                }}>
+                  <Text
+                    style={{
+                      color: '#55C595',
+                      fontSize: RFPercentage(2.5),
+                      marginTop: wp('.5%'),
+                      fontWeight: 'bold',
+                    }}>
+                    {returnDate || "Select Return Date"}
+                  </Text>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
-          <RentDetail />
-          <View style={{marginTop: wp('7%')}}>
+          <RentDetail subLocations={subLocations.subLocations} />
+          <View style={{ marginTop: wp('7%') }}>
             <Text
               style={{
                 color: '#1B1D1F',
@@ -244,7 +370,7 @@ const Rent = () => {
           </View>
           <View
             style={{
-              paddingTop:hp('1%'),
+              paddingTop: hp('1%'),
               paddingBottom: hp('1%'),
               display: 'flex',
               flexDirection: 'row',
@@ -265,12 +391,70 @@ const Rent = () => {
         </View>
         <Footer />
       </ScrollView>
+      {!modalVisible && <View>
+        <CustomButton buttonText={"대여하기"} buttonHandler={() => {
+          if (isLoggedIn) {
+            if (enableCheckout()) {
+              setModalVisible(true);
+            } else {
+              ToastAndroid.showWithGravity("Please Select the Date for Checkout", ToastAndroid.LONG, ToastAndroid.TOP);
+            }
+          } else {
+            ToastAndroid.showWithGravity("You have to Login to Proceed Renting", ToastAndroid.LONG, ToastAndroid.TOP);
+            navigateTo("LoginScreen");
+          }
+        }} />
+      </View>}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {paddingBottom: hp('10%')},
+  container: { paddingBottom: hp('10%'), backgroundColor: COLOR.white },
+  centeredView: {
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
+    zIndex: 15,
+    elevation: 50,
+    marginBottom: hp("5%")
+  },
+  modalView: {
+    minHeight: hp("30%"),
+    backgroundColor: COLOR.black,
+    borderTopLeftRadius: 30,
+    padding: hp("4%"),
+    borderTopRightRadius: 30,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 100,
+  },
+  termTitle: {
+    color: COLOR.white,
+    fontWeight: "bold",
+    fontSize: FONTSIZE.xll
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  },
+  termsButtonWrapper: {
+    marginVertical: hp("1%"),
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between"
+  }
 });
 
 export default Rent;

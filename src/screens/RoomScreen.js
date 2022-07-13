@@ -5,16 +5,24 @@ import {
   FlatList,
   ScrollView,
   Image,
+  TouchableOpacity,
+  ToastAndroid
 } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import SearchInput from '../components/SearchInput';
 import Room from '../components/Room';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
+import { getAllProducts } from '../apis/product';
+import { useDispatch, useSelector } from 'react-redux';
+import { setLocationData } from "../redux/actions/product";
+import Loader from '../components/common/Loader';
+import { showDefaultErrorAlert } from '../global/global';
 
 const RoomScreen = () => {
+
   const roomData = [
     {
       id: '1',
@@ -77,18 +85,48 @@ const RoomScreen = () => {
       img: require('../assets/images/map_below_house.png'),
     },
   ];
+
+  const dispatch = useDispatch();
+
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    (async function getLocationData() {
+      let data = { type: "LOCATION" };
+      setLoading(true);
+      await getAllProducts(data).then((res) => {
+        if (res) {
+          console.log("FROM ROOM SCREEN", res.data.data);
+          dispatch(setLocationData(res.data.data));
+          setLoading(false);
+        }
+      }).catch((err) => {
+        if (err) {
+          showDefaultErrorAlert();
+          setLoading(false);
+        }
+      });
+    })();
+  }, []);
+
+  const location = useSelector((st) => st.product.location);
+
+  console.log("LOC", location);
+
+
   return (
     <View style={{ backgroundColor: 'white' }}>
       <SearchInput />
-      <FlatList
+      {loading ? <Loader /> : <FlatList
         numColumns={1}
         ListHeaderComponent={ListHeaderComponent}
         showsHorizontalScrollIndicator={false}
-        data={roomData}
+        data={location}
         renderItem={({ item }) => {
-          return <Room item={item} key={item.id} />;
+          return <Room item={item} key={item._id} />;
         }}
-      />
+      />}
+
     </View>
   );
 };
@@ -97,13 +135,16 @@ export default RoomScreen;
 
 const ListHeaderComponent = () => {
   return (
-    <View style={{ paddingBottom: 20, paddingTop: 70 }}>
-      <Image source={require('../assets/images/map.png')} style={styles.img1} />
-      <Image
-        source={require('../assets/images/map_location.png')}
-        style={styles.img2}
-      />
-    </View>
+    <TouchableOpacity onPress={() => { ToastAndroid.showWithGravity("Map Feature will be avaiable in next update", ToastAndroid.LONG, ToastAndroid.TOP); }}>
+
+      <View style={{ paddingBottom: 20, paddingTop: 70 }}>
+        <Image source={require('../assets/images/map.png')} style={styles.img1} />
+        <Image
+          source={require('../assets/images/map_location.png')}
+          style={styles.img2}
+        />
+      </View>
+    </TouchableOpacity>
   );
 };
 

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, ToastAndroid } from 'react-native';
 import {
   heightPercentageToDP,
   heightPercentageToDP as hp,
@@ -24,50 +24,6 @@ const headerContent = {
   },
 };
 
-const data = [
-  {
-    id: '1',
-    date: '2022.05.26',
-    text: '총 수량 1',
-    btnText: '총총수량',
-    arrowText: '수량총총',
-    items: [
-      {
-        img: require('../assets/images/tambu.png'),
-        text1: '홍천 보리울 캠핑장',
-        text2: '예약번호',
-        text3: 'ORD20220718-203094',
-        text4: '05.06(화) - 05.06(화) 1박 2일',
-        text5: '체크인 15:00 | 체크아웃 11:00',
-      },
-      {
-        img: require('../assets/images/tambu.png'),
-        text1: '홍천 보리울 캠핑장',
-        text2: '예약번호',
-        text3: 'ORD20220718-203094',
-        text4: '05.06(화) - 05.06(화) 1박 2일',
-        text5: '체크인 15:00 | 체크아웃 11:00',
-      },
-    ],
-  },
-  {
-    id: '2',
-    date: '2021.01.06',
-    text: '총 수량 2',
-    btnText: '총총수량',
-    arrowText: '수량총총',
-    items: [
-      {
-        img: require('../assets/images/tambu.png'),
-        text1: '홍천 보리울 캠핑장',
-        text2: '예약번호',
-        text3: 'ORD20220718-203094',
-        text4: '05.06(화) - 05.06(화) 1박 2일',
-        text5: '체크인 15:00 | 체크아웃 11:00',
-      },
-    ],
-  },
-];
 
 const RoomReservationListScreen = () => {
 
@@ -128,7 +84,11 @@ const Comp2 = ({ btnText }) => {
   return (
     <View style={[styles.compView, { paddingBottom: hp('3%') }]}>
       <Text style={styles.comp2Text1}>{btnText}</Text>
-      <Text style={styles.comp2Text2}>View ></Text>
+      <TouchableOpacity onPress={() => {
+        ToastAndroid.showWithGravity("This feature will be available in next update", ToastAndroid.LONG, ToastAndroid.TOP);
+      }}>
+        <Text style={styles.comp2Text2}>View ></Text>
+      </TouchableOpacity>
     </View>
   );
 };

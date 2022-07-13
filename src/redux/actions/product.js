@@ -8,3 +8,9 @@ export function setProductData(data) {
 }
 
 
+export function setLocationData(data) {
+    return (dispatch, getState) => {
+        dispatch({ type: PRODUCT.SET_ALL_LOCATION, payload: data });
+    };
+}
+

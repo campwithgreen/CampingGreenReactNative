@@ -11,6 +11,7 @@ import SecondScreen1 from '../components/SecondScreen1';
 import SecondScreen2 from '../components/SecondScreen2';
 import Footer from '../components/Footer';
 import CustomButton from '../components/common/CustomButton';
+import { useSelector } from 'react-redux';
 
 const headerContent = {
   leftItemContents: {
@@ -30,12 +31,13 @@ const headerContent = {
   },
 };
 const SecondScreen = () => {
-  const { container } = styles
+  const { container } = styles;
+  const selected_subLocation = useSelector((st) => st.common.selected_sub_location);
   return (
     <View style={container}>
       <Header headerContent={headerContent} />
       <ScrollView>
-        <Carousel />
+        <Carousel carouselData={selected_subLocation.carousel} />
         <Text
           style={[
             styles.text1,
@@ -46,10 +48,10 @@ const SecondScreen = () => {
               paddingHorizontal: wp('5%'),
             },
           ]}>
-          글램핑 A
+          {selected_subLocation.title}
         </Text>
         <Text style={[styles.text2, { paddingHorizontal: wp('5%') }]}>
-          수영장과 가장가까운 객실입니다
+          {selected_subLocation.description}
         </Text>
         <View style={styles.border1}></View>
         <Text
@@ -79,20 +81,41 @@ const SecondScreen = () => {
         <SecondScreen1 t1="기준차량" t2="총 1대" />
         <SecondScreen1 t1="차량 초과요금" t2="14,000" />
         <View style={styles.border1}></View>
-        <Text
-          style={[
-            styles.text1,
-            { paddingHorizontal: wp('5%'), paddingBottom: hp('3%') },
-          ]}>
-          추가 옵션
-        </Text>
-        <View style={styles.view1}>
+
+        {selected_subLocation.allFeatures.map((allFeature) => {
+          return <View>
+            <Text
+              style={[
+                styles.text1,
+                { paddingHorizontal: wp('5%'), paddingBottom: hp('3%') },
+              ]}>
+              {allFeature.add_feature_title}
+            </Text>
+            <View style={styles.view1}>
+              <Text style={styles.text2}>인원추가 요금</Text>
+              <Text style={[styles.text2, { textAlign: 'right', lineHeight: 24 }]}>
+                성인 22,000{'\n'}아동 22,000{'\n'}유아 22,000
+              </Text>
+            </View>
+
+            <View style={styles.border2}></View>
+            <View style={styles.view1}>
+              <Text style={styles.text2}>바비큐 추가</Text>
+              <Text></Text>
+              <Text style={[styles.text2, { textAlign: 'right', lineHeight: 24 }]}>
+                숯불 포함 15,000{'\n'}숯불 미포함 10,000
+              </Text>
+            </View>
+          </View>;
+        })}
+        {/* <View style={styles.view1}>
           <Text style={styles.text2}>인원추가 요금</Text>
           <Text></Text>
           <Text style={[styles.text2, { textAlign: 'right', lineHeight: 24 }]}>
             성인 22,000{'\n'}아동 22,000{'\n'}유아 22,000
           </Text>
         </View>
+
         <View style={styles.border2}></View>
         <View style={styles.view1}>
           <Text style={styles.text2}>바비큐 추가</Text>
@@ -100,7 +123,10 @@ const SecondScreen = () => {
           <Text style={[styles.text2, { textAlign: 'right', lineHeight: 24 }]}>
             숯불 포함 15,000{'\n'}숯불 미포함 10,000
           </Text>
-        </View>
+        </View> */}
+
+
+
         <View style={styles.border2}></View>
         <Text style={[styles.text2, { paddingHorizontal: wp('5%') }]}>
           추가 옵션으로 발생하는 요금은 현장에서 결제해주세요

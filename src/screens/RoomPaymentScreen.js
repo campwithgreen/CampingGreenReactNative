@@ -24,6 +24,9 @@ import moment from 'moment';
 import { checkoutCart } from '../apis/cart';
 import { showDefaultErrorAlert } from '../global/global';
 import { navigateTo } from '../navigation/utils/RootNavigation';
+import FONTSIZE from '../constants/fontSize';
+import globalStyle from '../global/globalStyle';
+import { setCurrentCheckoutCartDetails } from '../redux/actions/common';
 
 
 const Input = ({ t1, t2, onChangeText, keyboardType, defaultValue, maxLength }) => {
@@ -66,6 +69,8 @@ const RoomPaymentScreen = () => {
   };
   const [flag, setFlag] = useState({ p1: true, p2: true, p3: true, p4: true });
 
+  console.log("FLAG", flag);
+
   const Comp = ({ t1, t2, p }) => {
     return (
       <View
@@ -93,8 +98,7 @@ const RoomPaymentScreen = () => {
   const user_name = useSelector((st) => st.oauth?.user_data?.data?.firstName);
 
 
-  console.log(user_name);
-
+  const dispatch = useDispatch();
   const [name, setName] = useState(user_name);
   const [phoneNumber, setPhoneNumber] = useState(phone_number);
   const [address, setAddress] = useState(null);
@@ -106,51 +110,56 @@ const RoomPaymentScreen = () => {
 
   const handleProceedCheckout = async () => {
 
-    let shipping_data = {
-      "name": name,
-      "phoneNumber": `+91${phoneNumber}`,
-      "address": address,
-      "remarks": remarks
-    };
 
-    let query = {
-      cartId: current_cart_details._id
-    };
+    if (flag.p1) {
+      let shipping_data = {
+        "name": name,
+        "phoneNumber": `+91${phoneNumber}`,
+        "address": address,
+        "remarks": remarks
+      };
 
-    let mainPayload = {
-      items: current_cart_details.items,
-      shipping_data: shipping_data
-    };
+      let query = {
+        cartId: current_cart_details._id
+      };
 
-    console.log("MP", mainPayload);
+      let mainPayload = {
+        items: current_cart_details.items,
+        shipping_data: shipping_data
+      };
 
-    if (name) {
-      if (phoneNumber) {
-        if (address) {
-          if (remarks) {
-            await checkoutCart(mainPayload, query).then((res) => {
-              if (res) {
-                console.log(res.data);
-                navigateTo("ThirdScreen");
-              }
-            }).catch((err) => {
-              if (err) {
-                showDefaultErrorAlert();
-              }
-            });
+      console.log("MP", mainPayload);
+
+      if (name) {
+        if (phoneNumber) {
+          if (address) {
+            if (remarks) {
+              await checkoutCart(mainPayload, query).then((res) => {
+                if (res) {
+                  console.log(res.data);
+                  dispatch(setCurrentCheckoutCartDetails(res.data.data));
+                  navigateTo("ThirdScreen");
+                }
+              }).catch((err) => {
+                if (err) {
+                  showDefaultErrorAlert();
+                }
+              });
+            } else {
+              ToastAndroid.showWithGravity("Pls enter the remarks", ToastAndroid.SHORT, ToastAndroid.TOP);
+            }
           } else {
-            ToastAndroid.showWithGravity("Pls enter the remarks", ToastAndroid.SHORT, ToastAndroid.LONG);
+            ToastAndroid.showWithGravity("Pls enter the address", ToastAndroid.SHORT, ToastAndroid.TOP);
           }
         } else {
-          ToastAndroid.showWithGravity("Pls enter the address", ToastAndroid.SHORT, ToastAndroid.LONG);
+          ToastAndroid.showWithGravity("Pls enter the phoneNumber", ToastAndroid.SHORT, ToastAndroid.TOP);
         }
       } else {
-        ToastAndroid.showWithGravity("Pls enter the phoneNumber", ToastAndroid.SHORT, ToastAndroid.LONG);
+        ToastAndroid.showWithGravity("Pls enter the name", ToastAndroid.SHORT, ToastAndroid.TOP);
       }
     } else {
-      ToastAndroid.showWithGravity("Pls enter the name", ToastAndroid.SHORT, ToastAndroid.LONG);
+      ToastAndroid.showWithGravity("Pls Check the Bank Deposit Account Details", ToastAndroid.SHORT, ToastAndroid.TOP);
     }
-
   };
 
 
@@ -241,13 +250,58 @@ const RoomPaymentScreen = () => {
             />
           </View>
           <View style={styles.border1}></View>
+          {current_cart_details?.items[0]?.itemId.type === "PRODUCT" && <View style={[globalStyle.mainContainerWrapper]}>
+            <View style={{ marginVertical: hp("1%") }}>
+              <Text style={{
+                fontSize: FONTSIZE.xl,
+                color: COLOR.black,
+                fontWeight: "900"
+              }}>상품 정보</Text>
+            </View>
+            <View>
+              {current_cart_details?.items.map((cart) => {
+                let directItem = cart?.itemId;
+                return <View>
+                  <View style={{
+                    display: "flex", justifyContent: "space-between", flexDirection: "row", backgroundColor: COLOR.lgrey,
+                    minHeight: hp("5%"), borderTopEndRadius: 10,
+                    borderTopLeftRadius: 10,
+                    padding: 10
+                  }}>
+                    <View><Text style={styles.comp3Text1}>{directItem.title}</Text></View>
+                    <View><Text style={styles.comp3Text1}>Shipping Charge NA</Text></View>
+                  </View>
+                  <View style={styles.comp3View}>
+                    <Image source={{ uri: directItem.carousel[0] }} style={styles.comp3Img} />
+                    <View style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <Text style={styles.comp3Text1}>{directItem.title}</Text>
+                      <View>
+                        <Text style={[styles.comp3Text2, { paddingBottom: hp('0.5%') }]}>
+                          {cart?.units * directItem.price}원
+                        </Text>
+                      </View>
+                      <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "70%" }}>
+                        <View>
+                          <Text style={styles.comp3Text2}>{`수량 ${cart?.units}개`}</Text>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>;
+
+
+              })}
+            </View>
+          </View>}
+
+          <View style={styles.border1}></View>
           <View style={styles.view1}>
             <Text style={styles.text2}>최종 결제 금액</Text>
             <Text></Text>
             <Text style={[styles.text2, { color: '#55C595' }]}>{current_cart_details?.totalAmount}원</Text>
           </View>
           <Text style={[styles.ph1, { paddingTop: hp('5%') }]}>
-            <Text style={styles.text2}>-2022.05.20 23:59:59</Text>
+            <Text style={styles.text2}>-{moment(new Date(current_cart_details?.items[0]?.startDate).setDate(new Date(current_cart_details?.items[0]?.startDate).getDate() - 1)).utc().format('DD-MM-YYYY')} 23:59:59</Text>
             <Text>까지 결제(입금)되지 않으면 예약이 자동취소 됩니다.</Text>
           </Text>
           <View style={styles.border1}></View>
@@ -360,5 +414,57 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: wp('100%'),
     bottom: 0,
+  },
+  compView: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  comp1Text1: {
+    fontWeight: 'bold',
+    fontSize: FONTSIZE.xlll,
+    color: COLOR.black,
+  },
+  comp1Text2: {
+    fontWeight: 'bold',
+    color: '#1B1D1F',
+  },
+  comp2Text1: {
+    fontWeight: 'bold',
+    color: 'red',
+    borderWidth: 1,
+    borderColor: 'red',
+    paddingHorizontal: wp('2%'),
+    paddingVertical: wp('1%'),
+    textAlign: 'center',
+    textAlignVertical: 'center',
+  },
+  comp2Text2: {
+    fontWeight: 'bold',
+    color: 'green',
+  },
+  comp3View: {
+    display: 'flex',
+    flexDirection: 'row',
+    borderBottomWidth: 2,
+    borderBottomColor: 'lightgrey',
+    paddingVertical: hp('3.5%'),
+    marginBottom: hp('3.5%'),
+    width: wp("100%")
+  },
+  comp3Img: {
+    height: 100,
+    width: 100,
+    marginRight: wp('5%'),
+  },
+  comp3Text1: {
+    fontWeight: 'bold',
+    fontSize: FONTSIZE.l,
+    color: COLOR.black
+  },
+  comp3Text2: {
+    fontWeight: 'bold',
+    color: 'lightgrey',
   },
 });

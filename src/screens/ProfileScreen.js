@@ -88,12 +88,12 @@ export const ProfileScreen = (props) => {
                                     }
                                 </View>
                                 {isLogin && <View style={textWrapperIII}>
+                                    <TouchableOpacity>
+                                        <Text style={[statusText, greyColor]}>김그린 님</Text>
+                                    </TouchableOpacity>
                                     <TouchableOpacity onPress={() => {
                                         navigateTo("RoomReservationListScreen");
                                     }}>
-                                        <Text style={[statusText, greyColor]}>김그린 님</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity>
                                         <Text style={statusText}>1건 입금대기</Text>
                                     </TouchableOpacity>
                                 </View>}

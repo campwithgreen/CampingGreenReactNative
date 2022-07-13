@@ -124,10 +124,10 @@ export default function CustomCalendar() {
                     selectDate(day);
                 }}
             />
-            <View style={listerWrapper}>
+            {rentingDate && returningDate && <View style={listerWrapper}>
                 <DateLister type={"배송도착 예정일"} date={rentDisplayStartDate} />
                 <DateLister type={"반납수거 예정일"} date={dueDisplayDate} />
-            </View>
+            </View>}
         </View>
     );
 }

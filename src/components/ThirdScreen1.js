@@ -35,15 +35,15 @@ const ThirdScreen1 = (props) => {
         </Text>
       </Text>
       {currentCartData?.items.map((item) => {
-        return <View>
+        return <View key={item._id}>
           <View style={styles.view2}>
             <Text style={styles.text2}>예약자</Text>
             <Text style={styles.text2}>총계</Text>
             <Text style={styles.text2}>예약기간</Text>
           </View>
           <View style={styles.view2}>
-            <Text style={[styles.text2, { color: '#E8EBED' }]}>{item._id}</Text>
-            <Text style={[styles.text2, { color: '#E8EBED' }]}>{currentCartData.totalAmount}</Text>
+            <Text style={[styles.text2, { color: '#E8EBED' }]}>{item?.itemId?.title}</Text>
+            <Text style={[styles.text2, { color: '#E8EBED' }]}>{item.unit * item?.itemId?.price}</Text>
             <Text style={[styles.text2, { color: '#E8EBED' }]}>{moment(item.startData).utc().format('MM-DD-YYYY')}-{moment(item.endData).utc().format('MM-DD-YYYY')}</Text>
           </View>
         </View>;

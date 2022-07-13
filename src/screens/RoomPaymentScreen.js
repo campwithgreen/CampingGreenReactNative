@@ -25,6 +25,32 @@ import { checkoutCart } from '../apis/cart';
 import { showDefaultErrorAlert } from '../global/global';
 import { navigateTo } from '../navigation/utils/RootNavigation';
 
+
+const Input = ({ t1, t2, onChangeText, keyboardType, defaultValue, maxLength }) => {
+  return (
+    <View style={styles.view2}>
+      <Text
+        style={{
+          fontSize: RFPercentage(2.1),
+          color: '#454C53',
+          fontWeight: '600',
+        }}>
+        {t1}
+      </Text>
+      <TextInput
+        style={[styles.textinput1, { paddingLeft: wp('5%'), fontWeight: 'bold' }]}
+        placeholder={t2}
+        maxLength={maxLength}
+        keyboardType={keyboardType}
+        onChangeText={(value) => {
+          onChangeText(value);
+        }}
+        defaultValue={defaultValue}
+      />
+    </View>
+  );
+};
+
 const RoomPaymentScreen = () => {
   const headerContent = {
     middleItemContents: {
@@ -63,8 +89,14 @@ const RoomPaymentScreen = () => {
     );
   };
 
-  const [name, setName] = useState(null);
-  const [phoneNumber, setPhoneNumber] = useState(null);
+  const phone_number = useSelector((st) => st.oauth?.user_data?.data?.phoneNumber?.slice(3));
+  const user_name = useSelector((st) => st.oauth?.user_data?.data?.firstName);
+
+
+  console.log(user_name);
+
+  const [name, setName] = useState(user_name);
+  const [phoneNumber, setPhoneNumber] = useState(phone_number);
   const [address, setAddress] = useState(null);
   const [remarks, setRemarks] = useState(null);
 
@@ -90,11 +122,12 @@ const RoomPaymentScreen = () => {
       shipping_data: shipping_data
     };
 
+    console.log("MP", mainPayload);
+
     if (name) {
       if (phoneNumber) {
         if (address) {
           if (remarks) {
-            console.log("ALL FIELDS");
             await checkoutCart(mainPayload, query).then((res) => {
               if (res) {
                 console.log(res.data);
@@ -124,6 +157,10 @@ const RoomPaymentScreen = () => {
   const current_cart_details = useSelector((st) => st.common.current_cart_details);
 
 
+  console.log("WF", phone_number);
+
+
+
   return (
     <View style={{ backgroundColor: 'white', marginBottom: hp("15%") }}>
       <Header headerContent={headerContent} />
@@ -134,7 +171,7 @@ const RoomPaymentScreen = () => {
             대여 기간
           </Text>
           {current_cart_details?.items.map((cart) => {
-            return <View>
+            return <View key={cart?._id}>
               <Div t1="대여 시작일" t2={moment(cart.startDate).utc().format('MM-DD-YYYY')} />
               <Div t1="대여 시작일" t2={moment(cart.endDate).utc().format('MM-DD-YYYY')} />
             </View>;
@@ -143,10 +180,10 @@ const RoomPaymentScreen = () => {
           <Text style={[styles.text1, styles.ph1, { paddingBottom: hp('3%') }]}>
             주문자
           </Text>
-          <Input t1="수령인" t2="수령인" keyboardType="email-address" onChangeText={(value) => {
+          <Input t1="수령인" t2="수령인" keyboardType="email-address" defaultValue={name} onChangeText={(value) => {
             setName(value);
           }} />
-          <Input t1="연락처" t2="연락처" keyboardType="numeric" onChangeText={(value) => {
+          <Input t1="연락처" t2="연락처" maxLength={10} keyboardType="numeric" defaultValue={phoneNumber} onChangeText={(value) => {
             setPhoneNumber(value);
           }} />
           {/* <View style={styles.view2}>
@@ -207,7 +244,7 @@ const RoomPaymentScreen = () => {
           <View style={styles.view1}>
             <Text style={styles.text2}>최종 결제 금액</Text>
             <Text></Text>
-            <Text style={[styles.text2, { color: '#55C595' }]}>130,000원</Text>
+            <Text style={[styles.text2, { color: '#55C595' }]}>{current_cart_details?.totalAmount}원</Text>
           </View>
           <Text style={[styles.ph1, { paddingTop: hp('5%') }]}>
             <Text style={styles.text2}>-2022.05.20 23:59:59</Text>
@@ -263,28 +300,7 @@ const Div = ({ t1, t2, c1, c2 }) => {
     </View>
   );
 };
-const Input = ({ t1, t2, onChangeText, keyboardType }) => {
-  return (
-    <View style={styles.view2}>
-      <Text
-        style={{
-          fontSize: RFPercentage(2.1),
-          color: '#454C53',
-          fontWeight: '600',
-        }}>
-        {t1}
-      </Text>
-      <TextInput
-        style={[styles.textinput1, { paddingLeft: wp('5%'), fontWeight: 'bold' }]}
-        placeholder={t2}
-        keyboardType={keyboardType}
-        onChangeText={(value) => {
-          onChangeText(value);
-        }}
-      />
-    </View>
-  );
-};
+
 export default RoomPaymentScreen;
 
 const styles = StyleSheet.create({
@@ -293,15 +309,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: wp('5%'),
-    paddingBottom: hp('0.5%'),
   },
   view2: {
+
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: wp('5%'),
-    paddingBottom: hp('2%'),
   },
   text1: {
     fontWeight: 'bold',

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Button, ToastAndroid } from 'react-native';
 import Header from '../layout/Header';
 import { goBack, navigateTo } from '../navigation/utils/RootNavigation';
@@ -8,6 +8,9 @@ import COLOR from '../constants/colors';
 import FONTSIZE from '../constants/fontSize';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../redux/actions/oauth';
+import { getUserCartHistory } from '../apis/cart';
+import { showDefaultErrorAlert } from '../global/global';
+import { setUserCartHistory } from '../redux/actions/common';
 
 const headerContent = {
     leftItemContents: {
@@ -42,11 +45,27 @@ export const ProfileScreen = (props) => {
         secondContainer, secondTextWrapper, secondText,
         secondTextII, secondParentWrapper, buttonWrapper, innerContainer, parentContainer } = styles;
 
-
     const handleLogout = () => {
         dispatch(logout());
         ToastAndroid.showWithGravity("Logged Out Successfully", ToastAndroid.LONG, ToastAndroid.TOP);
     };
+
+    useEffect(() => {
+        if (isLogin) {
+            (async function getCartHistory() {
+                await getUserCartHistory().then((res) => {
+                    if (res) {
+                        console.log("USer History", res.data);
+                        dispatch(setUserCartHistory(res.data.data));
+                    }
+                }).catch((err) => {
+                    if (err) {
+                        showDefaultErrorAlert();
+                    }
+                });
+            })();
+        }
+    }, [isLogin]);
 
     return (
         <View style={parentContainer}>
@@ -68,10 +87,16 @@ export const ProfileScreen = (props) => {
                                         <Text style={companyText}>{userName.toUpperCase() || "김그린 님"}</Text>
                                     }
                                 </View>
-                                <View style={textWrapperIII}>
-                                    <Text style={[statusText, greyColor]}>김그린 님</Text>
-                                    <Text style={statusText}>1건 입금대기</Text>
-                                </View>
+                                {isLogin && <View style={textWrapperIII}>
+                                    <TouchableOpacity onPress={() => {
+                                        navigateTo("RoomReservationListScreen");
+                                    }}>
+                                        <Text style={[statusText, greyColor]}>김그린 님</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity>
+                                        <Text style={statusText}>1건 입금대기</Text>
+                                    </TouchableOpacity>
+                                </View>}
                             </View>
 
                         </View>

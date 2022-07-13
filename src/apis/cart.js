@@ -29,3 +29,7 @@ export function checkoutCart(data, query) {
     let endpoint = `v2/cart/checkoutcart?${queryString}`;
     return axiosInstance.post(endpoint, data);
 }
+
+export function getUserCartHistory() {
+    return axiosInstance.get("v2/cart");
+}

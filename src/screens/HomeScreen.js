@@ -16,7 +16,6 @@ import {
 import { RFPercentage } from 'react-native-responsive-fontsize';
 import Carousel from '../components/Carousel';
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../redux/actions/oauth';
 import { navigateTo } from '../navigation/utils/RootNavigation';
 
 const HomeScreenDetailData = [
@@ -42,12 +41,12 @@ const headerContent = {
   leftItemContents: {
     type: 'text',
     content: 'CAMPING GREEEN',
-    navigateScreen: 'RoomScreen',
+    navigateScreen: 'LoginScreen',
   },
   rightItemContents: {
     type: 'image',
     content: require('../assets/images/cart.png'),
-    navigateScreen: 'ReviewScreen',
+    navigateScreen: 'RegisterScreen',
   },
 };
 
@@ -66,50 +65,51 @@ export const HomeScreen = props => {
           style={{
             marginHorizontal: wp('5%'),
           }}>
-          <View
-            style={{
-              backgroundColor: '#fff',
-              marginVertical: hp('2.5%'),
-              padding: wp('5%'),
-              borderRadius: 10,
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
+          <TouchableOpacity
+            onPress={() => {
+              navigateTo("Heart");
             }}>
-            <TouchableOpacity
-              onPress={() => {
-                dispatch(login());
+            <View
+              style={{
+                backgroundColor: '#fff',
+                marginVertical: hp('2.5%'),
+                padding: wp('5%'),
+                borderRadius: 10,
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}>
+
               <Image
                 source={require('../assets/images/image_tent.png')}
                 style={{ marginRight: hp('5%') }}
               />
-            </TouchableOpacity>
-            <View style={{ paddingRight: hp('5%') }}>
-              <View style={{ paddingBottom: hp('.7%') }}>
-                <Text
-                  style={{
-                    color: '#1B1D1F',
-                    fontSize: RFPercentage(2.1),
-                    fontWeight: 'bold',
-                  }}>
-                  비싸고 무거운 캠핑장비,{'\n'}이제 사지말고 대여하세요
-                </Text>
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text
-                  style={{
-                    color: '#454C53',
-                    fontSize: RFPercentage(1.8),
-                    fontFamily: 'Pretendard',
-                  }}>
-                  용품대여 홈으로 이동
-                </Text>
-                <Image source={require('../assets/images/icon_movepage.png')} />
+              <View style={{ paddingRight: hp('5%') }}>
+                <View style={{ paddingBottom: hp('.7%') }}>
+                  <Text
+                    style={{
+                      color: '#1B1D1F',
+                      fontSize: RFPercentage(2.1),
+                      fontWeight: 'bold',
+                    }}>
+                    비싸고 무거운 캠핑장비,{'\n'}이제 사지말고 대여하세요
+                  </Text>
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text
+                    style={{
+                      color: '#454C53',
+                      fontSize: RFPercentage(1.8),
+                      fontFamily: 'Pretendard',
+                    }}>
+                    용품대여 홈으로 이동
+                  </Text>
+                  <Image source={require('../assets/images/icon_movepage.png')} />
+                </View>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
           {HomeScreenDetailData.map(item => {
             return (
               <HomeScreenDetail key={item.id} HomeScreenDetailData={item} />
@@ -157,7 +157,12 @@ export const HomeScreen = props => {
                 </Text>
               </View>
             </View>
-            <Image source={require('../assets/images/image_tent.png')} />
+            <TouchableOpacity
+              onPress={() => {
+                navigateTo('Rent');
+              }}>
+              <Image source={require('../assets/images/image_tent.png')} />
+            </TouchableOpacity>
           </View>
           <View
             style={{

@@ -14,6 +14,7 @@ import RoomScreen from '../screens/RoomScreen';
 import ProductShoppingBagScreen from '../screens/ProductShoppingBagScreen';
 import RoomPaymentScreen from '../screens/RoomPaymentScreen';
 import { Product } from '../screens/Product';
+import RoomReservationListScreen from '../screens/RoomReservationListScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -134,7 +135,7 @@ export const HomeTabNavigation = props => {
       <Tab.Screen name="Heart" component={Product} />
       <Tab.Screen name="Location" component={RoomScreen} />
       <Tab.Screen name="Chat" component={ChatScreen} />
-      <Tab.Screen name="Profile" component={RoomPaymentScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
 };

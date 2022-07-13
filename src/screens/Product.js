@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   FlatList,
+
 } from 'react-native';
 import Header from '../layout/Header';
 import {
@@ -14,10 +15,16 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import ProductDetail from '../components/ProductDetail';
-import {RFPercentage} from 'react-native-responsive-fontsize';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 import Carousel from '../components/Carousel';
-import {useDispatch, useSelector} from 'react-redux';
-import {login} from '../redux/actions/oauth';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllProducts } from '../apis/product';
+import { setProductData } from '../redux/actions/product';
+import { showDefaultErrorAlert } from '../global/global';
+import Loader from '../components/common/Loader';
+import FONTSIZE from '../constants/fontSize';
+import globalStyle from '../global/globalStyle';
+import COLOR from '../constants/colors';
 
 const headerContent = {
   leftItemContents: {
@@ -33,22 +40,49 @@ const headerContent = {
 };
 
 export const Product = props => {
-  const {container} = styles;
+  const { container } = styles;
+  const dispatch = useDispatch();
+
+  const [loading, setLoading] = useState(false);
+
+  const st = useSelector((st) => st);
+  const product = useSelector((st) => st.product?.product);
+  console.log("STORE", st);
+
+
+  useEffect(() => {
+    (async function getAllProductsData() {
+      let data = { type: "PRODUCT" };
+      setLoading(true);
+      await getAllProducts(data).then((res) => {
+        if (res) {
+          dispatch(setProductData(res.data.data));
+          setLoading(false);
+        }
+      }).catch((err) => {
+        if (err) {
+          showDefaultErrorAlert();
+          setLoading(false);
+        }
+      });
+    })();
+  }, []);
 
   return (
     <View style={container}>
       <Header headerContent={headerContent} />
       <ScrollView>
-        <View style={{marginHorizontal: wp('5%')}}>
-          <Text
+        <View style={[globalStyle.mainContainerWrapper, { marginVertical: hp("4%") }]}>
+          {!loading && <Text
             style={{
-              color: '#1B1D1F',
-              fontSize: RFPercentage(2.5),
+              fontSize: FONTSIZE.xl,
               fontWeight: 'bold',
             }}>
-            전체 214
-          </Text>
-          <ProductDetail />
+            전체 {product.length}
+          </Text>}
+          {loading ?
+            <Loader /> :
+            <ProductDetail product={product} />}
         </View>
       </ScrollView>
     </View>
@@ -56,5 +90,5 @@ export const Product = props => {
 };
 
 const styles = StyleSheet.create({
-  container: {paddingBottom: hp('10%')},
+  container: { backgroundColor: COLOR.white },
 });

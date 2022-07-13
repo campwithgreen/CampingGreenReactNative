@@ -112,8 +112,9 @@ export default function LoginScreen() {
 
   const handleLogin = async () => {
     console.log(phoneNumber, otp);
+
     let payload = {
-      phoneNumber: `+91${phoneNumber}`,
+      phoneNumber: `+82${phoneNumber}`,
       otp: otp,
     };
     await verifyOtp(payload)
@@ -179,8 +180,14 @@ export default function LoginScreen() {
             </View>
             <View style={form}>
               <View style={inputcontainer}>
-                <Text style={formlabel}>인증번호</Text>
-                <View style={{flexDirection: 'row', width: '100%'}}>
+                <Text style={formlabel}>휴대폰 번호</Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    width: '100%',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
                   <View style={{width: '70%'}}>
                     <TextInput
                       style={{
@@ -188,22 +195,23 @@ export default function LoginScreen() {
                         borderBottomWidth: 1,
                         borderBottomColor: lineColor,
                         width: '100%',
+                        padding: 10,
                       }}
+                      placeholder="-없이 숫자만 입력해주세요"
                       onFocus={() => onFocus()}
                       onBlur={() => onBlur()}
                       keyboardType="number-pad"
                       onChangeText={value => {
                         setPhoneNumber(value);
                       }}
-                      maxLength={10}
+                      maxLength={11}
                     />
                   </View>
                   <TouchableOpacity
                     style={{
                       alignItems: 'flex-end',
                       justifyContent: 'center',
-                      borderBottomWidth: 1,
-                      borderBottomColor: lineColor,
+                      padding: 5,
                       width: '30%',
                     }}
                     onPress={() => {
@@ -223,18 +231,17 @@ export default function LoginScreen() {
                         borderRadius: 5,
                         borderWidth: 1,
                         borderColor: 'grey',
-                        padding: 4,
+                        padding: 5,
                       }}>
-                      <Text>번인증번</Text>
+                      <Text>인증 요청</Text>
                     </View>
                   </TouchableOpacity>
                 </View>
               </View>
               <FormField
-                label="휴대폰 번호"
+                label="인증번호"
                 type="text"
                 keyboardType="numeric"
-                placeholder="-없이 숫자만 입력해주세요"
                 onChange={value => {
                   getValue(value);
                 }}
@@ -242,9 +249,9 @@ export default function LoginScreen() {
               />
               <View style={buttonWrapper}>
                 <Button
-                  title="login"
+                  title="로그인 또는 회원가입"
                   onPress={() => handleLogin()}
-                  color={COLOR.compGreen}
+                  color="#fff"
                   disabled={disableButton()}
                 />
               </View>
@@ -284,5 +291,7 @@ const styles = StyleSheet.create({
   },
   buttonWrapper: {
     marginTop: heightPercentageToDP('25%'),
+    backgroundColor: '#55C595',
+    borderRadius: 7,
   },
 });

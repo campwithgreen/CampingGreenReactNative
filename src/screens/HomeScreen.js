@@ -13,10 +13,10 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import { RFPercentage } from 'react-native-responsive-fontsize';
+import {RFPercentage} from 'react-native-responsive-fontsize';
 import Carousel from '../components/Carousel';
-import { useDispatch, useSelector } from 'react-redux';
-import { navigateTo } from '../navigation/utils/RootNavigation';
+import {useDispatch, useSelector} from 'react-redux';
+import {navigateTo} from '../navigation/utils/RootNavigation';
 
 const HomeScreenDetailData = [
   {
@@ -51,7 +51,7 @@ const headerContent = {
 };
 
 export const HomeScreen = props => {
-  const { container } = styles;
+  const {container} = styles;
   const dispatch = useDispatch();
 
   return (
@@ -64,10 +64,11 @@ export const HomeScreen = props => {
         <View
           style={{
             marginHorizontal: wp('5%'),
+            marginBottom: 40,
           }}>
           <TouchableOpacity
             onPress={() => {
-              navigateTo("Heart");
+              navigateTo('Heart');
             }}>
             <View
               style={{
@@ -80,13 +81,12 @@ export const HomeScreen = props => {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-
               <Image
                 source={require('../assets/images/image_tent.png')}
-                style={{ marginRight: hp('5%') }}
+                style={{marginRight: hp('5%')}}
               />
-              <View style={{ paddingRight: hp('5%') }}>
-                <View style={{ paddingBottom: hp('.7%') }}>
+              <View style={{paddingRight: hp('5%')}}>
+                <View style={{paddingBottom: hp('.7%')}}>
                   <Text
                     style={{
                       color: '#1B1D1F',
@@ -96,7 +96,7 @@ export const HomeScreen = props => {
                     비싸고 무거운 캠핑장비,{'\n'}이제 사지말고 대여하세요
                   </Text>
                 </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   <Text
                     style={{
                       color: '#454C53',
@@ -105,7 +105,9 @@ export const HomeScreen = props => {
                     }}>
                     용품대여 홈으로 이동
                   </Text>
-                  <Image source={require('../assets/images/icon_movepage.png')} />
+                  <Image
+                    source={require('../assets/images/icon_movepage.png')}
+                  />
                 </View>
               </View>
             </View>
@@ -126,8 +128,8 @@ export const HomeScreen = props => {
               alignItems: 'center',
               justifyContent: 'flex-start',
             }}>
-            <View style={{ paddingRight: wp('20%') }}>
-              <View style={{ paddingBottom: hp('1%') }}>
+            <View style={{paddingRight: wp('20%')}}>
+              <View style={{paddingBottom: hp('1%')}}>
                 <Text
                   style={{
                     color: '#55C595',
@@ -136,7 +138,7 @@ export const HomeScreen = props => {
                   캠핑장 제휴문의
                 </Text>
               </View>
-              <View style={{ paddingBottom: hp('1%') }}>
+              <View style={{paddingBottom: hp('1%')}}>
                 <Text
                   style={{
                     color: '#454C53',
@@ -175,18 +177,18 @@ export const HomeScreen = props => {
               alignItems: 'center',
               justifyContent: 'flex-start',
             }}>
-            <View style={{ paddingRight: wp('20%') }}>
+            <View style={{paddingRight: wp('20%')}}>
               <Text
                 style={{
                   color: '#fff',
                   fontSize: RFPercentage(2.1),
                 }}>
-                공간 차지하는 캠핑용품,{'\n'}빌려주고 수익얻기 :)
+                공간만 차지하는 캠핑용품,{'\n'}빌려주고 수익얻기 :)
               </Text>
             </View>
             <TouchableOpacity
               onPress={() => {
-                navigateTo('Product', { id: 10 });
+                navigateTo('Product', {id: 10});
               }}>
               <Image source={require('../assets/images/image_tent.png')} />
             </TouchableOpacity>
@@ -198,5 +200,5 @@ export const HomeScreen = props => {
 };
 
 const styles = StyleSheet.create({
-  container: { paddingBottom: hp('10%') },
+  container: {paddingBottom: hp('10%')},
 });

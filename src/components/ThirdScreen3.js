@@ -9,8 +9,8 @@ import React from 'react';
 const ThirdScreen3 = () => {
   return (
     <View style={styles.view1}>
-      <Text style={styles.btn1}>배송정보</Text>
-      <Text style={styles.btn2}>배송정보</Text>
+      <Text style={styles.btn1}>예약 취소</Text>
+      <Text style={styles.btn2}>주문 목록</Text>
     </View>
   );
 };

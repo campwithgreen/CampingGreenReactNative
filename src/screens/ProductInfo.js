@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   ImageBackground,
   ToastAndroid,
-  Button
+  Button,
 } from 'react-native';
 import Header from '../layout/Header';
 import {
@@ -17,22 +17,20 @@ import {
   widthPercentageToDP,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import { RFPercentage } from 'react-native-responsive-fontsize';
+import {RFPercentage} from 'react-native-responsive-fontsize';
 import Carousel from '../components/Carousel';
-import { Dimensions, StatusBar } from 'react-native';
+import {Dimensions, StatusBar} from 'react-native';
 import FONTSIZE from '../constants/fontSize';
-import COLOR from "../constants/colors";
-import { navigateTo } from '../navigation/utils/RootNavigation';
+import COLOR from '../constants/colors';
+import {navigateTo} from '../navigation/utils/RootNavigation';
 import Footer from '../components/Footer';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import CustomButton from '../components/common/CustomButton';
-import ProductShoppingBag from "../components/ProductShoppingBag";
+import ProductShoppingBag from '../components/ProductShoppingBag';
 import Counter from '../components/common/Counter';
-import { createOrUpdateCart } from '../apis/cart';
-import { showDefaultErrorAlert } from '../global/global';
-import { setCurrentCheckoutCartDetails } from '../redux/actions/common';
-
-
+import {createOrUpdateCart} from '../apis/cart';
+import {showDefaultErrorAlert} from '../global/global';
+import {setCurrentCheckoutCartDetails} from '../redux/actions/common';
 
 const headerContent = {
   leftItemContents: {
@@ -47,14 +45,13 @@ const headerContent = {
   },
 };
 
-
 export const ProductInfo = props => {
-  const { container } = styles;
-  const selected_item = useSelector((st) => st.common.selected_item);
-  const startDate = useSelector((st) => st.common.start_date);
-  const returnDate = useSelector((st) => st.common.return_date);
-  const isLoggedIn = useSelector((st) => st.oauth.isLogin);
-  const quantity = useSelector((st) => st.common.quantity);
+  const {container} = styles;
+  const selected_item = useSelector(st => st.common.selected_item);
+  const startDate = useSelector(st => st.common.start_date);
+  const returnDate = useSelector(st => st.common.return_date);
+  const isLoggedIn = useSelector(st => st.oauth.isLogin);
+  const quantity = useSelector(st => st.common.quantity);
 
   const item = props.route.params || selected_item;
   const [tabIndex, setTabIndex] = useState(1);
@@ -62,7 +59,12 @@ export const ProductInfo = props => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const dispatch = useDispatch();
+  let today = new Date();
+  const dd = String(today.getDate()).padStart(2, '0');
+  const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  const yyyy = today.getFullYear();
 
+  today = mm + '월' + dd + '일';
 
   const enableCheckout = () => {
     if (startDate && returnDate) {
@@ -71,78 +73,107 @@ export const ProductInfo = props => {
     return false;
   };
 
-
-  const { centeredView, modalView, termTitle, termsButtonWrapper } = styles;
+  const {centeredView, modalView, termTitle, termsButtonWrapper} = styles;
 
   let cartItems = {
-    "items": [
+    items: [
       {
-        "itemId": selected_item._id,
-        "units": quantity,
-        "startDate": startDate,
-        "endDate": returnDate
-      }
-    ]
+        itemId: selected_item._id,
+        units: quantity,
+        startDate: startDate,
+        endDate: returnDate,
+      },
+    ],
   };
 
   const handleCheckout = async () => {
-    console.log("CHCKOUT ITEMS", cartItems);
-    await createOrUpdateCart(cartItems).then((res) => {
-      if (res) {
-        dispatch(setCurrentCheckoutCartDetails(res.data.data));
-        ToastAndroid.showWithGravity("Checkout In Progress", ToastAndroid.SHORT, ToastAndroid.TOP);
-        navigateTo("RoomPaymentScreen");
-      }
-    }).catch((err) => {
-      if (err) {
-        showDefaultErrorAlert();
-      }
-    });
+    console.log('CHCKOUT ITEMS', cartItems);
+    await createOrUpdateCart(cartItems)
+      .then(res => {
+        if (res) {
+          dispatch(setCurrentCheckoutCartDetails(res.data.data));
+          ToastAndroid.showWithGravity(
+            'Checkout In Progress',
+            ToastAndroid.SHORT,
+            ToastAndroid.TOP,
+          );
+          navigateTo('RoomPaymentScreen');
+        }
+      })
+      .catch(err => {
+        if (err) {
+          showDefaultErrorAlert();
+        }
+      });
   };
 
   return (
     <View style={container}>
-      {modalVisible &&
+      {modalVisible && (
         <View style={centeredView}>
           <View style={modalView}>
             <View>
               <Text style={termTitle}>총 상품금액</Text>
               <View style={termsButtonWrapper}>
                 <View>
-                  <Text style={termTitle}>{quantity ? item.price * quantity : item.price}</Text>
+                  <Text style={termTitle}>
+                    {quantity ? item.price * quantity : item.price}
+                  </Text>
                 </View>
                 <View>
                   <Counter />
                 </View>
               </View>
+              <Text
+                style={{
+                  color: COLOR.white,
+                  marginVertical: 15,
+
+                  fontSize: FONTSIZE.xll,
+                }}>
+                무료배송
+              </Text>
               <View style={termsButtonWrapper}>
-                <View style={{ width: "47%" }}>
+                <View
+                  style={{
+                    width: '47%',
+                    borderRadius: 7,
+                    borderWidth: 1,
+                    borderColor: COLOR.compGreen,
+                  }}>
                   <Button
-                    title="Add to Cart"
+                    title="장바구니 답기"
                     onPress={() => {
                       // navigateTo("SecondScreen") // subarea details
-                      navigateTo("ProductShoppingBagScreen"); // order success screen
-                    }
-                    }
-                    color={COLOR.grey}
+                      navigateTo('ProductShoppingBagScreen'); // order success screen
+                    }}
+                    color={COLOR.compGreen}
                   />
                 </View>
-                <View style={{ width: "47%" }}>
+                <View
+                  style={{
+                    width: '47%',
+                    borderRadius: 7,
+                    borderWidth: 1,
+                    backgroundColor: COLOR.compGreen,
+                    borderColor: COLOR.compGreen,
+                  }}>
                   <Button
-                    title="Checkout"
+                    title="바로 대여하기"
                     onPress={() => {
                       // navigateTo("ThirdScreen");//checkout
                       handleCheckout();
                     }}
-                    color={COLOR.compGreen}
+                    color={COLOR.black}
                   />
                 </View>
               </View>
             </View>
           </View>
-        </View>}
+        </View>
+      )}
       <Header headerContent={headerContent} />
-      <ScrollView style={{ marginBottom: hp("5%") }}>
+      <ScrollView style={{marginBottom: hp('5%')}}>
         <View>
           <Carousel carouselData={item.carousel} paginationType="right" />
         </View>
@@ -152,7 +183,7 @@ export const ProductInfo = props => {
             marginTop: wp('5%'),
             display: 'flex',
             justifyContent: 'flex-start',
-            backgroundColor: COLOR.white
+            backgroundColor: COLOR.white,
           }}>
           <View>
             <Text
@@ -186,7 +217,7 @@ export const ProductInfo = props => {
               justifyContent: 'center',
               backgroundColor: COLOR.white,
               elevation: 7,
-              borderRadius: 7
+              borderRadius: 7,
             }}>
             <View
               style={{
@@ -197,18 +228,23 @@ export const ProductInfo = props => {
                 borderRightWidth: 0.5,
               }}>
               <View>
-                <Text style={{ color: '#454C53', fontSize: RFPercentage(2) }}>
+                <Text style={{color: '#454C53', fontSize: RFPercentage(2)}}>
                   대여 시작일
                 </Text>
               </View>
               <View>
-                <TouchableOpacity onPress={() => {
-                  if (isLoggedIn) {
-                    navigateTo("CalendarScreen");
-                  } else {
-                    ToastAndroid.showWithGravity("You have to Login to Proceed with Renting Date", ToastAndroid.LONG, ToastAndroid.TOP);
-                  }
-                }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    if (isLoggedIn) {
+                      navigateTo('CalendarScreen');
+                    } else {
+                      ToastAndroid.showWithGravity(
+                        'You have to Login to Proceed with Renting Date',
+                        ToastAndroid.LONG,
+                        ToastAndroid.TOP,
+                      );
+                    }
+                  }}>
                   <Text
                     style={{
                       color: '#55C595',
@@ -216,7 +252,7 @@ export const ProductInfo = props => {
                       marginTop: wp('.5%'),
                       fontWeight: 'bold',
                     }}>
-                    {startDate || "Select Start Date"}
+                    {startDate || today}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -229,20 +265,24 @@ export const ProductInfo = props => {
                 width: wp('40%'),
                 borderLeftWidth: 0.5,
               }}>
-
               <View>
-                <Text style={{ color: '#454C53', fontSize: RFPercentage(2) }}>
+                <Text style={{color: '#454C53', fontSize: RFPercentage(2)}}>
                   반납 예정일
                 </Text>
               </View>
               <View>
-                <TouchableOpacity onPress={() => {
-                  if (isLoggedIn) {
-                    navigateTo("CalendarScreen");
-                  } else {
-                    ToastAndroid.showWithGravity("You have to Login to Proceed with Renting Date", ToastAndroid.LONG, ToastAndroid.TOP);
-                  }
-                }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    if (isLoggedIn) {
+                      navigateTo('CalendarScreen');
+                    } else {
+                      ToastAndroid.showWithGravity(
+                        'You have to Login to Proceed with Renting Date',
+                        ToastAndroid.LONG,
+                        ToastAndroid.TOP,
+                      );
+                    }
+                  }}>
                   <Text
                     style={{
                       color: '#55C595',
@@ -250,50 +290,81 @@ export const ProductInfo = props => {
                       marginTop: wp('.5%'),
                       fontWeight: 'bold',
                     }}>
-                    {returnDate || "Select Return Date"}
+                    {returnDate || today}
                   </Text>
                 </TouchableOpacity>
-
               </View>
             </View>
           </View>
         </View>
-        <View style={{ marginTop: heightPercentageToDP("5%") }}>
-          <View style={{ display: "flex", flexDirection: "row" }}>
-            <TouchableOpacity onPress={() => { setTabIndex(1); }}>
+        <View style={{marginTop: heightPercentageToDP('5%')}}>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                setTabIndex(1);
+              }}>
               <View
-                style={[{
-                  width: widthPercentageToDP("50%"),
-                  height: heightPercentageToDP("10%"),
-                  backgroundColor: "white",
-                  paddingHorizontal: widthPercentageToDP("3%"),
-                  borderBottomColor: tabIndex === 1 ? COLOR.compGreen : COLOR.lgrey, borderBottomWidth: 4
-                }]}>
-                <Text style={{
-                  fontSize: FONTSIZE.xl, fontWeight: "900", padding: hp("2%"),
-                  color: tabIndex === 1 ? COLOR.compGreen : COLOR.lgrey
-                }}
-                >First
+                style={[
+                  {
+                    width: widthPercentageToDP('50%'),
+                    height: heightPercentageToDP('10%'),
+                    backgroundColor: 'white',
+                    paddingHorizontal: widthPercentageToDP('3%'),
+                    borderBottomColor:
+                      tabIndex === 1 ? COLOR.compGreen : COLOR.lgrey,
+                    borderBottomWidth: 4,
+                  },
+                ]}>
+                <Text
+                  style={{
+                    fontSize: FONTSIZE.xl,
+
+                    fontWeight: '900',
+                    padding: hp('2%'),
+                    color: tabIndex === 1 ? COLOR.compGreen : COLOR.lgrey,
+                  }}>
+                  상품정보
                 </Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => { setTabIndex(2); }}>
+            <TouchableOpacity
+              onPress={() => {
+                setTabIndex(2);
+              }}>
               <View
-                style={[{
-                  width: widthPercentageToDP("50%"), height: heightPercentageToDP("10%"),
-                  backgroundColor: "white", paddingHorizontal: widthPercentageToDP("3%"), padding: hp("2%"),
-                  borderBottomColor: tabIndex === 2 ? COLOR.compGreen : COLOR.lgrey, borderBottomWidth: 4
-                }]}>
-                <Text style={{ fontSize: FONTSIZE.xl, fontWeight: "900", color: tabIndex === 2 ? COLOR.compGreen : COLOR.lgrey }}
-                >Second
+                style={[
+                  {
+                    width: widthPercentageToDP('50%'),
+                    height: heightPercentageToDP('10%'),
+                    backgroundColor: 'white',
+                    paddingHorizontal: widthPercentageToDP('3%'),
+                    padding: hp('2%'),
+                    borderBottomColor:
+                      tabIndex === 2 ? COLOR.compGreen : COLOR.lgrey,
+                    borderBottomWidth: 4,
+                  },
+                ]}>
+                <Text
+                  style={{
+                    fontSize: FONTSIZE.xl,
+                    fontWeight: '900',
+                    color: tabIndex === 2 ? COLOR.compGreen : COLOR.lgrey,
+                  }}>
+                  배송/환볼
                 </Text>
               </View>
             </TouchableOpacity>
           </View>
         </View>
-        {
-          tabIndex === 1 && <View style={{ backgroundColor: "#ffff", marginTop: hp("2%") }}>
-            <View style={{ paddingBottom: hp('3%'), marginHorizontal: wp('5%') }}>
+        {tabIndex === 1 && (
+          <View style={{backgroundColor: '#ffff', marginTop: hp('2%')}}>
+            <View style={{paddingBottom: hp('3%'), marginHorizontal: wp('5%')}}>
               <Text
                 style={{
                   color: '#1B1D1F',
@@ -305,7 +376,7 @@ export const ProductInfo = props => {
             </View>
             <ImageBackground
               source={require('../assets/images/tentinfo.png')}
-              style={{ height: hp('28%') }}
+              style={{height: hp('28%')}}
             />
             <View
               style={{
@@ -365,8 +436,8 @@ export const ProductInfo = props => {
                 })}
               </View>
             </View>
-            <View style={{ marginHorizontal: wp('5%') }}>
-              <View style={{ paddingTop: hp('10%') }}>
+            <View style={{marginHorizontal: wp('5%')}}>
+              <View style={{paddingTop: hp('10%')}}>
                 <Text
                   style={{
                     color: '#1B1D1F',
@@ -395,7 +466,7 @@ export const ProductInfo = props => {
                       fontSize: RFPercentage(2.5),
                       fontWeight: 'bold',
                     }}>
-                    {"ALL FEATURES"}
+                    {'ALL FEATURES'}
                   </Text>
                 </View>
                 <View
@@ -405,67 +476,73 @@ export const ProductInfo = props => {
                     padding: wp('2%'),
                     width: wp('60%'),
                   }}>
-                  {item.allFeatures.map((feature) => {
-                    return <View
-                      key={feature.featureName}
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                      }}>
-                      <Text
+                  {item.allFeatures.map(feature => {
+                    return (
+                      <View
+                        key={feature.featureName}
                         style={{
-                          color: '#454C53',
-                          fontSize: RFPercentage(2),
-                          marginBottom: hp('.5%'),
-                          width: wp('30%'),
+                          display: 'flex',
+                          flexDirection: 'row',
                         }}>
-                        {feature?.featureName}
-                      </Text>
-                    </View>;
+                        <Text
+                          style={{
+                            color: '#454C53',
+                            fontSize: RFPercentage(2),
+                            marginBottom: hp('.5%'),
+                            width: wp('30%'),
+                          }}>
+                          {feature?.featureName}
+                        </Text>
+                      </View>
+                    );
                   })}
                 </View>
               </View>
             </View>
             {item.allFeatures.map((feature, index) => {
-              return <View
-                key={index}
-                style={{
-                  paddingVertical: hp("2.5%")
-                }}>
-                <ImageBackground
-                  source={{ uri: feature.image }}
+              return (
+                <View
+                  key={index}
                   style={{
-                    height: hp('28%'),
-                    width: wp("100%")
-                  }}
-                />
-                <Text
-                  style={{
-                    color: COLOR.compBlack,
-                    fontSize: RFPercentage(2.5),
-                    fontWeight: 'bold',
-                    marginHorizontal: wp('5%'),
-                    marginVertical: hp('2.5%'),
+                    paddingVertical: hp('2.5%'),
                   }}>
-                  {feature.featureName}
-                </Text>
-                {feature.description && <Text
-                  style={{
-                    fontSize: RFPercentage(2),
-                    fontWeight: '800',
-                    marginHorizontal: wp('5%'),
-                    marginVertical: hp('2%'),
-                  }}>
-                  {feature.description}
-                </Text>}
-              </View>;
+                  <ImageBackground
+                    source={{uri: feature.image}}
+                    style={{
+                      height: hp('28%'),
+                      width: wp('100%'),
+                    }}
+                  />
+                  <Text
+                    style={{
+                      color: COLOR.compBlack,
+                      fontSize: RFPercentage(2.5),
+                      fontWeight: 'bold',
+                      marginHorizontal: wp('5%'),
+                      marginVertical: hp('2.5%'),
+                    }}>
+                    {feature.featureName}
+                  </Text>
+                  {feature.description && (
+                    <Text
+                      style={{
+                        fontSize: RFPercentage(2),
+                        fontWeight: '800',
+                        marginHorizontal: wp('5%'),
+                        marginVertical: hp('2%'),
+                      }}>
+                      {feature.description}
+                    </Text>
+                  )}
+                </View>
+              );
             })}
           </View>
-        }
-        {
-          tabIndex === 2 && <View style={{ backgroundColor: "#ffff", marginTop: hp("2%") }}>
-            <View style={{ marginHorizontal: wp('5%') }}>
-              <View style={{ paddingBottom: hp('3%') }}>
+        )}
+        {tabIndex === 2 && (
+          <View style={{backgroundColor: '#ffff', marginTop: hp('2%')}}>
+            <View style={{marginHorizontal: wp('5%')}}>
+              <View style={{paddingBottom: hp('3%')}}>
                 <Text
                   style={{
                     color: '#1B1D1F',
@@ -475,7 +552,7 @@ export const ProductInfo = props => {
                   예약 {'\n'}유의사항
                 </Text>
               </View>
-              <View style={{ paddingBottom: hp('7%') }}>
+              <View style={{paddingBottom: hp('7%')}}>
                 <Text
                   style={{
                     color: '#1B1D1F',
@@ -490,13 +567,13 @@ export const ProductInfo = props => {
                     color: '#1B1D1F',
                     fontSize: RFPercentage(1.8),
                   }}>
-                  예약한 용품 대여 취소는 택배발송 전까지 가능하며, 용품 발송 후에는
-                  주문취소가 불가능합니다. 용품 대여 취소는 마이페이지- 캠핑용품
-                  대여내역 조회에서 가능합니다. 기타문의 사항은 고객센터로
-                  문의바랍니다.
+                  예약한 용품 대여 취소는 택배발송 전까지 가능하며, 용품 발송
+                  후에는 주문취소가 불가능합니다. 용품 대여 취소는 마이페이지-
+                  캠핑용품 대여내역 조회에서 가능합니다. 기타문의 사항은
+                  고객센터로 문의바랍니다.
                 </Text>
               </View>
-              <View style={{ paddingBottom: hp('5%') }}>
+              <View style={{paddingBottom: hp('5%')}}>
                 <Text
                   style={{
                     color: '#1B1D1F',
@@ -506,7 +583,7 @@ export const ProductInfo = props => {
                   배송 {'\n'}안내사항
                 </Text>
               </View>
-              <View style={{ paddingBottom: hp('5%') }}>
+              <View style={{paddingBottom: hp('5%')}}>
                 <Text
                   style={{
                     color: '#1B1D1F',
@@ -526,7 +603,7 @@ export const ProductInfo = props => {
                   있습니다.
                 </Text>
               </View>
-              <View style={{ paddingBottom: hp('5%') }}>
+              <View style={{paddingBottom: hp('5%')}}>
                 <Text
                   style={{
                     color: '#1B1D1F',
@@ -545,7 +622,7 @@ export const ProductInfo = props => {
                   다음날, 배송받으셨던 주소로 택배기사님이 방문하여 수거합니다.
                 </Text>
               </View>
-              <View style={{ paddingBottom: hp('4%') }}>
+              <View style={{paddingBottom: hp('4%')}}>
                 <Text
                   style={{
                     color: '#1B1D1F',
@@ -560,68 +637,81 @@ export const ProductInfo = props => {
                     color: '#1B1D1F',
                     fontSize: RFPercentage(1.8),
                   }}>
-                  장비는 배송시 보내드린 박스에 용품을 넣으신 후 보내주세요. 장비
-                  반납의 책임은 전적으로 고객에게 있으며 주문하셨던 장비 중 누락된
-                  용품이 없는지 확인해주세요. 반납시 누락된 상품으로 다시 택배를
-                  이용할 경우 배송비를 추가로 부담하셔야합니다. 캠핑그린의
-                  캠핑용품은 다른 고객들도 함께 사용하는 대여품입니다. {'\n\n\n'}
+                  장비는 배송시 보내드린 박스에 용품을 넣으신 후 보내주세요.
+                  장비 반납의 책임은 전적으로 고객에게 있으며 주문하셨던 장비 중
+                  누락된 용품이 없는지 확인해주세요. 반납시 누락된 상품으로 다시
+                  택배를 이용할 경우 배송비를 추가로 부담하셔야합니다.
+                  캠핑그린의 캠핑용품은 다른 고객들도 함께 사용하는
+                  대여품입니다. {'\n\n\n'}
                   고품질의 서비스를 지속적으로 제공하기 위해서 깨끗이 사용하시고
                   사용 후에도 반드시 청소해서 반납해주시길 바랍니다. {'\n\n\n'}
-                  <Text style={{ fontWeight: 'bold' }}>
-                    대여지와 배송지가 다를 경우, 택배사에 직접 전화하여 예약하시거나
-                    인터넷을 이용해주세요.
+                  <Text style={{fontWeight: 'bold'}}>
+                    대여지와 배송지가 다를 경우, 택배사에 직접 전화하여
+                    예약하시거나 인터넷을 이용해주세요.
                   </Text>
                 </Text>
               </View>
             </View>
           </View>
-        }
+        )}
         <View>
           <Footer />
         </View>
       </ScrollView>
-      {!modalVisible && <View>
-        <CustomButton buttonText={"대여하기"} buttonHandler={() => {
-          if (isLoggedIn) {
-            if (enableCheckout()) {
-              setModalVisible(true);
-            } else {
-              ToastAndroid.showWithGravity("Please Select the Date for Checkout", ToastAndroid.LONG, ToastAndroid.TOP);
-            }
-          } else {
-            ToastAndroid.showWithGravity("You have to Login to Proceed Renting", ToastAndroid.LONG, ToastAndroid.TOP);
-            navigateTo("LoginScreen");
-          }
-        }} />
-      </View>}
+      {!modalVisible && (
+        <View>
+          <CustomButton
+            buttonText={'대여하기'}
+            buttonHandler={() => {
+              if (isLoggedIn) {
+                if (enableCheckout()) {
+                  setModalVisible(true);
+                } else {
+                  ToastAndroid.showWithGravity(
+                    'Please Select the Date for Checkout',
+                    ToastAndroid.LONG,
+                    ToastAndroid.TOP,
+                  );
+                }
+              } else {
+                ToastAndroid.showWithGravity(
+                  'You have to Login to Proceed Renting',
+                  ToastAndroid.LONG,
+                  ToastAndroid.TOP,
+                );
+                navigateTo('LoginScreen');
+              }
+            }}
+          />
+        </View>
+      )}
     </View>
-
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     marginBottom: hp('10%'),
-    backgroundColor: COLOR.white
+    backgroundColor: COLOR.white,
   },
   centeredView: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
-    width: "100%",
+    width: '100%',
     zIndex: 15,
     elevation: 50,
-    marginBottom: hp("5%")
+    marginBottom: hp('3%'),
   },
   modalView: {
-    minHeight: hp("30%"),
+    minHeight: hp('30%'),
     backgroundColor: COLOR.black,
     borderTopLeftRadius: 30,
-    padding: hp("4%"),
+    padding: hp('4%'),
     borderTopRightRadius: 30,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
@@ -629,23 +719,23 @@ const styles = StyleSheet.create({
   },
   termTitle: {
     color: COLOR.white,
-    fontWeight: "bold",
-    fontSize: FONTSIZE.xll
+    fontWeight: 'bold',
+    fontSize: FONTSIZE.xll,
   },
   buttonOpen: {
-    backgroundColor: "#F194FF",
+    backgroundColor: '#F194FF',
   },
   buttonClose: {
-    backgroundColor: "#2196F3",
+    backgroundColor: '#2196F3',
   },
   modalText: {
     marginBottom: 15,
-    textAlign: "center"
+    textAlign: 'center',
   },
   termsButtonWrapper: {
-    marginVertical: hp("1%"),
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between"
-  }
+    marginVertical: hp('1%'),
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
 });

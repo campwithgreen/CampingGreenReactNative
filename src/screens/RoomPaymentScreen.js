@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -13,17 +13,17 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import { RFPercentage } from 'react-native-responsive-fontsize';
+import {RFPercentage} from 'react-native-responsive-fontsize';
 import MyScreen1 from '../components/MyScreen1';
 import Header from '../layout/Header';
 import Footer from '../components/Footer';
 import COLOR from '../constants/colors';
 import CustomButton from '../components/common/CustomButton';
-import { useSelector, useDispatch } from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import moment from 'moment';
-import { checkoutCart } from '../apis/cart';
-import { showDefaultErrorAlert } from '../global/global';
-import { navigateTo } from '../navigation/utils/RootNavigation';
+import {checkoutCart} from '../apis/cart';
+import {showDefaultErrorAlert} from '../global/global';
+import {navigateTo} from '../navigation/utils/RootNavigation';
 
 const RoomPaymentScreen = () => {
   const headerContent = {
@@ -38,25 +38,25 @@ const RoomPaymentScreen = () => {
       navigateScreen: 'LoginScreen',
     },
   };
-  const [flag, setFlag] = useState({ p1: true, p2: true, p3: true, p4: true });
+  const [flag, setFlag] = useState({p1: true, p2: true, p3: true, p4: true});
 
-  const Comp = ({ t1, t2, p }) => {
+  const Comp = ({t1, t2, p}) => {
     return (
       <View
         style={[
           styles.ph1,
-          { display: 'flex', flexDirection: 'row', paddingTop: hp('1%') },
+          {display: 'flex', flexDirection: 'row', paddingTop: hp('1%')},
         ]}>
         <TouchableOpacity
-          onPress={() => setFlag(prev => ({ ...prev, [p]: !prev[p] }))}>
+          onPress={() => setFlag(prev => ({...prev, [p]: !prev[p]}))}>
           {flag[p] ? (
             <Image source={require('../assets/images/green_circle.png')} />
           ) : (
             <Image source={require('../assets/images/white_circle.png')} />
           )}
         </TouchableOpacity>
-        <Text style={[styles.text2, { marginLeft: wp('3%') }]}>
-          <Text style={{ color: '#55C595' }}>{t1}</Text>
+        <Text style={[styles.text2, {marginLeft: wp('3%')}]}>
+          <Text style={{color: '#55C595'}}>{t1}</Text>
           <Text>{t2}</Text>
         </Text>
       </View>
@@ -73,82 +73,116 @@ const RoomPaymentScreen = () => {
   // const [firstNum, setFirstNum] = useState(null)
 
   const handleProceedCheckout = async () => {
-
     let shipping_data = {
-      "name": name,
-      "phoneNumber": `+91${phoneNumber}`,
-      "address": address,
-      "remarks": remarks
+      name: name,
+      phoneNumber: `+82${phoneNumber}`,
+      address: address,
+      remarks: remarks,
     };
 
     let query = {
-      cartId: current_cart_details._id
+      cartId: current_cart_details._id,
     };
 
     let mainPayload = {
       items: current_cart_details.items,
-      shipping_data: shipping_data
+      shipping_data: shipping_data,
     };
 
     if (name) {
       if (phoneNumber) {
         if (address) {
           if (remarks) {
-            console.log("ALL FIELDS");
-            await checkoutCart(mainPayload, query).then((res) => {
-              if (res) {
-                console.log(res.data);
-                navigateTo("ThirdScreen");
-              }
-            }).catch((err) => {
-              if (err) {
-                showDefaultErrorAlert();
-              }
-            });
+            console.log('ALL FIELDS');
+            await checkoutCart(mainPayload, query)
+              .then(res => {
+                if (res) {
+                  console.log(res.data);
+                  navigateTo('ThirdScreen');
+                }
+              })
+              .catch(err => {
+                if (err) {
+                  showDefaultErrorAlert();
+                }
+              });
           } else {
-            ToastAndroid.showWithGravity("Pls enter the remarks", ToastAndroid.SHORT, ToastAndroid.LONG);
+            ToastAndroid.showWithGravity(
+              'Pls enter the remarks',
+              ToastAndroid.SHORT,
+              ToastAndroid.LONG,
+            );
           }
         } else {
-          ToastAndroid.showWithGravity("Pls enter the address", ToastAndroid.SHORT, ToastAndroid.LONG);
+          ToastAndroid.showWithGravity(
+            'Pls enter the address',
+            ToastAndroid.SHORT,
+            ToastAndroid.LONG,
+          );
         }
       } else {
-        ToastAndroid.showWithGravity("Pls enter the phoneNumber", ToastAndroid.SHORT, ToastAndroid.LONG);
+        ToastAndroid.showWithGravity(
+          'Pls enter the phoneNumber',
+          ToastAndroid.SHORT,
+          ToastAndroid.LONG,
+        );
       }
     } else {
-      ToastAndroid.showWithGravity("Pls enter the name", ToastAndroid.SHORT, ToastAndroid.LONG);
+      ToastAndroid.showWithGravity(
+        'Pls enter the name',
+        ToastAndroid.SHORT,
+        ToastAndroid.LONG,
+      );
     }
-
   };
 
-
-  const current_cart_details = useSelector((st) => st.common.current_cart_details);
-
+  const current_cart_details = useSelector(
+    st => st.common.current_cart_details,
+  );
 
   return (
-    <View style={{ backgroundColor: 'white', marginBottom: hp("15%") }}>
+    <View style={{backgroundColor: 'white', marginBottom: hp('15%')}}>
       <Header headerContent={headerContent} />
       <View style={styles.border2}></View>
       <ScrollView>
-        <View style={{ backgroundColor: COLOR.white, marginBottom: hp("3%") }}>
-          <Text style={[styles.text1, styles.ph1, { paddingBottom: hp('3%') }]}>
+        <View style={{backgroundColor: COLOR.white, marginBottom: hp('3%')}}>
+          <Text style={[styles.text1, styles.ph1, {paddingBottom: hp('3%')}]}>
             대여 기간
           </Text>
-          {current_cart_details?.items.map((cart) => {
-            return <View>
-              <Div t1="대여 시작일" t2={moment(cart.startDate).utc().format('MM-DD-YYYY')} />
-              <Div t1="대여 시작일" t2={moment(cart.endDate).utc().format('MM-DD-YYYY')} />
-            </View>;
+          {current_cart_details?.items.map(cart => {
+            return (
+              <View>
+                <Div
+                  t1="대여 시작일"
+                  t2={moment(cart.startDate).utc().format('YYYY-MM-DD')}
+                />
+                <Div
+                  t1="대여 반납일"
+                  t2={moment(cart.endDate).utc().format('YYYY-MM-DD')}
+                />
+              </View>
+            );
           })}
           <View style={styles.border1}></View>
-          <Text style={[styles.text1, styles.ph1, { paddingBottom: hp('3%') }]}>
-            주문자
+          <Text style={[styles.text1, styles.ph1, {paddingBottom: hp('3%')}]}>
+            배송 정보
           </Text>
-          <Input t1="수령인" t2="수령인" keyboardType="email-address" onChangeText={(value) => {
-            setName(value);
-          }} />
-          <Input t1="연락처" t2="연락처" keyboardType="numeric" onChangeText={(value) => {
-            setPhoneNumber(value);
-          }} />
+          <Input
+            t1="수령인"
+            t2="수령인"
+            keyboardType="email-address"
+            onChangeText={value => {
+              setName(value);
+            }}
+          />
+          <Input
+            t1="연락처"
+            t2="연락처"
+            keyboardType="numeric"
+            onChangeText={value => {
+              setPhoneNumber(value);
+            }}
+          />
           {/* <View style={styles.view2}>
             <Text
               style={{
@@ -175,9 +209,14 @@ const RoomPaymentScreen = () => {
               <TextInput style={styles.textinput2} placeholder="1111" maxLength={4} />
             </View>
           </View> */}
-          <Input t1="주문자" t2="주문자" keyboardType={"email-address"} onChangeText={(value) => {
-            setAddress(value);
-          }} />
+          <Input
+            t1="배송지"
+            t2="배송지"
+            keyboardType={'email-address'}
+            onChangeText={value => {
+              setAddress(value);
+            }}
+          />
           <View style={styles.view1}>
             <Text
               style={{
@@ -188,7 +227,9 @@ const RoomPaymentScreen = () => {
               배송{'\n'}메세지
             </Text>
             <TextInput
-              placeholder={'별도 요청사항이 없으실 경우, \n 공란으로 비워주세요'}
+              placeholder={
+                '별도 요청사항이 없으실 경우, \n 공란으로 비워주세요'
+              }
               style={[
                 styles.textinput1,
                 {
@@ -197,7 +238,7 @@ const RoomPaymentScreen = () => {
                   paddingLeft: wp('5%'),
                 },
               ]}
-              onChangeText={(value) => {
+              onChangeText={value => {
                 setRemarks(value);
               }}
               keyboardType="email-address"
@@ -207,9 +248,9 @@ const RoomPaymentScreen = () => {
           <View style={styles.view1}>
             <Text style={styles.text2}>최종 결제 금액</Text>
             <Text></Text>
-            <Text style={[styles.text2, { color: '#55C595' }]}>130,000원</Text>
+            <Text style={[styles.text2, {color: '#55C595'}]}>130,000원</Text>
           </View>
-          <Text style={[styles.ph1, { paddingTop: hp('5%') }]}>
+          <Text style={[styles.ph1, {paddingTop: hp('5%')}]}>
             <Text style={styles.text2}>-2022.05.20 23:59:59</Text>
             <Text>까지 결제(입금)되지 않으면 예약이 자동취소 됩니다.</Text>
           </Text>
@@ -218,10 +259,10 @@ const RoomPaymentScreen = () => {
           <View
             style={[
               styles.ph1,
-              { display: 'flex', flexDirection: 'row', paddingTop: hp('2%') },
+              {display: 'flex', flexDirection: 'row', paddingTop: hp('2%')},
             ]}>
             <TouchableOpacity
-              onPress={() => setFlag(prev => ({ ...prev, p1: !prev.p1 }))}>
+              onPress={() => setFlag(prev => ({...prev, p1: !prev.p1}))}>
               {flag.p1 ? (
                 <Image source={require('../assets/images/green_circle.png')} />
               ) : (
@@ -229,12 +270,12 @@ const RoomPaymentScreen = () => {
               )}
             </TouchableOpacity>
 
-            <View style={{ marginLeft: wp('3%') }}>
+            <View style={{marginLeft: wp('3%')}}>
               <Text style={[styles.text2]}>무통장 입금</Text>
-              <Text style={[styles.text2, { paddingTop: hp('1%') }]}>
+              <Text style={[styles.text2, {paddingTop: hp('1%')}]}>
                 하나은행 / 1111-1111-111/ 임태영
               </Text>
-              <Text style={{ paddingTop: hp('1%') }}>
+              <Text style={{paddingTop: hp('1%')}}>
                 위 계좌로 입금이 완료되면 배송준비가 시작됩니다.
               </Text>
             </View>
@@ -250,12 +291,17 @@ const RoomPaymentScreen = () => {
         </View>
       </ScrollView>
       <View>
-        <CustomButton buttonText={"대여하기"} buttonHandler={() => { handleProceedCheckout(); }} />
+        <CustomButton
+          buttonText={'대여하기'}
+          buttonHandler={() => {
+            handleProceedCheckout();
+          }}
+        />
       </View>
     </View>
   );
 };
-const Div = ({ t1, t2, c1, c2 }) => {
+const Div = ({t1, t2, c1, c2}) => {
   return (
     <View style={styles.view1}>
       <Text style={styles.text2}>{t1}</Text>
@@ -263,7 +309,7 @@ const Div = ({ t1, t2, c1, c2 }) => {
     </View>
   );
 };
-const Input = ({ t1, t2, onChangeText, keyboardType }) => {
+const Input = ({t1, t2, onChangeText, keyboardType}) => {
   return (
     <View style={styles.view2}>
       <Text
@@ -275,10 +321,10 @@ const Input = ({ t1, t2, onChangeText, keyboardType }) => {
         {t1}
       </Text>
       <TextInput
-        style={[styles.textinput1, { paddingLeft: wp('5%'), fontWeight: 'bold' }]}
+        style={[styles.textinput1, {paddingLeft: wp('5%'), fontWeight: 'bold'}]}
         placeholder={t2}
         keyboardType={keyboardType}
-        onChangeText={(value) => {
+        onChangeText={value => {
           onChangeText(value);
         }}
       />
@@ -308,8 +354,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'black',
   },
-  text2: { fontWeight: '600', color: '#454C53' },
-  ph1: { paddingHorizontal: wp('5%') },
+  text2: {fontWeight: '600', color: '#454C53'},
+  ph1: {paddingHorizontal: wp('5%')},
   textinput1: {
     width: wp('65%'),
     height: '80%',

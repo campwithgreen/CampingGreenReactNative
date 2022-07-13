@@ -1,10 +1,10 @@
-import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
+import {StyleSheet, Text, View, ScrollView, Image} from 'react-native';
 import React from 'react';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import { RFPercentage } from 'react-native-responsive-fontsize';
+import {RFPercentage} from 'react-native-responsive-fontsize';
 import ThirdScreen1 from '../components/ThirdScreen1';
 import ThirdScreen2 from '../components/ThirdScreen2';
 import ThirdScreen3 from '../components/ThirdScreen3';
@@ -12,12 +12,12 @@ import Header from '../layout/Header';
 import ThirdScreen5 from '../components/ThirdScreen5';
 import SecondScreen1 from '../components/SecondScreen1';
 import ThirdScreen4 from '../components/ThirdScreen4';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 const headerContent = {
   leftItemContents: {
     type: 'image',
     content: require('../assets/images/icon_cancel.png'),
-    navigateScreen: 'LoginScreen',
+    navigateScreen: 'HomeScreen',
   },
   rightItemContents: {
     type: 'image',
@@ -26,11 +26,12 @@ const headerContent = {
   },
 };
 export default function ThirdScreen() {
-
   const dispatch = useDispatch();
-  const current_cart_details = useSelector((st) => st.common.current_cart_details);
+  const current_cart_details = useSelector(
+    st => st.common.current_cart_details,
+  );
   return (
-    <View style={{ backgroundColor: 'white' }}>
+    <View style={{backgroundColor: 'white'}}>
       <ScrollView>
         <Header headerContent={headerContent} />
         <ThirdScreen1 currentCartData={current_cart_details} />
@@ -45,7 +46,7 @@ export default function ThirdScreen() {
           주문상품 {current_cart_details?.items.length}
         </Text>
         <View style={styles.border1}></View>
-        {current_cart_details?.items.map((it) => {
+        {current_cart_details?.items.map(it => {
           return <ThirdScreen4 itemData={it} />;
         })}
         <Text
@@ -59,7 +60,7 @@ export default function ThirdScreen() {
           결제정보
         </Text>
         <View style={styles.border1}></View>
-        <View style={{ paddingTop: hp('3.5%') }}>
+        <View style={{paddingTop: hp('3.5%')}}>
           <SecondScreen1 t1="결제금액" t2="136,000원" />
         </View>
         <View style={styles.border2}></View>
@@ -79,7 +80,7 @@ export default function ThirdScreen() {
           배송정보
         </Text>
         <View style={styles.border1}></View>
-        <View style={{ paddingTop: hp('3.5%') }}>
+        <View style={{paddingTop: hp('3.5%')}}>
           <SecondScreen1 t1="예약자" t2="김그린" />
         </View>
         <View style={styles.border2}></View>
@@ -92,8 +93,8 @@ export default function ThirdScreen() {
         <View style={styles.border2}></View>
         <View style={styles.view1}>
           <Text style={styles.text1}>배송정보 변경은{'  '}</Text>
-          <Text style={[styles.text1, { color: '#56C596' }]}>
-            송정보변경은{'  '}
+          <Text style={[styles.text1, {color: '#56C596'}]}>
+            상담센터로{'  '}
           </Text>
           <Image source={require('../assets/images/white_circle.png')} />
           <Text style={styles.text1}>{'  '}전화바랍니다.</Text>

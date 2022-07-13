@@ -26,12 +26,12 @@ const ProductShoppingBagScreen = () => {
     leftItemContents: {
       type: 'image',
       content: require('../assets/images/icon_cancel.png'),
-      navigateScreen: 'LoginScreen',
+      navigateScreen: 'HomeScreen',
     },
     rightItemContents: {
       type: 'image',
       content: require('../assets/images/cart.png'),
-      navigateScreen: 'LoginScreen',
+      navigateScreen: 'ProductShoppingBagScreen',
     },
   };
 
@@ -58,7 +58,7 @@ const ProductShoppingBagScreen = () => {
 
   const [isSelected, setSelection] = useState(false);
   return (
-    <View style={{backgroundColor: 'white'}}>
+    <View style={{backgroundColor: 'white', flex: 1}}>
       <Header headerContent={headerContent} />
       <View style={styles.border2}></View>
       <FlatList

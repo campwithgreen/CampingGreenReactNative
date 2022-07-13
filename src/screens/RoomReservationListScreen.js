@@ -123,7 +123,7 @@ const Comp2 = ({btnText, arrowText}) => {
   return (
     <View style={[styles.compView, {paddingBottom: hp('3%')}]}>
       <Text style={styles.comp2Text1}>{btnText}</Text>
-      <Text style={styles.comp2Text2}>{arrowText} ></Text>
+      <Text style={styles.comp2Text2}>{arrowText} </Text>
     </View>
   );
 };

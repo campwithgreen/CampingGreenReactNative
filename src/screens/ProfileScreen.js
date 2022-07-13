@@ -1,5 +1,8 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Button, ToastAndroid } from 'react-native';
+import {
+    View, Text, StyleSheet, TouchableOpacity,
+    ScrollView, Button, ToastAndroid
+} from 'react-native';
 import Header from '../layout/Header';
 import { goBack, navigateTo } from '../navigation/utils/RootNavigation';
 import globalStyle from '../global/globalStyle';
@@ -11,23 +14,9 @@ import { logout } from '../redux/actions/oauth';
 import { getUserCartHistory } from '../apis/cart';
 import { showDefaultErrorAlert } from '../global/global';
 import { setUserCartHistory } from '../redux/actions/common';
+import moment from 'moment';
 
-const headerContent = {
-    leftItemContents: {
-        type: 'image',
-        content: require('../assets/images/arrow-left.png'),
-        navigateScreen: () => goBack()
-    },
-    middleItemContents: {
-        type: 'text',
-        content: '마이페이지',
-    },
-    rightItemContents: {
-        type: 'image',
-        content: require('../assets/images/cart.png'),
-        navigateScreen: 'ReviewScreen',
-    },
-};
+
 
 export const ProfileScreen = (props) => {
 
@@ -39,11 +28,56 @@ export const ProfileScreen = (props) => {
     const isLogin = useSelector((st) => st?.oauth?.isLogin);
     const userName = useSelector((st) => st?.oauth?.user_data?.data?.firstName);
 
+
+    const headerContent = {
+        leftItemContents: {
+            type: 'image',
+            content: require('../assets/images/arrow-left.png'),
+            navigateScreen: () => goBack()
+        },
+        middleItemContents: {
+            type: 'text',
+            content: '마이페이지',
+        },
+        rightItemContents: {
+            type: 'image',
+            content: require('../assets/images/cart.png'),
+            navigateScreen: () => {
+                if (!isLogin) {
+                    ToastAndroid.showWithGravity("Pls Login to View Cart", ToastAndroid.LONG, ToastAndroid.TOP);
+                } else {
+                    navigateTo("ProductShoppingBagScreen");
+                }
+            },
+        },
+    };
+
     const { firstContainer, companyText, textWrapper,
         textWrapperII, textWrapperIII,
         statusText, greyColor, textWrapperIV,
         secondContainer, secondTextWrapper, secondText,
         secondTextII, secondParentWrapper, buttonWrapper, innerContainer, parentContainer } = styles;
+
+
+    const cart_history = useSelector((st) => st.common?.cart_history);
+
+    let result = cart_history?.reduce(function (r, a) {
+        r[`${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${a.paymentStatus}`] = r[`${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${a.paymentStatus}`] || [];
+        r[`${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${a.paymentStatus}`].push(a);
+        return r;
+    }, Object.create(null));
+
+    console.log("GROPUPED", result);
+
+    let pendingCart = 0;
+    if (result) {
+        Object.keys(result).map((key) => {
+            if (key.indexOf("PAYMENT_PENDING") > -1) {
+                pendingCart = pendingCart + result[key].length;
+            }
+        });
+    }
+
 
     const handleLogout = () => {
         dispatch(logout());
@@ -88,13 +122,13 @@ export const ProfileScreen = (props) => {
                                     }
                                 </View>
                                 {isLogin && <View style={textWrapperIII}>
-                                    <TouchableOpacity>
-                                        <Text style={[statusText, greyColor]}>김그린 님</Text>
-                                    </TouchableOpacity>
                                     <TouchableOpacity onPress={() => {
                                         navigateTo("RoomReservationListScreen");
                                     }}>
-                                        <Text style={statusText}>1건 입금대기</Text>
+                                        <Text style={[statusText, greyColor]}>최근주문</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity >
+                                        <Text style={statusText}>{pendingCart}건 입금대기</Text>
                                     </TouchableOpacity>
                                 </View>}
                             </View>

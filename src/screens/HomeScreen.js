@@ -49,7 +49,6 @@ export const HomeScreen = props => {
     leftItemContents: {
       type: 'text',
       content: 'CAMPING GREEEN',
-      navigateScreen: 'LoginScreen',
     },
     rightItemContents: {
       type: 'image',

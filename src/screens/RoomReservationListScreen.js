@@ -9,8 +9,10 @@ import Header from '../layout/Header';
 import globalStyle from '../global/globalStyle';
 import FONTSIZE from '../constants/fontSize';
 import COLOR from '../constants/colors';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
+import { setCurrentCheckoutCartDetails } from '../redux/actions/common';
+import { navigateTo } from '../navigation/utils/RootNavigation';
 const headerContent = {
   middleItemContents: {
     type: 'text',
@@ -20,7 +22,7 @@ const headerContent = {
   leftItemContents: {
     type: 'image',
     content: require('../assets/images/icon_cancel.png'),
-    navigateScreen: 'LoginScreen',
+    navigateScreen: 'ProductShoppingBagScreen',
   },
 };
 
@@ -46,8 +48,8 @@ const RoomReservationListScreen = () => {
           return <View style={globalStyle.mainContainerWrapper} key={key}>
             <Comp1 date={key.split("_")[0]} total={result[key].length} />
             {result[key].map((it) => {
-              return <View>
-                <Comp2 btnText={result[key][0].paymentStatus} />
+              return <View key={it?.items[0]._id}>
+                <Comp2 btnText={result[key][0].paymentStatus} itemData={it} />
                 <Comp3
                   key={it?.items[0]._id}
                   itemData={it}
@@ -80,12 +82,14 @@ const Comp1 = ({ date, total }) => {
   );
 };
 
-const Comp2 = ({ btnText }) => {
+const Comp2 = ({ btnText, itemData }) => {
+  const dispatch = useDispatch();
   return (
     <View style={[styles.compView, { paddingBottom: hp('3%') }]}>
       <Text style={styles.comp2Text1}>{btnText}</Text>
       <TouchableOpacity onPress={() => {
-        ToastAndroid.showWithGravity("This feature will be available in next update", ToastAndroid.LONG, ToastAndroid.TOP);
+        dispatch(setCurrentCheckoutCartDetails(itemData));
+        navigateTo("ThirdScreen");
       }}>
         <Text style={styles.comp2Text2}>View ></Text>
       </TouchableOpacity>

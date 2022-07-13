@@ -67,7 +67,7 @@ const RoomPaymentScreen = () => {
       navigateScreen: 'LoginScreen',
     },
   };
-  const [flag, setFlag] = useState({ p1: true, p2: true, p3: true, p4: true });
+  const [flag, setFlag] = useState({ p1: false, p2: true, p3: true, p4: true });
 
   console.log("FLAG", flag);
 

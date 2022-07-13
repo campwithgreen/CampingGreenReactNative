@@ -40,8 +40,7 @@ const CalendarScreen = props => {
     const { container } = styles;
     const startDate = useSelector((st) => st.common.start_date);
     const returnDate = useSelector((st) => st.common.return_date);
-
-    const type = route.params.type || "PRODUCT";
+    const type = route?.params?.type || "PRODUCT";
 
     const enableCheckout = () => {
         if (startDate && returnDate) {

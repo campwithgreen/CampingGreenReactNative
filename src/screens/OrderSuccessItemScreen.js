@@ -18,7 +18,7 @@ const headerContent = {
   leftItemContents: {
     type: 'image',
     content: require('../assets/images/icon_cancel.png'),
-    navigateScreen: 'LoginScreen',
+    navigateScreen: () => goBack(),
   },
   rightItemContents: {
     type: 'image',
@@ -29,6 +29,7 @@ const headerContent = {
 import { getUserCartHistory } from '../apis/cart';
 import { setUserCartHistory } from '../redux/actions/common';
 import { showDefaultErrorAlert } from '../global/global';
+import { goBack } from '../navigation/utils/RootNavigation';
 
 export default function ThirdScreen() {
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { HomeNavigation } from './HomeNavigation';
+import { HomeNavigation, LocationNavigation, ProductNavigation, ProfileNavigation } from './HomeNavigation';
 import { HeartScreen } from '../screens/HeartScreen';
 import { LocationScreen } from '../screens/LocationScreen';
 import { ChatScreen } from '../screens/ChatScreen';
@@ -132,10 +132,10 @@ export const HomeTabNavigation = props => {
         }
       }}>
       <Tab.Screen name="Home" component={HomeNavigation} />
-      <Tab.Screen name="Heart" component={Product} />
-      <Tab.Screen name="Location" component={RoomScreen} />
+      <Tab.Screen name="Heart" component={ProductNavigation} />
+      <Tab.Screen name="Location" component={LocationNavigation} />
       <Tab.Screen name="Chat" component={ChatScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name="Profile" component={ProfileNavigation} />
     </Tab.Navigator>
   );
 };

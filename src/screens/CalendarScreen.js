@@ -36,6 +36,10 @@ const CalendarScreen = props => {
   const startDate = useSelector(st => st.common.start_date);
   const returnDate = useSelector(st => st.common.return_date);
 
+  const {route} = props;
+
+  const type = route?.params?.type || 'PRODUCT';
+
   const enableCheckout = () => {
     if (startDate && returnDate) {
       return true;
@@ -50,10 +54,14 @@ const CalendarScreen = props => {
         <CustomCalendar />
       </ScrollView>
       <CustomButton
-        buttonText={'대여 날짜를 선택하세요'}
+        buttonText={'예약 날짜를 선택하세요'}
         buttonHandler={() => {
           if (enableCheckout()) {
-            navigateTo('ProductInfo');
+            if (type === 'LOCATION') {
+              navigateTo('Rent');
+            } else {
+              navigateTo('ProductInfo');
+            }
           } else {
             ToastAndroid.showWithGravity(
               'Please Select the Date for Checkout',

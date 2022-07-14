@@ -1,17 +1,23 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
-import React, {useState} from 'react';
+import { StyleSheet, Text, View, Image } from 'react-native';
+import React, { useState } from 'react';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 
-export default function ProductShoppingBag({item}) {
-  const [count, setCount] = useState(0);
+export default function ProductShoppingBag({ index, item, productList, setProductList }) {
+  const [count, setCount] = useState(item?.items[0]?.units);
   const increment = () => {
+    let newData = [...productList];
+    newData[index].items[0].units = count + 1;
+    setProductList(newData);
     setCount(i => i + 1);
   };
   const decrement = () => {
     if (count > 0) {
+      let newData = [...productList];
+      newData[index].items[0].units = count - 1;
+      setProductList(newData);
       setCount(i => i - 1);
     }
   };
@@ -19,27 +25,32 @@ export default function ProductShoppingBag({item}) {
     <View>
       <View style={styles.view1}>
         <Text>check</Text>
-        <Text style={styles.btn}>{item.btn}</Text>
+        <Text style={styles.btn}>삭제</Text>
       </View>
       <View style={styles.view1}>
         <View style={styles.view2}>
-          <Text style={styles.text}>{item.t1}</Text>
-          <Text style={styles.text}>{item.t2}</Text>
+          <Text style={styles.text}>{item?.items[0]?.itemId?.title}</Text>
+          <Text style={styles.text}>{item?.items[0]?.itemId?.description}</Text>
           <View style={styles.view3}>
             <View style={styles.view4}>
               <Text style={styles.text1} onPress={decrement}>
                 -
               </Text>
               <Text style={styles.text2}>{count}</Text>
-              <Text style={{fontWeight: 'bold'}} onPress={increment}>
+              <Text style={{ fontWeight: 'bold' }} onPress={increment}>
                 +
               </Text>
             </View>
-            <Text style={styles.text3}>{item.price}</Text>
+            <Text style={styles.text3}>{item?.items[0]?.units * item?.items[0]?.itemId?.price}</Text>
           </View>
         </View>
         <View>
-          <Image source={item.img} />
+          <Image source={{
+            uri: item?.items[0]?.itemId?.carousel[0]
+          }} style={{
+            height: hp("15%"),
+            width: hp("15%")
+          }} />
         </View>
       </View>
       <View style={styles.border}></View>

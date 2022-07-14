@@ -13,6 +13,8 @@ export default function (state = INITIAL_STATE, action) {
     switch (type) {
         case PRODUCT.SET_ALL_PRODUCT:
             return { ...state, product: payload };
+        case PRODUCT.SET_ALL_LOCATION:
+            return { ...state, location: payload };
         default:
             return state;
     }

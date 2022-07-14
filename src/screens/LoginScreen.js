@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -54,8 +54,14 @@ export default function LoginScreen() {
   const [phoneNumber, setPhoneNumber] = useState(null);
   const [otp, setOtp] = useState(null);
 
-  const [lineColor, setLineColor] = useState(COLOR.black);
+  const isLogin = useSelector(st => st.oauth?.isLogin);
 
+  useEffect(() => {
+    if (isLogin) {
+      navigateTo('HomeScreen');
+    }
+  }, [isLogin]);
+  const [lineColor, setLineColor] = useState(COLOR.black);
   const onFocus = () => setLineColor(COLOR.compGreen);
 
   const onBlur = () => {
@@ -197,7 +203,7 @@ export default function LoginScreen() {
                         width: '100%',
                         padding: 10,
                       }}
-                      placeholder="-없이 숫자만 입력해주세요"
+                      placeholder="1011112222 -없이 숫자만 입력해주세요"
                       onFocus={() => onFocus()}
                       onBlur={() => onBlur()}
                       keyboardType="number-pad"
@@ -251,7 +257,7 @@ export default function LoginScreen() {
                 <Button
                   title="로그인 또는 회원가입"
                   onPress={() => handleLogin()}
-                  color="#fff"
+                  color={COLOR.compGreen}
                   disabled={disableButton()}
                 />
               </View>
@@ -291,7 +297,5 @@ const styles = StyleSheet.create({
   },
   buttonWrapper: {
     marginTop: heightPercentageToDP('25%'),
-    backgroundColor: '#55C595',
-    borderRadius: 7,
   },
 });

@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TextInput, View, Image} from 'react-native';
+import { StyleSheet, Text, TextInput, View, Image, TouchableOpacity, ToastAndroid } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,

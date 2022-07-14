@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native';
 import Header from '../layout/Header';
 import HomeScreenDetail from '../components/HomeScreenDetail';
@@ -37,22 +38,30 @@ const HomeScreenDetailData = [
   },
 ];
 
-const headerContent = {
-  leftItemContents: {
-    type: 'text',
-    content: 'CAMPING GREEEN',
-    navigateScreen: 'LoginScreen',
-  },
-  rightItemContents: {
-    type: 'image',
-    content: require('../assets/images/cart.png'),
-    navigateScreen: 'RegisterScreen',
-  },
-};
+
 
 export const HomeScreen = props => {
   const {container} = styles;
   const dispatch = useDispatch();
+  const isLogin = useSelector((st) => st.oauth.isLogin);
+
+  const headerContent = {
+    leftItemContents: {
+      type: 'text',
+      content: 'CAMPING GREEEN',
+    },
+    rightItemContents: {
+      type: 'image',
+      content: require('../assets/images/cart.png'),
+      navigateScreen: () => {
+        if (!isLogin) {
+          ToastAndroid.showWithGravity("Pls Login to View Cart", ToastAndroid.LONG, ToastAndroid.TOP);
+        } else {
+          navigateTo("ProductShoppingBagScreen");
+        }
+      },
+    },
+  };
 
   return (
     <View style={container}>

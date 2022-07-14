@@ -39,11 +39,92 @@ export const HomeNavigation = props => {
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
       <Stack.Screen name="ChatScreen" component={ChatScreen} />
-      <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
       <Stack.Screen name="HomeScreenDetail1" component={HomeScreenDetail1} />
-      <Stack.Screen name="Rent" component={Rent} />
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
+      <Stack.Screen name="MyScreen" component={MyScreen} />
+      <Stack.Screen name="SecondScreen" component={SecondScreen} />
+      <Stack.Screen name="ThirdScreen" component={ThirdScreen} />
+      <Stack.Screen name="ForthScreen" component={ForthScreen} />
+      <Stack.Screen name="ProductInfo" component={ProductInfo} />
+      <Stack.Screen name="CalendarScreen" component={CalendarScreen} />
+      <Stack.Screen name="TermsScreen" component={TermsScreen} />
+      <Stack.Screen
+        name="ProductShoppingBagScreen"
+        component={ProductShoppingBagScreen}
+      />
+      <Stack.Screen name="RoomPaymentScreen" component={RoomPaymentScreen} />
+    </Stack.Navigator>
+  );
+};
+
+
+/**
+ * @author
+ * @function HomeNavigation
+ **/
+export const ProductNavigation = props => {
+  return (
+    <Stack.Navigator
+      initialRouteName="RoomScreen"
+      screenOptions={AppNavigatorOptions}>
       <Stack.Screen name="Product" component={Product} />
+      <Stack.Screen name="MyScreen" component={MyScreen} />
+      <Stack.Screen name="Rent" component={Rent} />
+      <Stack.Screen name="SecondScreen" component={SecondScreen} />
+      <Stack.Screen name="ThirdScreen" component={ThirdScreen} />
+      <Stack.Screen name="ForthScreen" component={ForthScreen} />
+      <Stack.Screen name="ProductInfo" component={ProductInfo} />
+      <Stack.Screen name="CalendarScreen" component={CalendarScreen} />
+      <Stack.Screen name="TermsScreen" component={TermsScreen} />
+      <Stack.Screen
+        name="ProductShoppingBagScreen"
+        component={ProductShoppingBagScreen}
+      />
+      <Stack.Screen name="RoomPaymentScreen" component={RoomPaymentScreen} />
+    </Stack.Navigator>
+  );
+};
+
+/**
+ * @author
+ * @function HomeNavigation
+ **/
+export const LocationNavigation = props => {
+  return (
+    <Stack.Navigator
+      initialRouteName="RoomScreen"
+      screenOptions={AppNavigatorOptions}>
+      <Stack.Screen name="RoomScreen" component={RoomScreen} />
+      <Stack.Screen name="MyScreen" component={MyScreen} />
+      <Stack.Screen name="SecondScreen" component={SecondScreen} />
+      <Stack.Screen name="ThirdScreen" component={ThirdScreen} />
+      <Stack.Screen name="ForthScreen" component={ForthScreen} />
+      <Stack.Screen name="CalendarScreen" component={CalendarScreen} />
+      <Stack.Screen name="TermsScreen" component={TermsScreen} />
+      <Stack.Screen name="Rent" component={Rent} />
+      <Stack.Screen
+        name="ProductShoppingBagScreen"
+        component={ProductShoppingBagScreen}
+      />
+      <Stack.Screen
+        name="RoomReservationListScreen"
+        component={RoomReservationListScreen}
+      />
+      <Stack.Screen name="RoomPaymentScreen" component={RoomPaymentScreen} />
+    </Stack.Navigator>
+  );
+};
+
+/**
+ * @author
+ * @function HomeNavigation
+ **/
+export const ProfileNavigation = props => {
+  return (
+    <Stack.Navigator
+      initialRouteName="ProfileScreen"
+      screenOptions={AppNavigatorOptions}>
+      <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
       <Stack.Screen name="MyScreen" component={MyScreen} />
       <Stack.Screen name="SecondScreen" component={SecondScreen} />
       <Stack.Screen name="ThirdScreen" component={ThirdScreen} />
@@ -56,11 +137,13 @@ export const HomeNavigation = props => {
         name="ProductShoppingBagScreen"
         component={ProductShoppingBagScreen}
       />
-      <Stack.Screen name="RoomPaymentScreen" component={RoomPaymentScreen} />
       <Stack.Screen
         name="RoomReservationListScreen"
         component={RoomReservationListScreen}
       />
+      <Stack.Screen name="RoomPaymentScreen" component={RoomPaymentScreen} />
     </Stack.Navigator>
   );
 };
+
+

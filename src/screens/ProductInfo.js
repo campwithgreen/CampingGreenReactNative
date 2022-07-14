@@ -79,7 +79,7 @@ export const ProductInfo = props => {
     items: [
       {
         itemId: selected_item._id,
-        units: quantity,
+        units: quantity || 1,
         startDate: startDate,
         endDate: returnDate,
       },
@@ -107,8 +107,32 @@ export const ProductInfo = props => {
       });
   };
 
+  const handleAddToCart = async () => {
+    await createOrUpdateCart(cartItems)
+      .then(res => {
+        if (res) {
+          ToastAndroid.showWithGravity(
+            'Product added to cart',
+            ToastAndroid.SHORT,
+            ToastAndroid.TOP,
+          );
+          navigateTo('ProductShoppingBagScreen');
+        }
+      })
+      .catch(err => {
+        if (err) {
+          showDefaultErrorAlert();
+        }
+      });
+  };
   return (
-    <View style={container}>
+    <View
+      style={[
+        container,
+        {
+          marginBottom: !modalVisible ? hp('9%') : 0,
+        },
+      ]}>
       {modalVisible && (
         <View style={centeredView}>
           <View style={modalView}>
@@ -144,10 +168,9 @@ export const ProductInfo = props => {
                   <Button
                     title="장바구니 답기"
                     onPress={() => {
-                      // navigateTo("SecondScreen") // subarea details
-                      navigateTo('ProductShoppingBagScreen'); // order success screen
+                      handleAddToCart();
                     }}
-                    color={COLOR.compGreen}
+                    color={COLOR.grey}
                   />
                 </View>
                 <View
@@ -161,7 +184,6 @@ export const ProductInfo = props => {
                   <Button
                     title="바로 대여하기"
                     onPress={() => {
-                      // navigateTo("ThirdScreen");//checkout
                       handleCheckout();
                     }}
                     color={COLOR.black}
@@ -691,7 +713,6 @@ export const ProductInfo = props => {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: hp('10%'),
     backgroundColor: COLOR.white,
   },
   centeredView: {

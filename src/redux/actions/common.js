@@ -29,3 +29,22 @@ export function setCurrentCheckoutCartDetails(data) {
         dispatch({ type: COMMON.SET_CURRENT_CART_DETAILS, payload: data });
     };
 }
+
+
+export function setUserCartHistory(data) {
+    return (dispatch, getState) => {
+        dispatch({ type: COMMON.SET_USER_CART_HISTORY, payload: data });
+    };
+}
+
+export function setSelectedLocation(data) {
+    return (dispatch, getState) => {
+        dispatch({ type: COMMON.SELECTED_LOCATION, payload: data });
+    };
+}
+
+export function setSelectedSubLocation(data) {
+    return (dispatch, getState) => {
+        dispatch({ type: COMMON.SELECTED_SUB_LOCATION, payload: data });
+    };
+}

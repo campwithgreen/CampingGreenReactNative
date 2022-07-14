@@ -15,62 +15,74 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import {RFPercentage} from 'react-native-responsive-fontsize';
+import COLOR from '../constants/colors';
+import {useDispatch} from 'react-redux';
+import {navigateTo} from '../navigation/utils/RootNavigation';
+import {setSelectedSubLocation} from '../redux/actions/common';
 
 const RenderItem = ({item}) => {
+  const dispatch = useDispatch();
   return (
-    <View
-      style={{
-        marginTop: hp('3%'),
-        display: 'flex',
-        flexDirection: 'column',
+    <TouchableOpacity
+      onPress={() => {
+        dispatch(setSelectedSubLocation(item));
+        navigateTo('SecondScreen');
       }}>
       <View
         style={{
           display: 'flex',
-          flexDirection: 'row',
-          paddingBottom: wp('2%'),
+          flexDirection: 'column',
+          backgroundColor: COLOR.white,
         }}>
-        <View>
-          <Image source={item.image} />
-        </View>
         <View
           style={{
             display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            width: wp('60%'),
-            paddingLeft: wp('4%'),
+            flexDirection: 'row',
+            paddingBottom: wp('2%'),
           }}>
+          <View>
+            <Image
+              source={{uri: item.carousel[0]}}
+              style={{height: hp('12%'), width: wp('20%')}}
+            />
+          </View>
           <View
             style={{
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'flex-start',
+              justifyContent: 'space-between',
+              width: wp('60%'),
+              paddingLeft: wp('4%'),
             }}>
-            <View>
-              <Text
-                style={{
-                  fontSize: RFPercentage(2.5),
-                  fontWeight: 'bold',
-                  color: '#1B1D1F',
-                  paddingBottom: hp('1%'),
-                }}>
-                {item.title}
-              </Text>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+              }}>
+              <View>
+                <Text
+                  style={{
+                    fontSize: RFPercentage(2.5),
+                    fontWeight: 'bold',
+                    color: '#1B1D1F',
+                    paddingBottom: hp('1%'),
+                  }}>
+                  {item.title}
+                </Text>
+              </View>
+              <View>
+                <Text
+                  style={{
+                    fontSize: RFPercentage(1.7),
+                    fontWeight: 'bold',
+                    color: '#454C53',
+                  }}>
+                  {item.subDetailDescription}
+                </Text>
+              </View>
             </View>
             <View>
-              <Text
-                style={{
-                  fontSize: RFPercentage(1.7),
-                  fontWeight: 'bold',
-                  color: '#454C53',
-                }}>
-                {item.description}
-              </Text>
-            </View>
-          </View>
-          <View>
-            {item.soldout == 'NO' ? (
               <View>
                 <View>
                   <Text
@@ -79,7 +91,7 @@ const RenderItem = ({item}) => {
                       color: '#454C53',
                       textAlign: 'right',
                     }}>
-                    {item.quantity}
+                    {item.stock} 개 남음
                   </Text>
                 </View>
                 <View>
@@ -90,44 +102,75 @@ const RenderItem = ({item}) => {
                       color: '#1B1D1F',
                       textAlign: 'right',
                     }}>
-                    {item.price}
+                    {item.price} 원
                   </Text>
                 </View>
               </View>
-            ) : (
-              <View>
-                <Text
-                  style={{
-                    fontSize: RFPercentage(2),
-                    color: '#454C53',
-                    textAlign: 'right',
-                  }}>
-                  {item.soldout}
-                </Text>
-              </View>
-            )}
+              {item.soldout == 'NO' ? (
+                <View>
+                  <View>
+                    <Text
+                      style={{
+                        fontSize: RFPercentage(1.7),
+                        color: '#454C53',
+                        textAlign: 'right',
+                      }}>
+                      {item.quantity}
+                    </Text>
+                  </View>
+                  <View>
+                    <Text
+                      style={{
+                        fontSize: RFPercentage(2.5),
+                        fontWeight: 'bold',
+                        color: '#1B1D1F',
+                        textAlign: 'right',
+                      }}>
+                      {item.price}
+                    </Text>
+                  </View>
+                </View>
+              ) : (
+                <View>
+                  <Text
+                    style={{
+                      fontSize: RFPercentage(2),
+                      color: '#454C53',
+                      textAlign: 'right',
+                    }}>
+                    {item.soldout}
+                  </Text>
+                </View>
+              )}
+            </View>
           </View>
         </View>
-      </View>
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          backgroundColor: '#F7F8F9',
-        }}>
-        <Text
+        <View
           style={{
-            color: '#454C53',
-            fontSize: RFPercentage(1.7),
-            paddingRight: wp('5%'),
+            display: 'flex',
+            flexDirection: 'row',
+            backgroundColor: '#F7F8F9',
           }}>
-          {item.info1}
-        </Text>
-        <Text style={{color: '#454C53', fontSize: RFPercentage(1.7)}}>
-          {item.info2}
-        </Text>
+          <Text
+            style={{
+              color: '#454C53',
+              fontSize: RFPercentage(1.7),
+              paddingRight: wp('5%'),
+            }}>
+            객실정보
+          </Text>
+          <Text style={{color: '#454C53', fontSize: RFPercentage(1.7)}}>
+            '입실 13:00 퇴실 11:00'
+          </Text>
+        </View>
+        <View
+          style={{
+            borderBottomWidth: 3,
+            borderColor: COLOR.lgrey,
+            marginVertical: hp('1%'),
+          }}></View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -182,15 +225,19 @@ const rental = [
 
 const RentDetail = props => {
   const {container} = styles;
+  const {subLocations} = props;
 
   return (
-    <View>
+    <View style={{backgroundColor: COLOR.white}}>
       <FlatList
         numColumns={1}
         showsHorizontalScrollIndicator={false}
-        data={rental}
+        data={subLocations}
+        contentContainerStyle={{
+          marginVertical: hp('5%'),
+        }}
         renderItem={({item}) => {
-          return <RenderItem item={item} key={item.id} />;
+          return <RenderItem item={item} key={item._id} />;
         }}
       />
     </View>

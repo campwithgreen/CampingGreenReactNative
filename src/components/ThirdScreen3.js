@@ -1,16 +1,36 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  ToastAndroid,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {RFPercentage} from 'react-native-responsive-fontsize';
 import React from 'react';
+import {navigateTo} from '../navigation/utils/RootNavigation';
 
 const ThirdScreen3 = () => {
   return (
     <View style={styles.view1}>
-      <Text style={styles.btn1}>예약 취소</Text>
-      <Text style={styles.btn2}>주문 목록</Text>
+      <TouchableOpacity
+        onPress={() => {
+          ToastAndroid.showWithGravity(
+            'Cancel Order feature is not avaiable now',
+            ToastAndroid.LONG,
+            ToastAndroid.TOP,
+          );
+        }}>
+        <Text style={styles.btn1}>배송정보</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          navigateTo('RoomReservationListScreen');
+        }}>
+        <Text style={styles.btn2}>배송정보</Text>
+      </TouchableOpacity>
     </View>
   );
 };

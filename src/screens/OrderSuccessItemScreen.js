@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View, ScrollView, Image} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -13,11 +13,12 @@ import ThirdScreen5 from '../components/ThirdScreen5';
 import SecondScreen1 from '../components/SecondScreen1';
 import ThirdScreen4 from '../components/ThirdScreen4';
 import {useDispatch, useSelector} from 'react-redux';
+import moment from 'moment';
 const headerContent = {
   leftItemContents: {
     type: 'image',
     content: require('../assets/images/icon_cancel.png'),
-    navigateScreen: 'HomeScreen',
+    navigateScreen: () => goBack(),
   },
   rightItemContents: {
     type: 'image',
@@ -25,11 +26,36 @@ const headerContent = {
     navigateScreen: 'LoginScreen',
   },
 };
+import {getUserCartHistory} from '../apis/cart';
+import {setUserCartHistory} from '../redux/actions/common';
+import {showDefaultErrorAlert} from '../global/global';
+import {goBack} from '../navigation/utils/RootNavigation';
+
 export default function ThirdScreen() {
   const dispatch = useDispatch();
   const current_cart_details = useSelector(
     st => st.common.current_cart_details,
   );
+
+  useEffect(() => {
+    return () => {
+      (async function getCartHistory() {
+        await getUserCartHistory()
+          .then(res => {
+            if (res) {
+              console.log('USer History', res.data);
+              dispatch(setUserCartHistory(res.data.data));
+            }
+          })
+          .catch(err => {
+            if (err) {
+              showDefaultErrorAlert();
+            }
+          });
+      })();
+    };
+  }, []);
+
   return (
     <View style={{backgroundColor: 'white'}}>
       <ScrollView>
@@ -61,14 +87,26 @@ export default function ThirdScreen() {
         </Text>
         <View style={styles.border1}></View>
         <View style={{paddingTop: hp('3.5%')}}>
-          <SecondScreen1 t1="결제금액" t2="136,000원" />
+          <SecondScreen1
+            t1="결제금액"
+            t2={`${current_cart_details?.totalAmount}원`}
+          />
         </View>
         <View style={styles.border2}></View>
         <SecondScreen1 t1="결제방법" t2="무통장입금" />
         <View style={styles.border2}></View>
-        <SecondScreen1 t1="결제마감일" t2="2022.05.27 23:59:59" />
+        <SecondScreen1
+          t1="결제마감일"
+          t2={`${moment(
+            new Date(current_cart_details?.items[0]?.startDate).setDate(
+              new Date(current_cart_details?.items[0]?.startDate).getDate() - 1,
+            ),
+          )
+            .utc()
+            .format('MM-DD-YYYY')} 23:59:59`}
+        />
         <View style={styles.border2}></View>
-        <SecondScreen1 t1="현재상태" t2="결제 대기" />
+        <SecondScreen1 t1="현재상태" t2={current_cart_details.paymentStatus} />
         <Text
           style={{
             fontWeight: 'bold',

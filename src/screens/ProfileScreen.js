@@ -164,7 +164,10 @@ export const ProfileScreen = props => {
                       }}>
                       <Text style={[statusText, greyColor]}>최근주문</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigateTo('RoomReservationListScreen');
+                      }}>
                       <Text style={statusText}>{pendingCart}건 입금대기</Text>
                     </TouchableOpacity>
                   </View>

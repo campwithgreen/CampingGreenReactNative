@@ -22,6 +22,7 @@ import {setUserCartHistory} from '../redux/actions/common';
 import moment from 'moment';
 import COLOR from '../constants/colors';
 import Loader from '../components/common/Loader';
+import {goBack} from '../navigation/utils/RootNavigation';
 
 const ProductShoppingBagScreen = () => {
   const dispatch = useDispatch();
@@ -39,7 +40,9 @@ const ProductShoppingBagScreen = () => {
     leftItemContents: {
       type: 'image',
       content: require('../assets/images/icon_cancel.png'),
-      navigateScreen: 'HomeScreen',
+      navigateScreen: () => {
+        goBack();
+      },
     },
     rightItemContents: {
       type: 'image',

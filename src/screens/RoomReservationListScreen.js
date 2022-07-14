@@ -110,7 +110,7 @@ const Comp2 = ({btnText, itemData}) => {
           dispatch(setCurrentCheckoutCartDetails(itemData));
           navigateTo('ThirdScreen');
         }}>
-        <Text style={styles.comp2Text2}>View ></Text>
+        <Text style={styles.comp2Text2}>{'View >'}</Text>
       </TouchableOpacity>
     </View>
   );

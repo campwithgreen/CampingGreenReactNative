@@ -1,4 +1,4 @@
-package com.campinggreenreactnative.newarchitecture.components;
+package com.greencamp.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

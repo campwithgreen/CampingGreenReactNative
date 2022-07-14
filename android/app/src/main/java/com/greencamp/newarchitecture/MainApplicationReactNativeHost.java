@@ -1,4 +1,4 @@
-package com.campinggreenreactnative.newarchitecture;
+package com.greencamp.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.campinggreenreactnative.BuildConfig;
-import com.campinggreenreactnative.newarchitecture.components.MainComponentsRegistry;
-import com.campinggreenreactnative.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.greencamp.BuildConfig;
+import com.greencamp.newarchitecture.components.MainComponentsRegistry;
+import com.greencamp.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

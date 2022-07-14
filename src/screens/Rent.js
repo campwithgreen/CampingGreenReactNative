@@ -457,7 +457,6 @@ const styles = StyleSheet.create({
     width: '100%',
     zIndex: 15,
     elevation: 50,
-    marginBottom: hp('5%'),
   },
   modalView: {
     minHeight: hp('30%'),

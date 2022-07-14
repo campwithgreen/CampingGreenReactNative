@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   ImageBackground,
   ToastAndroid,
   Button,
+  Platform,
 } from 'react-native';
 import Header from '../layout/Header';
 import {
@@ -17,20 +18,20 @@ import {
   widthPercentageToDP,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {RFPercentage} from 'react-native-responsive-fontsize';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 import Carousel from '../components/Carousel';
-import {Dimensions, StatusBar} from 'react-native';
+import { Dimensions, StatusBar } from 'react-native';
 import FONTSIZE from '../constants/fontSize';
 import COLOR from '../constants/colors';
-import {navigateTo} from '../navigation/utils/RootNavigation';
+import { navigateTo } from '../navigation/utils/RootNavigation';
 import Footer from '../components/Footer';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CustomButton from '../components/common/CustomButton';
 import ProductShoppingBag from '../components/ProductShoppingBag';
 import Counter from '../components/common/Counter';
-import {createOrUpdateCart} from '../apis/cart';
-import {showDefaultErrorAlert} from '../global/global';
-import {setCurrentCheckoutCartDetails} from '../redux/actions/common';
+import { createOrUpdateCart } from '../apis/cart';
+import { showDefaultErrorAlert } from '../global/global';
+import { setCurrentCheckoutCartDetails } from '../redux/actions/common';
 
 const headerContent = {
   leftItemContents: {
@@ -46,7 +47,7 @@ const headerContent = {
 };
 
 export const ProductInfo = props => {
-  const {container} = styles;
+  const { container } = styles;
   const selected_item = useSelector(st => st.common.selected_item);
   const startDate = useSelector(st => st.common.start_date);
   const returnDate = useSelector(st => st.common.return_date);
@@ -73,7 +74,7 @@ export const ProductInfo = props => {
     return false;
   };
 
-  const {centeredView, modalView, termTitle, termsButtonWrapper} = styles;
+  const { centeredView, modalView, termTitle, termsButtonWrapper } = styles;
 
   let cartItems = {
     items: [
@@ -87,7 +88,6 @@ export const ProductInfo = props => {
   };
 
   const handleCheckout = async () => {
-    console.log('CHCKOUT ITEMS', cartItems);
     await createOrUpdateCart(cartItems)
       .then(res => {
         if (res) {
@@ -195,7 +195,7 @@ export const ProductInfo = props => {
         </View>
       )}
       <Header headerContent={headerContent} />
-      <ScrollView style={{marginBottom: hp('5%')}}>
+      <ScrollView style={{ marginBottom: hp('5%') }}>
         <View>
           <Carousel carouselData={item.carousel} paginationType="right" />
         </View>
@@ -250,7 +250,7 @@ export const ProductInfo = props => {
                 borderRightWidth: 0.5,
               }}>
               <View>
-                <Text style={{color: '#454C53', fontSize: RFPercentage(2)}}>
+                <Text style={{ color: '#454C53', fontSize: RFPercentage(2) }}>
                   대여 시작일
                 </Text>
               </View>
@@ -288,7 +288,7 @@ export const ProductInfo = props => {
                 borderLeftWidth: 0.5,
               }}>
               <View>
-                <Text style={{color: '#454C53', fontSize: RFPercentage(2)}}>
+                <Text style={{ color: '#454C53', fontSize: RFPercentage(2) }}>
                   반납 예정일
                 </Text>
               </View>
@@ -319,7 +319,7 @@ export const ProductInfo = props => {
             </View>
           </View>
         </View>
-        <View style={{marginTop: heightPercentageToDP('5%')}}>
+        <View style={{ marginTop: heightPercentageToDP('5%') }}>
           <View
             style={{
               display: 'flex',
@@ -385,8 +385,8 @@ export const ProductInfo = props => {
           </View>
         </View>
         {tabIndex === 1 && (
-          <View style={{backgroundColor: '#ffff', marginTop: hp('2%')}}>
-            <View style={{paddingBottom: hp('3%'), marginHorizontal: wp('5%')}}>
+          <View style={{ backgroundColor: '#ffff', marginTop: hp('2%') }}>
+            <View style={{ paddingBottom: hp('3%'), marginHorizontal: wp('5%') }}>
               <Text
                 style={{
                   color: '#1B1D1F',
@@ -398,7 +398,7 @@ export const ProductInfo = props => {
             </View>
             <ImageBackground
               source={require('../assets/images/tentinfo.png')}
-              style={{height: hp('28%')}}
+              style={{ height: hp('28%') }}
             />
             <View
               style={{
@@ -458,8 +458,8 @@ export const ProductInfo = props => {
                 })}
               </View>
             </View>
-            <View style={{marginHorizontal: wp('5%')}}>
-              <View style={{paddingTop: hp('10%')}}>
+            <View style={{ marginHorizontal: wp('5%') }}>
+              <View style={{ paddingTop: hp('10%') }}>
                 <Text
                   style={{
                     color: '#1B1D1F',
@@ -529,7 +529,7 @@ export const ProductInfo = props => {
                     paddingVertical: hp('2.5%'),
                   }}>
                   <ImageBackground
-                    source={{uri: feature.image}}
+                    source={{ uri: feature.image }}
                     style={{
                       height: hp('28%'),
                       width: wp('100%'),
@@ -562,9 +562,9 @@ export const ProductInfo = props => {
           </View>
         )}
         {tabIndex === 2 && (
-          <View style={{backgroundColor: '#ffff', marginTop: hp('2%')}}>
-            <View style={{marginHorizontal: wp('5%')}}>
-              <View style={{paddingBottom: hp('3%')}}>
+          <View style={{ backgroundColor: '#ffff', marginTop: hp('2%') }}>
+            <View style={{ marginHorizontal: wp('5%') }}>
+              <View style={{ paddingBottom: hp('3%') }}>
                 <Text
                   style={{
                     color: '#1B1D1F',
@@ -574,7 +574,7 @@ export const ProductInfo = props => {
                   예약 {'\n'}유의사항
                 </Text>
               </View>
-              <View style={{paddingBottom: hp('7%')}}>
+              <View style={{ paddingBottom: hp('7%') }}>
                 <Text
                   style={{
                     color: '#1B1D1F',
@@ -595,7 +595,7 @@ export const ProductInfo = props => {
                   고객센터로 문의바랍니다.
                 </Text>
               </View>
-              <View style={{paddingBottom: hp('5%')}}>
+              <View style={{ paddingBottom: hp('5%') }}>
                 <Text
                   style={{
                     color: '#1B1D1F',
@@ -605,7 +605,7 @@ export const ProductInfo = props => {
                   배송 {'\n'}안내사항
                 </Text>
               </View>
-              <View style={{paddingBottom: hp('5%')}}>
+              <View style={{ paddingBottom: hp('5%') }}>
                 <Text
                   style={{
                     color: '#1B1D1F',
@@ -625,7 +625,7 @@ export const ProductInfo = props => {
                   있습니다.
                 </Text>
               </View>
-              <View style={{paddingBottom: hp('5%')}}>
+              <View style={{ paddingBottom: hp('5%') }}>
                 <Text
                   style={{
                     color: '#1B1D1F',
@@ -644,7 +644,7 @@ export const ProductInfo = props => {
                   다음날, 배송받으셨던 주소로 택배기사님이 방문하여 수거합니다.
                 </Text>
               </View>
-              <View style={{paddingBottom: hp('4%')}}>
+              <View style={{ paddingBottom: hp('4%') }}>
                 <Text
                   style={{
                     color: '#1B1D1F',
@@ -667,7 +667,7 @@ export const ProductInfo = props => {
                   대여품입니다. {'\n\n\n'}
                   고품질의 서비스를 지속적으로 제공하기 위해서 깨끗이 사용하시고
                   사용 후에도 반드시 청소해서 반납해주시길 바랍니다. {'\n\n\n'}
-                  <Text style={{fontWeight: 'bold'}}>
+                  <Text style={{ fontWeight: 'bold' }}>
                     대여지와 배송지가 다를 경우, 택배사에 직접 전화하여
                     예약하시거나 인터넷을 이용해주세요.
                   </Text>
@@ -717,7 +717,7 @@ const styles = StyleSheet.create({
   },
   centeredView: {
     position: 'absolute',
-    bottom: 0,
+    bottom: Platform.OS === "ios" ? 0 : hp("9%"),
     width: '100%',
     zIndex: 15,
     elevation: 50,

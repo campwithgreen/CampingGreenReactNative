@@ -1,17 +1,24 @@
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, ToastAndroid, Button } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import { RFPercentage } from 'react-native-responsive-fontsize';
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '../layout/Header';
 import Carousel from '../components/Carousel';
 import SecondScreen1 from '../components/SecondScreen1';
 import SecondScreen2 from '../components/SecondScreen2';
 import Footer from '../components/Footer';
 import CustomButton from '../components/common/CustomButton';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import COLOR from '../constants/colors';
+import FONTSIZE from '../constants/fontSize';
+import { createOrUpdateCart } from '../apis/cart';
+import { setCurrentCheckoutCartDetails } from '../redux/actions/common';
+import { showDefaultErrorAlert } from '../global/global';
+import { navigateTo } from '../navigation/utils/RootNavigation';
+import Counter from '../components/common/Counter';
 
 const headerContent = {
   leftItemContents: {
@@ -31,12 +38,109 @@ const headerContent = {
   },
 };
 const SecondScreen = () => {
-  const { container } = styles;
+  const { container, centeredView, modalView, termTitle, termsButtonWrapper } = styles;
   const selected_subLocation = useSelector((st) => st.common.selected_sub_location);
+
+  const dispatch = useDispatch();
+
+
+  const subLocations = useSelector((st) => st.common.selected_location);
+  const startDate = useSelector((st) => st.common?.start_date);
+  const returnDate = useSelector((st) => st.common?.return_date);
+  const isLoggedIn = useSelector((st) => st.oauth?.isLogin);
+  const quantity = useSelector((st) => st.common?.quantity);
+
+  const [modalVisible, setModalVisible] = useState(false);
+
+
+  const enableCheckout = () => {
+    if (startDate && returnDate) {
+      return true;
+    }
+    return false;
+  };
+
+  let cartItems = {
+    "items": [
+      {
+        "itemId": selected_subLocation?._id,
+        "units": quantity || 1,
+        "startDate": startDate,
+        "endDate": returnDate
+      }
+    ]
+  };
+
+  const handleCheckout = async () => {
+    console.log("CHCKOUT ITEMS", cartItems);
+    await createOrUpdateCart(cartItems).then((res) => {
+      if (res) {
+        dispatch(setCurrentCheckoutCartDetails(res.data.data));
+        ToastAndroid.showWithGravity("Checkout In Progress", ToastAndroid.SHORT, ToastAndroid.TOP);
+        navigateTo("RoomPaymentScreen");
+      }
+    }).catch((err) => {
+      if (err) {
+        showDefaultErrorAlert();
+      }
+    });
+  };
+
+  const handleAddToCart = async () => {
+    console.log("CHCKOUT ADD ITEMS", cartItems);
+    await createOrUpdateCart(cartItems).then((res) => {
+      if (res) {
+        ToastAndroid.showWithGravity("Product added to cart", ToastAndroid.SHORT, ToastAndroid.TOP);
+        navigateTo("ProductShoppingBagScreen");
+      }
+    }).catch((err) => {
+      if (err) {
+        showDefaultErrorAlert();
+      }
+    });
+  };
+
+
   return (
     <View style={container}>
+      {modalVisible &&
+        <View style={centeredView}>
+          <View style={modalView}>
+            <View>
+              <Text style={termTitle}>총 상품금액</Text>
+              <View style={termsButtonWrapper}>
+                <View>
+                  <Text style={termTitle}>{quantity ? selected_subLocation.price * quantity : selected_subLocation.price}</Text>
+                </View>
+                <View>
+                  <Counter />
+                </View>
+              </View>
+              <View style={termsButtonWrapper}>
+                <View style={{ width: "47%" }}>
+                  <Button
+                    title="Add to Cart"
+                    onPress={() => {
+                      handleAddToCart();
+                    }}
+                    color={COLOR.grey}
+                  />
+                </View>
+                <View style={{ width: "47%" }}>
+                  <Button
+                    title="Checkout"
+                    onPress={() => {
+                      handleCheckout();
+                    }}
+                    color={COLOR.compGreen}
+                  />
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>}
       <Header headerContent={headerContent} />
-      <ScrollView>
+      <ScrollView style={{ marginBottom: hp("7%") }}>
         <Carousel carouselData={selected_subLocation.carousel} />
         <Text
           style={[
@@ -64,8 +168,9 @@ const SecondScreen = () => {
           ]}>
           기본정보
         </Text>
-        <SecondScreen1 t1="정보" t2="기본정보" />
-        <SecondScreen1 t1="abcd" t2="abcd" />
+        {selected_subLocation?.specifications && Object.keys(selected_subLocation?.specifications)?.map((spec) => {
+          return <SecondScreen1 t1={spec} t2={selected_subLocation?.specifications[spec]} />;
+        })}
         <View style={styles.border2}></View>
         <SecondScreen1 t1="abcd" t2="abcd" />
         <SecondScreen1 t1="객실정보" t2="전기사용가능" />
@@ -166,7 +271,20 @@ const SecondScreen = () => {
         </View>
         <Footer />
       </ScrollView>
-      <CustomButton buttonText={"예약하기"} />
+      {!modalVisible && <View>
+        <CustomButton buttonText={"대여하기"} buttonHandler={() => {
+          if (isLoggedIn) {
+            if (enableCheckout()) {
+              setModalVisible(true);
+            } else {
+              ToastAndroid.showWithGravity("Please Select the Date for Checkout", ToastAndroid.LONG, ToastAndroid.TOP);
+            }
+          } else {
+            ToastAndroid.showWithGravity("You have to Login to Proceed Renting", ToastAndroid.LONG, ToastAndroid.TOP);
+            navigateTo("LoginScreen");
+          }
+        }} />
+      </View>}
     </View>
   );
 };
@@ -208,4 +326,48 @@ const styles = StyleSheet.create({
     width: wp('100%'),
     bottom: 0,
   },
+  centeredView: {
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
+    zIndex: 15,
+    elevation: 50,
+    marginBottom: hp("5%")
+  },
+  modalView: {
+    minHeight: hp("30%"),
+    backgroundColor: COLOR.black,
+    borderTopLeftRadius: 30,
+    padding: hp("4%"),
+    borderTopRightRadius: 30,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 100,
+  },
+  termTitle: {
+    color: COLOR.white,
+    fontWeight: "bold",
+    fontSize: FONTSIZE.xll
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  },
+  termsButtonWrapper: {
+    marginVertical: hp("1%"),
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between"
+  }
 });

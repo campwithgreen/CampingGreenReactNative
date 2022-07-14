@@ -112,6 +112,8 @@ const RoomScreen = () => {
   const location = useSelector((st) => st.product.location);
 
   console.log("LOC", location);
+  const st = useSelector((st) => st);
+  console.log("STORE", st);
 
 
   return (

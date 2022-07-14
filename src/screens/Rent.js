@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, ToastAndroid } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Button, ToastAndroid } from 'react-native';
 import Header from '../layout/Header';
 import {
   heightPercentageToDP as hp,
@@ -14,6 +14,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import CustomButton from '../components/common/CustomButton';
 import { navigateTo } from '../navigation/utils/RootNavigation';
 import FONTSIZE from '../constants/fontSize';
+import Counter from "../components/common/Counter";
+
 
 const headerContent = {
   leftItemContents: {
@@ -391,7 +393,7 @@ const Rent = (props) => {
         </View>
         <Footer />
       </ScrollView>
-      {!modalVisible && <View>
+      {/* {!modalVisible && <View>
         <CustomButton buttonText={"대여하기"} buttonHandler={() => {
           if (isLoggedIn) {
             if (enableCheckout()) {
@@ -404,7 +406,7 @@ const Rent = (props) => {
             navigateTo("LoginScreen");
           }
         }} />
-      </View>}
+      </View>} */}
     </View>
   );
 };

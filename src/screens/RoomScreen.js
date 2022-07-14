@@ -98,7 +98,6 @@ const RoomScreen = () => {
       await getAllProducts(data)
         .then(res => {
           if (res) {
-            console.log('FROM ROOM SCREEN', res.data.data);
             dispatch(setLocationData(res.data.data));
             setLoading(false);
           }

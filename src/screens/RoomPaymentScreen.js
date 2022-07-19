@@ -113,7 +113,7 @@ const RoomPaymentScreen = () => {
   const [address, setAddress] = useState(null);
   const [remarks, setRemarks] = useState(null);
 
-  // const [firstNum,setFirstNum]=useState(null)
+  const [carNum, setCarNum] = useState(null);
   // const [secondNum, setSecondNum] = useState(null)
   // const [firstNum, setFirstNum] = useState(null)
 
@@ -163,7 +163,7 @@ const RoomPaymentScreen = () => {
             }
           } else {
             ToastAndroid.showWithGravity(
-              '차량번호 입력해 주세요.',
+              'if screen navigate from item(배송지를 입력해 주세요)./ if car num (차량번호를 입력해 주세요)',
               ToastAndroid.SHORT,
               ToastAndroid.TOP,
             );
@@ -269,10 +269,10 @@ const RoomPaymentScreen = () => {
               <TextInput style={styles.textinput2} placeholder="1111" maxLength={4} />
             </View>
           </View> */}
+
           <Input
-            t1="배송지"
+            t1="배송지(address) / 차량번호(carNum)"
             t2="배송지"
-            keyboardType={'email-address'}
             onChangeText={value => {
               setAddress(value);
             }}

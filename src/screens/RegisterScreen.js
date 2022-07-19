@@ -218,14 +218,14 @@ export const RegisterScreen = props => {
                 <Button
                   title="동의하고 시작하기"
                   onPress={() => mainRegister()}
-                  color={COLOR.white}
+                  color={COLOR.compGreen}
                 />
               </View>
               <View style={termsButtonWrapperClose}>
                 <Button
                   title="닫기"
                   onPress={() => setModalVisible(false)}
-                  color={COLOR.white}
+                  color={COLOR.compGreen}
                 />
               </View>
             </View>
@@ -271,7 +271,7 @@ export const RegisterScreen = props => {
               <Button
                 title="회원가입 완료"
                 onPress={() => handleRegister()}
-                color="#fff"
+                color={COLOR.compGreen}
                 disabled={disableButton()}
               />
             </View>
@@ -352,12 +352,12 @@ const styles = StyleSheet.create({
   },
   termsButtonWrapper: {
     marginVertical: hp('1%'),
-    backgroundColor: '#55C595',
+
     borderRadius: 7,
   },
   termsButtonWrapperClose: {
     marginVertical: hp('1%'),
-    backgroundColor: '#C9CDD2',
+
     borderRadius: 7,
   },
 });

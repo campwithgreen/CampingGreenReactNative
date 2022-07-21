@@ -57,8 +57,6 @@ const ProductShoppingBagScreen = () => {
   const [productList, setProductList] = useState([]);
 
   useEffect(() => {
-    console.log("+++++++++++++++++++++++++++++++++++++++++++RENDERING+++++++++++++++++++++++++++++++++");
-
     if (isLogin) {
       (async function getCartHistory() {
         setLoading(true);
@@ -143,8 +141,11 @@ const ProductShoppingBagScreen = () => {
     );
   };
 
+
+
   return (
     <View style={{ flex: 1 }}>
+      <Header headerContent={headerContent} />
       <ScrollView>
         <View style={styles.border2}></View>
         {loading ? <Loader /> : <FlatList

@@ -27,24 +27,6 @@ import {showDefaultErrorAlert} from '../global/global';
 import {navigateTo, goBack} from '../navigation/utils/RootNavigation';
 import Counter from '../components/common/Counter';
 
-const headerContent = {
-  leftItemContents: {
-    type: 'image',
-    content: require('../assets/images/icon_cancel.png'),
-    navigateScreen: () => {
-      goBack();
-    },
-  },
-  middleItemContents: {
-    type: 'text',
-    content: '객실 정보',
-  },
-  rightItemContents: {
-    type: 'image',
-    content: require('../assets/images/cart.png'),
-    navigateScreen: 'LoginScreen',
-  },
-};
 //객실 정보 스크린 camping room detail screen
 const SecondScreen = () => {
   const {container, centeredView, modalView, termTitle, termsButtonWrapper} =
@@ -66,6 +48,35 @@ const SecondScreen = () => {
     selected_subLocation?.specifications,
     ' selected_subLocation?.specifications  item in SecondScreen',
   );
+
+  const headerContent = {
+    leftItemContents: {
+      type: 'image',
+      content: require('../assets/images/icon_cancel.png'),
+      navigateScreen: () => {
+        goBack();
+      },
+    },
+    middleItemContents: {
+      type: 'text',
+      content: '객실 정보',
+    },
+    rightItemContents: {
+      type: 'image',
+      content: require('../assets/images/cart.png'),
+      navigateScreen: () => {
+        if (!isLoggedIn) {
+          ToastAndroid.showWithGravity(
+            'Pls Login to View Cart',
+            ToastAndroid.LONG,
+            ToastAndroid.TOP,
+          );
+        } else {
+          navigateTo('ProductShoppingBagScreen');
+        }
+      },
+    },
+  };
   const enableCheckout = () => {
     if (startDate && returnDate) {
       return true;
@@ -96,11 +107,13 @@ const SecondScreen = () => {
             ToastAndroid.TOP,
           );
           navigateTo('RoomPaymentScreen');
+          setModalVisible(false);
         }
       })
       .catch(err => {
         if (err) {
           showDefaultErrorAlert();
+          setModalVisible(false);
         }
       });
   };
@@ -116,11 +129,13 @@ const SecondScreen = () => {
             ToastAndroid.TOP,
           );
           navigateTo('ProductShoppingBagScreen');
+          setModalVisible(false);
         }
       })
       .catch(err => {
         if (err) {
           showDefaultErrorAlert();
+          setModalVisible(false);
         }
       });
   };
@@ -147,7 +162,7 @@ const SecondScreen = () => {
               <View style={termsButtonWrapper}>
                 <View style={{width: '47%'}}>
                   <Button
-                    title="Add to Cart"
+                    title="장바구니 담기"
                     onPress={() => {
                       handleAddToCart();
                     }}
@@ -156,7 +171,7 @@ const SecondScreen = () => {
                 </View>
                 <View style={{width: '47%'}}>
                   <Button
-                    title="Checkout"
+                    title="바로 대여하기"
                     onPress={() => {
                       handleCheckout();
                     }}
@@ -385,7 +400,7 @@ export default SecondScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: COLOR.white,
     flex: 1,
   },
   view1: {
@@ -424,7 +439,6 @@ const styles = StyleSheet.create({
     width: '100%',
     zIndex: 15,
     elevation: 50,
-    marginBottom: hp('5%'),
   },
   modalView: {
     minHeight: hp('30%'),
@@ -457,7 +471,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   termsButtonWrapper: {
-    marginVertical: hp('1%'),
+    marginVertical: hp('2%'),
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',

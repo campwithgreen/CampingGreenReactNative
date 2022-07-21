@@ -1,36 +1,37 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View, Button} from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {RFPercentage} from 'react-native-responsive-fontsize';
+import COLOR from '../../constants/colors';
+import FONTSIZE from '../../constants/fontSize';
 
 export default function CustomButton(props) {
   const {buttonText, buttonHandler} = props;
-  const {button1} = styles;
+
   return (
     <TouchableOpacity
       onPress={() => {
         buttonHandler();
       }}>
-      <Text style={button1}>{buttonText}</Text>
+      <View style={styles.button}>
+        <Text style={styles.buttonText}>{buttonText}</Text>
+      </View>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  button1: {
-    backgroundColor: '#191919',
-    color: '#76FFC5',
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    height: hp('9.5%'),
-    fontSize: RFPercentage(3),
+  button: {
+    paddingVertical: hp('2%'),
+    backgroundColor: COLOR.compBlackI,
+  },
+  buttonText: {
+    color: COLOR.compGreenI,
     fontWeight: 'bold',
-    position: 'absolute',
-    width: wp('100%'),
-    bottom: 0,
-    paddingVertical: 15,
+    textTransform: 'uppercase',
+    fontSize: FONTSIZE.xlll,
+    textAlign: 'center',
   },
 });

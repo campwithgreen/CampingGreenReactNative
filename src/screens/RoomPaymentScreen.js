@@ -47,7 +47,7 @@ const Input = ({
         {t1}
       </Text>
       <TextInput
-        style={[styles.textinput1, {paddingLeft: wp('5%'), fontWeight: 'bold'}]}
+        style={[styles.textinput1, {paddingLeft: wp('3%'), fontWeight: 'bold'}]}
         placeholder={t2}
         maxLength={maxLength}
         keyboardType={keyboardType}
@@ -198,11 +198,11 @@ const RoomPaymentScreen = () => {
   console.log('WF', phone_number);
 
   return (
-    <View style={{backgroundColor: 'white', marginBottom: hp('15%')}}>
+    <View style={styles.container}>
       <Header headerContent={headerContent} />
       <View style={styles.border2}></View>
       <ScrollView>
-        <View style={{backgroundColor: COLOR.white, marginBottom: hp('7%')}}>
+        <View style={{backgroundColor: COLOR.white}}>
           <Text style={[styles.text1, styles.ph1, {paddingBottom: hp('3%')}]}>
             대여 기간
           </Text>
@@ -271,8 +271,8 @@ const RoomPaymentScreen = () => {
           </View> */}
 
           <Input
-            t1="배송지(address) / 차량번호(carNum)"
-            t2="배송지"
+            t1="배송지"
+            t2="캠핑 예약인 경우 차량번호를 입력해주세요"
             onChangeText={value => {
               setAddress(value);
             }}
@@ -446,17 +446,16 @@ const RoomPaymentScreen = () => {
           <Comp t1="개인정보 수집 및 이용 " t2="동의 (필수)" p="p3" />
           <Comp t1="개인정보 제3자 제공 " t2="동의 (필수)" p="p4" />
         </View> */}
+
           <Footer />
         </View>
       </ScrollView>
-      <View>
-        <CustomButton
-          buttonText={'대여하기'}
-          buttonHandler={() => {
-            handleProceedCheckout();
-          }}
-        />
-      </View>
+      <CustomButton
+        buttonText={'대여하기'}
+        buttonHandler={() => {
+          handleProceedCheckout();
+        }}
+      />
     </View>
   );
 };
@@ -471,6 +470,10 @@ const Div = ({t1, t2, c1, c2}) => {
 export default RoomPaymentScreen;
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: COLOR.white,
+    flex: 1,
+  },
   view1: {
     display: 'flex',
     flexDirection: 'row',

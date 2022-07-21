@@ -16,6 +16,7 @@ import CustomCalendar from '../components/common/Calendar';
 import {goBack, navigateTo} from '../navigation/utils/RootNavigation';
 import CustomButton from '../components/common/CustomButton';
 import {useSelector} from 'react-redux';
+import COLOR from '../constants/colors';
 
 const headerContent = {
   leftItemContents: {
@@ -50,11 +51,11 @@ const CalendarScreen = props => {
   return (
     <View style={container}>
       <Header headerContent={headerContent} />
-      <ScrollView keyboardShouldPersistTaps="always">
+      <ScrollView>
         <CustomCalendar />
       </ScrollView>
       <CustomButton
-        buttonText={'예약 날짜를 선택하세요'}
+        buttonText={'예약하기'}
         buttonHandler={() => {
           if (enableCheckout()) {
             if (type === 'LOCATION') {

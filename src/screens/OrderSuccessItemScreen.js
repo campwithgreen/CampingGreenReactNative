@@ -18,12 +18,12 @@ const headerContent = {
   leftItemContents: {
     type: 'image',
     content: require('../assets/images/icon_cancel.png'),
-    navigateScreen: () => goBack(),
-  },
+    navigateScreen: 'HomeScreen',
+  }, //put flag here
   rightItemContents: {
     type: 'image',
     content: require('../assets/images/cart.png'),
-    navigateScreen: 'LoginScreen',
+    navigateScreen: 'ProductShoppingBagScreen',
   },
 };
 import {getUserCartHistory} from '../apis/cart';

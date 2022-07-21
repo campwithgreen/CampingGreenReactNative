@@ -29,6 +29,7 @@ const ProductShoppingBagScreen = () => {
 
   const isLogin = useSelector(st => st?.oauth?.isLogin);
   const cart_history = useSelector(st => st.common?.cart_history);
+  const [cartMainData, setCartMainData] = useState(cart_history);
   const [loading, setLoading] = useState(false);
 
   const headerContent = {
@@ -44,14 +45,11 @@ const ProductShoppingBagScreen = () => {
         goBack();
       },
     },
-    rightItemContents: {
-      type: 'image',
-      content: require('../assets/images/cart.png'),
-      navigateScreen: 'ProductShoppingBagScreen',
-    },
   };
 
   const [isSelected, setSelection] = useState(false);
+  const [checkedCount, setCheckedCount] = useState(0);
+  const [productList, setProductList] = useState([]);
 
   useEffect(() => {
     if (isLogin) {
@@ -60,7 +58,41 @@ const ProductShoppingBagScreen = () => {
         await getUserCartHistory()
           .then(res => {
             if (res) {
+              setCartMainData(res.data.data);
+
               dispatch(setUserCartHistory(res.data.data));
+
+              let result = res.data.data?.reduce(function (r, a) {
+                r[
+                  `${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${
+                    a.paymentStatus
+                  }`
+                ] =
+                  r[
+                    `${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${
+                      a.paymentStatus
+                    }`
+                  ] || [];
+                r[
+                  `${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${
+                    a.paymentStatus
+                  }`
+                ].push(a);
+                return r;
+              }, Object.create(null));
+
+              let bagData = [];
+
+              if (result) {
+                Object.keys(result).map(key => {
+                  if (key.indexOf('CHECKOUT_PENDING') > -1) {
+                    bagData = bagData.concat(result[key]);
+                  }
+                });
+              }
+
+              setProductList(bagData);
+
               setLoading(false);
             }
           })
@@ -74,35 +106,6 @@ const ProductShoppingBagScreen = () => {
     }
   }, [isLogin]);
 
-  let result = cart_history?.reduce(function (r, a) {
-    r[`${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${a.paymentStatus}`] =
-      r[
-        `${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${a.paymentStatus}`
-      ] || [];
-    r[
-      `${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${a.paymentStatus}`
-    ].push(a);
-    return r;
-  }, Object.create(null));
-
-  console.log('GROPUPED IN BAG', result);
-
-  let bagData = [];
-
-  if (result) {
-    Object.keys(result).map(key => {
-      if (key.indexOf('CHECKOUT_PENDING') > -1) {
-        console.log('WENT IN');
-        bagData = bagData.concat(result[key]);
-      }
-    });
-  }
-
-  console.log('BAG DATE', bagData);
-
-  const [checkedCount, setCheckedCount] = useState(0);
-  const [productList, setProductList] = useState(bagData);
-
   const ListHeaderComponent = () => {
     return (
       <View style={styles.view1}>
@@ -111,7 +114,7 @@ const ProductShoppingBagScreen = () => {
           <Text
             style={{
               fontWeight: '600',
-            }}>{`전체선택 (${checkedCount}/${bagData.length})`}</Text>
+            }}>{`전체선택 (${checkedCount}/${productList.length})`}</Text>
         </View>
         <Text>선택삭제</Text>
       </View>
@@ -150,7 +153,7 @@ const ProductShoppingBagScreen = () => {
   };
 
   return (
-    <View style={{backgroundColor: COLOR.white, marginBottom: hp('9%')}}>
+    <View style={{flex: 1}}>
       <Header headerContent={headerContent} />
       <ScrollView>
         <View style={styles.border2}></View>

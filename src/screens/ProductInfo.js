@@ -20,31 +20,16 @@ import {
 } from 'react-native-responsive-screen';
 import {RFPercentage} from 'react-native-responsive-fontsize';
 import Carousel from '../components/Carousel';
-import {Dimensions, StatusBar} from 'react-native';
 import FONTSIZE from '../constants/fontSize';
 import COLOR from '../constants/colors';
 import {navigateTo} from '../navigation/utils/RootNavigation';
 import Footer from '../components/Footer';
 import {useDispatch, useSelector} from 'react-redux';
 import CustomButton from '../components/common/CustomButton';
-import ProductShoppingBag from '../components/ProductShoppingBag';
 import Counter from '../components/common/Counter';
 import {createOrUpdateCart} from '../apis/cart';
 import {showDefaultErrorAlert} from '../global/global';
 import {setCurrentCheckoutCartDetails} from '../redux/actions/common';
-
-const headerContent = {
-  leftItemContents: {
-    type: 'text',
-    content: 'CAMPING GREEEN',
-    navigateScreen: 'HomeScreenDetail1',
-  },
-  rightItemContents: {
-    type: 'image',
-    content: require('../assets/images/cart.png'),
-    navigateScreen: 'LoginScreen',
-  },
-};
 
 export const ProductInfo = props => {
   const {container} = styles;
@@ -66,6 +51,28 @@ export const ProductInfo = props => {
   const yyyy = today.getFullYear();
 
   today = mm + '월' + dd + '일';
+  const headerContent = {
+    leftItemContents: {
+      type: 'text',
+      content: 'CAMPING GREEEN',
+      navigateScreen: 'HomeScreenDetail1',
+    },
+    rightItemContents: {
+      type: 'image',
+      content: require('../assets/images/cart.png'),
+      navigateScreen: () => {
+        if (!isLoggedIn) {
+          ToastAndroid.showWithGravity(
+            'Pls Login to View Cart',
+            ToastAndroid.LONG,
+            ToastAndroid.TOP,
+          );
+        } else {
+          navigateTo('ProductShoppingBagScreen');
+        }
+      },
+    },
+  };
 
   const enableCheckout = () => {
     if (startDate && returnDate) {
@@ -88,6 +95,7 @@ export const ProductInfo = props => {
   };
 
   const handleCheckout = async () => {
+    console.log('CHCKOUT ITEMS', cartItems);
     await createOrUpdateCart(cartItems)
       .then(res => {
         if (res) {
@@ -98,11 +106,13 @@ export const ProductInfo = props => {
             ToastAndroid.TOP,
           );
           navigateTo('RoomPaymentScreen');
+          setModalVisible(false);
         }
       })
       .catch(err => {
         if (err) {
           showDefaultErrorAlert();
+          setModalVisible(false);
         }
       });
   };
@@ -117,22 +127,18 @@ export const ProductInfo = props => {
             ToastAndroid.TOP,
           );
           navigateTo('ProductShoppingBagScreen');
+          setModalVisible(false);
         }
       })
       .catch(err => {
         if (err) {
           showDefaultErrorAlert();
+          setModalVisible(false);
         }
       });
   };
   return (
-    <View
-      style={[
-        container,
-        {
-          marginBottom: !modalVisible ? hp('9%') : 0,
-        },
-      ]}>
+    <View style={[container]}>
       {modalVisible && (
         <View style={centeredView}>
           <View style={modalView}>
@@ -165,7 +171,7 @@ export const ProductInfo = props => {
                     borderWidth: 1,
                   }}>
                   <Button
-                    title="장바구니 답기"
+                    title="장바구니 담기"
                     onPress={() => {
                       handleAddToCart();
                     }}
@@ -194,7 +200,7 @@ export const ProductInfo = props => {
         </View>
       )}
       <Header headerContent={headerContent} />
-      <ScrollView style={{marginBottom: hp('5%')}}>
+      <ScrollView>
         <View>
           <Carousel carouselData={item.carousel} paginationType="right" />
         </View>
@@ -713,10 +719,11 @@ export const ProductInfo = props => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: COLOR.white,
+    flex: 1,
   },
   centeredView: {
     position: 'absolute',
-    bottom: Platform.OS === 'ios' ? 0 : hp('9%'),
+    bottom: 0,
     width: '100%',
     zIndex: 15,
     elevation: 50,
@@ -752,7 +759,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   termsButtonWrapper: {
-    marginVertical: hp('1%'),
+    marginVertical: hp('2%'),
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',

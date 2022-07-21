@@ -78,10 +78,12 @@ const SecondScreen = () => {
         dispatch(setCurrentCheckoutCartDetails(res.data.data));
         ToastAndroid.showWithGravity("Checkout In Progress", ToastAndroid.SHORT, ToastAndroid.TOP);
         navigateTo("RoomPaymentScreen");
+        setModalVisible(false);
       }
     }).catch((err) => {
       if (err) {
         showDefaultErrorAlert();
+        setModalVisible(false);
       }
     });
   };
@@ -92,10 +94,12 @@ const SecondScreen = () => {
       if (res) {
         ToastAndroid.showWithGravity("Product added to cart", ToastAndroid.SHORT, ToastAndroid.TOP);
         navigateTo("ProductShoppingBagScreen");
+        setModalVisible(false);
       }
     }).catch((err) => {
       if (err) {
         showDefaultErrorAlert();
+        setModalVisible(false);
       }
     });
   };
@@ -293,7 +297,7 @@ export default SecondScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: COLOR.white,
     flex: 1
   },
   view1: {
@@ -332,7 +336,6 @@ const styles = StyleSheet.create({
     width: "100%",
     zIndex: 15,
     elevation: 50,
-    marginBottom: hp("5%")
   },
   modalView: {
     minHeight: hp("30%"),
@@ -365,7 +368,7 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   termsButtonWrapper: {
-    marginVertical: hp("1%"),
+    marginVertical: hp("2%"),
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between"

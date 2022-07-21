@@ -16,6 +16,7 @@ import CustomCalendar from '../components/common/Calendar';
 import { goBack, navigateTo } from '../navigation/utils/RootNavigation';
 import CustomButton from '../components/common/CustomButton';
 import { useSelector } from 'react-redux';
+import COLOR from '../constants/colors';
 
 
 const headerContent = {
@@ -52,7 +53,7 @@ const CalendarScreen = props => {
     return (
         <View style={container}>
             <Header headerContent={headerContent} />
-            <ScrollView keyboardShouldPersistTaps="always">
+            <ScrollView>
                 <CustomCalendar />
             </ScrollView>
             <CustomButton

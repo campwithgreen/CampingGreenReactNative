@@ -19,14 +19,12 @@ import {
 } from 'react-native-responsive-screen';
 import { RFPercentage } from 'react-native-responsive-fontsize';
 import Carousel from '../components/Carousel';
-import { Dimensions, StatusBar } from 'react-native';
 import FONTSIZE from '../constants/fontSize';
 import COLOR from "../constants/colors";
 import { navigateTo } from '../navigation/utils/RootNavigation';
 import Footer from '../components/Footer';
 import { useDispatch, useSelector } from 'react-redux';
 import CustomButton from '../components/common/CustomButton';
-import ProductShoppingBag from "../components/ProductShoppingBag";
 import Counter from '../components/common/Counter';
 import { createOrUpdateCart } from '../apis/cart';
 import { showDefaultErrorAlert } from '../global/global';
@@ -92,10 +90,12 @@ export const ProductInfo = props => {
         dispatch(setCurrentCheckoutCartDetails(res.data.data));
         ToastAndroid.showWithGravity("Checkout In Progress", ToastAndroid.SHORT, ToastAndroid.TOP);
         navigateTo("RoomPaymentScreen");
+        setModalVisible(false);
       }
     }).catch((err) => {
       if (err) {
         showDefaultErrorAlert();
+        setModalVisible(false);
       }
     });
   };
@@ -105,17 +105,17 @@ export const ProductInfo = props => {
       if (res) {
         ToastAndroid.showWithGravity("Product added to cart", ToastAndroid.SHORT, ToastAndroid.TOP);
         navigateTo("ProductShoppingBagScreen");
+        setModalVisible(false);
       }
     }).catch((err) => {
       if (err) {
         showDefaultErrorAlert();
+        setModalVisible(false);
       }
     });
   };
   return (
-    <View style={[container, {
-      marginBottom: !modalVisible ? hp('9%') : 0,
-    }]}>
+    <View style={[container]}>
       {modalVisible &&
         <View style={centeredView}>
           <View style={modalView}>
@@ -154,7 +154,7 @@ export const ProductInfo = props => {
           </View>
         </View>}
       <Header headerContent={headerContent} />
-      <ScrollView style={{ marginBottom: hp("5%") }}>
+      <ScrollView>
         <View>
           <Carousel carouselData={item.carousel} paginationType="right" />
         </View>
@@ -613,7 +613,8 @@ export const ProductInfo = props => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLOR.white
+    backgroundColor: COLOR.white,
+    flex: 1
   },
   centeredView: {
     position: "absolute",
@@ -621,7 +622,6 @@ const styles = StyleSheet.create({
     width: "100%",
     zIndex: 15,
     elevation: 50,
-    marginBottom: hp("5%")
   },
   modalView: {
     minHeight: hp("30%"),
@@ -654,7 +654,7 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   termsButtonWrapper: {
-    marginVertical: hp("1%"),
+    marginVertical: hp("2%"),
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between"

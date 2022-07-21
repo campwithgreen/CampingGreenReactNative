@@ -171,11 +171,11 @@ const RoomPaymentScreen = () => {
 
 
   return (
-    <View style={{ backgroundColor: 'white', marginBottom: hp("15%") }}>
+    <View style={styles.container}>
       <Header headerContent={headerContent} />
       <View style={styles.border2}></View>
       <ScrollView>
-        <View style={{ backgroundColor: COLOR.white, marginBottom: hp("3%") }}>
+        <View style={{ backgroundColor: COLOR.white }}>
           <Text style={[styles.text1, styles.ph1, { paddingBottom: hp('3%') }]}>
             대여 기간
           </Text>
@@ -337,12 +337,12 @@ const RoomPaymentScreen = () => {
           <Comp t1="개인정보 수집 및 이용 " t2="동의 (필수)" p="p3" />
           <Comp t1="개인정보 제3자 제공 " t2="동의 (필수)" p="p4" />
         </View> */}
+
           <Footer />
+
         </View>
       </ScrollView>
-      <View>
-        <CustomButton buttonText={"대여하기"} buttonHandler={() => { handleProceedCheckout(); }} />
-      </View>
+      <CustomButton buttonText={"대여하기"} buttonHandler={() => { handleProceedCheckout(); }} />
     </View>
   );
 };
@@ -358,6 +358,10 @@ const Div = ({ t1, t2, c1, c2 }) => {
 export default RoomPaymentScreen;
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: COLOR.white,
+    flex: 1
+  },
   view1: {
     display: 'flex',
     flexDirection: 'row',

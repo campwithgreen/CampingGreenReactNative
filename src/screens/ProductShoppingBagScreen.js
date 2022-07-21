@@ -136,8 +136,7 @@ const ProductShoppingBagScreen = () => {
   };
 
   return (
-    <View style={{ backgroundColor: COLOR.white, marginBottom: hp("9%") }}>
-      <Header headerContent={headerContent} />
+    <View style={{ flex: 1 }}>
       <ScrollView>
         <View style={styles.border2}></View>
         {loading ? <Loader /> : <FlatList
@@ -151,9 +150,11 @@ const ProductShoppingBagScreen = () => {
           }}
         />}
       </ScrollView>
-      <CustomButton buttonText={'예약하기'} buttonHandler={() => {
-        ToastAndroid.showWithGravity("Checkout from Cart is Now Available Now, Pls checkout Directly", ToastAndroid.LONG, ToastAndroid.TOP);
-      }} />
+      <CustomButton
+        buttonText={'예약하기'}
+        buttonHandler={() => {
+          ToastAndroid.showWithGravity("Checkout from Cart is Now Available Now, Pls checkout Directly", ToastAndroid.LONG, ToastAndroid.TOP);
+        }} />
     </View>
   );
 };

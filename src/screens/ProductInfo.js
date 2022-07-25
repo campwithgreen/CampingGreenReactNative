@@ -403,7 +403,7 @@ export const ProductInfo = props => {
               </Text>
             </View>
             <ImageBackground
-              source={require('../assets/images/tentinfo.png')}
+              source={{uri: item.carousel[0]}}
               style={{height: hp('28%')}}
             />
             <View
@@ -533,7 +533,7 @@ export const ProductInfo = props => {
                             color: '#454C53',
                             fontSize: RFPercentage(2),
                             marginBottom: hp('.5%'),
-                            width: wp('30%'),
+                            // width: wp('30%'),
                           }}>
                           {feature?.featureName}
                         </Text>

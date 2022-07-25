@@ -47,8 +47,12 @@ const Input = ({
         {t1}
       </Text>
       <TextInput
-        style={[styles.textinput1, {paddingLeft: wp('3%'), fontWeight: 'bold'}]}
+        style={[
+          styles.textinput1,
+          {paddingLeft: wp('3%'), fontWeight: 'bold', color: '#1B1D1F'},
+        ]}
         placeholder={t2}
+        placeholderTextColor="gray"
         maxLength={maxLength}
         keyboardType={keyboardType}
         onChangeText={value => {
@@ -163,7 +167,7 @@ const RoomPaymentScreen = () => {
             }
           } else {
             ToastAndroid.showWithGravity(
-              'if screen navigate from item(배송지를 입력해 주세요)./ if car num (차량번호를 입력해 주세요)',
+              '용품대여인 경우 배송지 캠핑예약인 경우에 차량번호를 입력해 주세요)',
               ToastAndroid.SHORT,
               ToastAndroid.TOP,
             );
@@ -287,6 +291,7 @@ const RoomPaymentScreen = () => {
               배송{'\n'}메세지
             </Text>
             <TextInput
+              placeholderTextColor="gray"
               placeholder={
                 '별도 요청사항이 없으실 경우, \n 공란으로 비워주세요'
               }
@@ -346,7 +351,7 @@ const RoomPaymentScreen = () => {
                       </View>
                       <View style={styles.comp3View}>
                         <Image
-                          source={{uri: directItem.carousel[0]}}
+                          source={{uri: directItem?.carousel[0]}}
                           style={styles.comp3Img}
                         />
                         <View

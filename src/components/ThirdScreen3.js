@@ -23,13 +23,13 @@ const ThirdScreen3 = () => {
             ToastAndroid.TOP,
           );
         }}>
-        <Text style={styles.btn1}>배송정보</Text>
+        <Text style={styles.btn1}> 예약취소</Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
           navigateTo('RoomReservationListScreen');
         }}>
-        <Text style={styles.btn2}>배송정보</Text>
+        <Text style={styles.btn2}>주문목록</Text>
       </TouchableOpacity>
     </View>
   );

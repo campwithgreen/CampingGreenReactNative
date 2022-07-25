@@ -45,6 +45,7 @@ export default function FormField(props) {
                   borderBottomColor: lineColor,
                   width: '100%',
                 }}
+                placeholderTextColor="gray"
                 onFocus={() => onFocus()}
                 onBlur={() => onBlur()}
                 keyboardType="number-pad"

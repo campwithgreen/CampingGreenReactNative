@@ -8,9 +8,15 @@ import React from 'react';
 const SecondScreen2 = ({t1, t2, t3}) => {
   return (
     <View style={styles.container}>
-      <Text style={{width: wp('30%'), textAlign: 'center'}}>{t1}</Text>
-      <Text style={{width: wp('30%'), textAlign: 'center'}}>{t2}</Text>
-      <Text style={{width: wp('30%'), textAlign: 'center'}}>{t3}</Text>
+      <Text style={{width: wp('30%'), textAlign: 'center', color: '#1B1D1F'}}>
+        {t1}
+      </Text>
+      <Text style={{width: wp('30%'), textAlign: 'center', color: '#1B1D1F'}}>
+        {t2}
+      </Text>
+      <Text style={{width: wp('30%'), textAlign: 'center', color: '#1B1D1F'}}>
+        {t3}
+      </Text>
     </View>
   );
 };

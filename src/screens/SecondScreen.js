@@ -344,13 +344,16 @@ const SecondScreen = () => {
               paddingVertical: hp('2%'),
               backgroundColor: '#EFF0F2',
             }}>
-            <Text style={{width: wp('30%'), textAlign: 'center'}}>
+            <Text
+              style={{width: wp('30%'), textAlign: 'center', color: '#1B1D1F'}}>
               최소기준
             </Text>
-            <Text style={{width: wp('30%'), textAlign: 'center'}}>
+            <Text
+              style={{width: wp('30%'), textAlign: 'center', color: '#1B1D1F'}}>
               취소수수료
             </Text>
-            <Text style={{width: wp('30%'), textAlign: 'center'}}>
+            <Text
+              style={{width: wp('30%'), textAlign: 'center', color: '#1B1D1F'}}>
               환불없음
             </Text>
           </View>

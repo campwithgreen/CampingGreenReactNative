@@ -147,7 +147,7 @@ export const ProductInfo = props => {
               <View style={termsButtonWrapper}>
                 <View>
                   <Text style={termTitle}>
-                    {quantity ? item.price * quantity : item.price}
+                    {quantity ? item.price * quantity : item.price}원
                   </Text>
                 </View>
                 <View>
@@ -229,10 +229,11 @@ export const ProductInfo = props => {
             <Text
               style={{
                 color: '#1B1D1F',
+
                 fontSize: RFPercentage(3),
                 fontWeight: 'bold',
               }}>
-              {item.price}
+              {item.price}원
             </Text>
           </View>
           <View
@@ -431,9 +432,10 @@ export const ProductInfo = props => {
                   backgroundColor: 'white',
                   marginTop: hp('3%'),
                   padding: wp('2%'),
-                  width: wp('60%'),
+                  justifyContent: 'center',
+                  // width: wp('60%'),
                 }}>
-                {Object.keys(item?.specifications).map(key => {
+                {Object.keys(item?.specifications)?.map(key => {
                   return (
                     <View
                       key={key}
@@ -450,14 +452,29 @@ export const ProductInfo = props => {
                         }}>
                         {key}
                       </Text>
-                      <Text
-                        style={{
-                          color: '#454C53',
-                          fontSize: RFPercentage(2),
-                          marginBottom: hp('.5%'),
-                        }}>
-                        {item?.specifications[key]}
-                      </Text>
+                      {item?.specifications[key]?.split(',').length > 0 ? (
+                        <View style={{flexDirection: 'column'}}>
+                          {item?.specifications[key]?.split(',')?.map(k => (
+                            <Text
+                              style={{
+                                color: '#454C53',
+                                fontSize: RFPercentage(2),
+                                marginBottom: hp('.5%'),
+                              }}>
+                              {k}
+                            </Text>
+                          ))}
+                        </View>
+                      ) : (
+                        <Text
+                          style={{
+                            color: '#454C53',
+                            fontSize: RFPercentage(2),
+                            marginBottom: hp('.5%'),
+                          }}>
+                          {item?.specifications[key]}
+                        </Text>
+                      )}
                     </View>
                   );
                 })}
@@ -493,7 +510,7 @@ export const ProductInfo = props => {
                       fontSize: RFPercentage(2.5),
                       fontWeight: 'bold',
                     }}>
-                    {'ALL FEATURES'}
+                    {item.description} 캠핑 패키지
                   </Text>
                 </View>
                 <View
@@ -534,7 +551,7 @@ export const ProductInfo = props => {
                     paddingVertical: hp('2.5%'),
                   }}>
                   <ImageBackground
-                    source={{uri: feature.image}}
+                    source={{uri: feature?.image}}
                     style={{
                       height: hp('28%'),
                       width: wp('100%'),

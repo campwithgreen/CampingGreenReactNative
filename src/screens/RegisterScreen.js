@@ -198,6 +198,7 @@ export const RegisterScreen = props => {
           <View style={modalView}>
             <View>
               <Text style={termTitle}>가입을 하려면 동의해주세요</Text>
+
               <View style={upperTermsButtonWrapper}>
                 {termsData.map((item, index) => {
                   return (
@@ -214,6 +215,7 @@ export const RegisterScreen = props => {
                   );
                 })}
               </View>
+
               <View style={termsButtonWrapper}>
                 <Button
                   title="동의하고 시작하기"

@@ -100,9 +100,10 @@ const RenderItem = ({item}) => {
                       fontSize: RFPercentage(2.5),
                       fontWeight: 'bold',
                       color: '#1B1D1F',
+
                       textAlign: 'right',
                     }}>
-                    {item.price} 원
+                    {item.price}원
                   </Text>
                 </View>
               </View>

@@ -27,5 +27,5 @@ const styles = StyleSheet.create({
   },
 
   text2: {fontWeight: '600', color: '#454C53', paddingBottom: hp('2%')},
-  text3: {width: 200, textAlign: 'right', fontWeight: '600'},
+  text3: {width: 200, textAlign: 'right', fontWeight: '600', color: '#454C53'},
 });

@@ -35,7 +35,7 @@ const headerContent = {
 };
 
 const RoomReservationListScreen = () => {
-  const cart_history = useSelector(st => st.common?.cart_history);
+  const cart_history = useSelector(st => st?.common?.cart_history);
 
   let result = cart_history.reduce(function (r, a) {
     r[`${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${a.paymentStatus}`] =
@@ -55,11 +55,11 @@ const RoomReservationListScreen = () => {
       <Header headerContent={headerContent} />
       <Text style={{borderBottomWidth: 1.5, borderBottomColor: 'lightgrey'}} />
       <ScrollView style={{marginBottom: heightPercentageToDP('15%')}}>
-        {Object.keys(result).map(key => {
+        {Object?.keys(result)?.map(key => {
           return (
             <View style={globalStyle.mainContainerWrapper} key={key}>
               <Comp1 date={key.split('_')[0]} total={result[key].length} />
-              {result[key].map(it => {
+              {result[key]?.map(it => {
                 return (
                   <View key={it?.items[0]._id}>
                     <Comp2
@@ -177,7 +177,7 @@ const Comp3 = ({itemData}) => {
   let directItem = itemData?.items[0]?.itemId;
   return (
     <View style={styles.comp3View}>
-      <Image source={{uri: directItem.carousel[0]}} style={styles.comp3Img} />
+      <Image source={{uri: directItem?.carousel[0]}} style={styles.comp3Img} />
       <View style={{display: 'flex', justifyContent: 'space-between'}}>
         <Text style={styles.comp3Text1}>{directItem.title}</Text>
         {directItem.type === 'LOCATION' && (

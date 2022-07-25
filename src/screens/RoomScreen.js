@@ -151,13 +151,13 @@ const ListHeaderComponent = () => {
       }}>
       <View style={{paddingBottom: 20, paddingTop: 70}}>
         <Image
-          source={require('../assets/images/map.png')}
+          source={require('../assets/images/map1.png')}
           style={styles.img1}
         />
-        <Image
+        {/* <Image
           source={require('../assets/images/map_location.png')}
           style={styles.img2}
-        />
+        /> */}
       </View>
     </TouchableOpacity>
   );

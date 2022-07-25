@@ -239,7 +239,7 @@ export default function LoginScreen() {
                         borderColor: 'grey',
                         padding: 5,
                       }}>
-                      <Text>인증 요청</Text>
+                      <Text style={{color: 'grey'}}>인증 요청</Text>
                     </View>
                   </TouchableOpacity>
                 </View>

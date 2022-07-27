@@ -21,6 +21,7 @@ const defaultCarouselData = [
 
 const Carousel = ({
   textFlag,
+  imageSize,
   paginationType,
   carouselData = defaultCarouselData,
 }) => {
@@ -127,7 +128,7 @@ const Carousel = ({
           <View style={{height: hp('30%')}} key={it}>
             <ImageBackground
               resizeMethod="scale"
-              resizeMode="contain"
+              resizeMode={imageSize ? 'cover' : 'contain'}
               source={{uri: it}}
               style={backgroundImage}>
               {textFlag && (

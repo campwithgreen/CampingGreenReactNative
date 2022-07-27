@@ -70,7 +70,11 @@ export const HomeScreen = props => {
       <Header headerContent={headerContent} />
       <ScrollView>
         <View>
-          <Carousel paginationType="center" textFlag={true} />
+          <Carousel
+            paginationType="center"
+            textFlag={true}
+            imageSize={'cover'}
+          />
         </View>
         <View
           style={{

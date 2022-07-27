@@ -403,83 +403,92 @@ export const ProductInfo = props => {
               </Text>
             </View>
             <ImageBackground
-              source={{uri: item.carousel[0]}}
-              style={{height: hp('28%')}}
+              source={{uri: item.carousel[1] || item.carousel[0]}}
+              style={{height: hp('35%')}}
+              resizeMode="contain"
             />
-            <View
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                paddingTop: hp('3%'),
-              }}>
+            {item.specifications != undefined && (
               <View
                 style={{
-                  backgroundColor: '#26282B',
-                  padding: wp('1.5%'),
-                  width: wp('60%'),
+                  display: 'flex',
+                  alignItems: 'center',
+                  paddingTop: hp('3%'),
                 }}>
-                <Text
+                <View
                   style={{
-                    color: '#FFF',
-                    fontSize: RFPercentage(2.5),
-                    fontWeight: 'bold',
+                    backgroundColor: '#26282B',
+                    padding: wp('1.5%'),
+                    // width: wp('60%'),
                   }}>
-                  코베마 텐트 상세정보
-                </Text>
-              </View>
-              <View
-                style={{
-                  backgroundColor: 'white',
-                  marginTop: hp('3%'),
-                  padding: wp('2%'),
-                  justifyContent: 'center',
-                  // width: wp('60%'),
-                }}>
-                {Object.keys(item?.specifications)?.map(key => {
-                  return (
-                    <View
-                      key={key}
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                      }}>
-                      <Text
-                        style={{
-                          color: '#454C53',
-                          fontSize: RFPercentage(2),
-                          marginBottom: hp('.5%'),
-                          width: wp('30%'),
-                        }}>
-                        {key}
-                      </Text>
-                      {item?.specifications[key]?.split(',').length > 0 ? (
-                        <View style={{flexDirection: 'column'}}>
-                          {item?.specifications[key]?.split(',')?.map(k => (
+                  <Text
+                    style={{
+                      color: '#FFF',
+                      fontSize: RFPercentage(2.5),
+                      fontWeight: 'bold',
+                    }}>
+                    {item.title} 상세정보
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    backgroundColor: 'white',
+                    marginTop: hp('3%'),
+                    padding: wp('2%'),
+                    justifyContent: 'center',
+
+                    // width: wp('60%'),
+                  }}>
+                  {item.specifications != undefined &&
+                    Object?.keys(item?.specifications)?.map(key => {
+                      return (
+                        <View
+                          key={key}
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                          }}>
+                          <Text
+                            style={{
+                              color: '#454C53',
+                              fontSize: RFPercentage(2),
+                              marginBottom: hp('.5%'),
+                              width: wp('20%'),
+                            }}>
+                            {key}
+                          </Text>
+                          {item?.specifications[key]?.split(',').length > 0 ? (
+                            <View
+                              style={{
+                                flexDirection: 'column',
+                              }}>
+                              {item?.specifications[key]?.split(',')?.map(k => (
+                                <Text
+                                  style={{
+                                    color: '#454C53',
+                                    fontSize: RFPercentage(2),
+                                    marginBottom: hp('.5%'),
+                                  }}>
+                                  {k}
+                                </Text>
+                              ))}
+                            </View>
+                          ) : (
                             <Text
                               style={{
                                 color: '#454C53',
                                 fontSize: RFPercentage(2),
                                 marginBottom: hp('.5%'),
                               }}>
-                              {k}
+                              {item?.specifications[key]}
                             </Text>
-                          ))}
+                          )}
                         </View>
-                      ) : (
-                        <Text
-                          style={{
-                            color: '#454C53',
-                            fontSize: RFPercentage(2),
-                            marginBottom: hp('.5%'),
-                          }}>
-                          {item?.specifications[key]}
-                        </Text>
-                      )}
-                    </View>
-                  );
-                })}
+                      );
+                    })}
+                </View>
               </View>
-            </View>
+            )}
+
             <View style={{marginHorizontal: wp('5%')}}>
               <View style={{paddingTop: hp('10%')}}>
                 <Text
@@ -502,7 +511,7 @@ export const ProductInfo = props => {
                   style={{
                     backgroundColor: '#26282B',
                     padding: wp('1.5%'),
-                    width: wp('60%'),
+                    // width: wp('60%'),
                   }}>
                   <Text
                     style={{
@@ -510,7 +519,7 @@ export const ProductInfo = props => {
                       fontSize: RFPercentage(2.5),
                       fontWeight: 'bold',
                     }}>
-                    {item.description} 캠핑 패키지
+                    {item.title} 구성
                   </Text>
                 </View>
                 <View
@@ -520,54 +529,48 @@ export const ProductInfo = props => {
                     padding: wp('2%'),
                     width: wp('60%'),
                   }}>
-                  {item.allFeatures.map(feature => {
-                    return (
-                      <View
-                        key={feature.featureName}
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                        }}>
-                        <Text
+                  {item.allFeatures &&
+                    item.allFeatures.map((feature, index) => {
+                      return (
+                        <View
+                          key={index}
                           style={{
-                            color: '#454C53',
-                            fontSize: RFPercentage(2),
-                            marginBottom: hp('.5%'),
-                            // width: wp('30%'),
+                            display: 'flex',
+                            flexDirection: 'row',
                           }}>
-                          {feature?.featureName}
-                        </Text>
-                      </View>
-                    );
-                  })}
+                          <Text
+                            style={{
+                              color: '#454C53',
+                              fontSize: RFPercentage(2),
+                              marginBottom: hp('.5%'),
+                              // width: wp('30%'),
+                            }}>
+                            {feature?.featureName}
+                          </Text>
+                        </View>
+                      );
+                    })}
                 </View>
               </View>
             </View>
-            {item.allFeatures.map((feature, index) => {
+            {item?.allFeatures.map((feature, index) => {
               return (
                 <View
                   key={index}
                   style={{
                     paddingVertical: hp('2.5%'),
                   }}>
-                  <ImageBackground
-                    source={{uri: feature?.image}}
-                    style={{
-                      height: hp('28%'),
-                      width: wp('100%'),
-                    }}
-                  />
-                  <Text
-                    style={{
-                      color: COLOR.compBlack,
-                      fontSize: RFPercentage(2.5),
-                      fontWeight: 'bold',
-                      marginHorizontal: wp('5%'),
-                      marginVertical: hp('2.5%'),
-                    }}>
-                    {feature.featureName}
-                  </Text>
-                  {feature.description && (
+                  {feature?.image && (
+                    <ImageBackground
+                      source={{uri: feature?.image}}
+                      style={{
+                        height: hp('38%'),
+                        width: wp('100%'),
+                      }}
+                    />
+                  )}
+
+                  {feature?.description && (
                     <Text
                       style={{
                         fontSize: RFPercentage(2),
@@ -575,7 +578,7 @@ export const ProductInfo = props => {
                         marginHorizontal: wp('5%'),
                         marginVertical: hp('2%'),
                       }}>
-                      {feature.description}
+                      {feature?.description}
                     </Text>
                   )}
                 </View>

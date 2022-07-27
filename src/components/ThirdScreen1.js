@@ -10,7 +10,7 @@ import {useSelector} from 'react-redux';
 const ThirdScreen1 = props => {
   const {currentCartData} = props;
   const user_name = useSelector(st => st.oauth?.user_data?.data?.firstName);
-
+  console.log('currentCartData', currentCartData);
   return (
     <View style={styles.view1}>
       <Text
@@ -33,7 +33,7 @@ const ThirdScreen1 = props => {
           textAlign: 'center',
           marginBottom: hp('5%'),
         }}>
-        <Text style={[styles.text2]}>주문번호{'  '}</Text>
+        <Text style={[styles.text2]}>주문번호 </Text>
         <Text style={[styles.text2, {color: '#56C596'}]}>
           {currentCartData._id}
         </Text>
@@ -54,8 +54,8 @@ const ThirdScreen1 = props => {
                 {item.units * item?.itemId?.price}
               </Text>
               <Text style={[styles.text2, {color: '#E8EBED'}]}>
-                {moment(item.startData).utc().format('MM-DD-YYYY')}-
-                {moment(item.endData).utc().format('MM-DD-YYYY')}
+                {moment(item.startDate).utc().format('MM.DD')} -{' '}
+                {moment(item.endDate).utc().format('MM.DD')}
               </Text>
             </View>
           </View>

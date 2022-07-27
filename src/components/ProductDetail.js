@@ -36,6 +36,7 @@ const RenderItem = ({item}) => {
             height: hp('27%'),
             backgroundColor: '#fff',
             borderRadius: hp('1.5%'),
+            resizeMode: 'contain',
           }}
         />
       </TouchableOpacity>

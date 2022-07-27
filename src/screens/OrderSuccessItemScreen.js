@@ -18,7 +18,7 @@ const headerContent = {
   leftItemContents: {
     type: 'image',
     content: require('../assets/images/icon_cancel.png'),
-    navigateScreen: 'HomeScreen',
+    navigateScreen: 'Heart',
   }, //put flag here
   rightItemContents: {
     type: 'image',
@@ -55,7 +55,7 @@ export default function ThirdScreen() {
       })();
     };
   }, []);
-
+  // console.log('current_cart_details', current_cart_details);
   return (
     <View style={{backgroundColor: 'white'}}>
       <ScrollView>
@@ -103,7 +103,7 @@ export default function ThirdScreen() {
             ),
           )
             .utc()
-            .format('MM-DD-YYYY')} 23:59:59`}
+            .format('YYYY.MM.DD')} 23:59:59`}
         />
         <View style={styles.border2}></View>
         <SecondScreen1 t1="현재상태" t2={current_cart_details.paymentStatus} />
@@ -118,19 +118,27 @@ export default function ThirdScreen() {
           배송정보
         </Text>
         <View style={styles.border1}></View>
+
         <View style={{paddingTop: hp('3.5%')}}>
-          <SecondScreen1 t1="예약자" t2="김그린" />
+          <SecondScreen1
+            t1="예약자"
+            t2={current_cart_details?.shipping_data?.name}
+          />
         </View>
         <View style={styles.border2}></View>
-        <SecondScreen1 t1="연락처" t2="010-5561-2550" />
+        <SecondScreen1
+          t1="연락처"
+          t2={current_cart_details?.shipping_data?.phoneNumber}
+        />
         <View style={styles.border2}></View>
         <SecondScreen1
           t1="배송지"
-          t2="세종특별자치시 세종대로 21-9 A동 203호"
+          t2={current_cart_details?.shipping_data?.address}
         />
+
         <View style={styles.border2}></View>
         <View style={styles.view1}>
-          <Text style={styles.text1}>배송정보 변경은{'  '}</Text>
+          <Text style={styles.text1}>배송정보 변경은</Text>
           <Text style={[styles.text1, {color: '#56C596'}]}>
             상담센터로{'  '}
           </Text>

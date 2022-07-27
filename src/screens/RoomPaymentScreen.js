@@ -338,15 +338,13 @@ const RoomPaymentScreen = () => {
                           borderTopLeftRadius: 10,
                           padding: 10,
                         }}>
-                        <View>
+                        <View style={{width: wp('60%')}}>
                           <Text style={styles.comp3Text1}>
                             {directItem.title}
                           </Text>
                         </View>
                         <View>
-                          <Text style={styles.comp3Text1}>
-                            Shipping Charge NA
-                          </Text>
+                          <Text style={styles.comp3Text1}>배송비 11000원</Text>
                         </View>
                       </View>
                       <View style={styles.comp3View}>
@@ -585,6 +583,6 @@ const styles = StyleSheet.create({
   },
   comp3Text2: {
     fontWeight: 'bold',
-    color: 'lightgrey',
+    color: 'grey',
   },
 });

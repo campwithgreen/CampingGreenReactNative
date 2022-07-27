@@ -1,11 +1,16 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
-import React, { useState } from 'react';
+import {StyleSheet, Text, View, Image} from 'react-native';
+import React, {useState} from 'react';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 
-export default function ProductShoppingBag({ index, item, productList, setProductList }) {
+export default function ProductShoppingBag({
+  index,
+  item,
+  productList,
+  setProductList,
+}) {
   const [count, setCount] = useState(item?.items[0]?.units);
   const increment = () => {
     let newData = [...productList];
@@ -37,20 +42,25 @@ export default function ProductShoppingBag({ index, item, productList, setProduc
                 -
               </Text>
               <Text style={styles.text2}>{count}</Text>
-              <Text style={{ fontWeight: 'bold' }} onPress={increment}>
+              <Text style={{fontWeight: 'bold'}} onPress={increment}>
                 +
               </Text>
             </View>
-            <Text style={styles.text3}>{item?.items[0]?.units * item?.items[0]?.itemId?.price}</Text>
+            <Text style={styles.text3}>
+              {item?.items[0]?.units * item?.items[0]?.itemId?.price}
+            </Text>
           </View>
         </View>
         <View>
-          <Image source={{
-            uri: item?.items[0]?.itemId?.carousel[0]
-          }} style={{
-            height: hp("15%"),
-            width: hp("15%")
-          }} />
+          <Image
+            source={{
+              uri: item?.items[0]?.itemId?.carousel[0],
+            }}
+            style={{
+              height: hp('15%'),
+              width: hp('15%'),
+            }}
+          />
         </View>
       </View>
       <View style={styles.border}></View>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
@@ -38,12 +38,10 @@ const HomeScreenDetailData = [
   },
 ];
 
-
-
 export const HomeScreen = props => {
   const {container} = styles;
   const dispatch = useDispatch();
-  const isLogin = useSelector((st) => st.oauth.isLogin);
+  const isLogin = useSelector(st => st.oauth.isLogin);
 
   const headerContent = {
     leftItemContents: {
@@ -55,9 +53,13 @@ export const HomeScreen = props => {
       content: require('../assets/images/cart.png'),
       navigateScreen: () => {
         if (!isLogin) {
-          ToastAndroid.showWithGravity("Pls Login to View Cart", ToastAndroid.LONG, ToastAndroid.TOP);
+          ToastAndroid.showWithGravity(
+            'Pls Login to View Cart',
+            ToastAndroid.LONG,
+            ToastAndroid.TOP,
+          );
         } else {
-          navigateTo("ProductShoppingBagScreen");
+          navigateTo('ProductShoppingBagScreen');
         }
       },
     },
@@ -68,7 +70,7 @@ export const HomeScreen = props => {
       <Header headerContent={headerContent} />
       <ScrollView>
         <View>
-          <Carousel paginationType="center" />
+          <Carousel paginationType="center" textFlag={true} />
         </View>
         <View
           style={{

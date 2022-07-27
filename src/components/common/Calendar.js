@@ -25,7 +25,7 @@ const DateLister = props => {
   );
 };
 
-export default function CustomCalendar() {
+export default function CustomCalendar({screenType}) {
   var date = new Date();
   date.setDate(date.getDate() + 1);
   const [dates, setdates] = useState({});
@@ -109,10 +109,18 @@ export default function CustomCalendar() {
 
   useEffect(() => {
     const setrentStartDate = () => {
-      dispatch(setStartDate(rentDisplayStartDate));
+      if (screenType === 'LOCATION') {
+        dispatch(setStartDate(rentStartDate));
+      } else {
+        dispatch(setStartDate(rentDisplayStartDate));
+      }
     };
     const setDueDate = () => {
-      dispatch(setReturnDate(dueDisplayDate));
+      if (screenType === 'LOCATION') {
+        dispatch(setReturnDate(dueDate));
+      } else {
+        dispatch(setReturnDate(dueDisplayDate));
+      }
     };
     setrentStartDate();
     setDueDate();
@@ -133,8 +141,16 @@ export default function CustomCalendar() {
       />
       {rentingDate && returningDate && (
         <View style={listerWrapper}>
-          <DateLister type={'배송도착 예정일'} date={rentDisplayStartDate} />
-          <DateLister type={'반납수거 예정일'} date={dueDisplayDate} />
+          <DateLister
+            type={screenType === 'LOCATION' ? '체크인' : '배송도착 예정일'}
+            date={
+              screenType === 'LOCATION' ? rentStartDate : rentDisplayStartDate
+            }
+          />
+          <DateLister
+            type={screenType === 'LOCATION' ? '체크아웃' : '반납수거 예정일'}
+            date={screenType === 'LOCATION' ? dueDate : dueDisplayDate}
+          />
         </View>
       )}
     </View>

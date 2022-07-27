@@ -24,13 +24,13 @@ import {navigateTo} from '../navigation/utils/RootNavigation';
 const headerContent = {
   middleItemContents: {
     type: 'text',
-    content: '주문/결제',
+    content: '예약내역',
     navigateScreen: 'ProfileScreen',
   },
   leftItemContents: {
     type: 'image',
     content: require('../assets/images/icon_cancel.png'),
-    navigateScreen: 'ProductShoppingBagScreen',
+    navigateScreen: 'ProfileScreen',
   },
 };
 
@@ -53,7 +53,7 @@ const RoomReservationListScreen = () => {
   return (
     <View style={{backgroundColor: 'white', height: hp('100%')}}>
       <Header headerContent={headerContent} />
-      <Text style={{borderBottomWidth: 1.5, borderBottomColor: 'lightgrey'}} />
+      <Text style={{borderBottomWidth: 1.5, borderBottomColor: '#515151'}} />
       <ScrollView style={{marginBottom: heightPercentageToDP('15%')}}>
         {Object?.keys(result)?.map(key => {
           return (
@@ -161,6 +161,7 @@ const styles = StyleSheet.create({
     height: 100,
     width: 100,
     marginRight: wp('5%'),
+    resizeMode: 'contain',
   },
   comp3Text1: {
     fontWeight: 'bold',
@@ -169,7 +170,7 @@ const styles = StyleSheet.create({
   },
   comp3Text2: {
     fontWeight: 'bold',
-    color: 'lightgrey',
+    color: '#515151',
   },
 });
 

@@ -52,7 +52,7 @@ const CalendarScreen = props => {
     <View style={container}>
       <Header headerContent={headerContent} />
       <ScrollView>
-        <CustomCalendar />
+        <CustomCalendar screenType={type} />
       </ScrollView>
       <CustomButton
         buttonText={'예약하기'}

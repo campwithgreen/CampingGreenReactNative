@@ -213,7 +213,18 @@ const Rent = props => {
               justifyContent: 'center',
               backgroundColor: 'white',
             }}>
-            <View
+            <TouchableOpacity
+              onPress={() => {
+                if (isLoggedIn) {
+                  navigateTo('CalendarScreen', {type: 'LOCATION'});
+                } else {
+                  ToastAndroid.showWithGravity(
+                    'You have to Login to Proceed with Renting Date',
+                    ToastAndroid.LONG,
+                    ToastAndroid.TOP,
+                  );
+                }
+              }}
               style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -223,44 +234,34 @@ const Rent = props => {
               }}>
               <View>
                 <Text style={{color: '#454C53', fontSize: RFPercentage(2)}}>
-                  대여 시작일
+                  체크인
                 </Text>
               </View>
               <View>
-                {/* <Text
+                <Text
                   style={{
                     color: '#55C595',
                     fontSize: RFPercentage(2.5),
                     marginTop: wp('.5%'),
                     fontWeight: 'bold',
                   }}>
-                  7월 14일 (월)
-                </Text> */}
-                <TouchableOpacity
-                  onPress={() => {
-                    if (isLoggedIn) {
-                      navigateTo('CalendarScreen', {type: 'LOCATION'});
-                    } else {
-                      ToastAndroid.showWithGravity(
-                        'You have to Login to Proceed with Renting Date',
-                        ToastAndroid.LONG,
-                        ToastAndroid.TOP,
-                      );
-                    }
-                  }}>
-                  <Text
-                    style={{
-                      color: '#55C595',
-                      fontSize: RFPercentage(2.5),
-                      marginTop: wp('.5%'),
-                      fontWeight: 'bold',
-                    }}>
-                    {startDate || today}
-                  </Text>
-                </TouchableOpacity>
+                  {startDate || today}
+                </Text>
               </View>
-            </View>
-            <View
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => {
+                if (isLoggedIn) {
+                  navigateTo('CalendarScreen', {type: 'LOCATION'});
+                } else {
+                  ToastAndroid.showWithGravity(
+                    'You have to Login to Proceed with Renting Date',
+                    ToastAndroid.LONG,
+                    ToastAndroid.TOP,
+                  );
+                }
+              }}
               style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -270,43 +271,21 @@ const Rent = props => {
               }}>
               <View>
                 <Text style={{color: '#454C53', fontSize: RFPercentage(2)}}>
-                  반납 예정일
+                  체크 아웃
                 </Text>
               </View>
               <View>
-                {/* <Text
+                <Text
                   style={{
                     color: '#55C595',
                     fontSize: RFPercentage(2.5),
                     marginTop: wp('.5%'),
                     fontWeight: 'bold',
                   }}>
-                  7월 15일 (월)
-                </Text> */}
-                <TouchableOpacity
-                  onPress={() => {
-                    if (isLoggedIn) {
-                      navigateTo('CalendarScreen', {type: 'LOCATION'});
-                    } else {
-                      ToastAndroid.showWithGravity(
-                        'You have to Login to Proceed with Renting Date',
-                        ToastAndroid.LONG,
-                        ToastAndroid.TOP,
-                      );
-                    }
-                  }}>
-                  <Text
-                    style={{
-                      color: '#55C595',
-                      fontSize: RFPercentage(2.5),
-                      marginTop: wp('.5%'),
-                      fontWeight: 'bold',
-                    }}>
-                    {returnDate || today}
-                  </Text>
-                </TouchableOpacity>
+                  {returnDate || today}
+                </Text>
               </View>
-            </View>
+            </TouchableOpacity>
           </View>
           <RentDetail subLocations={subLocations.subLocations} />
           <View style={{marginTop: wp('7%')}}>

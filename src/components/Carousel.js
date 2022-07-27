@@ -19,7 +19,11 @@ const defaultCarouselData = [
   'https://res.cloudinary.com/dchcqwskd/image/upload/v1657473876/camping-product-items/carousel-images/martin_ocdslb.png',
 ];
 
-const Carousel = ({paginationType, carouselData = defaultCarouselData}) => {
+const Carousel = ({
+  textFlag,
+  paginationType,
+  carouselData = defaultCarouselData,
+}) => {
   let {width, height} = Dimensions.get('window');
   const {backgroundImage} = styles;
 
@@ -91,33 +95,33 @@ const Carousel = ({paginationType, carouselData = defaultCarouselData}) => {
           }}
         />
       }>
-      {/* <View style={{ width: '100%' }}>
-                <ImageBackground
-                    source={require('../assets/images/jorgen.jpg')}
-                    style={backgroundImage}>
-                    <View>
-                        <Text
-                            style={{
-                                paddingBottom: hp('2%'),
-                                fontSize: RFPercentage(3.65),
-                                fontWeight: 'bold',
-                                color: 'white',
-                            }}>
-                            나만 알고싶은{'\n'}힙한 캠핑장 지금 공개
-                        </Text>
-                    </View>
-                    <View>
-                        <Text
-                            style={{
-                                fontSize: RFPercentage(2.2),
-                                fontWeight: '300',
-                                color: 'white',
-                            }}>
-                            바퀴달린집 출연 캠핑장 최대 할인가로{'\n'}떠나보면 어때요?
-                        </Text>
-                    </View>
-                </ImageBackground>
-            </View> */}
+      {/* <View style={{width: '100%'}}>
+        <ImageBackground
+          source={require('../assets/images/jorgen.jpg')}
+          style={backgroundImage}>
+          <View>
+            <Text
+              style={{
+                paddingBottom: hp('2%'),
+                fontSize: RFPercentage(3.65),
+                fontWeight: 'bold',
+                color: 'white',
+              }}>
+              나만 알고싶은{'\n'}힙한 캠핑장 지금 공개
+            </Text>
+          </View>
+          <View>
+            <Text
+              style={{
+                fontSize: RFPercentage(2.2),
+                fontWeight: '300',
+                color: 'white',
+              }}>
+              바퀴달린집 출연 캠핑장 최대 할인가로{'\n'}떠나보면 어때요?
+            </Text>
+          </View>
+        </ImageBackground>
+      </View> */}
       {carouselData.map(it => {
         return (
           <View style={{height: hp('30%')}} key={it}>
@@ -126,27 +130,31 @@ const Carousel = ({paginationType, carouselData = defaultCarouselData}) => {
               resizeMode="contain"
               source={{uri: it}}
               style={backgroundImage}>
-              <View>
-                <Text
-                  style={{
-                    paddingBottom: hp('2%'),
-                    fontSize: RFPercentage(3.65),
-                    fontWeight: 'bold',
-                    color: 'white',
-                  }}>
-                  나만 알고싶은{'\n'}힙한 캠핑장 지금 공개
-                </Text>
-              </View>
-              <View>
-                <Text
-                  style={{
-                    fontSize: RFPercentage(2.2),
-                    fontWeight: '300',
-                    color: 'white',
-                  }}>
-                  바퀴달린집 출연 캠핑장 최대 할인가로{'\n'}떠나보면 어때요?
-                </Text>
-              </View>
+              {textFlag && (
+                <>
+                  <View>
+                    <Text
+                      style={{
+                        paddingBottom: hp('2%'),
+                        fontSize: RFPercentage(3.65),
+                        fontWeight: 'bold',
+                        color: 'white',
+                      }}>
+                      나만 알고싶은{'\n'}힙한 캠핑장 지금 공개
+                    </Text>
+                  </View>
+                  <View>
+                    <Text
+                      style={{
+                        fontSize: RFPercentage(2.2),
+                        fontWeight: '300',
+                        color: 'white',
+                      }}>
+                      바퀴달린집 출연 캠핑장 최대 할인가로{'\n'}떠나보면 어때요?
+                    </Text>
+                  </View>
+                </>
+              )}
             </ImageBackground>
           </View>
         );
@@ -160,7 +168,8 @@ export default Carousel;
 const styles = StyleSheet.create({
   backgroundImage: {
     display: 'flex',
-    height: hp('48%'),
+    // height: hp('48%'),
+    height: 251,
     paddingLeft: wp('16%'),
     paddingTop: hp('10%'),
     resizeMethod: 'repeat',

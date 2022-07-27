@@ -158,12 +158,8 @@ export const ProfileScreen = props => {
                 </View>
                 {isLogin && (
                   <View style={textWrapperIII}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        navigateTo('RoomReservationListScreen');
-                      }}>
-                      <Text style={[statusText, greyColor]}>최근주문</Text>
-                    </TouchableOpacity>
+                    <Text style={[statusText, greyColor]}>최근주문</Text>
+
                     <TouchableOpacity
                       onPress={() => {
                         navigateTo('RoomReservationListScreen');
@@ -181,12 +177,22 @@ export const ProfileScreen = props => {
                 <View style={secondTextWrapper}>
                   <Text style={secondText}>나의 쇼핑정보</Text>
                 </View>
-                <View style={secondTextWrapper}>
-                  <Text style={secondTextII}>캠핑장 예약내역 조회</Text>
-                </View>
-                <View style={secondTextWrapper}>
-                  <Text style={secondTextII}>캠핑용품 대여내역 조회</Text>
-                </View>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigateTo('RoomReservationListScreen');
+                  }}>
+                  <View style={secondTextWrapper}>
+                    <Text style={secondTextII}>캠핑장 예약내역 조회</Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigateTo('RoomReservationListScreen');
+                  }}>
+                  <View style={secondTextWrapper}>
+                    <Text style={secondTextII}>캠핑용품 대여내역 조회</Text>
+                  </View>
+                </TouchableOpacity>
               </View>
             </View>
             <View style={secondContainer}>

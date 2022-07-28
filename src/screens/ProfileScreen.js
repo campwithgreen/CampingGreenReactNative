@@ -321,19 +321,19 @@ const styles = StyleSheet.create({
     marginTop: heightPercentageToDP('5%'),
   },
   textWrapperIII: {
-    display: 'flex',
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginTop: 15,
+    marginTop: 10,
   },
   textWrapperIV: {
     width: widthPercentageToDP('50%'),
   },
   statusText: {
-    fontSize: FONTSIZE.xm,
+    fontSize: FONTSIZE.l,
     color: COLOR.compGreen,
     fontWeight: '800',
-    paddingHorizontal: widthPercentageToDP('3%'),
+    paddingHorizontal: widthPercentageToDP('2%'),
   },
   greyColor: {
     color: COLOR.grey,
@@ -348,10 +348,12 @@ const styles = StyleSheet.create({
   secondText: {
     fontSize: FONTSIZE.xlll,
     fontWeight: '900',
+    color: '#454C53',
   },
   secondTextII: {
     fontSize: FONTSIZE.xl,
     fontWeight: '500',
+    color: '#454C53',
   },
   secondParentWrapper: {
     height: '100%',

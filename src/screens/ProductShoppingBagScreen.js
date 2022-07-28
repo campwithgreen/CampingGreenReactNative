@@ -110,13 +110,14 @@ const ProductShoppingBagScreen = () => {
     return (
       <View style={styles.view1}>
         <View style={styles.view2}>
-          <Text style={{marginRight: wp('2%')}}>check</Text>
+          {/* <Text style={{marginRight: wp('2%')}}>check</Text> */}
           <Text
             style={{
               fontWeight: '600',
+              color: '#454C53',
             }}>{`전체선택 (${checkedCount}/${productList.length})`}</Text>
         </View>
-        <Text>선택삭제</Text>
+        <Text style={{color: '#454C53'}}>선택삭제</Text>
       </View>
     );
   };
@@ -199,10 +200,11 @@ export default ProductShoppingBagScreen;
 const styles = StyleSheet.create({
   text1: {
     fontWeight: '600',
+    color: '#454C53',
   },
   text2: {
     fontWeight: 'bold',
-    color: 'black',
+    color: '#454C53',
   },
   text3: {
     fontWeight: 'bold',

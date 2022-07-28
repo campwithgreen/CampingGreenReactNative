@@ -423,7 +423,7 @@ export const ProductInfo = props => {
                   <Text
                     style={{
                       color: '#FFF',
-                      fontSize: RFPercentage(2.5),
+                      fontSize: RFPercentage(2),
                       fontWeight: 'bold',
                     }}>
                     {item.title} 상세정보
@@ -516,7 +516,7 @@ export const ProductInfo = props => {
                   <Text
                     style={{
                       color: '#FFF',
-                      fontSize: RFPercentage(2.5),
+                      fontSize: RFPercentage(2),
                       fontWeight: 'bold',
                     }}>
                     {item.title} 구성
@@ -573,6 +573,7 @@ export const ProductInfo = props => {
                   {feature?.description && (
                     <Text
                       style={{
+                        color: '#1B1D1F',
                         fontSize: RFPercentage(2),
                         fontWeight: '800',
                         marginHorizontal: wp('5%'),

@@ -100,7 +100,7 @@ const RoomPaymentScreen = () => {
         </TouchableOpacity>
         <Text style={[styles.text2, {marginLeft: wp('3%')}]}>
           <Text style={{color: '#55C595'}}>{t1}</Text>
-          <Text>{t2}</Text>
+          <Text style={{color: '#1B1D1F'}}>{t2}</Text>
         </Text>
       </View>
     );
@@ -291,7 +291,7 @@ const RoomPaymentScreen = () => {
               배송{'\n'}메세지
             </Text>
             <TextInput
-              placeholderTextColor="gray"
+              placeholderTextColor="#454C53"
               placeholder={
                 '별도 요청사항이 없으실 경우, \n 공란으로 비워주세요'
               }
@@ -338,13 +338,15 @@ const RoomPaymentScreen = () => {
                           borderTopLeftRadius: 10,
                           padding: 10,
                         }}>
-                        <View style={{width: wp('60%')}}>
+                        <View>
                           <Text style={styles.comp3Text1}>
                             {directItem.title}
                           </Text>
                         </View>
                         <View>
-                          <Text style={styles.comp3Text1}>배송비 11000원</Text>
+                          <Text style={[styles.comp3Text1, {fontSize: 14}]}>
+                            배송비 11000원
+                          </Text>
                         </View>
                       </View>
                       <View style={styles.comp3View}>
@@ -414,7 +416,9 @@ const RoomPaymentScreen = () => {
                 .format('YYYY-MM-DD')}{' '}
               23:59:59
             </Text>
-            <Text>까지 결제(입금)되지 않으면 예약이 자동취소 됩니다.</Text>
+            <Text style={{color: '#454C53'}}>
+              까지 결제(입금)되지 않으면 예약이 자동취소 됩니다.
+            </Text>
           </Text>
           <View style={styles.border1}></View>
           <Text style={[styles.text1, styles.ph1]}>결제 방법</Text>
@@ -437,7 +441,7 @@ const RoomPaymentScreen = () => {
               <Text style={[styles.text2, {paddingTop: hp('1%')}]}>
                 하나은행 4318901100083 /임태영
               </Text>
-              <Text style={{paddingTop: hp('1%')}}>
+              <Text style={{paddingTop: hp('1%'), color: '#454C53'}}>
                 위 계좌로 입금이 완료되면 배송준비가 시작됩니다.
               </Text>
             </View>
@@ -493,14 +497,15 @@ const styles = StyleSheet.create({
   text1: {
     fontWeight: 'bold',
     fontSize: 16,
-    color: 'black',
+    color: '#1B1D1F',
   },
   text2: {fontWeight: '600', color: '#454C53'},
-  ph1: {paddingHorizontal: wp('5%')},
+  ph1: {paddingHorizontal: wp('5%'), color: '#454C53'},
   textinput1: {
     width: wp('65%'),
     height: '80%',
     borderWidth: 1,
+    color: '#454C53',
     borderColor: 'lightgrey',
   },
   textinput2: {
@@ -583,6 +588,6 @@ const styles = StyleSheet.create({
   },
   comp3Text2: {
     fontWeight: 'bold',
-    color: 'grey',
+    color: '#454C53',
   },
 });

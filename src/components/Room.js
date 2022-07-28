@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'black',
   },
-  text2: {fontWeight: '600'},
+  text2: {fontWeight: '600', color: '#454C53'},
   button1: {
     backgroundColor: 'grey',
     color: 'white',

@@ -364,6 +364,7 @@ const Rent = props => {
             }}>
             <Text
               style={{
+                color: '#1B1D1F',
                 marginVertical: hp('3%'),
                 color: '#1B1D1F',
                 fontSize: RFPercentage(2.5),

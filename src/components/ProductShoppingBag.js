@@ -29,7 +29,8 @@ export default function ProductShoppingBag({
   return (
     <View>
       <View style={styles.view1}>
-        <Text>check</Text>
+        <Image source={require('../assets/images/white_circle.png')} />
+
         <Text style={styles.btn}>삭제</Text>
       </View>
       <View style={styles.view1}>
@@ -42,7 +43,9 @@ export default function ProductShoppingBag({
                 -
               </Text>
               <Text style={styles.text2}>{count}</Text>
-              <Text style={{fontWeight: 'bold'}} onPress={increment}>
+              <Text
+                style={{fontWeight: 'bold', color: '#454C53'}}
+                onPress={increment}>
                 +
               </Text>
             </View>
@@ -79,6 +82,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     textAlign: 'center',
     borderRadius: 2,
+    color: '#454C53',
   },
   view1: {
     display: 'flex',
@@ -118,7 +122,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   text1: {
-    // color: 'lightgrey',
+    color: '#454C53',
     fontWeight: 'bold',
     fontSize: 18,
   },
@@ -140,7 +144,7 @@ const styles = StyleSheet.create({
   },
   text5: {
     fontWeight: '600',
-    color: '#757575',
+    color: '#454C53',
     fontSize: 16,
     marginHorizontal: wp('5%'),
   },

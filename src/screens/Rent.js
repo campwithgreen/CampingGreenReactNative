@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useCallback} from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   Button,
   ToastAndroid,
+  Linking,
+  Pressable,
 } from 'react-native';
 import Header from '../layout/Header';
 import {
@@ -49,6 +51,7 @@ const Rent = props => {
     styles;
   console.log('PROPS', props);
   const {route} = props;
+  // const selectedLoc = useSelector(st => st.common.selected_location);
   const subLocations = useSelector(st => st.common.selected_location);
   const selected_item = useSelector(st => st.common?.selected_item);
   const startDate = useSelector(st => st.common?.start_date);
@@ -62,7 +65,7 @@ const Rent = props => {
   const phone = useSelector(st => st.common?.selected_location.phone);
 
   const [modalVisible, setModalVisible] = useState(false);
-
+  console.log('subLocations', subLocations);
   const enableCheckout = () => {
     if (startDate && returnDate) {
       return true;
@@ -104,6 +107,40 @@ const Rent = props => {
       });
   };
 
+  const OpenURLButton = ({url, children}) => {
+    const handlePress = useCallback(async () => {
+      // Checking if the link is supported for links with custom URL scheme.
+      const supported = await Linking.canOpenURL(url);
+
+      if (supported) {
+        // Opening the link with some app, if the URL scheme is "http" the web link should be opened
+        // by some browser in the mobile
+        await Linking.openURL(url);
+      } else {
+        Alert.alert(`Don't know how to open this URL: ${url}`);
+      }
+    }, [url]);
+    return (
+      <Pressable
+        onPress={handlePress}
+        style={{
+          borderWidth: 2,
+          borderColor: '#55C595',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: 3,
+        }}>
+        <Text
+          style={{
+            color: '#55C595',
+            fontSize: RFPercentage(2),
+          }}>
+          {children}
+        </Text>
+      </Pressable>
+    );
+  };
   return (
     <View style={container}>
       {modalVisible && (
@@ -288,57 +325,93 @@ const Rent = props => {
             </TouchableOpacity>
           </View>
           <RentDetail subLocations={subLocations.subLocations} />
-          <View style={{marginTop: wp('7%')}}>
+          {subLocations?.specifications?.campIntro && (
+            <>
+              <View style={{marginTop: wp('7%')}}>
+                <Text
+                  style={{
+                    color: '#1B1D1F',
+                    fontSize: RFPercentage(2.5),
+                    fontWeight: 'bold',
+                  }}>
+                  캠핑장 소개
+                </Text>
+              </View>
+              <View
+                style={{
+                  marginVertical: wp('5%'),
+                  borderBottomWidth: 1,
+                  borderColor: '#9EA4AA',
+                }}>
+                <Text
+                  style={{
+                    color: '#454C53',
+                    fontSize: RFPercentage(2),
+                    marginBottom: wp('5%'),
+                  }}>
+                  {subLocations?.specifications?.campIntro}
+                </Text>
+              </View>
+            </>
+          )}
+          {subLocations?.specifications?.facilityInfo && (
+            <View>
+              <Text
+                style={{
+                  color: '#1B1D1F',
+                  fontSize: RFPercentage(2.5),
+                  fontWeight: 'bold',
+                }}>
+                이용시설 안내
+              </Text>
+            </View>
+          )}
+
+          {subLocations?.specifications?.facilityInfo?.split(',').length > 0 ? (
+            <View
+              style={{
+                flexDirection: 'column',
+                marginVertical: wp('5%'),
+              }}>
+              {subLocations?.specifications?.facilityInfo
+                ?.split(',')
+                ?.map(k => (
+                  <Text
+                    style={{
+                      color: '#454C53',
+                      fontSize: RFPercentage(2),
+                      marginBottom: hp('.5%'),
+                    }}>
+                    {k}
+                  </Text>
+                ))}
+            </View>
+          ) : (
             <Text
               style={{
-                color: '#1B1D1F',
-                fontSize: RFPercentage(2.5),
-                fontWeight: 'bold',
+                color: '#454C53',
+                fontSize: RFPercentage(2),
+                marginBottom: hp('.5%'),
               }}>
-              캠핑장 소개
+              {subLocations?.specifications?.facilityInfo}
             </Text>
-          </View>
-          <View
+          )}
+          {/* <View
             style={{
               marginVertical: wp('5%'),
-              borderBottomWidth: 1,
-              borderColor: '#9EA4AA',
             }}>
             <Text
               style={{
                 color: '#454C53',
                 fontSize: RFPercentage(2),
-                marginBottom: wp('5%'),
               }}>
-              넓게 펼쳐진 들판과 높은 하늘이 만나는 캠핑장입니다 넓은 들판을
-              가운데 두고 삼면을 산을 둘러쌓고 있어 그대로의 자연을 사계절
-              경험하실 수 있습니다.
+              {subLocations?.specifications?.facilityInfo}
             </Text>
-          </View>
-          <View>
-            <Text
-              style={{
-                color: '#1B1D1F',
-                fontSize: RFPercentage(2.5),
-                fontWeight: 'bold',
-              }}>
-              이용시설 안내
-            </Text>
-          </View>
-          <View
-            style={{
-              marginVertical: wp('5%'),
-            }}>
-            <Text
-              style={{
-                color: '#454C53',
-                fontSize: RFPercentage(2),
-              }}>
-              무료 Wi-Fi {'\n'}개별 바비큐 {'\n'}글램핑 {'\n'}주차가능 {'\n'}
-              반려동물 {'\n'}이용시간 : 16시 -22시까지 사용가능 합니다.
-            </Text>
-          </View>
-          <View
+          </View> */}
+          <OpenURLButton url={subLocations?.specifications?.campLink}>
+            캠핑장 링크 이동
+          </OpenURLButton>
+          {/* <View
             style={{
               borderWidth: 2,
               borderColor: '#55C595',
@@ -354,7 +427,8 @@ const Rent = props => {
               }}>
               캠핑장 링크 이동
             </Text>
-          </View>
+          </View> */}
+
           <View
             style={{
               marginTop: hp('3%'),
@@ -380,19 +454,21 @@ const Rent = props => {
                 fontSize: RFPercentage(2),
                 marginBottom: hp('3%'),
               }}>
-              공용 개수대, 공용 화장실, 공동 샤워실 이용 {'\n'}수건 미제공으로
-              개인 준비 필요 {'\n'}개인화기, 개인화로, 개인그릴, 개인 냉난방기
-              반입금지
+              {subLocations?.specifications?.useInfo}
             </Text>
           </View>
+
           <View>
-            <Image source={require('../assets/images/martin.png')} />
+            <Image
+              style={{height: 200, resizeMode: 'contain'}}
+              source={{uri: subLocations.specifications.image}}
+            />
           </View>
           <View
             style={{
               paddingTop: hp('1%'),
               paddingBottom: hp('1%'),
-              display: 'flex',
+              flex: 1,
               flexDirection: 'row',
               alignItems: 'center',
             }}>
@@ -404,7 +480,7 @@ const Rent = props => {
                 paddingLeft: wp('5%'),
                 paddingRight: wp('5%'),
               }}>
-              홍천군 서면 밤벌길 131-53
+              {subLocations?.description}
             </Text>
             <Image source={require('../assets/images/icon_location.png')} />
           </View>

@@ -42,7 +42,7 @@ const RenderItem = ({item}) => {
           }}>
           <View>
             <Image
-              source={{uri: item.carousel[0]}}
+              source={{uri: item?.carousel[0]}}
               style={{height: hp('12%'), width: wp('20%')}}
             />
           </View>
@@ -68,7 +68,7 @@ const RenderItem = ({item}) => {
                     color: '#1B1D1F',
                     paddingBottom: hp('1%'),
                   }}>
-                  {item.title}
+                  {item?.title}
                 </Text>
               </View>
               <View>
@@ -78,7 +78,7 @@ const RenderItem = ({item}) => {
                     fontWeight: 'bold',
                     color: '#454C53',
                   }}>
-                  {item.subDetailDescription}
+                  {item?.description}
                 </Text>
               </View>
             </View>
@@ -161,7 +161,7 @@ const RenderItem = ({item}) => {
             객실정보
           </Text>
           <Text style={{color: '#454C53', fontSize: RFPercentage(1.7)}}>
-            '입실 13:00 퇴실 11:00'
+            입실 {item.checkinTime} 퇴실 {item.checkoutTime}
           </Text>
         </View>
         <View

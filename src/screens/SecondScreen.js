@@ -185,18 +185,18 @@ const SecondScreen = () => {
       )}
       <Header headerContent={headerContent} />
       <ScrollView style={{marginBottom: hp('7%')}}>
-        <Carousel carouselData={selected_subLocation.carousel} />
+        <Carousel carouselData={selected_subLocation?.carousel} />
         <Text
           style={[
             styles.text1,
             {
-              fontSize: RFPercentage(4),
+              fontSize: RFPercentage(3),
               paddingTop: hp('5%'),
               paddingBottom: hp('2%'),
               paddingHorizontal: wp('5%'),
             },
           ]}>
-          {selected_subLocation.title}
+          {selected_subLocation?.title}
         </Text>
         <Text style={[styles.text2, {paddingHorizontal: wp('5%')}]}>
           {selected_subLocation.description}
@@ -269,7 +269,7 @@ const SecondScreen = () => {
                     style={{
                       flex: 1,
                     }}>
-                    {Object.keys(allFeature?.add_feature_valuse)?.map(
+                    {Object.keys(allFeature?.add_feature_value)?.map(
                       (spec, index) => {
                         return (
                           <View
@@ -280,7 +280,7 @@ const SecondScreen = () => {
                             <Text style={styles.text2}>{spec}</Text>
                             <Text> </Text>
                             <Text style={[styles.text2, {textAlign: 'right'}]}>
-                              {allFeature?.add_feature_valuse[spec]}
+                              {allFeature?.add_feature_value[spec]}
                             </Text>
 
                             {/* {index === 1 || index === 2 ? <Text></Text> : null} */}

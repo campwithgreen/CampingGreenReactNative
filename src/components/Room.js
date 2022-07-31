@@ -10,7 +10,7 @@ import {setSelectedLocation} from '../redux/actions/common';
 
 const Room = ({item}) => {
   console.log('ITEM', item);
-
+  let finalPrice = 0;
   const dispatch = useDispatch();
 
   let seatCount = 0;

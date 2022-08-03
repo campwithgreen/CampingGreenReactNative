@@ -11,28 +11,26 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import Header from '../layout/Header';
 import ProductShoppingBag from '../components/ProductShoppingBag';
 import SecondScreen1 from '../components/SecondScreen1';
 import CustomButton from '../components/common/CustomButton';
-import { getUserCartHistory } from '../apis/cart';
-import { useSelector, useDispatch } from 'react-redux';
-import { setUserCartHistory } from '../redux/actions/common';
+import {getUserCartHistory} from '../apis/cart';
+import {useSelector, useDispatch} from 'react-redux';
+import {setUserCartHistory} from '../redux/actions/common';
 import moment from 'moment';
 import COLOR from '../constants/colors';
 import Loader from '../components/common/Loader';
+import {goBack} from '../navigation/utils/RootNavigation';
 
 const ProductShoppingBagScreen = () => {
-
   const dispatch = useDispatch();
 
-  const isLogin = useSelector((st) => st?.oauth?.isLogin);
-  const cart_history = useSelector((st) => st.common?.cart_history);
+  const isLogin = useSelector(st => st?.oauth?.isLogin);
+  const cart_history = useSelector(st => st.common?.cart_history);
   const [cartMainData, setCartMainData] = useState(cart_history);
   const [loading, setLoading] = useState(false);
-
-
 
   const headerContent = {
     middleItemContents: {
@@ -43,12 +41,9 @@ const ProductShoppingBagScreen = () => {
     leftItemContents: {
       type: 'image',
       content: require('../assets/images/icon_cancel.png'),
-      navigateScreen: 'LoginScreen',
-    },
-    rightItemContents: {
-      type: 'image',
-      content: require('../assets/images/cart.png'),
-      navigateScreen: 'LoginScreen',
+      navigateScreen: () => {
+        goBack();
+      },
     },
   };
 
@@ -60,64 +55,76 @@ const ProductShoppingBagScreen = () => {
     if (isLogin) {
       (async function getCartHistory() {
         setLoading(true);
-        await getUserCartHistory().then((res) => {
-          if (res) {
+        await getUserCartHistory()
+          .then(res => {
+            if (res) {
+              setCartMainData(res.data.data);
 
-            setCartMainData(res.data.data);
+              dispatch(setUserCartHistory(res.data.data));
 
-            dispatch(setUserCartHistory(res.data.data));
+              let result = res.data.data?.reduce(function (r, a) {
+                r[
+                  `${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${
+                    a.paymentStatus
+                  }`
+                ] =
+                  r[
+                    `${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${
+                      a.paymentStatus
+                    }`
+                  ] || [];
+                r[
+                  `${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${
+                    a.paymentStatus
+                  }`
+                ].push(a);
+                return r;
+              }, Object.create(null));
 
-            let result = res.data.data?.reduce(function (r, a) {
-              r[`${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${a.paymentStatus}`] = r[`${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${a.paymentStatus}`] || [];
-              r[`${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${a.paymentStatus}`].push(a);
-              return r;
-            }, Object.create(null));
+              let bagData = [];
 
+              if (result) {
+                Object.keys(result).map(key => {
+                  if (key.indexOf('CHECKOUT_PENDING') > -1) {
+                    bagData = bagData.concat(result[key]);
+                  }
+                });
+              }
 
-            let bagData = [];
+              setProductList(bagData);
 
-            if (result) {
-              Object.keys(result).map((key) => {
-                if (key.indexOf("CHECKOUT_PENDING") > -1) {
-                  bagData = bagData.concat(result[key]);
-                }
-              });
+              setLoading(false);
             }
-
-            setProductList(bagData);
-
-            setLoading(false);
-          }
-        }).catch((err) => {
-          if (err) {
-            showDefaultErrorAlert();
-            setLoading(false);
-          }
-        });
+          })
+          .catch(err => {
+            if (err) {
+              showDefaultErrorAlert();
+              setLoading(false);
+            }
+          });
       })();
     }
-
   }, [isLogin]);
-
-
-
-
 
   const ListHeaderComponent = () => {
     return (
       <View style={styles.view1}>
         <View style={styles.view2}>
-          <Text style={{ marginRight: wp('2%') }}>check</Text>
-          <Text style={{ fontWeight: '600' }}>{`전체선택 (${checkedCount}/${productList.length})`}</Text>
+          {/* <Text style={{marginRight: wp('2%')}}>check</Text> */}
+          <Text
+            style={{
+              fontWeight: '600',
+              color: '#454C53',
+            }}>{`전체선택 (${checkedCount}/${productList.length})`}</Text>
         </View>
-        <Text>선택삭제</Text>
+        <Text style={{color: '#454C53'}}>선택삭제</Text>
       </View>
     );
   };
 
   const ListFooterComponent = () => {
     return (
-      <View style={{ paddingBottom: hp('13.5%') }}>
+      <View style={{paddingBottom: hp('13.5%')}}>
         <Div t1="주문상품 수" t2="총 2개" c1={styles.text1} c2={styles.text2} />
         <Div
           t1="총 주문금액"
@@ -126,13 +133,18 @@ const ProductShoppingBagScreen = () => {
           c2={styles.text2}
         />
         <Div t1="총 배송비" t2="0원" c1={styles.text1} c2={styles.text2} />
-        <View style={{ paddingTop: hp('1.5%') }}>
-          <Div t1="결제금액" t2="130,000원" c1={styles.text1} c2={styles.text3} />
+        <View style={{paddingTop: hp('1.5%')}}>
+          <Div
+            t1="결제금액"
+            t2="130,000원"
+            c1={styles.text1}
+            c2={styles.text3}
+          />
         </View>
       </View>
     );
   };
-  const Div = ({ t1, t2, c1, c2 }) => {
+  const Div = ({t1, t2, c1, c2}) => {
     return (
       <View style={styles.view3}>
         <Text style={c1}>{t1}</Text>
@@ -141,44 +153,58 @@ const ProductShoppingBagScreen = () => {
     );
   };
 
-
-
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{flex: 1}}>
       <Header headerContent={headerContent} />
       <ScrollView>
         <View style={styles.border2}></View>
-        {loading ? <Loader /> : <FlatList
-          numColumns={1}
-          ListHeaderComponent={ListHeaderComponent}
-          // ListFooterComponent={ListFooterComponent}
-          showsHorizontalScrollIndicator={false}
-          data={productList}
-          renderItem={({ item, index }) => {
-            return <ProductShoppingBag index={index} item={item} key={item?.items[0]._id} productList={productList} setProductList={setProductList} />;
-          }}
-        />}
+        {loading ? (
+          <Loader />
+        ) : (
+          <FlatList
+            numColumns={1}
+            ListHeaderComponent={ListHeaderComponent}
+            // ListFooterComponent={ListFooterComponent}
+            showsHorizontalScrollIndicator={false}
+            data={productList}
+            renderItem={({item, index}) => {
+              return (
+                <ProductShoppingBag
+                  index={index}
+                  item={item}
+                  key={item?.items[0]._id}
+                  productList={productList}
+                  setProductList={setProductList}
+                />
+              );
+            }}
+          />
+        )}
       </ScrollView>
       <CustomButton
         buttonText={'예약하기'}
         buttonHandler={() => {
-          ToastAndroid.showWithGravity("Checkout from Cart is Now Available Now, Pls checkout Directly", ToastAndroid.LONG, ToastAndroid.TOP);
-        }} />
+          ToastAndroid.showWithGravity(
+            'Checkout from Cart is Now Available Now, Pls checkout Directly',
+            ToastAndroid.LONG,
+            ToastAndroid.TOP,
+          );
+        }}
+      />
     </View>
   );
 };
-
-
 
 export default ProductShoppingBagScreen;
 
 const styles = StyleSheet.create({
   text1: {
     fontWeight: '600',
+    color: '#454C53',
   },
   text2: {
     fontWeight: 'bold',
-    color: 'black',
+    color: '#454C53',
   },
   text3: {
     fontWeight: 'bold',

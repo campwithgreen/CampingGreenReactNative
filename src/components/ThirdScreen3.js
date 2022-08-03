@@ -1,23 +1,35 @@
-import { StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  ToastAndroid,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import React from 'react';
-import { navigateTo } from '../navigation/utils/RootNavigation';
+import {navigateTo} from '../navigation/utils/RootNavigation';
 
 const ThirdScreen3 = () => {
   return (
     <View style={styles.view1}>
-      <TouchableOpacity onPress={() => {
-        ToastAndroid.showWithGravity("Cancel Order feature is not avaiable now", ToastAndroid.LONG, ToastAndroid.TOP);
-      }}>
-        <Text style={styles.btn1}>배송정보</Text>
+      <TouchableOpacity
+        onPress={() => {
+          ToastAndroid.showWithGravity(
+            'Cancel Order feature is not avaiable now',
+            ToastAndroid.LONG,
+            ToastAndroid.TOP,
+          );
+        }}>
+        <Text style={styles.btn1}> 예약취소</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => {
-        navigateTo("RoomReservationListScreen");
-      }}>
-        <Text style={styles.btn2}>배송정보</Text>
+      <TouchableOpacity
+        onPress={() => {
+          navigateTo('RoomReservationListScreen');
+        }}>
+        <Text style={styles.btn2}>주문목록</Text>
       </TouchableOpacity>
     </View>
   );

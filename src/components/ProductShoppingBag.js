@@ -1,11 +1,16 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
-import React, { useState } from 'react';
+import {StyleSheet, Text, View, Image} from 'react-native';
+import React, {useState} from 'react';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 
-export default function ProductShoppingBag({ index, item, productList, setProductList }) {
+export default function ProductShoppingBag({
+  index,
+  item,
+  productList,
+  setProductList,
+}) {
   const [count, setCount] = useState(item?.items[0]?.units);
   const increment = () => {
     let newData = [...productList];
@@ -24,7 +29,8 @@ export default function ProductShoppingBag({ index, item, productList, setProduc
   return (
     <View>
       <View style={styles.view1}>
-        <Text>check</Text>
+        <Image source={require('../assets/images/white_circle.png')} />
+
         <Text style={styles.btn}>삭제</Text>
       </View>
       <View style={styles.view1}>
@@ -37,20 +43,27 @@ export default function ProductShoppingBag({ index, item, productList, setProduc
                 -
               </Text>
               <Text style={styles.text2}>{count}</Text>
-              <Text style={{ fontWeight: 'bold' }} onPress={increment}>
+              <Text
+                style={{fontWeight: 'bold', color: '#454C53'}}
+                onPress={increment}>
                 +
               </Text>
             </View>
-            <Text style={styles.text3}>{item?.items[0]?.units * item?.items[0]?.itemId?.price}</Text>
+            <Text style={styles.text3}>
+              {item?.items[0]?.units * item?.items[0]?.itemId?.price}
+            </Text>
           </View>
         </View>
         <View>
-          <Image source={{
-            uri: item?.items[0]?.itemId?.carousel[0]
-          }} style={{
-            height: hp("15%"),
-            width: hp("15%")
-          }} />
+          <Image
+            source={{
+              uri: item?.items[0]?.itemId?.carousel[0],
+            }}
+            style={{
+              height: hp('15%'),
+              width: hp('15%'),
+            }}
+          />
         </View>
       </View>
       <View style={styles.border}></View>
@@ -69,6 +82,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     textAlign: 'center',
     borderRadius: 2,
+    color: '#454C53',
   },
   view1: {
     display: 'flex',
@@ -108,7 +122,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   text1: {
-    // color: 'lightgrey',
+    color: '#454C53',
     fontWeight: 'bold',
     fontSize: 18,
   },
@@ -130,7 +144,7 @@ const styles = StyleSheet.create({
   },
   text5: {
     fontWeight: '600',
-    color: '#757575',
+    color: '#454C53',
     fontSize: 16,
     marginHorizontal: wp('5%'),
   },

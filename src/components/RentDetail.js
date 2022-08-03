@@ -14,24 +14,25 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import { RFPercentage } from 'react-native-responsive-fontsize';
+import {RFPercentage} from 'react-native-responsive-fontsize';
 import COLOR from '../constants/colors';
-import { useDispatch } from 'react-redux';
-import { navigateTo } from '../navigation/utils/RootNavigation';
-import { setSelectedSubLocation } from '../redux/actions/common';
+import {useDispatch} from 'react-redux';
+import {navigateTo} from '../navigation/utils/RootNavigation';
+import {setSelectedSubLocation} from '../redux/actions/common';
 
-const RenderItem = ({ item }) => {
+const RenderItem = ({item}) => {
   const dispatch = useDispatch();
   return (
-    <TouchableOpacity onPress={() => {
-      dispatch(setSelectedSubLocation(item));
-      navigateTo("SecondScreen");
-    }}>
+    <TouchableOpacity
+      onPress={() => {
+        dispatch(setSelectedSubLocation(item));
+        navigateTo('SecondScreen');
+      }}>
       <View
         style={{
           display: 'flex',
           flexDirection: 'column',
-          backgroundColor: COLOR.white
+          backgroundColor: COLOR.white,
         }}>
         <View
           style={{
@@ -40,7 +41,10 @@ const RenderItem = ({ item }) => {
             paddingBottom: wp('2%'),
           }}>
           <View>
-            <Image source={{ uri: item.carousel[0] }} style={{ height: hp("12%"), width: wp("20%") }} />
+            <Image
+              source={{uri: item?.carousel[0]}}
+              style={{height: hp('12%'), width: wp('20%')}}
+            />
           </View>
           <View
             style={{
@@ -64,7 +68,7 @@ const RenderItem = ({ item }) => {
                     color: '#1B1D1F',
                     paddingBottom: hp('1%'),
                   }}>
-                  {item.title}
+                  {item?.title}
                 </Text>
               </View>
               <View>
@@ -74,7 +78,7 @@ const RenderItem = ({ item }) => {
                     fontWeight: 'bold',
                     color: '#454C53',
                   }}>
-                  {item.description}
+                  {item?.description}
                 </Text>
               </View>
             </View>
@@ -87,7 +91,7 @@ const RenderItem = ({ item }) => {
                       color: '#454C53',
                       textAlign: 'right',
                     }}>
-                    {item.stock}
+                    {item.stock} 개 남음
                   </Text>
                 </View>
                 <View>
@@ -96,9 +100,10 @@ const RenderItem = ({ item }) => {
                       fontSize: RFPercentage(2.5),
                       fontWeight: 'bold',
                       color: '#1B1D1F',
+
                       textAlign: 'right',
                     }}>
-                    {item.price}
+                    {item.price}원
                   </Text>
                 </View>
               </View>
@@ -155,14 +160,18 @@ const RenderItem = ({ item }) => {
             }}>
             객실정보
           </Text>
-          <Text style={{ color: '#454C53', fontSize: RFPercentage(1.7) }}>
-            '입실 13:00 퇴실 11:00'
+          <Text style={{color: '#454C53', fontSize: RFPercentage(1.7)}}>
+            입실 {item.checkinTime} 퇴실 {item.checkoutTime}
           </Text>
         </View>
-        <View style={{ borderBottomWidth: 3, borderColor: COLOR.lgrey, marginVertical: hp("1%") }}></View>
+        <View
+          style={{
+            borderBottomWidth: 3,
+            borderColor: COLOR.lgrey,
+            marginVertical: hp('1%'),
+          }}></View>
       </View>
     </TouchableOpacity>
-
   );
 };
 
@@ -216,19 +225,19 @@ const rental = [
 ];
 
 const RentDetail = props => {
-  const { container } = styles;
-  const { subLocations } = props;
+  const {container} = styles;
+  const {subLocations} = props;
 
   return (
-    <View style={{ backgroundColor: COLOR.white }}>
+    <View style={{backgroundColor: COLOR.white}}>
       <FlatList
         numColumns={1}
         showsHorizontalScrollIndicator={false}
         data={subLocations}
         contentContainerStyle={{
-          marginVertical: hp("5%")
+          marginVertical: hp('5%'),
         }}
-        renderItem={({ item }) => {
+        renderItem={({item}) => {
           return <RenderItem item={item} key={item._id} />;
         }}
       />

@@ -26,7 +26,8 @@ import { authDoor, verifyOtp } from '../apis/auth';
 import { showDefaultErrorAlert } from '../global/global';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, setUserData, setUserToken } from '../redux/actions/oauth';
-import store from '../redux/store';
+import { setUserCartHistory } from '../redux/actions/common';
+import { getUserCartHistory } from '../apis/cart';
 
 const headerContent = {
   leftItemContents: {
@@ -64,6 +65,29 @@ export default function LoginScreen() {
       navigateTo('HomeScreen');
     }
   }, [isLogin]);
+
+
+  useEffect(() => {
+    if (isLogin) {
+      console.log("RUNNING");
+      (async function getCartHistory() {
+        await getUserCartHistory()
+          .then(res => {
+            if (res) {
+              dispatch(setUserCartHistory(res.data.data));
+            }
+          })
+          .catch(err => {
+            if (err) {
+              showDefaultErrorAlert();
+              setLoading(false);
+            }
+          });
+      })();
+    }
+  }, [isLogin]);
+
+
   const [lineColor, setLineColor] = useState(COLOR.black);
   const onFocus = () => setLineColor(COLOR.compGreen);
 

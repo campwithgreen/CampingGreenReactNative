@@ -1,9 +1,11 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
-import React, {useState} from 'react';
+import { StyleSheet, Text, View, Image } from 'react-native';
+import React, { useState } from 'react';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
+import CheckBox from '@react-native-community/checkbox';
+
 
 export default function ProductShoppingBag({
   index,
@@ -12,12 +14,25 @@ export default function ProductShoppingBag({
   setProductList,
 }) {
   const [count, setCount] = useState(item?.items[0]?.units);
+
+
+  useEffect(() => {
+
+    productList.map((item) => {
+      item.isSelected = false;
+    });
+
+  }, []);
+
+  console.log("PL", productList);
+
   const increment = () => {
     let newData = [...productList];
     newData[index].items[0].units = count + 1;
     setProductList(newData);
     setCount(i => i + 1);
   };
+
   const decrement = () => {
     if (count > 0) {
       let newData = [...productList];
@@ -26,11 +41,27 @@ export default function ProductShoppingBag({
       setCount(i => i - 1);
     }
   };
+
+  const [isSelected, setSelected] = useState(false);
+  const [selectedItems, setSelectedItems] = useState([]);
+
+  console.log("SELECTED CART ITEMS", selectedItems);
+
   return (
     <View>
       <View style={styles.view1}>
-        <Image source={require('../assets/images/white_circle.png')} />
-
+        <CheckBox
+          value={isSelected}
+          onValueChange={(value) => {
+            setSelected(value);
+            if (value) {
+              let data = [...selectedItems, item];
+              console.log("DT", data);
+              setSelectedItems(data);
+            }
+          }}
+          style={styles.checkbox}
+        />
         <Text style={styles.btn}>삭제</Text>
       </View>
       <View style={styles.view1}>
@@ -44,7 +75,7 @@ export default function ProductShoppingBag({
               </Text>
               <Text style={styles.text2}>{count}</Text>
               <Text
-                style={{fontWeight: 'bold', color: '#454C53'}}
+                style={{ fontWeight: 'bold', color: '#454C53' }}
                 onPress={increment}>
                 +
               </Text>
@@ -152,5 +183,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 10,
     borderBottomColor: 'lightgrey',
     marginVertical: hp('4%'),
+  },
+  checkbox: {
+    alignSelf: "center",
   },
 });

@@ -48,3 +48,9 @@ export function setSelectedSubLocation(data) {
         dispatch({ type: COMMON.SELECTED_SUB_LOCATION, payload: data });
     };
 }
+
+export function setMainCartItems(data) {
+    return (dispatch, getState) => {
+        dispatch({ type: COMMON.SET_MAIN_CART_ITEMS, payload: data });
+    };
+}

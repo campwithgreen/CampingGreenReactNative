@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   ToastAndroid,
 } from 'react-native';
 import Header from '../layout/Header';
-import {goBack, navigateTo} from '../navigation/utils/RootNavigation';
+import { goBack, navigateTo } from '../navigation/utils/RootNavigation';
 import globalStyle from '../global/globalStyle';
 import {
   heightPercentageToDP,
@@ -17,11 +17,11 @@ import {
 } from 'react-native-responsive-screen';
 import COLOR from '../constants/colors';
 import FONTSIZE from '../constants/fontSize';
-import {useSelector, useDispatch} from 'react-redux';
-import {logout} from '../redux/actions/oauth';
-import {getUserCartHistory} from '../apis/cart';
-import {showDefaultErrorAlert} from '../global/global';
-import {setUserCartHistory} from '../redux/actions/common';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '../redux/actions/oauth';
+import { getUserCartHistory } from '../apis/cart';
+import { showDefaultErrorAlert } from '../global/global';
+import { setUserCartHistory } from '../redux/actions/common';
 import moment from 'moment';
 
 export const ProfileScreen = props => {
@@ -63,7 +63,7 @@ export const ProfileScreen = props => {
       content: '마이페이지',
     },
     rightItemContents: {
-      type: 'image',
+      type: 'cart',
       content: require('../assets/images/cart.png'),
       navigateScreen: () => {
         if (!isLogin) {
@@ -84,7 +84,7 @@ export const ProfileScreen = props => {
   let result = cart_history?.reduce(function (r, a) {
     r[`${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${a.paymentStatus}`] =
       r[
-        `${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${a.paymentStatus}`
+      `${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${a.paymentStatus}`
       ] || [];
     r[
       `${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${a.paymentStatus}`

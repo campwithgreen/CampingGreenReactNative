@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -16,14 +16,14 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {RFPercentage} from 'react-native-responsive-fontsize';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 import Carousel from '../components/Carousel';
 import Footer from '../components/Footer';
 import RentDetail from '../components/RentDetail';
 import COLOR from '../constants/colors';
-import {useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import CustomButton from '../components/common/CustomButton';
-import {navigateTo, goBack} from '../navigation/utils/RootNavigation';
+import { navigateTo, goBack } from '../navigation/utils/RootNavigation';
 import FONTSIZE from '../constants/fontSize';
 import Counter from '../components/common/Counter';
 
@@ -47,10 +47,10 @@ const headerContent = {
 };
 
 const Rent = props => {
-  const {container, centeredView, modalView, termTitle, termsButtonWrapper} =
+  const { container, centeredView, modalView, termTitle, termsButtonWrapper } =
     styles;
   console.log('PROPS', props);
-  const {route} = props;
+  const { route } = props;
   // const selectedLoc = useSelector(st => st.common.selected_location);
   const subLocations = useSelector(st => st.common.selected_location);
   const selected_item = useSelector(st => st.common?.selected_item);
@@ -63,6 +63,8 @@ const Rent = props => {
   );
   const title = useSelector(st => st.common?.selected_location.title);
   const phone = useSelector(st => st.common?.selected_location.phone);
+
+  console.log("SL", subLocations?.campLink);
 
   const [modalVisible, setModalVisible] = useState(false);
   console.log('subLocations', subLocations);
@@ -107,7 +109,7 @@ const Rent = props => {
       });
   };
 
-  const OpenURLButton = ({url, children}) => {
+  const OpenURLButton = ({ url, children }) => {
     const handlePress = useCallback(async () => {
       // Checking if the link is supported for links with custom URL scheme.
       const supported = await Linking.canOpenURL(url);
@@ -157,7 +159,7 @@ const Rent = props => {
                 </View>
               </View>
               <View style={termsButtonWrapper}>
-                <View style={{width: '47%'}}>
+                <View style={{ width: '47%' }}>
                   <Button
                     title="Add to Cart"
                     onPress={() => {
@@ -166,7 +168,7 @@ const Rent = props => {
                     color={COLOR.grey}
                   />
                 </View>
-                <View style={{width: '47%'}}>
+                <View style={{ width: '47%' }}>
                   <Button
                     title="Checkout"
                     onPress={() => {
@@ -189,8 +191,8 @@ const Rent = props => {
             paginationType="right"
           />
         </View>
-        <View style={{marginHorizontal: wp('5%'), marginBottom: hp('15%')}}>
-          <View style={{marginTop: hp('4%')}}>
+        <View style={{ marginHorizontal: wp('5%'), marginBottom: hp('15%') }}>
+          <View style={{ marginTop: hp('4%') }}>
             <Text
               style={{
                 color: '#1B1D1F',
@@ -253,7 +255,7 @@ const Rent = props => {
             <TouchableOpacity
               onPress={() => {
                 if (isLoggedIn) {
-                  navigateTo('CalendarScreen', {type: 'LOCATION'});
+                  navigateTo('CalendarScreen', { type: 'LOCATION' });
                 } else {
                   ToastAndroid.showWithGravity(
                     'You have to Login to Proceed with Renting Date',
@@ -270,7 +272,7 @@ const Rent = props => {
                 borderRightWidth: 0.5,
               }}>
               <View>
-                <Text style={{color: '#454C53', fontSize: RFPercentage(2)}}>
+                <Text style={{ color: '#454C53', fontSize: RFPercentage(2) }}>
                   체크인
                 </Text>
               </View>
@@ -290,7 +292,7 @@ const Rent = props => {
             <TouchableOpacity
               onPress={() => {
                 if (isLoggedIn) {
-                  navigateTo('CalendarScreen', {type: 'LOCATION'});
+                  navigateTo('CalendarScreen', { type: 'LOCATION' });
                 } else {
                   ToastAndroid.showWithGravity(
                     'You have to Login to Proceed with Renting Date',
@@ -307,7 +309,7 @@ const Rent = props => {
                 borderLeftWidth: 0.5,
               }}>
               <View>
-                <Text style={{color: '#454C53', fontSize: RFPercentage(2)}}>
+                <Text style={{ color: '#454C53', fontSize: RFPercentage(2) }}>
                   체크 아웃
                 </Text>
               </View>
@@ -327,7 +329,7 @@ const Rent = props => {
           <RentDetail subLocations={subLocations.subLocations} />
           {subLocations?.specifications?.campIntro && (
             <>
-              <View style={{marginTop: wp('7%')}}>
+              <View style={{ marginTop: wp('7%') }}>
                 <Text
                   style={{
                     color: '#1B1D1F',
@@ -408,7 +410,7 @@ const Rent = props => {
               {subLocations?.specifications?.facilityInfo}
             </Text>
           </View> */}
-          <OpenURLButton url={subLocations?.specifications?.campLink}>
+          <OpenURLButton url={subLocations?.campLink}>
             캠핑장 링크 이동
           </OpenURLButton>
           {/* <View
@@ -460,8 +462,8 @@ const Rent = props => {
 
           <View>
             <Image
-              style={{height: 200, resizeMode: 'contain'}}
-              source={{uri: subLocations.specifications.image}}
+              style={{ height: 200, resizeMode: 'contain' }}
+              source={{ uri: subLocations.specifications.image }}
             />
           </View>
           <View
@@ -506,7 +508,7 @@ const Rent = props => {
 };
 
 const styles = StyleSheet.create({
-  container: {paddingBottom: hp('10%'), backgroundColor: COLOR.white},
+  container: { paddingBottom: hp('10%'), backgroundColor: COLOR.white },
   centeredView: {
     position: 'absolute',
     bottom: 0,

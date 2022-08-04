@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   StyleSheet,
@@ -15,10 +15,43 @@ import {
 import { navigateHandler } from '../utils/global';
 import COLOR from '../constants/colors';
 import FONTSIZE from '../constants/fontSize';
+import { connect, useDispatch } from 'react-redux';
+import { setMainCartItems } from '../redux/actions/common';
+
+
+const mapStateToProps = (state, ownProps) => {
+  const isLogin = state?.oauth?.isLogin;
+  const cartData = state?.common?.cart_history;
+  const mainCartItems = state?.common?.main_cart_items;
+
+  return {
+    isLogin,
+    cartData,
+    mainCartItems
+  };
+
+};
 
 const Header = props => {
+
   const { initial, wrapper, headerIcon, container, headerTitle, wrapperC, span } = styles;
-  const { headerContent } = props;
+  const { mainCartItems, headerContent, isLogin, cartData } = props;
+
+  const dispatch = useDispatch();
+
+
+  console.log("HEADER ISLOGIN", mainCartItems);
+
+  const filterCartItems = (cartData) => {
+    let filteredBag = cartData?.filter((item) => item.paymentStatus === "CHECKOUT_PENDING");
+    dispatch(setMainCartItems(filteredBag));
+  };
+
+  useEffect(() => {
+    if (isLogin) {
+      filterCartItems(cartData);
+    }
+  }, [cartData]);
 
   const renderItem = itemContents => {
     switch (itemContents.type) {
@@ -46,19 +79,19 @@ const Header = props => {
         );
       case 'cart':
         return (
-          <TouchableOpacity
+          isLogin ? <TouchableOpacity
             onPress={() => {
               navigateHandler(itemContents);
             }}>
             <View style={wrapperC}>
               <Image source={itemContents.content} style={headerIcon} />
-              <View style={span}>
+              {mainCartItems?.length > 0 && <View style={span}>
                 <Text style={{
                   fontSize: FONTSIZE.sm
-                }}>56</Text>
-              </View>
+                }}>{mainCartItems?.length}</Text>
+              </View>}
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> : <View></View>
         );
       default:
         break;
@@ -92,7 +125,7 @@ const Header = props => {
   );
 };
 
-export default Header;
+export default connect(mapStateToProps, null)(Header);
 
 const styles = StyleSheet.create({
   initial: {

@@ -1,14 +1,14 @@
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import React from 'react';
-import {navigateTo} from '../navigation/utils/RootNavigation';
-import {useDispatch, useSelector} from 'react-redux';
-import {setSelectedLocation} from '../redux/actions/common';
+import { navigateTo } from '../navigation/utils/RootNavigation';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSelectedLocation } from '../redux/actions/common';
 
-const Room = ({item}) => {
+const Room = ({ item }) => {
   console.log('ITEM', item);
   let finalPrice = 0;
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ const Room = ({item}) => {
     <TouchableOpacity
       onPress={() => {
         dispatch(setSelectedLocation(item));
-        navigateTo('Rent', {subLocations: item});
+        navigateTo('Rent', { subLocations: item });
       }}>
       <View
         style={{
@@ -40,7 +40,7 @@ const Room = ({item}) => {
           })}
         </View>
         <Image
-          source={{uri: item.carousel[0]}}
+          source={{ uri: item.carousel[0] }}
           style={{
             width: wp('90%'),
             borderTopLeftRadius: 25,
@@ -49,24 +49,24 @@ const Room = ({item}) => {
           }}
         />
         <Text
-          style={[styles.text1, {paddingTop: hp('3%'), paddingLeft: wp('5%')}]}>
+          style={[styles.text1, { paddingTop: hp('3%'), paddingLeft: wp('5%') }]}>
           {item.title}
         </Text>
         <Text
-          style={[styles.text2, {paddingTop: hp('1%'), paddingLeft: wp('5%')}]}>
+          style={[styles.text2, { paddingTop: hp('1%'), paddingLeft: wp('5%') }]}>
           {item.description}
         </Text>
         <View style={styles.view2}>
           <Text>
-            <Text style={[styles.text1, {fontSize: 20}]}>{item.price}</Text>
-            <Text style={{fontSize: 12, fontWeight: '600', color: '#454C53'}}>
+            <Text style={[styles.text1, { fontSize: 20 }]}>{item?.cheapestSublocation}</Text>
+            <Text style={{ fontSize: 12, fontWeight: '600', color: '#454C53' }}>
               원~
             </Text>
           </Text>
           <Text
             style={[
               styles.text2,
-              {color: '#55C595', textAlignVertical: 'bottom'},
+              { color: '#55C595', textAlignVertical: 'bottom' },
             ]}>
             {`남은자리 ${seatCount}개`}
           </Text>
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'black',
   },
-  text2: {fontWeight: '600', color: '#454C53'},
+  text2: { fontWeight: '600', color: '#454C53' },
   button1: {
     backgroundColor: 'grey',
     color: 'white',

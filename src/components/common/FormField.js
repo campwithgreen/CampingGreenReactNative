@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,7 +7,7 @@ import {
   TouchableHighlight,
   Button,
 } from 'react-native';
-import {RFPercentage} from 'react-native-responsive-fontsize';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -23,21 +23,25 @@ export default function FormField(props) {
     placeholder,
     keyboardType,
     validate,
+    disabled,
+    autoFocus
   } = props;
-  const {formlabel, inputcontainer} = styles;
+  const { formlabel, inputcontainer } = styles;
   const [lineColor, setLineColor] = useState(COLOR.black);
   const onFocus = () => setLineColor(COLOR.compGreen);
   const onBlur = () => {
     setLineColor(COLOR.black);
   };
 
+  console.log("IS D", disabled);
+
   switch (type) {
     case 'textButton':
       return (
         <View style={inputcontainer}>
           <Text style={formlabel}>인증번호</Text>
-          <View style={{flexDirection: 'row', width: '100%'}}>
-            <View style={{width: '70%'}}>
+          <View style={{ flexDirection: 'row', width: '100%' }}>
+            <View style={{ width: '70%' }}>
               <TextInput
                 style={{
                   color: 'black',
@@ -49,8 +53,8 @@ export default function FormField(props) {
                 onFocus={() => onFocus()}
                 onBlur={() => onBlur()}
                 keyboardType="number-pad"
-                onChangeText={value => {}}
-                onSubmitEditing={() => {}}
+                onChangeText={value => { }}
+                onSubmitEditing={() => { }}
               />
             </View>
             <TouchableHighlight
@@ -61,7 +65,7 @@ export default function FormField(props) {
                 borderBottomColor: lineColor,
                 width: '30%',
               }}
-              onPress={() => {}}
+              onPress={() => { }}
               underlayColor="transparent">
               <View
                 style={{
@@ -101,7 +105,9 @@ export default function FormField(props) {
               onChangeText={value => {
                 onChange(value);
               }}
+              editable={disabled}
               placeholder={placeholder}
+              autoFocus={autoFocus}
             />
           </View>
         </View>

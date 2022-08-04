@@ -7,16 +7,18 @@ import {
   Text,
   Image,
 } from 'react-native';
-import {goBack, navigateTo} from '../navigation/utils/RootNavigation';
+import { goBack, navigateTo } from '../navigation/utils/RootNavigation';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {navigateHandler} from '../utils/global';
+import { navigateHandler } from '../utils/global';
+import COLOR from '../constants/colors';
+import FONTSIZE from '../constants/fontSize';
 
 const Header = props => {
-  const {initial, wrapper, headerIcon, container, headerTitle} = styles;
-  const {headerContent} = props;
+  const { initial, wrapper, headerIcon, container, headerTitle, wrapperC, span } = styles;
+  const { headerContent } = props;
 
   const renderItem = itemContents => {
     switch (itemContents.type) {
@@ -41,6 +43,22 @@ const Header = props => {
               <Image source={itemContents.content} style={headerIcon} />
             </TouchableOpacity>
           </View>
+        );
+      case 'cart':
+        return (
+          <TouchableOpacity
+            onPress={() => {
+              navigateHandler(itemContents);
+            }}>
+            <View style={wrapperC}>
+              <Image source={itemContents.content} style={headerIcon} />
+              <View style={span}>
+                <Text style={{
+                  fontSize: FONTSIZE.sm
+                }}>56</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
         );
       default:
         break;
@@ -101,4 +119,19 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'black',
   },
+  wrapperC: {
+    position: "relative",
+  }
+  ,
+  span: {
+    position: "absolute",
+    top: -2,
+    right: -2,
+    backgroundColor: COLOR.red,
+    width: 15,
+    height: 15,
+    borderRadius: 15 / 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 });

@@ -11,18 +11,18 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../layout/Header';
 import ProductShoppingBag from '../components/ProductShoppingBag';
 import SecondScreen1 from '../components/SecondScreen1';
 import CustomButton from '../components/common/CustomButton';
-import {getUserCartHistory} from '../apis/cart';
-import {useSelector, useDispatch} from 'react-redux';
-import {setUserCartHistory} from '../redux/actions/common';
+import { getUserCartHistory } from '../apis/cart';
+import { useSelector, useDispatch } from 'react-redux';
+import { setUserCartHistory } from '../redux/actions/common';
 import moment from 'moment';
 import COLOR from '../constants/colors';
 import Loader from '../components/common/Loader';
-import {goBack} from '../navigation/utils/RootNavigation';
+import { goBack } from '../navigation/utils/RootNavigation';
 
 const ProductShoppingBagScreen = () => {
   const dispatch = useDispatch();
@@ -64,18 +64,15 @@ const ProductShoppingBagScreen = () => {
 
               let result = res.data.data?.reduce(function (r, a) {
                 r[
-                  `${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${
-                    a.paymentStatus
+                  `${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${a.paymentStatus
                   }`
                 ] =
                   r[
-                    `${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${
-                      a.paymentStatus
-                    }`
+                  `${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${a.paymentStatus
+                  }`
                   ] || [];
                 r[
-                  `${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${
-                    a.paymentStatus
+                  `${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${a.paymentStatus
                   }`
                 ].push(a);
                 return r;
@@ -92,7 +89,6 @@ const ProductShoppingBagScreen = () => {
               }
 
               setProductList(bagData);
-
               setLoading(false);
             }
           })
@@ -117,14 +113,14 @@ const ProductShoppingBagScreen = () => {
               color: '#454C53',
             }}>{`전체선택 (${checkedCount}/${productList.length})`}</Text>
         </View>
-        <Text style={{color: '#454C53'}}>선택삭제</Text>
+        <Text style={{ color: '#454C53' }}>선택삭제</Text>
       </View>
     );
   };
 
   const ListFooterComponent = () => {
     return (
-      <View style={{paddingBottom: hp('13.5%')}}>
+      <View style={{ paddingBottom: hp('13.5%') }}>
         <Div t1="주문상품 수" t2="총 2개" c1={styles.text1} c2={styles.text2} />
         <Div
           t1="총 주문금액"
@@ -133,7 +129,7 @@ const ProductShoppingBagScreen = () => {
           c2={styles.text2}
         />
         <Div t1="총 배송비" t2="0원" c1={styles.text1} c2={styles.text2} />
-        <View style={{paddingTop: hp('1.5%')}}>
+        <View style={{ paddingTop: hp('1.5%') }}>
           <Div
             t1="결제금액"
             t2="130,000원"
@@ -144,7 +140,7 @@ const ProductShoppingBagScreen = () => {
       </View>
     );
   };
-  const Div = ({t1, t2, c1, c2}) => {
+  const Div = ({ t1, t2, c1, c2 }) => {
     return (
       <View style={styles.view3}>
         <Text style={c1}>{t1}</Text>
@@ -154,7 +150,7 @@ const ProductShoppingBagScreen = () => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <Header headerContent={headerContent} />
       <ScrollView>
         <View style={styles.border2}></View>
@@ -167,7 +163,7 @@ const ProductShoppingBagScreen = () => {
             // ListFooterComponent={ListFooterComponent}
             showsHorizontalScrollIndicator={false}
             data={productList}
-            renderItem={({item, index}) => {
+            renderItem={({ item, index }) => {
               return (
                 <ProductShoppingBag
                   index={index}

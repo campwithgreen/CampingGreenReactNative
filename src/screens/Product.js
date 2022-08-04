@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -14,43 +14,57 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import ProductDetail from '../components/ProductDetail';
-import {RFPercentage} from 'react-native-responsive-fontsize';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 import Carousel from '../components/Carousel';
-import {useDispatch, useSelector} from 'react-redux';
-import {getAllProducts} from '../apis/product';
-import {setProductData} from '../redux/actions/product';
-import {showDefaultErrorAlert} from '../global/global';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllProducts } from '../apis/product';
+import { setProductData } from '../redux/actions/product';
+import { showDefaultErrorAlert } from '../global/global';
 import Loader from '../components/common/Loader';
 import FONTSIZE from '../constants/fontSize';
 import globalStyle from '../global/globalStyle';
 import COLOR from '../constants/colors';
+import { navigateTo } from '../navigation/utils/RootNavigation';
 
-const headerContent = {
-  leftItemContents: {
-    type: 'text',
-    content: 'CAMPING GREEEN',
-    navigateScreen: 'HomeScreenDetail1',
-  },
-  rightItemContents: {
-    type: 'image',
-    content: require('../assets/images/cart.png'),
-    navigateScreen: 'LoginScreen',
-  },
-};
+
 
 export const Product = props => {
-  const {container} = styles;
+  const { container } = styles;
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
 
   const st = useSelector(st => st);
   const product = useSelector(st => st.product?.product);
+  const isLogin = useSelector(st => st.oauth.isLogin);
   console.log('STORE', st);
+
+  const headerContent = {
+    leftItemContents: {
+      type: 'text',
+      content: 'CAMPING GREEEN',
+      navigateScreen: 'HomeScreenDetail1',
+    },
+    rightItemContents: {
+      type: 'cart',
+      content: require('../assets/images/cart.png'),
+      navigateScreen: () => {
+        if (!isLogin) {
+          ToastAndroid.showWithGravity(
+            'Pls Login to View Cart',
+            ToastAndroid.LONG,
+            ToastAndroid.TOP,
+          );
+        } else {
+          navigateTo('ProductShoppingBagScreen');
+        }
+      },
+    },
+  };
 
   useEffect(() => {
     (async function getAllProductsData() {
-      let data = {type: 'PRODUCT'};
+      let data = { type: 'PRODUCT' };
       setLoading(true);
       await getAllProducts(data)
         .then(res => {
@@ -76,7 +90,7 @@ export const Product = props => {
         <View
           style={[
             globalStyle.mainContainerWrapper,
-            {marginVertical: hp('4%')},
+            { marginVertical: hp('4%') },
           ]}>
           {!loading && (
             <Text
@@ -95,5 +109,5 @@ export const Product = props => {
 };
 
 const styles = StyleSheet.create({
-  container: {backgroundColor: COLOR.white},
+  container: { backgroundColor: COLOR.white },
 });

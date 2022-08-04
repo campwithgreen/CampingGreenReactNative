@@ -18,5 +18,14 @@
         "SET_USER_CART_HISTORY":"SET_USER_CART_HISTORY",
         "SELECTED_LOCATION":"SELECTED_LOCATION",
         "SELECTED_SUB_LOCATION":"SELECTED_SUB_LOCATION"
+    },
+    "ORDER_STATUS": {
+        "CHECKOUT_PENDING": "결제대기",
+        "PAYMENT_PENDING":"결제대기",
+        "PAYMENT_DONE":"결제완료",
+        "PAYMENT_PREPARATION":"배송준비",
+        "DELIVERY_DONE":"배송 완료",
+        "RESERVATION_COMPLETED":"이용완료",
+        "CANCELLED":"취소완료"
     }
 }   

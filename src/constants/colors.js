@@ -6,7 +6,8 @@ const COLOR = {
     compGreen: "#55C595",
     compGreenI: "#76FFC5",
     grey: "grey",
-    lgrey: "lightgrey"
+    lgrey: "lightgrey",
+    red: "red"
 };
 
 export default COLOR;

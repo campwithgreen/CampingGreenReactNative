@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { navigationRef } from './utils/RootNavigation';
-import { HomeTabNavigation } from './HomeTabNavigation';
+import HomeTabNavigation from './HomeTabNavigation';
 import { Header } from 'react-native/Libraries/NewAppScreen';
 
 
@@ -16,6 +16,6 @@ export const MainNavigation = (props) => {
         <NavigationContainer ref={navigationRef}>
             <HomeTabNavigation />
         </NavigationContainer>
-    )
-}
+    );
+};
 

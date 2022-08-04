@@ -1,10 +1,10 @@
-import {StyleSheet, Text, View, ScrollView, Image} from 'react-native';
-import React, {useEffect} from 'react';
+import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
+import React, { useEffect } from 'react';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {RFPercentage} from 'react-native-responsive-fontsize';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 import ThirdScreen1 from '../components/ThirdScreen1';
 import ThirdScreen2 from '../components/ThirdScreen2';
 import ThirdScreen3 from '../components/ThirdScreen3';
@@ -12,7 +12,7 @@ import Header from '../layout/Header';
 import ThirdScreen5 from '../components/ThirdScreen5';
 import SecondScreen1 from '../components/SecondScreen1';
 import ThirdScreen4 from '../components/ThirdScreen4';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 const headerContent = {
   leftItemContents: {
@@ -26,10 +26,10 @@ const headerContent = {
     navigateScreen: 'ProductShoppingBagScreen',
   },
 };
-import {getUserCartHistory} from '../apis/cart';
-import {setUserCartHistory} from '../redux/actions/common';
-import {showDefaultErrorAlert} from '../global/global';
-import {goBack} from '../navigation/utils/RootNavigation';
+import { getUserCartHistory } from '../apis/cart';
+import { setUserCartHistory } from '../redux/actions/common';
+import { showDefaultErrorAlert } from '../global/global';
+import { ORDER_STATUS } from "../utils/constants.json";
 
 export default function ThirdScreen() {
   const dispatch = useDispatch();
@@ -57,7 +57,7 @@ export default function ThirdScreen() {
   }, []);
   // console.log('current_cart_details', current_cart_details);
   return (
-    <View style={{backgroundColor: 'white'}}>
+    <View style={{ backgroundColor: 'white' }}>
       <ScrollView>
         <Header headerContent={headerContent} />
         <ThirdScreen1 currentCartData={current_cart_details} />
@@ -86,7 +86,7 @@ export default function ThirdScreen() {
           결제정보
         </Text>
         <View style={styles.border1}></View>
-        <View style={{paddingTop: hp('3.5%')}}>
+        <View style={{ paddingTop: hp('3.5%') }}>
           <SecondScreen1
             t1="결제금액"
             t2={`${current_cart_details?.totalAmount}원`}
@@ -106,7 +106,7 @@ export default function ThirdScreen() {
             .format('YYYY.MM.DD')} 23:59:59`}
         />
         <View style={styles.border2}></View>
-        <SecondScreen1 t1="현재상태" t2={current_cart_details.paymentStatus} />
+        <SecondScreen1 t1="현재상태" t2={ORDER_STATUS[current_cart_details.paymentStatus]} />
         <Text
           style={{
             fontWeight: 'bold',
@@ -119,7 +119,7 @@ export default function ThirdScreen() {
         </Text>
         <View style={styles.border1}></View>
 
-        <View style={{paddingTop: hp('3.5%')}}>
+        <View style={{ paddingTop: hp('3.5%') }}>
           <SecondScreen1
             t1="예약자"
             t2={current_cart_details?.shipping_data?.name}
@@ -139,7 +139,7 @@ export default function ThirdScreen() {
         <View style={styles.border2}></View>
         <View style={styles.view1}>
           <Text style={styles.text1}>배송정보 변경은</Text>
-          <Text style={[styles.text1, {color: '#56C596'}]}>
+          <Text style={[styles.text1, { color: '#56C596' }]}>
             상담센터로{'  '}
           </Text>
           <Image source={require('../assets/images/white_circle.png')} />

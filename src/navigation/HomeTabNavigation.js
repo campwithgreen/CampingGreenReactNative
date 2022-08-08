@@ -22,6 +22,8 @@ import { Product } from '../screens/Product';
 import RoomReservationListScreen from '../screens/RoomReservationListScreen';
 import { connect, useSelector } from 'react-redux';
 import EquipmentRentalScreen from '../admin-screens/EquipmentRentalScreen';
+import FixRentalEquipmentScreen from '../admin-screens/FixRentalEquipmentScreen';
+import FixRentalSuppliesScreen from '../admin-screens/FixRentalSuppliesScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -133,9 +135,9 @@ const HomeTabNavigation = props => {
             };
           }
         }}>
-        <Tab.Screen name="AdminProductScreen" component={HomeNavigation} />
-        <Tab.Screen name="AdminLocationScreen" component={ProductNavigation} />
-        <Tab.Screen name="AdminOrderScreen" component={LocationNavigation} />
+        <Tab.Screen name="AdminProductScreen" component={EquipmentRentalScreen} />
+        <Tab.Screen name="AdminLocationScreen" component={FixRentalEquipmentScreen} />
+        <Tab.Screen name="AdminOrderScreen" component={FixRentalSuppliesScreen} />
         <Tab.Screen name="AdminUserScreen" component={ChatScreen} />
       </Tab.Navigator>
       :
@@ -240,7 +242,7 @@ const HomeTabNavigation = props => {
             };
           }
         }}>
-        <Tab.Screen name="Home" component={EquipmentRentalScreen} />
+        <Tab.Screen name="Home" component={HomeNavigation} />
         <Tab.Screen name="Heart" component={ProductNavigation} />
         <Tab.Screen name="Location" component={LocationNavigation} />
         <Tab.Screen name="Chat" component={ChatScreen} />

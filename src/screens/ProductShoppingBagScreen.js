@@ -58,6 +58,7 @@ const ProductShoppingBagScreen = () => {
         await getUserCartHistory()
           .then(res => {
             if (res) {
+              console.log("RES CART", res);
               setCartMainData(res.data.data);
 
               dispatch(setUserCartHistory(res.data.data));
@@ -164,11 +165,12 @@ const ProductShoppingBagScreen = () => {
             showsHorizontalScrollIndicator={false}
             data={productList}
             renderItem={({ item, index }) => {
+              console.log("ITEM", item);
               return (
                 <ProductShoppingBag
                   index={index}
                   item={item}
-                  key={item?.items[0]._id}
+                  key={item?.items[0]?._id}
                   productList={productList}
                   setProductList={setProductList}
                 />

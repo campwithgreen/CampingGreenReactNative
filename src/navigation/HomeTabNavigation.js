@@ -46,42 +46,25 @@ const HomeTabNavigation = props => {
   const { tabIcon } = styles;
   const { role } = props;
 
+  console.log("ROLE ===>", role);
+
   return (
     role === "ADMIN" ?
       <Tab.Navigator
-        initialRouteName="Home"
+        initialRouteName="AdminProductScreen"
         screenOptions={tabs => {
           const { name } = tabs.route;
-          if (name === 'Home') {
+          if (name === 'AdminProductScreen') {
             return {
               tabBarIcon: () => {
                 return (
                   <Image
                     style={{ ...tabIcon }}
-                    source={require('../assets/images/home.png')}
-                  />
-                );
-              },
-              tabBarLabel: '그린홈',
-              tabBarStyle: {
-                // height: 70,
-              },
-              tabBarItemStyle: {
-                padding: 7,
-              },
-              ...AppNavigatorOptions,
-            };
-          } else if (name === 'Heart') {
-            return {
-              tabBarIcon: () => {
-                return (
-                  <Image
-                    style={tabIcon}
                     source={require('../assets/images/heart.png')}
                   />
                 );
               },
-              tabBarLabel: '용품대여',
+              tabBarLabel: 'AdminProductScreen',
               tabBarStyle: {
                 // height: 70,
               },
@@ -90,7 +73,7 @@ const HomeTabNavigation = props => {
               },
               ...AppNavigatorOptions,
             };
-          } else if (name === 'Location') {
+          } else if (name === 'AdminLocationScreen') {
             return {
               tabBarIcon: () => {
                 return (
@@ -100,26 +83,26 @@ const HomeTabNavigation = props => {
                   />
                 );
               },
-              tabBarLabel: '캠핑예약',
+              tabBarLabel: 'AdminLocationScreen',
               tabBarStyle: {
-                height: 70,
+                // height: 70,
               },
               tabBarItemStyle: {
                 padding: 7,
               },
               ...AppNavigatorOptions,
             };
-          } else if (name === 'Chat') {
+          } else if (name === 'AdminOrderScreen') {
             return {
               tabBarIcon: () => {
                 return (
                   <Image
                     style={tabIcon}
-                    source={require('../assets/images/chat.png')}
+                    source={require('../assets/images/home.png')}
                   />
                 );
               },
-              tabBarLabel: '커뮤니티',
+              tabBarLabel: 'AdminOrderScreen',
               tabBarStyle: {
                 height: 70,
               },
@@ -128,7 +111,7 @@ const HomeTabNavigation = props => {
               },
               ...AppNavigatorOptions,
             };
-          } else if (name === 'Profile') {
+          } else if (name === 'AdminUserScreen') {
             return {
               tabBarIcon: () => {
                 return (
@@ -138,7 +121,7 @@ const HomeTabNavigation = props => {
                   />
                 );
               },
-              tabBarLabel: '마이홈',
+              tabBarLabel: 'AdminUserScreen',
               tabBarStyle: {
                 height: 70,
               },
@@ -149,9 +132,10 @@ const HomeTabNavigation = props => {
             };
           }
         }}>
-        <Tab.Screen name="Home" component={HomeNavigation} />
-        <Tab.Screen name="Heart" component={ProductNavigation} />
-        <Tab.Screen name="Location" component={LocationNavigation} />
+        <Tab.Screen name="AdminProductScreen" component={HomeNavigation} />
+        <Tab.Screen name="AdminLocationScreen" component={ProductNavigation} />
+        <Tab.Screen name="AdminOrderScreen" component={LocationNavigation} />
+        <Tab.Screen name="AdminUserScreen" component={ChatScreen} />
       </Tab.Navigator>
       :
       <Tab.Navigator

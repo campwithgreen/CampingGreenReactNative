@@ -17,10 +17,10 @@ import Header from '../layout/Header';
 import globalStyle from '../global/globalStyle';
 import FONTSIZE from '../constants/fontSize';
 import COLOR from '../constants/colors';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
-import {setCurrentCheckoutCartDetails} from '../redux/actions/common';
-import {navigateTo} from '../navigation/utils/RootNavigation';
+import { setCurrentCheckoutCartDetails } from '../redux/actions/common';
+import { navigateTo } from '../navigation/utils/RootNavigation';
 const headerContent = {
   middleItemContents: {
     type: 'text',
@@ -40,7 +40,7 @@ const RoomReservationListScreen = () => {
   let result = cart_history.reduce(function (r, a) {
     r[`${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${a.paymentStatus}`] =
       r[
-        `${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${a.paymentStatus}`
+      `${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${a.paymentStatus}`
       ] || [];
     r[
       `${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${a.paymentStatus}`
@@ -51,22 +51,22 @@ const RoomReservationListScreen = () => {
   console.log('GROPUPED', result);
 
   return (
-    <View style={{backgroundColor: 'white', height: hp('100%')}}>
+    <View style={{ backgroundColor: 'white', height: hp('100%') }}>
       <Header headerContent={headerContent} />
-      <Text style={{borderBottomWidth: 1.5, borderBottomColor: '#515151'}} />
-      <ScrollView style={{marginBottom: heightPercentageToDP('15%')}}>
+      <Text style={{ borderBottomWidth: 1.5, borderBottomColor: '#515151' }} />
+      <ScrollView style={{ marginBottom: heightPercentageToDP('15%') }}>
         {Object?.keys(result)?.map(key => {
           return (
             <View style={globalStyle.mainContainerWrapper} key={key}>
-              <Comp1 date={key.split('_')[0]} total={result[key].length} />
+              <Comp1 date={key.split('_')[0]} total={result[key]?.length} />
               {result[key]?.map(it => {
                 return (
-                  <View key={it?.items[0]._id}>
+                  <View key={it?.items[0]?._id}>
                     <Comp2
-                      btnText={result[key][0].paymentStatus}
+                      btnText={result[key][0]?.paymentStatus}
                       itemData={it}
                     />
-                    <Comp3 key={it?.items[0]._id} itemData={it} />
+                    <Comp3 key={it?.items[0]?._id} itemData={it} />
                   </View>
                 );
               })}
@@ -78,7 +78,7 @@ const RoomReservationListScreen = () => {
   );
 };
 
-const Comp1 = ({date, total}) => {
+const Comp1 = ({ date, total }) => {
   return (
     <View
       style={[
@@ -100,10 +100,10 @@ const Comp1 = ({date, total}) => {
   );
 };
 
-const Comp2 = ({btnText, itemData}) => {
+const Comp2 = ({ btnText, itemData }) => {
   const dispatch = useDispatch();
   return (
-    <View style={[styles.compView, {paddingBottom: hp('3%')}]}>
+    <View style={[styles.compView, { paddingBottom: hp('3%') }]}>
       <Text style={styles.comp2Text1}>{btnText}</Text>
       <TouchableOpacity
         onPress={() => {
@@ -174,21 +174,21 @@ const styles = StyleSheet.create({
   },
 });
 
-const Comp3 = ({itemData}) => {
+const Comp3 = ({ itemData }) => {
   let directItem = itemData?.items[0]?.itemId;
   return (
     <View style={styles.comp3View}>
-      <Image source={{uri: directItem?.carousel[0]}} style={styles.comp3Img} />
-      <View style={{display: 'flex', justifyContent: 'space-between'}}>
+      <Image source={{ uri: directItem?.carousel[0] }} style={styles.comp3Img} />
+      <View style={{ display: 'flex', justifyContent: 'space-between' }}>
         <Text style={styles.comp3Text1}>{directItem.title}</Text>
         {directItem.type === 'LOCATION' && (
           <Text>
-            <Text style={{fontWeight: 'bold'}}>{'hello'} </Text>
+            <Text style={{ fontWeight: 'bold' }}>{'hello'} </Text>
             <Text style={styles.comp3Text1}>{'hello'}</Text>
           </Text>
         )}
         <View>
-          <Text style={[styles.comp3Text2, {paddingBottom: hp('0.5%')}]}>
+          <Text style={[styles.comp3Text2, { paddingBottom: hp('0.5%') }]}>
             {itemData?.items[0]?.units * directItem.price}원
           </Text>
         </View>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -29,7 +29,9 @@ import CustomButton from '../components/common/CustomButton';
 import Counter from '../components/common/Counter';
 import { createOrUpdateCart } from '../apis/cart';
 import { showDefaultErrorAlert } from '../global/global';
-import { setCurrentCheckoutCartDetails } from '../redux/actions/common';
+import { setCurrentCheckoutCartDetails, setTotalDays } from '../redux/actions/common';
+import moment from 'moment';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const ProductInfo = props => {
   const { container } = styles;
@@ -38,6 +40,7 @@ export const ProductInfo = props => {
   const returnDate = useSelector(st => st.common.return_date);
   const isLoggedIn = useSelector(st => st.oauth.isLogin);
   const quantity = useSelector(st => st.common.quantity);
+  const totalDays = useSelector(st => st.common.totalDays);
 
   const item = props.route.params || selected_item;
   const [tabIndex, setTabIndex] = useState(1);
@@ -49,6 +52,17 @@ export const ProductInfo = props => {
   const dd = String(today.getDate()).padStart(2, '0');
   const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
   const yyyy = today.getFullYear();
+
+  useEffect(() => {
+    console.log("ST", startDate, returnDate);
+    var start = moment(startDate);
+    var end = moment(returnDate);
+    var totalDays = end.diff(start, "days") - 1;
+    if (totalDays !== -1) {
+      dispatch(setTotalDays(totalDays));
+    }
+  }, [startDate, returnDate]);
+
 
   today = mm + '월' + dd + '일';
   const headerContent = {
@@ -94,10 +108,45 @@ export const ProductInfo = props => {
     ],
   };
 
+
+
+
+  const getCartId = async () => {
+    try {
+      const cartId = await AsyncStorage.getItem('@cart_id');
+      return cartId != null ? cartId : null;
+    } catch (e) {
+      console.log("getting cart error", e);
+    }
+    console.log('Done.');
+  };
+
+  const storeCartId = async (value) => {
+    console.log("VALUE CARTID", value);
+    try {
+      await AsyncStorage.setItem('@cart_id', value);
+    } catch (e) {
+      console.log("STORING CART ID ERROR", e);
+    }
+  };
+
+  const removeCartId = async (value) => {
+    console.log("VALUE CARTID", value);
+    try {
+      await AsyncStorage.removeItem('@cart_id');
+    } catch (e) {
+      console.log("STORING CART ID ERROR", e);
+    }
+  };
+
+
+
   const handleCheckout = async () => {
     console.log('CHCKOUT ITEMS', cartItems);
+
     await createOrUpdateCart(cartItems)
       .then(res => {
+        console.log("RESPONSE CART", res);
         if (res) {
           dispatch(setCurrentCheckoutCartDetails(res.data.data));
           ToastAndroid.showWithGravity(
@@ -111,31 +160,69 @@ export const ProductInfo = props => {
       })
       .catch(err => {
         if (err) {
+          console.log("ERROR", err);
           showDefaultErrorAlert();
           setModalVisible(false);
         }
       });
+
+
   };
 
   const handleAddToCart = async () => {
-    await createOrUpdateCart(cartItems)
-      .then(res => {
-        if (res) {
-          ToastAndroid.showWithGravity(
-            'Product added to cart',
-            ToastAndroid.SHORT,
-            ToastAndroid.TOP,
-          );
-          navigateTo('ProductShoppingBagScreen');
-          setModalVisible(false);
-        }
-      })
-      .catch(err => {
-        if (err) {
-          showDefaultErrorAlert();
-          setModalVisible(false);
-        }
-      });
+
+    getCartId().then(cartId => {
+      if (cartId) {
+        await createOrUpdateCart(cartItems, cartId)
+          .then(res => {
+
+            console.log("RESPONSE CART", res);
+
+            storeCartId(res.data.data?._id);
+            if (res) {
+              ToastAndroid.showWithGravity(
+                'Product added to cart',
+                ToastAndroid.SHORT,
+                ToastAndroid.TOP,
+              );
+              navigateTo('ProductShoppingBagScreen');
+              setModalVisible(false);
+            }
+
+
+          })
+          .catch(err => {
+            if (err) {
+              console.log("ERROR", err);
+              showDefaultErrorAlert();
+              setModalVisible(false);
+            }
+          });
+      } else {
+        await createOrUpdateCart(cartItems)
+          .then(res => {
+            console.log("RESPONSE CART", res);
+            storeCartId(res.data.data?._id);
+            if (res) {
+              ToastAndroid.showWithGravity(
+                'Product added to cart',
+                ToastAndroid.SHORT,
+                ToastAndroid.TOP,
+              );
+              navigateTo('ProductShoppingBagScreen');
+              setModalVisible(false);
+            }
+          })
+          .catch(err => {
+            if (err) {
+              console.log("ERROR", err);
+              showDefaultErrorAlert();
+              setModalVisible(false);
+            }
+          });
+      }
+    });
+
   };
   return (
     <View style={[container]}>
@@ -147,7 +234,7 @@ export const ProductInfo = props => {
               <View style={termsButtonWrapper}>
                 <View>
                   <Text style={termTitle}>
-                    {quantity ? item.price * quantity : item.price}원
+                    {quantity ? (item.price * quantity) * totalDays : totalDays ? totalDays * item.price : item.price}원
                   </Text>
                 </View>
                 <View>

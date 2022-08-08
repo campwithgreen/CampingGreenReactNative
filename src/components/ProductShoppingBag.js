@@ -1,20 +1,35 @@
 import { StyleSheet, Text, View, Image } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import CheckBox from '@react-native-community/checkbox';
+import { connect, useSelector } from 'react-redux';
 
 
-export default function ProductShoppingBag({
-  index,
-  item,
-  productList,
-  setProductList,
-}) {
+
+
+const mapStateToProps = (state, ownProps) => {
+
+  const totalDays = state?.common?.totalDays;
+  return {
+    totalDays
+  };
+
+};
+
+const ProductShoppingBag = (props) => {
+
+  const {
+    index,
+    item,
+    productList,
+    setProductList,
+    totalDays
+  } = props;
+
   const [count, setCount] = useState(item?.items[0]?.units);
-
 
   useEffect(() => {
 
@@ -81,7 +96,8 @@ export default function ProductShoppingBag({
               </Text>
             </View>
             <Text style={styles.text3}>
-              {item?.items[0]?.units * item?.items[0]?.itemId?.price}
+              {totalDays ? totalDays * (item?.items[0]?.units * item?.items[0]?.itemId?.price) :
+                item?.items[0]?.units * item?.items[0]?.itemId?.price}
             </Text>
           </View>
         </View>
@@ -102,7 +118,9 @@ export default function ProductShoppingBag({
       <View style={styles.border2}></View>
     </View>
   );
-}
+};
+
+export default connect(mapStateToProps, null)(ProductShoppingBag);
 
 const styles = StyleSheet.create({
   btn: {

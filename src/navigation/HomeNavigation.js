@@ -19,6 +19,9 @@ import RoomReservationListScreen from '../screens/RoomReservationListScreen';
 import Rent from '../screens/Rent';
 import { RegisterScreen } from '../screens/RegisterScreen';
 import TermsScreen from '../screens/TermsScreen';
+import EquipmentRentalScreen from '../admin-screens/EquipmentRentalScreen';
+import FixRentalEquipmentScreen from '../admin-screens/FixRentalEquipmentScreen';
+import FixRentalSuppliesScreen from '../admin-screens/FixRentalSuppliesScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -142,6 +145,23 @@ export const ProfileNavigation = props => {
         component={RoomReservationListScreen}
       />
       <Stack.Screen name="RoomPaymentScreen" component={RoomPaymentScreen} />
+    </Stack.Navigator>
+  );
+};
+
+
+/**
+ * @author
+ * @function HomeNavigation
+ **/
+export const AdminProductNavigation = props => {
+  return (
+    <Stack.Navigator
+      initialRouteName="EquipmentRentalScreen"
+      screenOptions={AppNavigatorOptions}>
+      <Stack.Screen name="EquipmentRentalScreen" component={EquipmentRentalScreen} />
+      <Stack.Screen name="FixRentalEquipmentScreen" component={FixRentalEquipmentScreen} />
+      <Stack.Screen name="FixRentalSuppliesScreen" component={FixRentalSuppliesScreen} />
     </Stack.Navigator>
   );
 };

@@ -171,7 +171,7 @@ export const ProductInfo = props => {
 
   const handleAddToCart = async () => {
 
-    getCartId().then(cartId => {
+    getCartId().then(async (cartId) => {
       if (cartId) {
         await createOrUpdateCart(cartItems, cartId)
           .then(res => {

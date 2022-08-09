@@ -1,13 +1,12 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, ToastAndroid } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import CheckBox from '@react-native-community/checkbox';
-import { connect, useSelector } from 'react-redux';
-
-
+import { connect } from 'react-redux';
+import moment from 'moment';
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -26,54 +25,61 @@ const ProductShoppingBag = (props) => {
     item,
     productList,
     setProductList,
-    totalDays
+    setCheckedCount
   } = props;
 
-  const [count, setCount] = useState(item?.items[0]?.units);
+  const [count, setCount] = useState(item.units);
+  const [isSelected, setSelected] = useState(false);
 
-  useEffect(() => {
-
-    productList.map((item) => {
-      item.isSelected = false;
-    });
-
-  }, []);
-
+  console.log("INDEX", index);
   console.log("PL", productList);
+
+  var start = moment(item.startDate);
+  var end = moment(item.endDate);
+  var mainTotalDays = end.diff(start, "days") - 1;
 
   const increment = () => {
     let newData = [...productList];
-    newData[index].items[0].units = count + 1;
+    newData[index].units = count + 1;
     setProductList(newData);
     setCount(i => i + 1);
   };
 
   const decrement = () => {
-    if (count > 0) {
+    if (count > 1) {
       let newData = [...productList];
-      newData[index].items[0].units = count - 1;
+      newData[index].units = count - 1;
       setProductList(newData);
       setCount(i => i - 1);
+    } else {
+      ToastAndroid.showWithGravity(
+        "Minimum 1 unit must be for a cart item",
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+      );
+
     }
   };
 
-  const [isSelected, setSelected] = useState(false);
-  const [selectedItems, setSelectedItems] = useState([]);
 
-  console.log("SELECTED CART ITEMS", selectedItems);
+  const selectedFilter = (productList) => {
+    setCheckedCount(productList.filter((item) => item.isSelected === true).length);
+  };
+
+  useEffect(() => {
+    selectedFilter(productList);
+  }, [productList]);
 
   return (
     <View>
       <View style={styles.view1}>
         <CheckBox
-          value={isSelected}
+          value={item.isSelected || isSelected}
           onValueChange={(value) => {
             setSelected(value);
-            if (value) {
-              let data = [...selectedItems, item];
-              console.log("DT", data);
-              setSelectedItems(data);
-            }
+            let newData = [...productList];
+            newData[index].isSelected = value;
+            setProductList(newData);
           }}
           style={styles.checkbox}
         />
@@ -81,8 +87,8 @@ const ProductShoppingBag = (props) => {
       </View>
       <View style={styles.view1}>
         <View style={styles.view2}>
-          <Text style={styles.text}>{item?.items[0]?.itemId?.title}</Text>
-          <Text style={styles.text}>{item?.items[0]?.itemId?.description}</Text>
+          <Text style={styles.text}>{item?.itemId?.title}</Text>
+          <Text style={styles.text}>{item?.itemId?.description}</Text>
           <View style={styles.view3}>
             <View style={styles.view4}>
               <Text style={styles.text1} onPress={decrement}>
@@ -96,15 +102,15 @@ const ProductShoppingBag = (props) => {
               </Text>
             </View>
             <Text style={styles.text3}>
-              {totalDays ? totalDays * (item?.items[0]?.units * item?.items[0]?.itemId?.price) :
-                item?.items[0]?.units * item?.items[0]?.itemId?.price}
+              {mainTotalDays ? mainTotalDays * (item?.units * item?.itemId?.price) :
+                item?.units * item?.itemId?.price}
             </Text>
           </View>
         </View>
         <View>
           <Image
             source={{
-              uri: item?.items[0]?.itemId?.carousel[0],
+              uri: item?.itemId?.carousel[0],
             }}
             style={{
               height: hp('15%'),

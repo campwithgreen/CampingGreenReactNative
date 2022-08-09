@@ -23,6 +23,7 @@ import moment from 'moment';
 import COLOR from '../constants/colors';
 import Loader from '../components/common/Loader';
 import { goBack } from '../navigation/utils/RootNavigation';
+import CheckBox from '@react-native-community/checkbox';
 
 const ProductShoppingBagScreen = () => {
   const dispatch = useDispatch();
@@ -47,7 +48,7 @@ const ProductShoppingBagScreen = () => {
     },
   };
 
-  const [isSelected, setSelection] = useState(false);
+  const [isSelected, setIsSelected] = useState(false);
   const [checkedCount, setCheckedCount] = useState(0);
   const [productList, setProductList] = useState([]);
 
@@ -58,7 +59,6 @@ const ProductShoppingBagScreen = () => {
         await getUserCartHistory()
           .then(res => {
             if (res) {
-              console.log("RES CART", res);
               setCartMainData(res.data.data);
 
               dispatch(setUserCartHistory(res.data.data));
@@ -80,7 +80,6 @@ const ProductShoppingBagScreen = () => {
               }, Object.create(null));
 
               let bagData = [];
-
               if (result) {
                 Object.keys(result).map(key => {
                   if (key.indexOf('CHECKOUT_PENDING') > -1) {
@@ -88,8 +87,11 @@ const ProductShoppingBagScreen = () => {
                   }
                 });
               }
-
-              setProductList(bagData);
+              console.log("bagData =====================", bagData);
+              bagData[0]?.items.map((item) => {
+                item.isSelected = false;
+              });
+              setProductList(bagData[0]?.items);
               setLoading(false);
             }
           })
@@ -103,18 +105,32 @@ const ProductShoppingBagScreen = () => {
     }
   }, [isLogin]);
 
+
+  console.log("PRODUCT LIST FIRST", productList);
+
   const ListHeaderComponent = () => {
     return (
       <View style={styles.view1}>
         <View style={styles.view2}>
-          {/* <Text style={{marginRight: wp('2%')}}>check</Text> */}
+          <CheckBox
+            value={isSelected}
+            onValueChange={(value) => {
+              setIsSelected(value);
+              let newData = [...productList];
+              newData.map((it) => {
+                it.isSelected = value;
+              });
+              setProductList(newData);
+            }}
+            style={styles.checkbox}
+          />
           <Text
             style={{
               fontWeight: '600',
               color: '#454C53',
             }}>{`전체선택 (${checkedCount}/${productList.length})`}</Text>
         </View>
-        <Text style={{ color: '#454C53' }}>선택삭제</Text>
+        <Text style={{ color: '#454C53', alignSelf: "center" }}>선택삭제</Text>
       </View>
     );
   };
@@ -154,25 +170,24 @@ const ProductShoppingBagScreen = () => {
     <View style={{ flex: 1 }}>
       <Header headerContent={headerContent} />
       <ScrollView>
-        <View style={styles.border2}></View>
         {loading ? (
           <Loader />
         ) : (
-          <FlatList
+          productList && <FlatList
             numColumns={1}
             ListHeaderComponent={ListHeaderComponent}
             // ListFooterComponent={ListFooterComponent}
             showsHorizontalScrollIndicator={false}
             data={productList}
             renderItem={({ item, index }) => {
-              console.log("ITEM", item);
               return (
                 <ProductShoppingBag
                   index={index}
                   item={item}
-                  key={item?.items[0]?._id}
+                  key={item?._id}
                   productList={productList}
                   setProductList={setProductList}
+                  setCheckedCount={setCheckedCount}
                 />
               );
             }}
@@ -225,10 +240,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: wp('5%'),
     marginBottom: hp('3%'),
+    marginVertical: hp('2%'),
   },
   view2: {
     display: 'flex',
     flexDirection: 'row',
+    alignItems: "center"
   },
   view3: {
     display: 'flex',
@@ -236,5 +253,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: wp('5%'),
     paddingVertical: hp('0.6%'),
+  },
+  checkbox: {
+    alignSelf: "center",
   },
 });

@@ -27,7 +27,7 @@ import Footer from '../components/Footer';
 import { useDispatch, useSelector } from 'react-redux';
 import CustomButton from '../components/common/CustomButton';
 import Counter from '../components/common/Counter';
-import { createOrUpdateCart } from '../apis/cart';
+import { createOrUpdateCart, getUserCartHistory } from '../apis/cart';
 import { showDefaultErrorAlert } from '../global/global';
 import { setCurrentCheckoutCartDetails, setTotalDays } from '../redux/actions/common';
 import moment from 'moment';
@@ -97,18 +97,7 @@ export const ProductInfo = props => {
 
   const { centeredView, modalView, termTitle, termsButtonWrapper } = styles;
 
-  let cartItems = {
-    items: [
-      {
-        itemId: selected_item._id,
-        units: quantity || 1,
-        startDate: startDate,
-        endDate: returnDate,
-      },
-    ],
-  };
-
-
+  const [payloadItems, setPayloadItems] = useState([]);
 
 
   const getCartId = async () => {
@@ -140,6 +129,34 @@ export const ProductInfo = props => {
   };
 
 
+  useEffect(() => {
+    (async function getCartPayload() {
+      await getCartId().then(async (cartId) => {
+        if (cartId) {
+          await getUserCartHistory(cartId, false).then((res) => {
+            console.log("POPULATE PAYLOAD", res?.data?.data?.items);
+            setPayloadItems([...res?.data?.data?.items,
+            {
+              itemId: selected_item._id,
+              units: quantity || 1,
+              startDate: startDate,
+              endDate: returnDate,
+            }
+            ]);
+          });
+        }
+      });
+    }());
+  }, [selected_item, quantity, startDate, returnDate]);
+
+
+  let cartItems = {
+    items: payloadItems
+  };
+
+  console.log("CART ITEMS +++++++++++++", cartItems);
+
+
 
   const handleCheckout = async () => {
     console.log('CHCKOUT ITEMS', cartItems);
@@ -160,8 +177,7 @@ export const ProductInfo = props => {
       })
       .catch(err => {
         if (err) {
-          console.log("ERROR", err);
-          showDefaultErrorAlert();
+          showDefaultErrorAlert(err?.response?.data?.error);
           setModalVisible(false);
         }
       });
@@ -172,8 +188,9 @@ export const ProductInfo = props => {
   const handleAddToCart = async () => {
 
     getCartId().then(async (cartId) => {
+      console.log("THE CART ID =>", cartId);
       if (cartId) {
-        await createOrUpdateCart(cartItems, cartId)
+        await createOrUpdateCart(cartItems, { "cartId": cartId })
           .then(res => {
 
             console.log("RESPONSE CART", res);
@@ -221,6 +238,7 @@ export const ProductInfo = props => {
             }
           });
       }
+
     });
 
   };

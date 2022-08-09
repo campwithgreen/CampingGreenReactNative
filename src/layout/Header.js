@@ -85,10 +85,10 @@ const Header = props => {
             }}>
             <View style={wrapperC}>
               <Image source={itemContents.content} style={headerIcon} />
-              {mainCartItems?.length > 0 && <View style={span}>
+              {mainCartItems && mainCartItems[0]?.items.length > 0 && <View style={span}>
                 <Text style={{
                   fontSize: FONTSIZE.sm
-                }}>{mainCartItems?.length}</Text>
+                }}>{mainCartItems && mainCartItems[0]?.items.length}</Text>
               </View>}
             </View>
           </TouchableOpacity> : <View></View>

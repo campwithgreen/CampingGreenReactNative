@@ -29,7 +29,6 @@ const ProductShoppingBag = (props) => {
   } = props;
 
   const [count, setCount] = useState(item.units);
-  const [isSelected, setSelected] = useState(false);
 
   console.log("INDEX", index);
   console.log("PL", productList);
@@ -74,9 +73,8 @@ const ProductShoppingBag = (props) => {
     <View>
       <View style={styles.view1}>
         <CheckBox
-          value={item.isSelected || isSelected}
+          value={item.isSelected}
           onValueChange={(value) => {
-            setSelected(value);
             let newData = [...productList];
             newData[index].isSelected = value;
             setProductList(newData);

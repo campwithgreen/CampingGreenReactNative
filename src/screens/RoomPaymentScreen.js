@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -13,20 +13,22 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {RFPercentage} from 'react-native-responsive-fontsize';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 import MyScreen1 from '../components/MyScreen1';
 import Header from '../layout/Header';
 import Footer from '../components/Footer';
 import COLOR from '../constants/colors';
 import CustomButton from '../components/common/CustomButton';
-import {useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
-import {checkoutCart} from '../apis/cart';
-import {showDefaultErrorAlert} from '../global/global';
-import {navigateTo, goBack} from '../navigation/utils/RootNavigation';
+import { checkoutCart } from '../apis/cart';
+import { showDefaultErrorAlert } from '../global/global';
+import { navigateTo, goBack } from '../navigation/utils/RootNavigation';
 import FONTSIZE from '../constants/fontSize';
 import globalStyle from '../global/globalStyle';
-import {setCurrentCheckoutCartDetails} from '../redux/actions/common';
+import { setCurrentCheckoutCartDetails } from '../redux/actions/common';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const Input = ({
   t1,
@@ -49,7 +51,7 @@ const Input = ({
       <TextInput
         style={[
           styles.textinput1,
-          {paddingLeft: wp('3%'), fontWeight: 'bold', color: '#1B1D1F'},
+          { paddingLeft: wp('3%'), fontWeight: 'bold', color: '#1B1D1F' },
         ]}
         placeholder={t2}
         placeholderTextColor="gray"
@@ -79,28 +81,53 @@ const RoomPaymentScreen = () => {
       navigateScreen: 'HomeScreenDetail1',
     },
   };
-  const [flag, setFlag] = useState({p1: false, p2: true, p3: true, p4: true});
+  const [flag, setFlag] = useState({ p1: false, p2: true, p3: true, p4: true });
 
-  console.log('FLAG', flag);
+  const getCartId = async () => {
+    try {
+      const cartId = await AsyncStorage.getItem('@cart_id');
+      return cartId != null ? cartId : null;
+    } catch (e) {
+      console.log("getting cart error", e);
+    }
+    console.log('Done.');
+  };
 
-  const Comp = ({t1, t2, p}) => {
+  const storeCartId = async (value) => {
+    console.log("VALUE CARTID", value);
+    try {
+      await AsyncStorage.setItem('@cart_id', value);
+    } catch (e) {
+      console.log("STORING CART ID ERROR", e);
+    }
+  };
+
+  const removeCartId = async (value) => {
+    console.log("REMOVING CART ID");
+    try {
+      await AsyncStorage.removeItem('@cart_id');
+    } catch (e) {
+      console.log("STORING CART ID ERROR", e);
+    }
+  };
+  const Comp = ({ t1, t2, p }) => {
     return (
       <View
         style={[
           styles.ph1,
-          {display: 'flex', flexDirection: 'row', paddingTop: hp('1%')},
+          { display: 'flex', flexDirection: 'row', paddingTop: hp('1%') },
         ]}>
         <TouchableOpacity
-          onPress={() => setFlag(prev => ({...prev, [p]: !prev[p]}))}>
+          onPress={() => setFlag(prev => ({ ...prev, [p]: !prev[p] }))}>
           {flag[p] ? (
             <Image source={require('../assets/images/green_circle.png')} />
           ) : (
             <Image source={require('../assets/images/white_circle.png')} />
           )}
         </TouchableOpacity>
-        <Text style={[styles.text2, {marginLeft: wp('3%')}]}>
-          <Text style={{color: '#55C595'}}>{t1}</Text>
-          <Text style={{color: '#1B1D1F'}}>{t2}</Text>
+        <Text style={[styles.text2, { marginLeft: wp('3%') }]}>
+          <Text style={{ color: '#55C595' }}>{t1}</Text>
+          <Text style={{ color: '#1B1D1F' }}>{t2}</Text>
         </Text>
       </View>
     );
@@ -135,7 +162,9 @@ const RoomPaymentScreen = () => {
       };
 
       let mainPayload = {
-        items: current_cart_details.items,
+        items: current_cart_details?.items?.map((cartD) => {
+          return { ...cartD, itemId: cartD?.itemId?._id };
+        }),
         shipping_data: shipping_data,
       };
 
@@ -148,6 +177,12 @@ const RoomPaymentScreen = () => {
               await checkoutCart(mainPayload, query)
                 .then(res => {
                   if (res) {
+                    console.log("CART CHECKOUT RES", res);
+                    if (res?.data?.newCartId) {
+                      storeCartId(res?.data?.newCartId);
+                    } else {
+                      removeCartId();
+                    }
                     console.log(res.data);
                     dispatch(setCurrentCheckoutCartDetails(res.data.data));
                     navigateTo('ThirdScreen');
@@ -206,8 +241,8 @@ const RoomPaymentScreen = () => {
       <Header headerContent={headerContent} />
       <View style={styles.border2}></View>
       <ScrollView>
-        <View style={{backgroundColor: COLOR.white}}>
-          <Text style={[styles.text1, styles.ph1, {paddingBottom: hp('3%')}]}>
+        <View style={{ backgroundColor: COLOR.white }}>
+          <Text style={[styles.text1, styles.ph1, { paddingBottom: hp('3%') }]}>
             대여 기간
           </Text>
           {current_cart_details?.items.map(cart => {
@@ -225,7 +260,7 @@ const RoomPaymentScreen = () => {
             );
           })}
           <View style={styles.border1}></View>
-          <Text style={[styles.text1, styles.ph1, {paddingBottom: hp('3%')}]}>
+          <Text style={[styles.text1, styles.ph1, { paddingBottom: hp('3%') }]}>
             배송 정보
           </Text>
           <Input
@@ -312,7 +347,7 @@ const RoomPaymentScreen = () => {
           <View style={styles.border1}></View>
           {current_cart_details?.items[0]?.itemId.type === 'PRODUCT' && (
             <View style={[globalStyle.mainContainerWrapper]}>
-              <View style={{marginVertical: hp('1%')}}>
+              <View style={{ marginVertical: hp('1%') }}>
                 <Text
                   style={{
                     fontSize: FONTSIZE.xl,
@@ -344,14 +379,14 @@ const RoomPaymentScreen = () => {
                           </Text>
                         </View>
                         <View>
-                          <Text style={[styles.comp3Text1, {fontSize: 14}]}>
-                            배송비 11000원
+                          <Text style={[styles.comp3Text1, { fontSize: 14 }]}>
+                            배송비 0원
                           </Text>
                         </View>
                       </View>
                       <View style={styles.comp3View}>
                         <Image
-                          source={{uri: directItem?.carousel[0]}}
+                          source={{ uri: directItem?.carousel[0] }}
                           style={styles.comp3Img}
                         />
                         <View
@@ -366,7 +401,7 @@ const RoomPaymentScreen = () => {
                             <Text
                               style={[
                                 styles.comp3Text2,
-                                {paddingBottom: hp('0.5%')},
+                                { paddingBottom: hp('0.5%') },
                               ]}>
                               {cart?.units * directItem.price}원
                             </Text>
@@ -399,11 +434,11 @@ const RoomPaymentScreen = () => {
           <View style={styles.view1}>
             <Text style={styles.text2}>최종 결제 금액 (VAT포함)</Text>
             <Text></Text>
-            <Text style={[styles.text2, {color: '#55C595'}]}>
+            <Text style={[styles.text2, { color: '#55C595' }]}>
               {current_cart_details?.totalAmount}원
             </Text>
           </View>
-          <Text style={[styles.ph1, {paddingTop: hp('5%')}]}>
+          <Text style={[styles.ph1, { paddingTop: hp('5%') }]}>
             <Text style={styles.text2}>
               {moment(
                 new Date(current_cart_details?.items[0]?.startDate).setDate(
@@ -416,7 +451,7 @@ const RoomPaymentScreen = () => {
                 .format('YYYY-MM-DD')}{' '}
               23:59:59
             </Text>
-            <Text style={{color: '#454C53'}}>
+            <Text style={{ color: '#454C53' }}>
               까지 결제(입금)되지 않으면 예약이 자동취소 됩니다.
             </Text>
           </Text>
@@ -425,10 +460,10 @@ const RoomPaymentScreen = () => {
           <View
             style={[
               styles.ph1,
-              {display: 'flex', flexDirection: 'row', paddingTop: hp('2%')},
+              { display: 'flex', flexDirection: 'row', paddingTop: hp('2%') },
             ]}>
             <TouchableOpacity
-              onPress={() => setFlag(prev => ({...prev, p1: !prev.p1}))}>
+              onPress={() => setFlag(prev => ({ ...prev, p1: !prev.p1 }))}>
               {flag.p1 ? (
                 <Image source={require('../assets/images/green_circle.png')} />
               ) : (
@@ -436,12 +471,12 @@ const RoomPaymentScreen = () => {
               )}
             </TouchableOpacity>
 
-            <View style={{marginLeft: wp('3%')}}>
+            <View style={{ marginLeft: wp('3%') }}>
               <Text style={[styles.text2]}>무통장 입금</Text>
-              <Text style={[styles.text2, {paddingTop: hp('1%')}]}>
+              <Text style={[styles.text2, { paddingTop: hp('1%') }]}>
                 하나은행 4318901100083 /임태영
               </Text>
-              <Text style={{paddingTop: hp('1%'), color: '#454C53'}}>
+              <Text style={{ paddingTop: hp('1%'), color: '#454C53' }}>
                 위 계좌로 입금이 완료되면 배송준비가 시작됩니다.
               </Text>
             </View>
@@ -466,7 +501,7 @@ const RoomPaymentScreen = () => {
     </View>
   );
 };
-const Div = ({t1, t2, c1, c2}) => {
+const Div = ({ t1, t2, c1, c2 }) => {
   return (
     <View style={styles.view1}>
       <Text style={styles.text2}>{t1}</Text>
@@ -499,8 +534,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#1B1D1F',
   },
-  text2: {fontWeight: '600', color: '#454C53'},
-  ph1: {paddingHorizontal: wp('5%'), color: '#454C53'},
+  text2: { fontWeight: '600', color: '#454C53' },
+  ph1: { paddingHorizontal: wp('5%'), color: '#454C53' },
   textinput1: {
     width: wp('65%'),
     height: '80%',

@@ -92,8 +92,6 @@ export const ProfileScreen = props => {
     return r;
   }, Object.create(null));
 
-  console.log('GROPUPED', result);
-
   let pendingCart = 0;
   if (result) {
     Object.keys(result).map(key => {
@@ -118,7 +116,7 @@ export const ProfileScreen = props => {
         await getUserCartHistory()
           .then(res => {
             if (res) {
-              console.log('USer History', res.data);
+              console.log('USER CART HISTORY ))))))))))))))))', res.data);
               dispatch(setUserCartHistory(res.data.data));
             }
           })

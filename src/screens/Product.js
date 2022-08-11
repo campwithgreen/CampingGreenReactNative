@@ -98,7 +98,7 @@ export const Product = props => {
                 fontSize: FONTSIZE.xl,
                 fontWeight: 'bold',
               }}>
-              전체 {product.length}
+              전체 {product?.length}
             </Text>
           )}
           {loading ? <Loader /> : <ProductDetail product={product} />}

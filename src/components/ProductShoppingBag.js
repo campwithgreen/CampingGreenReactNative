@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, ToastAndroid } from 'react-native';
+import { StyleSheet, Text, View, Image, ToastAndroid, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import {
   heightPercentageToDP as hp,
@@ -25,7 +25,10 @@ const ProductShoppingBag = (props) => {
     item,
     productList,
     setProductList,
-    setCheckedCount
+    setCheckedCount,
+    cartPayload,
+    setCartPayload,
+    handleIndividualCartItemDelete
   } = props;
 
   const [count, setCount] = useState(item.units);
@@ -62,7 +65,7 @@ const ProductShoppingBag = (props) => {
 
 
   const selectedFilter = (productList) => {
-    setCheckedCount(productList.filter((item) => item.isSelected === true).length);
+    setCheckedCount(productList.filter((item) => item.isSelected === true)?.length);
   };
 
   useEffect(() => {
@@ -81,7 +84,11 @@ const ProductShoppingBag = (props) => {
           }}
           style={styles.checkbox}
         />
-        <Text style={styles.btn}>삭제</Text>
+        <TouchableOpacity onPress={() => {
+          handleIndividualCartItemDelete(item?._id, cartPayload);
+        }}>
+          <Text style={styles.btn}>삭제</Text>
+        </TouchableOpacity>
       </View>
       <View style={styles.view1}>
         <View style={styles.view2}>

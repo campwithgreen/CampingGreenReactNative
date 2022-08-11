@@ -22,7 +22,7 @@ const SearchInput = () => {
       };
       await searchLocation(data).then((res) => {
         if (res) {
-          if (res.data.data.length >= 1) {
+          if (res.data.data?.length >= 1) {
             dispatch(setLocationData(res.data.data));
           }
           Keyboard.dismiss();

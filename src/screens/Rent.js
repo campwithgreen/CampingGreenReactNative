@@ -369,7 +369,7 @@ const Rent = props => {
             </View>
           )}
 
-          {subLocations?.specifications?.facilityInfo?.split(',').length > 0 ? (
+          {subLocations?.specifications?.facilityInfo?.split(',')?.length > 0 ? (
             <View
               style={{
                 flexDirection: 'column',

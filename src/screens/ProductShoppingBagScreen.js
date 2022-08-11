@@ -6,6 +6,7 @@ import {
   ScrollView,
   FlatList,
   ToastAndroid,
+  TouchableOpacity,
 } from 'react-native';
 import {
   heightPercentageToDP as hp,
@@ -17,8 +18,8 @@ import ProductShoppingBag from '../components/ProductShoppingBag';
 import SecondScreen1 from '../components/SecondScreen1';
 import CustomButton from '../components/common/CustomButton';
 import { getUserCartHistory } from '../apis/cart';
-import { useSelector, useDispatch } from 'react-redux';
-import { setUserCartHistory } from '../redux/actions/common';
+import { useSelector, useDispatch, connect } from 'react-redux';
+import { setMainCartItems, setUserCartHistory } from '../redux/actions/common';
 import moment from 'moment';
 import COLOR from '../constants/colors';
 import Loader from '../components/common/Loader';
@@ -27,15 +28,37 @@ import CheckBox from '@react-native-community/checkbox';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showDefaultErrorAlert } from '../global/global';
 import { setCurrentCheckoutCartDetails } from '../redux/actions/common';
+import { createOrUpdateCart } from '../apis/cart';
+import { navigateTo } from '../navigation/utils/RootNavigation';
 
-const ProductShoppingBagScreen = () => {
+
+const mapStateToProps = (state, ownProps) => {
+  const isLogin = state?.oauth?.isLogin;
+  const cart_history = state.common?.cart_history;
+  const main_cart_items = state.common?.main_cart_items;
+  const store = state;
+  return {
+    isLogin,
+    cart_history,
+    main_cart_items,
+    store
+  };
+};
+const ProductShoppingBagScreen = (props) => {
+
+
+
+
   const dispatch = useDispatch();
 
-  const isLogin = useSelector(st => st?.oauth?.isLogin);
-  const cart_history = useSelector(st => st.common?.cart_history);
-  const main_cart_items = useSelector(st => st.common?.main_cart_items);
   const [cartMainData, setCartMainData] = useState(cart_history);
+
   const [loading, setLoading] = useState(false);
+
+  const { isLogin, cart_history, main_cart_items, store } = props;
+
+
+  console.log("store", store);
 
   const headerContent = {
     middleItemContents: {
@@ -55,6 +78,47 @@ const ProductShoppingBagScreen = () => {
   const [isSelected, setIsSelected] = useState(false);
   const [checkedCount, setCheckedCount] = useState(0);
   const [productList, setProductList] = useState([]);
+  const [displayAmount, setDisplayAmount] = useState(null);
+  const [displayTotalAmount, setDisplayTotalAmount] = useState(null);
+  const [cartPayload, setCartPayload] = useState(productList);
+
+
+  console.log("PRODUCT LIST FIRST", productList, checkedCount);
+
+
+  const generateSelectedPayload = (productList) => {
+    //productList is with all data in itemId
+    let cartPayload;
+    if (productList) {
+      cartPayload = JSON.parse(JSON.stringify(productList));
+      console.log("CART PAYLOAD INIT", cartPayload);
+      cartPayload.map((item) => {
+        item.itemId = item.itemId?._id;
+      });
+
+      setCartPayload(cartPayload);
+      console.log("CART PAYLOAD", cartPayload);
+
+      let displayAmount = 0;
+      let displayTotalAmount = 0;
+
+      productList.map((product) => {
+        if (product.isSelected) {
+          var start = moment(product.startDate);
+          var end = moment(product.endDate);
+          var totalDays = end.diff(start, "days") - 1;
+          displayAmount += (totalDays * product.units) * product?.itemId?.price;
+          //TO DO Add shippingAmount in BE
+          // displayTotalAmount += (totalDays * product.units) * product?.itemId?.price + product?.itemId?.shippingAmount;
+          displayTotalAmount += (totalDays * product.units) * product?.itemId?.price;
+        }
+      });
+      setDisplayAmount(displayAmount);
+      setDisplayTotalAmount(displayTotalAmount);
+    }
+
+  };
+
 
   useEffect(() => {
     if (isLogin) {
@@ -109,37 +173,109 @@ const ProductShoppingBagScreen = () => {
     }
   }, [isLogin]);
 
-
-  console.log("PRODUCT LIST FIRST", productList, checkedCount);
-  const [displayAmount, setDisplayAmount] = useState(null);
-  const [displayTotalAmount, setDisplayTotalAmount] = useState(null);
-
-  const generateSelectedPayload = (productList) => {
-    let cartPayload = JSON.parse(JSON.stringify(productList));
-    cartPayload.map((item) => {
-      item.itemId = item.itemId?._id;
-    });
-    console.log("CART PAYLOAD", cartPayload);
-    console.log("GENERATING PAYLOAD", productList);
-
-    let displayAmount = 0;
-    let displayTotalAmount = 0;
-
-    productList.map((product) => {
-      if (product.isSelected) {
-        var start = moment(product.startDate);
-        var end = moment(product.endDate);
-        var totalDays = end.diff(start, "days") - 1;
-        displayAmount += (totalDays * product.units) * product?.itemId?.price;
-        //TO DO Add shippingAmount in BE
-        // displayTotalAmount += (totalDays * product.units) * product?.itemId?.price + product?.itemId?.shippingAmount;
-        displayTotalAmount += (totalDays * product.units) * product?.itemId?.price;
+  const handleIndividualCartItemDelete = (ID, cartPayload) => {
+    console.log("INDIVIDUAL DELETE");
+    console.log("C P", cartPayload);
+    var removeIndex = cartPayload.map(item => item?._id).indexOf(ID);
+    ~removeIndex && cartPayload.splice(removeIndex, 1);
+    console.log("Delete Payload", cartPayload);
+    setLoading(true);
+    getCartId().then(async (cartId) => {
+      console.log("Cart Id IN DELETE", cartId);
+      if (cartId) {
+        await createOrUpdateCart({
+          items: cartPayload
+        },
+          { cartId: cartId })
+          .then(async (res) => {
+            console.log("RESPONSE CART FROM IND DELETE", res);
+            if (res) {
+              dispatch(setCurrentCheckoutCartDetails(res.data.data));
+              ToastAndroid.showWithGravity(
+                'Item Deleted',
+                ToastAndroid.SHORT,
+                ToastAndroid.TOP,
+              );
+              await getUserCartHistory(cartId).then((res) => {
+                console.log("CART USER DATA ++++++", res.data);
+                if (res) {
+                  dispatch(setMainCartItems([res.data.data]));
+                  setProductList(res?.data?.data?.items);
+                }
+              }).catch((err) => {
+                console.log("Setting Error", err);
+              });
+              setLoading(false);
+            }
+          })
+          .catch(err => {
+            if (err) {
+              console.log("ERROER", err);
+              showDefaultErrorAlert(err?.response?.data?.error);
+            }
+            setLoading(false);
+          });
       }
     });
-    setDisplayAmount(displayAmount);
-    setDisplayTotalAmount(displayTotalAmount);
+
   };
 
+  const handleMultipleDelete = async (IDS, cartPayload) => {
+
+    let newIds = [...IDS];
+
+    console.log("IDS", IDS);
+    console.log("HEY CARTPAYLOAD", cartPayload);
+
+    newIds.forEach((ids) => {
+      if (ids?.isSelected) {
+        var removeIndex = cartPayload.map(item => item?._id).indexOf(ids?._id);
+        ~removeIndex && cartPayload.splice(removeIndex, 1);
+      }
+    });
+
+    console.log("SELECTED DELETED IDS", cartPayload);
+
+    setLoading(true);
+    getCartId().then(async (cartId) => {
+      console.log("Cart Id IN DELETE", cartId);
+      if (cartId) {
+        await createOrUpdateCart({
+          items: cartPayload
+        },
+          { cartId: cartId })
+          .then(async (res) => {
+            console.log("RESPONSE CART FROM IND DELETE", res);
+            if (res) {
+              dispatch(setCurrentCheckoutCartDetails(res.data.data));
+              ToastAndroid.showWithGravity(
+                'Item Deleted',
+                ToastAndroid.SHORT,
+                ToastAndroid.TOP,
+              );
+              await getUserCartHistory(cartId).then((res) => {
+                console.log("CART USER DATA ++++++", res.data);
+                if (res) {
+                  dispatch(setMainCartItems([res.data.data]));
+                  setProductList(res?.data?.data?.items);
+                  console.log("HEY", res?.data?.data?.items);
+                }
+              }).catch((err) => {
+                console.log("Setting Error", err);
+              });
+              setLoading(false);
+            }
+          })
+          .catch(err => {
+            if (err) {
+              console.log("ERROER", err);
+              showDefaultErrorAlert(err?.response?.data?.error);
+            }
+            setLoading(false);
+          });
+      }
+    });
+  };
 
 
   useEffect(() => {
@@ -149,10 +285,10 @@ const ProductShoppingBagScreen = () => {
 
   const ListHeaderComponent = () => {
     return (
-      <View style={styles.view1}>
+      productList.length !== 0 && checkedCount > 0 && <View style={styles.view1}>
         <View style={styles.view2}>
           <CheckBox
-            value={checkedCount !== productList.length ? false : isSelected}
+            value={checkedCount !== productList?.length ? false : isSelected}
             onValueChange={(value) => {
               setIsSelected(value);
               let newData = [...productList];
@@ -167,16 +303,30 @@ const ProductShoppingBagScreen = () => {
             style={{
               fontWeight: '600',
               color: '#454C53',
-            }}>{`전체선택 (${checkedCount}/${productList.length})`}</Text>
+            }}>{`전체선택 (${checkedCount}/${productList?.length})`}</Text>
         </View>
-        <Text style={{ color: '#454C53', alignSelf: "center" }}>선택삭제</Text>
+        <TouchableOpacity onPress={() => {
+          if (checkedCount >= 1) {
+            handleMultipleDelete(productList, cartPayload);
+          } else {
+            ToastAndroid.showWithGravity(
+              'Atleast One Item must be selected for delete',
+              ToastAndroid.SHORT,
+              ToastAndroid.TOP,
+            );
+          }
+        }}>
+          <Text style={{ color: '#454C53', alignSelf: "center" }}>선택삭제</Text>
+        </TouchableOpacity>
       </View>
     );
   };
 
+  console.log("LLL", productList.length);
+
   const ListFooterComponent = () => {
     return (
-      <View style={{ paddingBottom: hp('13.5%') }}>
+      productList.length !== 0 && checkedCount >= 1 && <View style={{ paddingBottom: hp('13.5%') }}>
         <Div t1="주문상품 수" t2={`총 ${checkedCount}개`} c1={styles.text1} c2={styles.text2} />
         <Div
           t1="총 주문금액"
@@ -235,91 +385,44 @@ const ProductShoppingBagScreen = () => {
   };
 
 
-  const handleAddToCart = async () => {
-
-    getCartId().then(async (cartId) => {
-      console.log("THE CART ID =>", cartId);
-      if (cartId) {
-        await createOrUpdateCart(cartItems, { "cartId": cartId })
-          .then(res => {
-
-            console.log("RESPONSE CART", res);
-
-            storeCartId(res.data.data?._id);
-            if (res) {
-              ToastAndroid.showWithGravity(
-                'Product added to cart',
-                ToastAndroid.SHORT,
-                ToastAndroid.TOP,
-              );
-              navigateTo('ProductShoppingBagScreen');
-              setModalVisible(false);
-            }
-
-
-          })
-          .catch(err => {
-            if (err) {
-              console.log("ERROR", err);
-              showDefaultErrorAlert();
-              setModalVisible(false);
-            }
-          });
-      } else {
-        await createOrUpdateCart(cartItems)
-          .then(res => {
-            console.log("RESPONSE CART", res);
-            storeCartId(res.data.data?._id);
-            if (res) {
-              ToastAndroid.showWithGravity(
-                'Product added to cart',
-                ToastAndroid.SHORT,
-                ToastAndroid.TOP,
-              );
-              navigateTo('ProductShoppingBagScreen');
-              setModalVisible(false);
-            }
-          })
-          .catch(err => {
-            if (err) {
-              console.log("ERROR", err);
-              showDefaultErrorAlert();
-              setModalVisible(false);
-            }
-          });
-      }
-
+  useEffect(() => {
+    getCartId().then((cartId) => {
+      console.log("CHECKING CART ID", cartId);
     });
+  }, []);
 
-  };
+
 
 
   const handleCheckout = async () => {
-    getCartId().then((cartId) => {
+    getCartId().then(async (cartId) => {
       console.log("HI CART ID", cartId);
+      if (cartId) {
+        await createOrUpdateCart(cartPayload, { cartId: cartId })
+          .then(res => {
+            console.log("RESPONSE CART", res);
+            if (res) {
+              dispatch(setCurrentCheckoutCartDetails(res.data.data));
+              ToastAndroid.showWithGravity(
+                'Checkout In Progress',
+                ToastAndroid.SHORT,
+                ToastAndroid.TOP,
+              );
+              navigateTo('RoomPaymentScreen');
+            }
+          })
+          .catch(err => {
+            if (err) {
+              showDefaultErrorAlert(err?.response?.data?.error);
+            }
+          });
+      }
     });
 
-    // await createOrUpdateCart(cartItems)
-    //   .then(res => {
-    //     console.log("RESPONSE CART", res);
-    //     if (res) {
-    //       dispatch(setCurrentCheckoutCartDetails(res.data.data));
-    //       ToastAndroid.showWithGravity(
-    //         'Checkout In Progress',
-    //         ToastAndroid.SHORT,
-    //         ToastAndroid.TOP,
-    //       );
-    //       navigateTo('RoomPaymentScreen');
-    //     }
-    //   })
-    //   .catch(err => {
-    //     if (err) {
-    //       showDefaultErrorAlert(err?.response?.data?.error);
-    //     }
-    //   });
-
-
   };
+
+
+  console.log("SELCTED CART PAYLOAD", cartPayload);
 
   return (
     <View style={{ flex: 1 }}>
@@ -343,23 +446,26 @@ const ProductShoppingBagScreen = () => {
                   productList={productList}
                   setProductList={setProductList}
                   setCheckedCount={setCheckedCount}
+                  cartPayload={cartPayload}
+                  setCartPayload={setCartPayload}
+                  handleIndividualCartItemDelete={handleIndividualCartItemDelete}
                 />
               );
             }}
           />
         )}
       </ScrollView>
-      <CustomButton
+      {productList.length !== 0 && checkedCount >= 1 && <CustomButton
         buttonText={'예약하기'}
         buttonHandler={() => {
           handleCheckout();
         }}
-      />
+      />}
     </View>
   );
 };
 
-export default ProductShoppingBagScreen;
+export default connect(mapStateToProps, null)(ProductShoppingBagScreen);
 
 const styles = StyleSheet.create({
   text1: {

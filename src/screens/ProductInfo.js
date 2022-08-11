@@ -234,9 +234,7 @@ const ProductInfo = props => {
       if (cartId) {
         await createOrUpdateCart(cartItems, { "cartId": cartId })
           .then(res => {
-
             console.log("RESPONSE CART", res);
-
             storeCartId(res.data.data?._id);
             if (res) {
               ToastAndroid.showWithGravity(

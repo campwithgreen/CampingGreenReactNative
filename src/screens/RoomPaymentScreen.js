@@ -66,7 +66,7 @@ const Input = ({
   );
 };
 
-const RoomPaymentScreen = () => {
+const RoomPaymentScreen = (props) => {
   const headerContent = {
     leftItemContents: {
       type: 'image',
@@ -81,6 +81,22 @@ const RoomPaymentScreen = () => {
       navigateScreen: 'HomeScreenDetail1',
     },
   };
+
+  const { route } = props;
+
+  let current_cart_details = useSelector(
+    st => st.common.current_cart_details,
+  );
+
+  const selectedProducts = route?.params?.selectedProducts;
+  const selectedCartDetails = route?.params?.selectedCartDetails;
+
+  if (selectedProducts) {
+    current_cart_details = selectedCartDetails;
+  }
+
+  console.log("SELECTED PRODUCTS", selectedProducts);
+
   const [flag, setFlag] = useState({ p1: false, p2: true, p3: true, p4: true });
 
   const getCartId = async () => {
@@ -144,11 +160,11 @@ const RoomPaymentScreen = () => {
   const [address, setAddress] = useState(null);
   const [remarks, setRemarks] = useState(null);
 
-  const [carNum, setCarNum] = useState(null);
   // const [secondNum, setSecondNum] = useState(null)
   // const [firstNum, setFirstNum] = useState(null)
 
   const handleProceedCheckout = async () => {
+
     if (flag.p1) {
       let shipping_data = {
         name: name,
@@ -177,7 +193,7 @@ const RoomPaymentScreen = () => {
               await checkoutCart(mainPayload, query)
                 .then(res => {
                   if (res) {
-                    console.log("CART CHECKOUT RES", res);
+                    console.log("CART CHECKOUT ++++", res);
                     if (res?.data?.newCartId) {
                       storeCartId(res?.data?.newCartId);
                     } else {
@@ -230,9 +246,6 @@ const RoomPaymentScreen = () => {
     }
   };
 
-  const current_cart_details = useSelector(
-    st => st.common.current_cart_details,
-  );
 
   console.log('WF', phone_number);
 

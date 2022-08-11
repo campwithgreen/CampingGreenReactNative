@@ -36,11 +36,13 @@ const mapStateToProps = (state, ownProps) => {
   const isLogin = state?.oauth?.isLogin;
   const cart_history = state.common?.cart_history;
   const main_cart_items = state.common?.main_cart_items;
+  const current_cart_details = state?.common.current_cart_details;
   const store = state;
   return {
     isLogin,
     cart_history,
     main_cart_items,
+    current_cart_details,
     store
   };
 };
@@ -55,7 +57,7 @@ const ProductShoppingBagScreen = (props) => {
 
   const [loading, setLoading] = useState(false);
 
-  const { isLogin, cart_history, main_cart_items, store } = props;
+  const { isLogin, cart_history, main_cart_items, current_cart_details, store } = props;
 
 
   console.log("store", store);
@@ -285,7 +287,7 @@ const ProductShoppingBagScreen = (props) => {
 
   const ListHeaderComponent = () => {
     return (
-      productList.length !== 0 && checkedCount > 0 && <View style={styles.view1}>
+      productList.length !== 0 && <View style={styles.view1}>
         <View style={styles.view2}>
           <CheckBox
             value={checkedCount !== productList?.length ? false : isSelected}
@@ -322,7 +324,7 @@ const ProductShoppingBagScreen = (props) => {
     );
   };
 
-  console.log("LLL", productList.length);
+  console.log("LLL", productList?.length);
 
   const ListFooterComponent = () => {
     return (
@@ -394,28 +396,64 @@ const ProductShoppingBagScreen = (props) => {
 
 
 
-  const handleCheckout = async () => {
+  const handleCheckout = async (IDS, cartPayload) => {
+
+    let newIds = [...IDS];
+
+    console.log("IDS", IDS);
+    console.log("HEY CARTPAYLOAD", cartPayload);
+
+    newIds.forEach((ids) => {
+      if (!ids?.isSelected) {
+        var removeIndex = cartPayload.map(item => item?._id).indexOf(ids?._id);
+        ~removeIndex && cartPayload.splice(removeIndex, 1);
+      }
+    });
+
+    console.log("SELECTED CART CHECKOUT IDS", cartPayload);
+
+    let selectedCartDetails = {
+      ...current_cart_details, items: productList.map((it) => it.isSelected),
+      "totalAmount": displayAmount,
+      "shippingAmount": 0,
+      "finalAmount": displayTotalAmount,
+    };
+
+
+
     getCartId().then(async (cartId) => {
       console.log("HI CART ID", cartId);
       if (cartId) {
-        await createOrUpdateCart(cartPayload, { cartId: cartId })
-          .then(res => {
-            console.log("RESPONSE CART", res);
-            if (res) {
-              dispatch(setCurrentCheckoutCartDetails(res.data.data));
-              ToastAndroid.showWithGravity(
-                'Checkout In Progress',
-                ToastAndroid.SHORT,
-                ToastAndroid.TOP,
-              );
-              navigateTo('RoomPaymentScreen');
-            }
-          })
-          .catch(err => {
-            if (err) {
-              showDefaultErrorAlert(err?.response?.data?.error);
-            }
+        await getUserCartHistory(cartId).then((res) => {
+          dispatch(setCurrentCheckoutCartDetails(res.data.data));
+          ToastAndroid.showWithGravity(
+            'Checkout In Progress',
+            ToastAndroid.SHORT,
+            ToastAndroid.TOP,
+          );
+          navigateTo('RoomPaymentScreen', {
+            selectedProducts: cartPayload,
+            selectedCurrentCartDetails: selectedCartDetails
           });
+        }).catch((err) => {
+          console.log("err", err);
+        });
+        // await createOrUpdateCart({
+        //   items: cartPayload
+        // }, { cartId: cartId })
+        //   .then(res => {
+        //     console.log("RESPONSE CART", res);
+        //     if (res) {
+
+
+
+        //     }
+        //   })
+        //   .catch(err => {
+        //     if (err) {
+        //       showDefaultErrorAlert(err?.response?.data?.error);
+        //     }
+        //   });
       }
     });
 
@@ -455,10 +493,10 @@ const ProductShoppingBagScreen = (props) => {
           />
         )}
       </ScrollView>
-      {productList.length !== 0 && checkedCount >= 1 && <CustomButton
+      {productList?.length !== 0 && checkedCount >= 1 && <CustomButton
         buttonText={'예약하기'}
         buttonHandler={() => {
-          handleCheckout();
+          handleCheckout(productList, cartPayload);
         }}
       />}
     </View>

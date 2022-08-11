@@ -15,11 +15,13 @@ function queryStringBuilder(query) {
 
 export function createOrUpdateCart(data, query) {
     console.log("QRY", query);
+    let endpoint = "v2/cart";
     let queryString;
-    if (query) {
+    if (query?.cartId) {
         queryString = queryStringBuilder(query);
+        endpoint = `v2/cart?${queryString}`;
     }
-    let endpoint = `v2/cart?${queryString}`;
+
     return axiosInstance.post(endpoint, data);
 }
 

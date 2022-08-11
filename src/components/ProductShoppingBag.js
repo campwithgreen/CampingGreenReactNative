@@ -7,6 +7,7 @@ import {
 import CheckBox from '@react-native-community/checkbox';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import FONTSIZE from '../constants/fontSize';
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -92,7 +93,7 @@ const ProductShoppingBag = (props) => {
       </View>
       <View style={styles.view1}>
         <View style={styles.view2}>
-          <Text style={styles.text}>{item?.itemId?.title}</Text>
+          <Text style={styles.textTitle}>{item?.itemId?.title}</Text>
           <Text style={styles.text}>{item?.itemId?.description}</Text>
           <View style={styles.view3}>
             <View style={styles.view4}>
@@ -172,13 +173,18 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     width: wp('18%'),
     paddingHorizontal: wp('2%'),
-    // paddingVertical: hp('0%'),
     borderWidth: 1.4,
     borderColor: 'lightgrey',
   },
+  textTitle: {
+    fontWeight: 'bold',
+    fontSize: FONTSIZE.l,
+    color: 'black',
+    width: wp("55%")
+  },
   text: {
     fontWeight: 'bold',
-    // fontSize: 18,
+    fontSize: FONTSIZE.l,
     color: 'black',
   },
   text1: {

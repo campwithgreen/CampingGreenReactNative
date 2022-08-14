@@ -3,6 +3,7 @@ import axiosInstance from "../config/axiosInstance";
 
 function queryStringBuilder(query) {
     let { cartId } = query;
+    console.log("QUERY C", cartId);
     let queryString = "";
     if (cartId) {
         queryString += "cartId=" + cartId;
@@ -13,11 +14,14 @@ function queryStringBuilder(query) {
 
 
 export function createOrUpdateCart(data, query) {
+    console.log("QRY", query);
+    let endpoint = "v2/cart";
     let queryString;
-    if (query) {
+    if (query?.cartId) {
         queryString = queryStringBuilder(query);
+        endpoint = `v2/cart?${queryString}`;
     }
-    let endpoint = `v2/cart?${queryString}`;
+
     return axiosInstance.post(endpoint, data);
 }
 
@@ -30,6 +34,17 @@ export function checkoutCart(data, query) {
     return axiosInstance.post(endpoint, data);
 }
 
-export function getUserCartHistory() {
-    return axiosInstance.get("v2/cart");
+export function getUserCartHistory(id, populate) {
+
+    let url = "v2/cart";
+
+    if (id) {
+        url = `v2/cart/${id}`;
+    }
+
+    if (populate) {
+        url = `v2/cart/${id}?populate=${populate}`;
+    }
+
+    return axiosInstance.get(url);
 }

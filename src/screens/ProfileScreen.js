@@ -26,7 +26,7 @@ import moment from 'moment';
 
 export const ProfileScreen = props => {
   const st = useSelector(st => st);
-  console.log('STORE', st);
+  // console.log('STORE', st);
 
   const dispatch = useDispatch();
 
@@ -63,7 +63,7 @@ export const ProfileScreen = props => {
       content: '마이페이지',
     },
     rightItemContents: {
-      type: 'image',
+      type: 'cart',
       content: require('../assets/images/cart.png'),
       navigateScreen: () => {
         if (!isLogin) {
@@ -92,8 +92,6 @@ export const ProfileScreen = props => {
     return r;
   }, Object.create(null));
 
-  console.log('GROPUPED', result);
-
   let pendingCart = 0;
   if (result) {
     Object.keys(result).map(key => {
@@ -118,7 +116,6 @@ export const ProfileScreen = props => {
         await getUserCartHistory()
           .then(res => {
             if (res) {
-              console.log('USer History', res.data);
               dispatch(setUserCartHistory(res.data.data));
             }
           })
@@ -179,7 +176,11 @@ export const ProfileScreen = props => {
                 </View>
                 <TouchableOpacity
                   onPress={() => {
-                    navigateTo('RoomReservationListScreen');
+                    if (isLogin) {
+                      navigateTo('RoomReservationListScreen');
+                    } else {
+                      alert('로그인 후에 조회 가능한 서비스입니다. ');
+                    }
                   }}>
                   <View style={secondTextWrapper}>
                     <Text style={secondTextII}>캠핑장 예약내역 조회</Text>
@@ -187,7 +188,11 @@ export const ProfileScreen = props => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
-                    navigateTo('RoomReservationListScreen');
+                    if (isLogin) {
+                      navigateTo('RoomReservationListScreen');
+                    } else {
+                      alert('로그인 후에 조회 가능한 서비스입니다. ');
+                    }
                   }}>
                   <View style={secondTextWrapper}>
                     <Text style={secondTextII}>캠핑용품 대여내역 조회</Text>

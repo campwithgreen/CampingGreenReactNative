@@ -15,6 +15,8 @@ export default function (state = INITIAL_STATE, action) {
             return { ...state, start_date: payload };
         case COMMON.SET_RETURN_DATE:
             return { ...state, return_date: payload };
+        case COMMON.SET_TOTAL_DAYS:
+            return { ...state, totalDays: payload };
         case COMMON.SELECTED_ITEM:
             return { ...state, selected_item: payload };
         case COMMON.SET_QUANTITY:
@@ -27,6 +29,8 @@ export default function (state = INITIAL_STATE, action) {
             return { ...state, selected_location: payload };
         case COMMON.SELECTED_SUB_LOCATION:
             return { ...state, selected_sub_location: payload };
+        case COMMON.SET_MAIN_CART_ITEMS:
+            return { ...state, main_cart_items: payload };
         default:
             return state;
     }

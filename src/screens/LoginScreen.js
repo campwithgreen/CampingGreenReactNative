@@ -14,6 +14,7 @@ import {RFPercentage} from 'react-native-responsive-fontsize';
 import {
   heightPercentageToDP,
   heightPercentageToDP as hp,
+  widthPercentageToDP,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import FormField from '../components/common/FormField';
@@ -25,7 +26,8 @@ import {authDoor, verifyOtp} from '../apis/auth';
 import {showDefaultErrorAlert} from '../global/global';
 import {useDispatch, useSelector} from 'react-redux';
 import {login, setUserData, setUserToken} from '../redux/actions/oauth';
-import store from '../redux/store';
+import {setUserCartHistory} from '../redux/actions/common';
+import {getUserCartHistory} from '../apis/cart';
 
 const headerContent = {
   leftItemContents: {
@@ -53,14 +55,37 @@ export default function LoginScreen() {
 
   const [phoneNumber, setPhoneNumber] = useState(null);
   const [otp, setOtp] = useState(null);
+  const [otpAutoFocus, setOtpAutoFocus] = useState(false);
 
   const isLogin = useSelector(st => st.oauth?.isLogin);
+  const [otpsent, setOptSent] = useState(false);
 
   useEffect(() => {
     if (isLogin) {
       navigateTo('HomeScreen');
     }
   }, [isLogin]);
+
+  useEffect(() => {
+    if (isLogin) {
+      console.log('RUNNING');
+      (async function getCartHistory() {
+        await getUserCartHistory()
+          .then(res => {
+            if (res) {
+              dispatch(setUserCartHistory(res.data.data));
+            }
+          })
+          .catch(err => {
+            if (err) {
+              showDefaultErrorAlert();
+              setLoading(false);
+            }
+          });
+      })();
+    }
+  }, [isLogin]);
+
   const [lineColor, setLineColor] = useState(COLOR.black);
   const onFocus = () => setLineColor(COLOR.compGreen);
 
@@ -81,6 +106,8 @@ export default function LoginScreen() {
       };
       await authDoor(payload)
         .then(res => {
+          setOptSent(true);
+          setOtpAutoFocus(true);
           dispatch(setUserData(res.data));
           if (res.data.formSubmissionRequired) {
             ToastAndroid.showWithGravity(
@@ -90,6 +117,7 @@ export default function LoginScreen() {
             );
             setGetOtpButtonEnabled(false);
           } else {
+            setOptSent(true);
             ToastAndroid.showWithGravity(
               'OTP Successfully Sent',
               ToastAndroid.LONG,
@@ -127,7 +155,6 @@ export default function LoginScreen() {
       .then(res => {
         if (res.data) {
           if (res.data.success) {
-            console.log('r', res.data);
             dispatch(setUserToken(res.data.token));
             if (formSubmissionRequired) {
               Alert.alert(
@@ -175,95 +202,95 @@ export default function LoginScreen() {
   };
 
   return (
-    <View>
-      <View style={container}>
-        <Header headerContent={headerContent} />
-        <ScrollView keyboardShouldPersistTaps="always">
-          <View style={[globalStyle.mainContainerWrapper, wrapper]}>
-            <View style={mainTextWrapper}>
-              <Text style={mainText}>캠핑용품 대여부터 캠핑장 예약까지</Text>
-              <Text style={mainText}>편하게 누려보세요</Text>
-            </View>
-            <View style={form}>
-              <View style={inputcontainer}>
-                <Text style={formlabel}>휴대폰 번호</Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    width: '100%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  <View style={{width: '70%'}}>
-                    <TextInput
-                      style={{
-                        color: 'black',
-                        borderBottomWidth: 1,
-                        borderBottomColor: lineColor,
-                        width: '100%',
-                        padding: 10,
-                      }}
-                      placeholder="1011112222 -없이 숫자만 입력해주세요"
-                      onFocus={() => onFocus()}
-                      onBlur={() => onBlur()}
-                      keyboardType="number-pad"
-                      onChangeText={value => {
-                        setPhoneNumber(value);
-                      }}
-                      maxLength={11}
-                    />
-                  </View>
-                  <TouchableOpacity
-                    style={{
-                      alignItems: 'flex-end',
-                      justifyContent: 'center',
-                      padding: 5,
-                      width: '30%',
-                    }}
-                    onPress={() => {
-                      if (getOtpButtonEnabled) {
-                        handleGetOtp(phoneNumber);
-                      } else {
-                        ToastAndroid.showWithGravity(
-                          'OTP has already sent, Pls use it',
-                          ToastAndroid.LONG,
-                          ToastAndroid.TOP,
-                        );
-                      }
-                    }}
-                    underlayColor="transparent">
-                    <View
-                      style={{
-                        borderRadius: 5,
-                        borderWidth: 1,
-                        borderColor: 'grey',
-                        padding: 5,
-                      }}>
-                      <Text style={{color: 'grey'}}>인증 요청</Text>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-              </View>
-              <FormField
-                label="인증번호"
-                type="text"
-                keyboardType="numeric"
-                onChange={value => {
-                  getValue(value);
-                }}
-                maxLength={6}
-              />
-              <View style={buttonWrapper}>
-                <Button
-                  title="로그인 또는 회원가입"
-                  onPress={() => handleLogin()}
-                  color={COLOR.compGreen}
-                  disabled={disableButton()}
-                />
-              </View>
-            </View>
+    <View style={container}>
+      <Header headerContent={headerContent} />
+      <ScrollView keyboardShouldPersistTaps="always">
+        <View style={[globalStyle.mainContainerWrapper, wrapper]}>
+          <View style={mainTextWrapper}>
+            <Text style={mainText}>캠핑용품 대여부터 캠핑장 예약까지</Text>
+            <Text style={mainText}>편하게 누려보세요</Text>
           </View>
-        </ScrollView>
+          <View style={form}>
+            <View style={inputcontainer}>
+              <Text style={formlabel}>휴대폰 번호</Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  width: '100%',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <View style={{width: '70%'}}>
+                  <TextInput
+                    style={{
+                      color: 'black',
+                      borderBottomWidth: 1,
+                      borderBottomColor: lineColor,
+                      width: '100%',
+                      padding: 10,
+                    }}
+                    placeholder="1011112222 -없이 숫자만 입력해주세요"
+                    onFocus={() => onFocus()}
+                    onBlur={() => onBlur()}
+                    keyboardType="number-pad"
+                    onChangeText={value => {
+                      setPhoneNumber(value);
+                    }}
+                    maxLength={11}
+                  />
+                </View>
+                <TouchableOpacity
+                  style={{
+                    alignItems: 'flex-end',
+                    justifyContent: 'center',
+                    padding: 5,
+                    width: '30%',
+                  }}
+                  onPress={() => {
+                    if (getOtpButtonEnabled) {
+                      handleGetOtp(phoneNumber);
+                    } else {
+                      ToastAndroid.showWithGravity(
+                        'OTP has already sent, Pls use it',
+                        ToastAndroid.LONG,
+                        ToastAndroid.TOP,
+                      );
+                    }
+                  }}
+                  underlayColor="transparent">
+                  <View
+                    style={{
+                      borderRadius: 5,
+                      borderWidth: 1,
+                      borderColor: 'grey',
+                      padding: 5,
+                    }}>
+                    <Text style={{color: 'grey'}}>인증 요청</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <FormField
+              label="인증번호"
+              type="text"
+              keyboardType="numeric"
+              onChange={value => {
+                getValue(value);
+              }}
+              disabled={otpsent}
+              maxLength={6}
+              autoFocus={otpAutoFocus}
+            />
+          </View>
+        </View>
+      </ScrollView>
+      <View style={buttonWrapper}>
+        <Button
+          title="로그인 또는 회원가입"
+          onPress={() => handleLogin()}
+          color={COLOR.compGreen}
+          disabled={disableButton()}
+        />
       </View>
     </View>
   );
@@ -271,11 +298,11 @@ export default function LoginScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: COLOR.white,
+    flex: 1,
   },
   wrapper: {
     backgroundColor: '#fff',
-    height: hp('100%'),
   },
   mainTextWrapper: {
     marginVertical: hp('3.5%'),
@@ -296,6 +323,7 @@ const styles = StyleSheet.create({
     marginVertical: hp('2%'),
   },
   buttonWrapper: {
-    marginTop: heightPercentageToDP('25%'),
+    marginHorizontal: widthPercentageToDP('5%'),
+    marginBottom: hp('3%'),
   },
 });

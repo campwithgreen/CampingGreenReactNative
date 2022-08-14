@@ -64,6 +64,8 @@ const Rent = props => {
   const title = useSelector(st => st.common?.selected_location.title);
   const phone = useSelector(st => st.common?.selected_location.phone);
 
+  console.log('SL', subLocations?.campLink);
+
   const [modalVisible, setModalVisible] = useState(false);
   console.log('subLocations', subLocations);
   const enableCheckout = () => {
@@ -367,7 +369,8 @@ const Rent = props => {
             </View>
           )}
 
-          {subLocations?.specifications?.facilityInfo?.split(',').length > 0 ? (
+          {subLocations?.specifications?.facilityInfo?.split(',')?.length >
+          0 ? (
             <View
               style={{
                 flexDirection: 'column',
@@ -408,7 +411,7 @@ const Rent = props => {
               {subLocations?.specifications?.facilityInfo}
             </Text>
           </View> */}
-          <OpenURLButton url={subLocations?.specifications?.campLink}>
+          <OpenURLButton url={subLocations?.campLink}>
             캠핑장 링크 이동
           </OpenURLButton>
           {/* <View

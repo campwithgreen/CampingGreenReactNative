@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -24,20 +24,48 @@ import FONTSIZE from '../constants/fontSize';
 import COLOR from '../constants/colors';
 import {navigateTo} from '../navigation/utils/RootNavigation';
 import Footer from '../components/Footer';
-import {useDispatch, useSelector} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import CustomButton from '../components/common/CustomButton';
 import Counter from '../components/common/Counter';
-import {createOrUpdateCart} from '../apis/cart';
+import {createOrUpdateCart, getUserCartHistory} from '../apis/cart';
 import {showDefaultErrorAlert} from '../global/global';
-import {setCurrentCheckoutCartDetails} from '../redux/actions/common';
+import {
+  setCurrentCheckoutCartDetails,
+  setReturnDate,
+  setStartDate,
+  setTotalDays,
+} from '../redux/actions/common';
+import moment from 'moment';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const ProductInfo = props => {
+const mapStateToProps = (state, ownProps) => {
+  const selected_item = state?.common.selected_item;
+  const startDate = state?.common.start_date;
+  const returnDate = state?.common.return_date;
+  const isLoggedIn = state?.oauth.isLogin;
+  const quantity = state?.common.quantity;
+  const totalDays = state?.common.totalDays;
+
+  return {
+    selected_item,
+    startDate,
+    returnDate,
+    isLoggedIn,
+    quantity,
+    totalDays,
+  };
+};
+const ProductInfo = props => {
   const {container} = styles;
-  const selected_item = useSelector(st => st.common.selected_item);
-  const startDate = useSelector(st => st.common.start_date);
-  const returnDate = useSelector(st => st.common.return_date);
-  const isLoggedIn = useSelector(st => st.oauth.isLogin);
-  const quantity = useSelector(st => st.common.quantity);
+
+  const {
+    selected_item,
+    startDate,
+    returnDate,
+    isLoggedIn,
+    quantity,
+    totalDays,
+  } = props;
 
   const item = props.route.params || selected_item;
   const [tabIndex, setTabIndex] = useState(1);
@@ -50,6 +78,17 @@ export const ProductInfo = props => {
   const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
   const yyyy = today.getFullYear();
 
+  useEffect(() => {
+    removeCartId();
+    console.log('ST', startDate, returnDate);
+    var start = moment(startDate);
+    var end = moment(returnDate);
+    var totalDays = end.diff(start, 'days') - 1;
+    if (totalDays !== -1) {
+      dispatch(setTotalDays(totalDays));
+    }
+  }, [startDate, returnDate]);
+
   today = mm + '월' + dd + '일';
   const headerContent = {
     leftItemContents: {
@@ -58,7 +97,7 @@ export const ProductInfo = props => {
       navigateScreen: 'HomeScreenDetail1',
     },
     rightItemContents: {
-      type: 'image',
+      type: 'cart',
       content: require('../assets/images/cart.png'),
       navigateScreen: () => {
         if (!isLoggedIn) {
@@ -83,59 +122,162 @@ export const ProductInfo = props => {
 
   const {centeredView, modalView, termTitle, termsButtonWrapper} = styles;
 
-  let cartItems = {
-    items: [
-      {
-        itemId: selected_item._id,
-        units: quantity || 1,
-        startDate: startDate,
-        endDate: returnDate,
-      },
-    ],
+  const [payloadItems, setPayloadItems] = useState([]);
+
+  const getCartId = async () => {
+    try {
+      const cartId = await AsyncStorage.getItem('@cart_id');
+      return cartId != null ? cartId : null;
+    } catch (e) {
+      console.log('getting cart error', e);
+    }
+    console.log('Done.');
   };
 
-  const handleCheckout = async () => {
-    console.log('CHCKOUT ITEMS', cartItems);
-    await createOrUpdateCart(cartItems)
-      .then(res => {
-        if (res) {
-          dispatch(setCurrentCheckoutCartDetails(res.data.data));
-          ToastAndroid.showWithGravity(
-            'Checkout In Progress',
-            ToastAndroid.SHORT,
-            ToastAndroid.TOP,
-          );
-          navigateTo('RoomPaymentScreen');
-          setModalVisible(false);
-        }
-      })
-      .catch(err => {
-        if (err) {
-          showDefaultErrorAlert();
-          setModalVisible(false);
-        }
+  const storeCartId = async value => {
+    console.log('VALUE CARTID', value);
+    try {
+      await AsyncStorage.setItem('@cart_id', value);
+    } catch (e) {
+      console.log('STORING CART ID ERROR', e);
+    }
+  };
+
+  const removeCartId = async value => {
+    console.log('REMOVING CART ID');
+    try {
+      await AsyncStorage.removeItem('@cart_id');
+    } catch (e) {
+      console.log('STORING CART ID ERROR', e);
+    }
+  };
+
+  useEffect(() => {
+    (async function getCartPayload() {
+      await getCartId().then(async cartId => {
+        console.log('CART ID ___________________', cartId);
+        if (cartId) {
+          await getUserCartHistory(cartId, false).then(res => {
+            if (res) {
+              console.log('POPULATE PAYLOAD', res?.data?.data?.items);
+              setPayloadItems([
+                ...res?.data?.data?.items,
+                {
+                  itemId: selected_item._id,
+                  units: quantity || 1,
+                  startDate: startDate,
+                  endDate: returnDate,
+                },
+              ]);
+            }
+          });
+        } else
+          setPayloadItems([
+            {
+              itemId: selected_item._id,
+              units: quantity || 1,
+              startDate: startDate,
+              endDate: returnDate,
+            },
+          ]);
       });
+    })();
+  }, [selected_item, quantity, startDate, returnDate]);
+
+  let cartItems = {
+    items: payloadItems,
+  };
+
+  console.log('CART ITEMS +++++++++++++', cartItems);
+
+  useEffect(() => {
+    dispatch(setStartDate(null));
+    dispatch(setReturnDate(null));
+  }, []);
+
+  const handleCheckout = async () => {
+    console.log('CHCKOUT ITEMS *****', cartItems);
+    getCartId().then(async cartId => {
+      if (cartId) {
+        ToastAndroid.showWithGravity(
+          'An active cart already present, Pls checkout that first',
+          ToastAndroid.SHORT,
+          ToastAndroid.TOP,
+        );
+      } else {
+        await createOrUpdateCart(cartItems)
+          .then(res => {
+            console.log('RESPONSE CART', res);
+            if (res) {
+              dispatch(setCurrentCheckoutCartDetails(res.data.data));
+              ToastAndroid.showWithGravity(
+                'Checkout In Progress',
+                ToastAndroid.SHORT,
+                ToastAndroid.TOP,
+              );
+              navigateTo('RoomPaymentScreen');
+              setModalVisible(false);
+            }
+          })
+          .catch(err => {
+            if (err) {
+              showDefaultErrorAlert(err?.response?.data?.error);
+              setModalVisible(false);
+            }
+          });
+      }
+    });
   };
 
   const handleAddToCart = async () => {
-    await createOrUpdateCart(cartItems)
-      .then(res => {
-        if (res) {
-          ToastAndroid.showWithGravity(
-            'Product added to cart',
-            ToastAndroid.SHORT,
-            ToastAndroid.TOP,
-          );
-          navigateTo('ProductShoppingBagScreen');
-          setModalVisible(false);
-        }
-      })
-      .catch(err => {
-        if (err) {
-          showDefaultErrorAlert();
-          setModalVisible(false);
-        }
-      });
+    getCartId().then(async cartId => {
+      console.log('THE CART ID =>', cartId);
+      if (cartId) {
+        await createOrUpdateCart(cartItems, {cartId: cartId})
+          .then(res => {
+            console.log('RESPONSE CART', res);
+            storeCartId(res.data.data?._id);
+            if (res) {
+              ToastAndroid.showWithGravity(
+                'Product added to cart',
+                ToastAndroid.SHORT,
+                ToastAndroid.TOP,
+              );
+              navigateTo('ProductShoppingBagScreen');
+              setModalVisible(false);
+            }
+          })
+          .catch(err => {
+            if (err) {
+              console.log('ERROR', err);
+              showDefaultErrorAlert();
+              setModalVisible(false);
+            }
+          });
+      } else {
+        await createOrUpdateCart(cartItems)
+          .then(res => {
+            console.log('RESPONSE CART', res);
+            storeCartId(res.data.data?._id);
+            if (res) {
+              ToastAndroid.showWithGravity(
+                'Product added to cart',
+                ToastAndroid.SHORT,
+                ToastAndroid.TOP,
+              );
+              navigateTo('ProductShoppingBagScreen');
+              setModalVisible(false);
+            }
+          })
+          .catch(err => {
+            if (err) {
+              console.log('ERROR', err);
+              showDefaultErrorAlert();
+              setModalVisible(false);
+            }
+          });
+      }
+    });
   };
   return (
     <View style={[container]}>
@@ -147,7 +289,12 @@ export const ProductInfo = props => {
               <View style={termsButtonWrapper}>
                 <View>
                   <Text style={termTitle}>
-                    {quantity ? item.price * quantity : item.price}원
+                    {quantity
+                      ? item.price * quantity * totalDays
+                      : totalDays
+                      ? totalDays * item.price
+                      : item.price}
+                    원
                   </Text>
                 </View>
                 <View>
@@ -736,6 +883,8 @@ export const ProductInfo = props => {
     </View>
   );
 };
+
+export default connect(mapStateToProps, null)(ProductInfo);
 
 const styles = StyleSheet.create({
   container: {

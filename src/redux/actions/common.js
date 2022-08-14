@@ -12,6 +12,12 @@ export function setReturnDate(data) {
     };
 }
 
+export function setTotalDays(data) {
+    return (dispatch, getState) => {
+        dispatch({ type: COMMON.SET_TOTAL_DAYS, payload: data });
+    };
+}
+
 export function setSelectedItem(data) {
     return (dispatch, getState) => {
         dispatch({ type: COMMON.SELECTED_ITEM, payload: data });
@@ -46,5 +52,11 @@ export function setSelectedLocation(data) {
 export function setSelectedSubLocation(data) {
     return (dispatch, getState) => {
         dispatch({ type: COMMON.SELECTED_SUB_LOCATION, payload: data });
+    };
+}
+
+export function setMainCartItems(data) {
+    return (dispatch, getState) => {
+        dispatch({ type: COMMON.SET_MAIN_CART_ITEMS, payload: data });
     };
 }

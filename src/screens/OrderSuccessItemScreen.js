@@ -29,7 +29,7 @@ const headerContent = {
 import {getUserCartHistory} from '../apis/cart';
 import {setUserCartHistory} from '../redux/actions/common';
 import {showDefaultErrorAlert} from '../global/global';
-import {goBack} from '../navigation/utils/RootNavigation';
+import {ORDER_STATUS} from '../utils/constants.json';
 
 export default function ThirdScreen() {
   const dispatch = useDispatch();
@@ -106,7 +106,10 @@ export default function ThirdScreen() {
             .format('YYYY.MM.DD')} 23:59:59`}
         />
         <View style={styles.border2}></View>
-        <SecondScreen1 t1="현재상태" t2={current_cart_details.paymentStatus} />
+        <SecondScreen1
+          t1="현재상태"
+          t2={ORDER_STATUS[current_cart_details.paymentStatus]}
+        />
         <Text
           style={{
             fontWeight: 'bold',

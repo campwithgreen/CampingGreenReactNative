@@ -6,6 +6,7 @@ import {
   ScrollView,
   FlatList,
   ToastAndroid,
+  TouchableOpacity,
 } from 'react-native';
 import {
   heightPercentageToDP as hp,
@@ -17,20 +18,44 @@ import ProductShoppingBag from '../components/ProductShoppingBag';
 import SecondScreen1 from '../components/SecondScreen1';
 import CustomButton from '../components/common/CustomButton';
 import {getUserCartHistory} from '../apis/cart';
-import {useSelector, useDispatch} from 'react-redux';
-import {setUserCartHistory} from '../redux/actions/common';
+import {useSelector, useDispatch, connect} from 'react-redux';
+import {setMainCartItems, setUserCartHistory} from '../redux/actions/common';
 import moment from 'moment';
 import COLOR from '../constants/colors';
 import Loader from '../components/common/Loader';
 import {goBack} from '../navigation/utils/RootNavigation';
+import CheckBox from '@react-native-community/checkbox';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {showDefaultErrorAlert} from '../global/global';
+import {setCurrentCheckoutCartDetails} from '../redux/actions/common';
+import {createOrUpdateCart} from '../apis/cart';
+import {navigateTo} from '../navigation/utils/RootNavigation';
 
-const ProductShoppingBagScreen = () => {
+const mapStateToProps = (state, ownProps) => {
+  const isLogin = state?.oauth?.isLogin;
+  const cart_history = state.common?.cart_history;
+  const main_cart_items = state.common?.main_cart_items;
+  const current_cart_details = state?.common.current_cart_details;
+  const store = state;
+  return {
+    isLogin,
+    cart_history,
+    main_cart_items,
+    current_cart_details,
+    store,
+  };
+};
+const ProductShoppingBagScreen = props => {
   const dispatch = useDispatch();
 
-  const isLogin = useSelector(st => st?.oauth?.isLogin);
-  const cart_history = useSelector(st => st.common?.cart_history);
   const [cartMainData, setCartMainData] = useState(cart_history);
+
   const [loading, setLoading] = useState(false);
+
+  const {isLogin, cart_history, main_cart_items, current_cart_details, store} =
+    props;
+
+  // console.log('store', store);
 
   const headerContent = {
     middleItemContents: {
@@ -47,9 +72,47 @@ const ProductShoppingBagScreen = () => {
     },
   };
 
-  const [isSelected, setSelection] = useState(false);
+  const [isSelected, setIsSelected] = useState(false);
   const [checkedCount, setCheckedCount] = useState(0);
   const [productList, setProductList] = useState([]);
+  const [displayAmount, setDisplayAmount] = useState(null);
+  const [displayTotalAmount, setDisplayTotalAmount] = useState(null);
+  const [cartPayload, setCartPayload] = useState(productList);
+
+  // console.log('PRODUCT LIST FIRST', productList, checkedCount);
+
+  const generateSelectedPayload = productList => {
+    //productList is with all data in itemId
+    let cartPayload;
+    if (productList) {
+      cartPayload = JSON.parse(JSON.stringify(productList));
+      console.log('CART PAYLOAD INIT', cartPayload);
+      cartPayload.map(item => {
+        item.itemId = item.itemId?._id;
+      });
+
+      setCartPayload(cartPayload);
+      console.log('CART PAYLOAD', cartPayload);
+
+      let displayAmount = 0;
+      let displayTotalAmount = 0;
+
+      productList.map(product => {
+        if (product.isSelected) {
+          var start = moment(product.startDate);
+          var end = moment(product.endDate);
+          var totalDays = end.diff(start, 'days') - 1;
+          displayAmount += totalDays * product.units * product?.itemId?.price;
+          //TO DO Add shippingAmount in BE
+          // displayTotalAmount += (totalDays * product.units) * product?.itemId?.price + product?.itemId?.shippingAmount;
+          displayTotalAmount +=
+            totalDays * product.units * product?.itemId?.price;
+        }
+      });
+      setDisplayAmount(displayAmount);
+      setDisplayTotalAmount(displayTotalAmount);
+    }
+  };
 
   useEffect(() => {
     if (isLogin) {
@@ -82,7 +145,6 @@ const ProductShoppingBagScreen = () => {
               }, Object.create(null));
 
               let bagData = [];
-
               if (result) {
                 Object.keys(result).map(key => {
                   if (key.indexOf('CHECKOUT_PENDING') > -1) {
@@ -90,9 +152,11 @@ const ProductShoppingBagScreen = () => {
                   }
                 });
               }
-
-              setProductList(bagData);
-
+              console.log('bagData =====================', bagData);
+              bagData[0]?.items.map(item => {
+                item.isSelected = false;
+              });
+              setProductList(bagData[0]?.items);
               setLoading(false);
             }
           })
@@ -106,42 +170,207 @@ const ProductShoppingBagScreen = () => {
     }
   }, [isLogin]);
 
+  const handleIndividualCartItemDelete = (ID, cartPayload) => {
+    console.log('INDIVIDUAL DELETE');
+    console.log('C P', cartPayload);
+    var removeIndex = cartPayload.map(item => item?._id).indexOf(ID);
+    ~removeIndex && cartPayload.splice(removeIndex, 1);
+    console.log('Delete Payload', cartPayload);
+    setLoading(true);
+    getCartId().then(async cartId => {
+      console.log('Cart Id IN DELETE', cartId);
+      if (cartId) {
+        await createOrUpdateCart(
+          {
+            items: cartPayload,
+          },
+          {cartId: cartId},
+        )
+          .then(async res => {
+            console.log('RESPONSE CART FROM IND DELETE', res);
+            if (res) {
+              dispatch(setCurrentCheckoutCartDetails(res.data.data));
+              ToastAndroid.showWithGravity(
+                'Item Deleted',
+                ToastAndroid.SHORT,
+                ToastAndroid.TOP,
+              );
+              await getUserCartHistory(cartId)
+                .then(res => {
+                  console.log('CART USER DATA ++++++', res.data);
+                  if (res) {
+                    dispatch(setMainCartItems([res.data.data]));
+                    setProductList(res?.data?.data?.items);
+                  }
+                })
+                .catch(err => {
+                  console.log('Setting Error', err);
+                });
+              setLoading(false);
+            }
+          })
+          .catch(err => {
+            if (err) {
+              console.log('ERROER', err);
+              showDefaultErrorAlert(err?.response?.data?.error);
+            }
+            setLoading(false);
+          });
+      }
+    });
+  };
+
+  const handleMultipleDelete = async (IDS, cartPayload) => {
+    let newIds = [...IDS];
+
+    // console.log('IDS', IDS);
+    // console.log('HEY CARTPAYLOAD', cartPayload);
+
+    newIds.forEach(ids => {
+      if (ids?.isSelected) {
+        var removeIndex = cartPayload.map(item => item?._id).indexOf(ids?._id);
+        ~removeIndex && cartPayload.splice(removeIndex, 1);
+      }
+    });
+    removeCartId();
+    // console.log('SELECTED DELETED IDS', cartPayload);
+
+    setLoading(true);
+    getCartId().then(async cartId => {
+      // console.log('Cart Id IN DELETE', cartId);
+      if (cartId) {
+        await createOrUpdateCart(
+          {
+            items: cartPayload,
+          },
+          {cartId: cartId},
+        )
+          .then(async res => {
+            console.log('RESPONSE CART FROM IND DELETE', res);
+            if (res) {
+              dispatch(setCurrentCheckoutCartDetails(res.data.data));
+              ToastAndroid.showWithGravity(
+                'Item Deleted',
+                ToastAndroid.SHORT,
+                ToastAndroid.TOP,
+              );
+              await getUserCartHistory(cartId)
+                .then(res => {
+                  console.log('CART USER DATA ++++++', res.data);
+                  if (res) {
+                    dispatch(setMainCartItems([res.data.data]));
+                    setProductList(res?.data?.data?.items);
+                    console.log('HEY', res?.data?.data?.items);
+                  }
+                })
+                .catch(err => {
+                  console.log('Setting Error', err);
+                });
+              setLoading(false);
+            }
+          })
+          .catch(err => {
+            if (err) {
+              console.log('ERROER', err);
+              showDefaultErrorAlert(err?.response?.data?.error);
+            }
+            setLoading(false);
+          });
+      }
+    });
+  };
+
+  useEffect(() => {
+    generateSelectedPayload(productList);
+  }, [productList]);
+
   const ListHeaderComponent = () => {
     return (
-      <View style={styles.view1}>
-        <View style={styles.view2}>
-          {/* <Text style={{marginRight: wp('2%')}}>check</Text> */}
-          <Text
-            style={{
-              fontWeight: '600',
-              color: '#454C53',
-            }}>{`전체선택 (${checkedCount}/${productList.length})`}</Text>
+      productList.length !== 0 && (
+        <View style={styles.view1}>
+          <View style={styles.view2}>
+            <CheckBox
+              value={checkedCount !== productList?.length ? false : isSelected}
+              onValueChange={value => {
+                setIsSelected(value);
+                let newData = [...productList];
+                newData.map(it => {
+                  it.isSelected = value;
+                });
+                setProductList(newData);
+              }}
+              style={styles.checkbox}
+            />
+            <Text
+              style={{
+                fontWeight: '600',
+                color: '#454C53',
+              }}>{`전체선택 (${checkedCount}/${productList?.length})`}</Text>
+          </View>
+          <TouchableOpacity
+            onPress={() => {
+              if (checkedCount >= 1) {
+                handleMultipleDelete(productList, cartPayload);
+              } else {
+                ToastAndroid.showWithGravity(
+                  'Atleast One Item must be selected for delete',
+                  ToastAndroid.SHORT,
+                  ToastAndroid.TOP,
+                );
+              }
+            }}>
+            <Text style={{color: '#454C53', alignSelf: 'center'}}>
+              선택삭제
+            </Text>
+          </TouchableOpacity>
         </View>
-        <Text style={{color: '#454C53'}}>선택삭제</Text>
-      </View>
+      )
     );
   };
 
+  // console.log('LLL', productList?.length);
+
   const ListFooterComponent = () => {
     return (
-      <View style={{paddingBottom: hp('13.5%')}}>
-        <Div t1="주문상품 수" t2="총 2개" c1={styles.text1} c2={styles.text2} />
-        <Div
-          t1="총 주문금액"
-          t2="130,000원"
-          c1={styles.text1}
-          c2={styles.text2}
-        />
-        <Div t1="총 배송비" t2="0원" c1={styles.text1} c2={styles.text2} />
-        <View style={{paddingTop: hp('1.5%')}}>
+      productList.length !== 0 &&
+      checkedCount >= 1 && (
+        <View style={{paddingBottom: hp('13.5%')}}>
           <Div
-            t1="결제금액"
-            t2="130,000원"
+            t1="주문상품 수"
+            t2={`총 ${checkedCount}개`}
             c1={styles.text1}
-            c2={styles.text3}
+            c2={styles.text2}
           />
+          <Div
+            t1="총 주문금액"
+            t2={`${
+              displayAmount ||
+              (main_cart_items && main_cart_items[0]?.totalAmount)
+            }원`}
+            c1={styles.text1}
+            c2={styles.text2}
+          />
+          <Div
+            t1="총 배송비"
+            t2={`${
+              (main_cart_items && main_cart_items[0]?.shippingAmount) || 0
+            }원`}
+            c1={styles.text1}
+            c2={styles.text2}
+          />
+          <View style={{paddingTop: hp('1.5%')}}>
+            <Div
+              t1="결제금액"
+              t2={`${
+                displayTotalAmount ||
+                (main_cart_items && main_cart_items[0]?.totalAmount)
+              }원`}
+              c1={styles.text1}
+              c2={styles.text3}
+            />
+          </View>
         </View>
-      </View>
+      )
     );
   };
   const Div = ({t1, t2, c1, c2}) => {
@@ -153,49 +382,152 @@ const ProductShoppingBagScreen = () => {
     );
   };
 
+  const getCartId = async () => {
+    try {
+      const cartId = await AsyncStorage.getItem('@cart_id');
+
+      return cartId != null ? cartId : null;
+    } catch (e) {
+      console.log('getting cart error', e);
+    }
+    console.log('Done.');
+  };
+
+  const storeCartId = async value => {
+    console.log('VALUE CARTID', value);
+    try {
+      await AsyncStorage.setItem('@cart_id', value);
+    } catch (e) {
+      console.log('STORING CART ID ERROR', e);
+    }
+  };
+
+  const removeCartId = async value => {
+    console.log('VALUE CARTID', value);
+    try {
+      await AsyncStorage.removeItem('@cart_id');
+    } catch (e) {
+      console.log('STORING CART ID ERROR', e);
+    }
+  };
+
+  useEffect(() => {
+    getCartId().then(cartId => {
+      console.log('CHECKING CART ID', cartId);
+    });
+  }, []);
+
+  const handleCheckout = async (IDS, cartPayload) => {
+    let newIds = [...IDS];
+
+    console.log('IDS', IDS);
+    console.log('HEY CARTPAYLOAD', cartPayload);
+
+    newIds.forEach(ids => {
+      if (!ids?.isSelected) {
+        var removeIndex = cartPayload.map(item => item?._id).indexOf(ids?._id);
+        ~removeIndex && cartPayload.splice(removeIndex, 1);
+      }
+    });
+
+    // console.log('SELECTED CART CHECKOUT IDS', cartPayload);
+
+    let selectedCartDetails = {
+      ...current_cart_details,
+      items: productList.map(it => it.isSelected),
+      totalAmount: displayAmount,
+      shippingAmount: 0,
+      finalAmount: displayTotalAmount,
+    };
+    console.log('selectedCartDetails>>>>>>[442]', selectedCartDetails);
+    getCartId().then(async cartId => {
+      // console.log('HI CART ID', cartId);
+      if (cartId) {
+        await getUserCartHistory(cartId)
+          .then(res => {
+            dispatch(setCurrentCheckoutCartDetails(res.data.data));
+            ToastAndroid.showWithGravity(
+              'Checkout In Progress',
+              ToastAndroid.SHORT,
+              ToastAndroid.TOP,
+            );
+
+            navigateTo('RoomPaymentScreen', {
+              selectedProducts: cartPayload,
+              selectedCurrentCartDetails: selectedCartDetails,
+            });
+          })
+          .catch(err => {
+            console.log('err', err);
+          });
+        // await createOrUpdateCart({
+        //   items: cartPayload
+        // }, { cartId: cartId })
+        //   .then(res => {
+        //     console.log("RESPONSE CART", res);
+        //     if (res) {
+
+        //     }
+        //   })
+        //   .catch(err => {
+        //     if (err) {
+        //       showDefaultErrorAlert(err?.response?.data?.error);
+        //     }
+        //   });
+      }
+    });
+  };
+
+  // console.log('SELCTED CART PAYLOAD', cartPayload);
+
   return (
     <View style={{flex: 1}}>
       <Header headerContent={headerContent} />
       <ScrollView>
-        <View style={styles.border2}></View>
         {loading ? (
           <Loader />
         ) : (
-          <FlatList
-            numColumns={1}
-            ListHeaderComponent={ListHeaderComponent}
-            // ListFooterComponent={ListFooterComponent}
-            showsHorizontalScrollIndicator={false}
-            data={productList}
-            renderItem={({item, index}) => {
-              return (
-                <ProductShoppingBag
-                  index={index}
-                  item={item}
-                  key={item?.items[0]._id}
-                  productList={productList}
-                  setProductList={setProductList}
-                />
-              );
-            }}
-          />
+          productList && (
+            <FlatList
+              numColumns={1}
+              ListHeaderComponent={ListHeaderComponent}
+              ListFooterComponent={ListFooterComponent}
+              showsHorizontalScrollIndicator={false}
+              data={productList}
+              renderItem={({item, index}) => {
+                return (
+                  <ProductShoppingBag
+                    index={index}
+                    item={item}
+                    key={item?._id}
+                    productList={productList}
+                    setProductList={setProductList}
+                    setCheckedCount={setCheckedCount}
+                    cartPayload={cartPayload}
+                    setCartPayload={setCartPayload}
+                    handleIndividualCartItemDelete={
+                      handleIndividualCartItemDelete
+                    }
+                  />
+                );
+              }}
+            />
+          )
         )}
       </ScrollView>
-      <CustomButton
-        buttonText={'예약하기'}
-        buttonHandler={() => {
-          ToastAndroid.showWithGravity(
-            'Checkout from Cart is Now Available Now, Pls checkout Directly',
-            ToastAndroid.LONG,
-            ToastAndroid.TOP,
-          );
-        }}
-      />
+      {productList?.length !== 0 && checkedCount >= 1 && (
+        <CustomButton
+          buttonText={'예약하기'}
+          buttonHandler={() => {
+            handleCheckout(productList, cartPayload);
+          }}
+        />
+      )}
     </View>
   );
 };
 
-export default ProductShoppingBagScreen;
+export default connect(mapStateToProps, null)(ProductShoppingBagScreen);
 
 const styles = StyleSheet.create({
   text1: {
@@ -227,10 +559,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: wp('5%'),
     marginBottom: hp('3%'),
+    marginVertical: hp('2%'),
   },
   view2: {
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
   },
   view3: {
     display: 'flex',
@@ -238,5 +572,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: wp('5%'),
     paddingVertical: hp('0.6%'),
+  },
+  checkbox: {
+    alignSelf: 'center',
   },
 });

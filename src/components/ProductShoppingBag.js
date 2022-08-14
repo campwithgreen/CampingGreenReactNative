@@ -1,42 +1,104 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
-import React, {useState} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ToastAndroid,
+  TouchableOpacity,
+} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
+import CheckBox from '@react-native-community/checkbox';
+import {connect} from 'react-redux';
+import moment from 'moment';
+import FONTSIZE from '../constants/fontSize';
 
-export default function ProductShoppingBag({
-  index,
-  item,
-  productList,
-  setProductList,
-}) {
-  const [count, setCount] = useState(item?.items[0]?.units);
+const mapStateToProps = (state, ownProps) => {
+  const totalDays = state?.common?.totalDays;
+  return {
+    totalDays,
+  };
+};
+
+const ProductShoppingBag = props => {
+  const {
+    index,
+    item,
+    productList,
+    setProductList,
+    setCheckedCount,
+    cartPayload,
+    setCartPayload,
+    handleIndividualCartItemDelete,
+  } = props;
+
+  const [count, setCount] = useState(item.units);
+
+  // console.log('INDEX', index);
+  // console.log('PL', productList);
+
+  var start = moment(item.startDate);
+  var end = moment(item.endDate);
+  var mainTotalDays = end.diff(start, 'days') - 1;
+
   const increment = () => {
     let newData = [...productList];
-    newData[index].items[0].units = count + 1;
+    newData[index].units = count + 1;
     setProductList(newData);
     setCount(i => i + 1);
   };
+
   const decrement = () => {
-    if (count > 0) {
+    if (count > 1) {
       let newData = [...productList];
-      newData[index].items[0].units = count - 1;
+      newData[index].units = count - 1;
       setProductList(newData);
       setCount(i => i - 1);
+    } else {
+      ToastAndroid.showWithGravity(
+        'Minimum 1 unit must be for a cart item',
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+      );
     }
   };
+
+  const selectedFilter = productList => {
+    setCheckedCount(
+      productList.filter(item => item.isSelected === true)?.length,
+    );
+  };
+
+  useEffect(() => {
+    selectedFilter(productList);
+  }, [productList]);
+
   return (
     <View>
       <View style={styles.view1}>
-        <Image source={require('../assets/images/white_circle.png')} />
-
-        <Text style={styles.btn}>삭제</Text>
+        <CheckBox
+          value={item.isSelected}
+          onValueChange={value => {
+            let newData = [...productList];
+            newData[index].isSelected = value;
+            setProductList(newData);
+          }}
+          style={styles.checkbox}
+        />
+        <TouchableOpacity
+          onPress={() => {
+            handleIndividualCartItemDelete(item?._id, cartPayload);
+          }}>
+          <Text style={styles.btn}>삭제</Text>
+        </TouchableOpacity>
       </View>
       <View style={styles.view1}>
         <View style={styles.view2}>
-          <Text style={styles.text}>{item?.items[0]?.itemId?.title}</Text>
-          <Text style={styles.text}>{item?.items[0]?.itemId?.description}</Text>
+          <Text style={styles.textTitle}>{item?.itemId?.title}</Text>
+          <Text style={styles.text}>{item?.itemId?.description}</Text>
           <View style={styles.view3}>
             <View style={styles.view4}>
               <Text style={styles.text1} onPress={decrement}>
@@ -50,14 +112,16 @@ export default function ProductShoppingBag({
               </Text>
             </View>
             <Text style={styles.text3}>
-              {item?.items[0]?.units * item?.items[0]?.itemId?.price}
+              {mainTotalDays
+                ? mainTotalDays * (item?.units * item?.itemId?.price)
+                : item?.units * item?.itemId?.price}
             </Text>
           </View>
         </View>
         <View>
           <Image
             source={{
-              uri: item?.items[0]?.itemId?.carousel[0],
+              uri: item?.itemId?.carousel[0],
             }}
             style={{
               height: hp('15%'),
@@ -71,7 +135,9 @@ export default function ProductShoppingBag({
       <View style={styles.border2}></View>
     </View>
   );
-}
+};
+
+export default connect(mapStateToProps, null)(ProductShoppingBag);
 
 const styles = StyleSheet.create({
   btn: {
@@ -112,13 +178,18 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     width: wp('18%'),
     paddingHorizontal: wp('2%'),
-    // paddingVertical: hp('0%'),
     borderWidth: 1.4,
     borderColor: 'lightgrey',
   },
+  textTitle: {
+    fontWeight: 'bold',
+    fontSize: FONTSIZE.l,
+    color: 'black',
+    width: wp('55%'),
+  },
   text: {
     fontWeight: 'bold',
-    // fontSize: 18,
+    fontSize: FONTSIZE.l,
     color: 'black',
   },
   text1: {
@@ -152,5 +223,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 10,
     borderBottomColor: 'lightgrey',
     marginVertical: hp('4%'),
+  },
+  checkbox: {
+    alignSelf: 'center',
   },
 });

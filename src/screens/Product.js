@@ -24,19 +24,7 @@ import Loader from '../components/common/Loader';
 import FONTSIZE from '../constants/fontSize';
 import globalStyle from '../global/globalStyle';
 import COLOR from '../constants/colors';
-
-const headerContent = {
-  leftItemContents: {
-    type: 'text',
-    content: 'CAMPING GREEEN',
-    navigateScreen: 'HomeScreenDetail1',
-  },
-  rightItemContents: {
-    type: 'image',
-    content: require('../assets/images/cart.png'),
-    navigateScreen: 'LoginScreen',
-  },
-};
+import {navigateTo} from '../navigation/utils/RootNavigation';
 
 export const Product = props => {
   const {container} = styles;
@@ -46,7 +34,31 @@ export const Product = props => {
 
   const st = useSelector(st => st);
   const product = useSelector(st => st.product?.product);
+  const isLogin = useSelector(st => st.oauth.isLogin);
   console.log('STORE', st);
+
+  const headerContent = {
+    leftItemContents: {
+      type: 'text',
+      content: 'CAMPING GREEEN',
+      navigateScreen: 'HomeScreenDetail1',
+    },
+    rightItemContents: {
+      type: 'cart',
+      content: require('../assets/images/cart.png'),
+      navigateScreen: () => {
+        if (!isLogin) {
+          ToastAndroid.showWithGravity(
+            'Pls Login to View Cart',
+            ToastAndroid.LONG,
+            ToastAndroid.TOP,
+          );
+        } else {
+          navigateTo('ProductShoppingBagScreen');
+        }
+      },
+    },
+  };
 
   useEffect(() => {
     (async function getAllProductsData() {
@@ -84,7 +96,7 @@ export const Product = props => {
                 fontSize: FONTSIZE.xl,
                 fontWeight: 'bold',
               }}>
-              전체 {product.length}
+              전체 {product?.length}
             </Text>
           )}
           {loading ? <Loader /> : <ProductDetail product={product} />}

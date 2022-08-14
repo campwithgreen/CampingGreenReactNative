@@ -20,6 +20,10 @@ import ProductShoppingBagScreen from '../screens/ProductShoppingBagScreen';
 import RoomPaymentScreen from '../screens/RoomPaymentScreen';
 import {Product} from '../screens/Product';
 import RoomReservationListScreen from '../screens/RoomReservationListScreen';
+import {connect, useSelector} from 'react-redux';
+import EquipmentRentalScreen from '../admin-screens/EquipmentRentalScreen';
+import FixRentalEquipmentScreen from '../admin-screens/FixRentalEquipmentScreen';
+import FixRentalSuppliesScreen from '../admin-screens/FixRentalSuppliesScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -28,13 +32,115 @@ const AppNavigatorOptions = {
   gestureEnabled: false,
 };
 
+const mapStateToProps = (state, ownProps) => {
+  const role = state?.oauth?.user_data?.data?.role;
+  return {
+    role,
+  };
+};
+
 /**
  * @author
  * @function HomeTabNavigation
  **/
-export const HomeTabNavigation = props => {
+const HomeTabNavigation = props => {
   const {tabIcon} = styles;
-  return (
+  const {role} = props;
+
+  console.log('ROLE ===>', role);
+
+  return role === 'ADMIN' ? (
+    <Tab.Navigator
+      initialRouteName="AdminProductScreen"
+      screenOptions={tabs => {
+        const {name} = tabs.route;
+        if (name === 'AdminProductScreen') {
+          return {
+            tabBarIcon: () => {
+              return (
+                <Image
+                  style={{...tabIcon}}
+                  source={require('../assets/images/heart.png')}
+                />
+              );
+            },
+            tabBarLabel: 'AdminProductScreen',
+            tabBarStyle: {
+              // height: 70,
+            },
+            tabBarItemStyle: {
+              padding: 7,
+            },
+            ...AppNavigatorOptions,
+          };
+        } else if (name === 'AdminLocationScreen') {
+          return {
+            tabBarIcon: () => {
+              return (
+                <Image
+                  style={tabIcon}
+                  source={require('../assets/images/location.png')}
+                />
+              );
+            },
+            tabBarLabel: 'AdminLocationScreen',
+            tabBarStyle: {
+              // height: 70,
+            },
+            tabBarItemStyle: {
+              padding: 7,
+            },
+            ...AppNavigatorOptions,
+          };
+        } else if (name === 'AdminOrderScreen') {
+          return {
+            tabBarIcon: () => {
+              return (
+                <Image
+                  style={tabIcon}
+                  source={require('../assets/images/home.png')}
+                />
+              );
+            },
+            tabBarLabel: 'AdminOrderScreen',
+            tabBarStyle: {
+              height: 70,
+            },
+            tabBarItemStyle: {
+              padding: 7,
+            },
+            ...AppNavigatorOptions,
+          };
+        } else if (name === 'AdminUserScreen') {
+          return {
+            tabBarIcon: () => {
+              return (
+                <Image
+                  style={tabIcon}
+                  source={require('../assets/images/profile.png')}
+                />
+              );
+            },
+            tabBarLabel: 'AdminUserScreen',
+            tabBarStyle: {
+              height: 70,
+            },
+            tabBarItemStyle: {
+              padding: 7,
+            },
+            ...AppNavigatorOptions,
+          };
+        }
+      }}>
+      <Tab.Screen name="AdminProductScreen" component={EquipmentRentalScreen} />
+      <Tab.Screen
+        name="AdminLocationScreen"
+        component={FixRentalEquipmentScreen}
+      />
+      <Tab.Screen name="AdminOrderScreen" component={FixRentalSuppliesScreen} />
+      <Tab.Screen name="AdminUserScreen" component={ChatScreen} />
+    </Tab.Navigator>
+  ) : (
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={tabs => {
@@ -144,6 +250,8 @@ export const HomeTabNavigation = props => {
     </Tab.Navigator>
   );
 };
+
+export default connect(mapStateToProps, null)(HomeTabNavigation);
 
 const styles = StyleSheet.create({
   tabIcon: {

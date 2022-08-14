@@ -27,6 +27,7 @@ import {navigateTo, goBack} from '../navigation/utils/RootNavigation';
 import FONTSIZE from '../constants/fontSize';
 import globalStyle from '../global/globalStyle';
 import {setCurrentCheckoutCartDetails} from '../redux/actions/common';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Input = ({
   t1,
@@ -64,7 +65,7 @@ const Input = ({
   );
 };
 
-const RoomPaymentScreen = () => {
+const RoomPaymentScreen = props => {
   const headerContent = {
     leftItemContents: {
       type: 'image',
@@ -79,10 +80,53 @@ const RoomPaymentScreen = () => {
       navigateScreen: 'HomeScreenDetail1',
     },
   };
+
+  const {route} = props;
+
+  let current_cart_details = useSelector(st => st.common.current_cart_details);
+
+  const selectedProducts = route?.params?.selectedProducts;
+  const selectedCartDetails = route?.params?.selectedCartDetails;
+
+  if (selectedProducts) {
+    current_cart_details = selectedCartDetails;
+    console.log(
+      'selectedProducts[95]>>>>>>>>>>>>>>>>>>>>',
+      route?.params?.selectedProducts,
+      'route?.params?.selectedCartDetails',
+      route?.params?.selectedCartDetails,
+    );
+  }
+
   const [flag, setFlag] = useState({p1: false, p2: true, p3: true, p4: true});
 
-  console.log('FLAG', flag);
+  const getCartId = async () => {
+    try {
+      const cartId = await AsyncStorage.getItem('@cart_id');
+      return cartId != null ? cartId : null;
+    } catch (e) {
+      console.log('getting cart error', e);
+    }
+    console.log('Done.');
+  };
 
+  const storeCartId = async value => {
+    console.log('VALUE CARTID', value);
+    try {
+      await AsyncStorage.setItem('@cart_id', value);
+    } catch (e) {
+      console.log('STORING CART ID ERROR', e);
+    }
+  };
+
+  const removeCartId = async value => {
+    console.log('REMOVING CART ID');
+    try {
+      await AsyncStorage.removeItem('@cart_id');
+    } catch (e) {
+      console.log('STORING CART ID ERROR', e);
+    }
+  };
   const Comp = ({t1, t2, p}) => {
     return (
       <View
@@ -117,7 +161,6 @@ const RoomPaymentScreen = () => {
   const [address, setAddress] = useState(null);
   const [remarks, setRemarks] = useState(null);
 
-  const [carNum, setCarNum] = useState(null);
   // const [secondNum, setSecondNum] = useState(null)
   // const [firstNum, setFirstNum] = useState(null)
 
@@ -135,7 +178,9 @@ const RoomPaymentScreen = () => {
       };
 
       let mainPayload = {
-        items: current_cart_details.items,
+        items: current_cart_details?.items?.map(cartD => {
+          return {...cartD, itemId: cartD?.itemId?._id};
+        }),
         shipping_data: shipping_data,
       };
 
@@ -148,6 +193,12 @@ const RoomPaymentScreen = () => {
               await checkoutCart(mainPayload, query)
                 .then(res => {
                   if (res) {
+                    console.log('CART CHECKOUT ++++', res);
+                    if (res?.data?.newCartId) {
+                      storeCartId(res?.data?.newCartId);
+                    } else {
+                      removeCartId();
+                    }
                     console.log(res.data);
                     dispatch(setCurrentCheckoutCartDetails(res.data.data));
                     navigateTo('ThirdScreen');
@@ -194,10 +245,6 @@ const RoomPaymentScreen = () => {
       );
     }
   };
-
-  const current_cart_details = useSelector(
-    st => st.common.current_cart_details,
-  );
 
   console.log('WF', phone_number);
 
@@ -345,7 +392,7 @@ const RoomPaymentScreen = () => {
                         </View>
                         <View>
                           <Text style={[styles.comp3Text1, {fontSize: 14}]}>
-                            배송비 11000원
+                            배송비 0원
                           </Text>
                         </View>
                       </View>

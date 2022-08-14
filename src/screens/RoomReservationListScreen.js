@@ -35,7 +35,11 @@ const headerContent = {
 };
 
 const RoomReservationListScreen = () => {
-  const cart_history = useSelector(st => st?.common?.cart_history);
+  let cart_history = useSelector(st => st?.common?.cart_history);
+  //filtering not to show checkout pending items
+  cart_history = cart_history?.filter(
+    item => item.paymentStatus !== 'CHECKOUT_PENDING',
+  );
 
   let result = cart_history.reduce(function (r, a) {
     r[`${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${a.paymentStatus}`] =
@@ -48,8 +52,6 @@ const RoomReservationListScreen = () => {
     return r;
   }, Object.create(null));
 
-  console.log('GROPUPED', result);
-
   return (
     <View style={{backgroundColor: 'white', height: hp('100%')}}>
       <Header headerContent={headerContent} />
@@ -58,7 +60,7 @@ const RoomReservationListScreen = () => {
         {Object?.keys(result)?.map(key => {
           return (
             <View style={globalStyle.mainContainerWrapper} key={key}>
-              <Comp1 date={key.split('_')[0]} total={result[key].length} />
+              <Comp1 date={key.split('_')[0]} total={result[key]?.length} />
               {result[key]?.map(it => {
                 return (
                   <View key={it?.items[0]._id}>

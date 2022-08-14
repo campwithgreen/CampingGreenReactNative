@@ -5,8 +5,13 @@ const validateEmail = (email) => {
     return re.test(email);
 };
 
-const showDefaultErrorAlert = () => {
-    Alert.alert("Something Went Wrong, Pls try again");
+const showDefaultErrorAlert = (message) => {
+    if (message) {
+        Alert.alert(message);
+
+    } else {
+        Alert.alert("Something Went Wrong, Pls try again");
+    }
 };
 
 

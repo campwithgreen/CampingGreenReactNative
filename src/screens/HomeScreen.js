@@ -49,7 +49,7 @@ export const HomeScreen = props => {
       content: 'CAMPING GREEEN',
     },
     rightItemContents: {
-      type: 'image',
+      type: 'cart',
       content: require('../assets/images/cart.png'),
       navigateScreen: () => {
         if (!isLogin) {

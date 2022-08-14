@@ -23,6 +23,8 @@ export default function FormField(props) {
     placeholder,
     keyboardType,
     validate,
+    disabled,
+    autoFocus,
   } = props;
   const {formlabel, inputcontainer} = styles;
   const [lineColor, setLineColor] = useState(COLOR.black);
@@ -30,6 +32,8 @@ export default function FormField(props) {
   const onBlur = () => {
     setLineColor(COLOR.black);
   };
+
+  console.log('IS D', disabled);
 
   switch (type) {
     case 'textButton':
@@ -101,7 +105,9 @@ export default function FormField(props) {
               onChangeText={value => {
                 onChange(value);
               }}
+              editable={disabled}
               placeholder={placeholder}
+              autoFocus={autoFocus}
             />
           </View>
         </View>

@@ -30,6 +30,8 @@ import { showDefaultErrorAlert } from '../global/global';
 import { setCurrentCheckoutCartDetails } from '../redux/actions/common';
 import { createOrUpdateCart } from '../apis/cart';
 import { navigateTo } from '../navigation/utils/RootNavigation';
+import { setStartDate, setReturnDate } from '../redux/actions/common';
+import FONTSIZE from '../constants/fontSize';
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -83,9 +85,6 @@ const ProductShoppingBagScreen = (props) => {
   const [displayAmount, setDisplayAmount] = useState(null);
   const [displayTotalAmount, setDisplayTotalAmount] = useState(null);
   const [cartPayload, setCartPayload] = useState(productList);
-
-
-  console.log("PRODUCT LIST FIRST", productList, checkedCount);
 
 
   const generateSelectedPayload = (productList) => {
@@ -290,7 +289,7 @@ const ProductShoppingBagScreen = (props) => {
       productList.length !== 0 && <View style={styles.view1}>
         <View style={styles.view2}>
           <CheckBox
-            value={checkedCount !== productList?.length ? false : isSelected}
+            value={checkedCount !== productList?.length ? false : checkedCount === productList?.length ? true : isSelected}
             onValueChange={(value) => {
               setIsSelected(value);
               let newData = [...productList];
@@ -323,8 +322,6 @@ const ProductShoppingBagScreen = (props) => {
       </View>
     );
   };
-
-  console.log("LLL", productList?.length);
 
   const ListFooterComponent = () => {
     return (
@@ -413,7 +410,7 @@ const ProductShoppingBagScreen = (props) => {
     console.log("SELECTED CART CHECKOUT IDS", cartPayload);
 
     let selectedCartDetails = {
-      ...current_cart_details, items: productList.map((it) => it.isSelected),
+      ...current_cart_details, items: productList.filter((it) => it.isSelected),
       "totalAmount": displayAmount,
       "shippingAmount": 0,
       "finalAmount": displayTotalAmount,
@@ -437,6 +434,7 @@ const ProductShoppingBagScreen = (props) => {
           });
         }).catch((err) => {
           console.log("err", err);
+          showDefaultErrorAlert(err?.response?.data?.error);
         });
         // await createOrUpdateCart({
         //   items: cartPayload
@@ -461,6 +459,14 @@ const ProductShoppingBagScreen = (props) => {
 
 
   console.log("SELCTED CART PAYLOAD", cartPayload);
+  console.log("PRODUCT LIST", productList?.length);
+
+  useEffect(() => {
+    return () => {
+      dispatch(setStartDate(null));
+      dispatch(setReturnDate(null));
+    };
+  }, []);
 
   return (
     <View style={{ flex: 1 }}>
@@ -469,7 +475,7 @@ const ProductShoppingBagScreen = (props) => {
         {loading ? (
           <Loader />
         ) : (
-          productList && <FlatList
+          productList?.length >= 1 ? <FlatList
             numColumns={1}
             ListHeaderComponent={ListHeaderComponent}
             ListFooterComponent={ListFooterComponent}
@@ -490,7 +496,10 @@ const ProductShoppingBagScreen = (props) => {
                 />
               );
             }}
-          />
+          /> :
+            <View style={styles.emptyCartWrapper}>
+              <Text style={styles.emptyCartText}>No Items Added to Cart</Text>
+            </View>
         )}
       </ScrollView>
       {productList?.length !== 0 && checkedCount >= 1 && <CustomButton
@@ -552,4 +561,12 @@ const styles = StyleSheet.create({
   checkbox: {
     alignSelf: "center",
   },
+  emptyCartWrapper: {
+    minHeight: hp("30%"),
+    marginVertical: hp("10%")
+  },
+  emptyCartText: {
+    textAlign: "center",
+    fontSize: FONTSIZE.xl
+  }
 });

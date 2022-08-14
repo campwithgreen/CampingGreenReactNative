@@ -3,6 +3,7 @@ import { MainNavigation } from './src/navigation/MainNavigation';
 import { Provider } from 'react-redux';
 import store from './src/redux/store';
 import SplashScreen from './src/screens/SplashScreen';
+import { LogBox } from 'react-native';
 
 /**
 * @author
@@ -10,7 +11,9 @@ import SplashScreen from './src/screens/SplashScreen';
 **/
 const App = (props) => {
 
-  console.log("----THE STORE----", store.getState());
+  useEffect(() => {
+    LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
+  }, []);
 
   const [splash, setSplash] = useState(true);
 

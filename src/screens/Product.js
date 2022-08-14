@@ -15,7 +15,6 @@ import {
 } from 'react-native-responsive-screen';
 import ProductDetail from '../components/ProductDetail';
 import { RFPercentage } from 'react-native-responsive-fontsize';
-import Carousel from '../components/Carousel';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllProducts } from '../apis/product';
 import { setProductData } from '../redux/actions/product';
@@ -25,11 +24,13 @@ import FONTSIZE from '../constants/fontSize';
 import globalStyle from '../global/globalStyle';
 import COLOR from '../constants/colors';
 import { navigateTo } from '../navigation/utils/RootNavigation';
+import DropDownPicker from 'react-native-dropdown-picker';
+
 
 
 
 export const Product = props => {
-  const { container } = styles;
+  const { container, ddCont } = styles;
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
@@ -83,6 +84,58 @@ export const Product = props => {
     })();
   }, []);
 
+
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState('all');
+
+  const [items, setItems] = useState([
+    { label: 'All', value: 'all' },
+    { label: 'Bottle', value: 'bottle' },
+    { label: 'Bag', value: 'bag' },
+    { label: 'Tent', value: 'tent' },
+    { label: '캠핑 세트', value: '캠핑 세트' },
+    { label: '텐트', value: '텐트' },
+    { label: '타프', value: '타프' },
+    { label: '매트/침낭', value: '매트/침낭' },
+    { label: '코펠/버너/취사', value: '코펠/버너/취사' },
+    { label: '테이블/체어', value: '테이블/체어' },
+    { label: '감성소품', value: '감성소품' },
+
+  ]);
+
+  const filterData = async (filterValue) => {
+
+    let data = data = { type: 'PRODUCT' };
+
+    if (filterValue !== "all") {
+      data = { type: 'PRODUCT', filter: filterValue };
+    }
+
+    setLoading(true);
+    await getAllProducts(data)
+      .then(res => {
+        if (res) {
+          if (res.data.data?.length >= 1) {
+            dispatch(setProductData(res.data.data));
+          }
+          setLoading(false);
+        }
+      })
+      .catch(err => {
+        if (err) {
+          showDefaultErrorAlert();
+          setLoading(false);
+        }
+      });
+  };
+
+
+  const handleFilter = (value) => {
+    setValue(value);
+    filterData(value);
+  };
+
+
   return (
     <View style={container}>
       <Header headerContent={headerContent} />
@@ -93,13 +146,31 @@ export const Product = props => {
             { marginVertical: hp('4%') },
           ]}>
           {!loading && (
-            <Text
-              style={{
-                fontSize: FONTSIZE.xl,
-                fontWeight: 'bold',
-              }}>
-              전체 {product?.length}
-            </Text>
+            <View style={ddCont}>
+              <Text
+                style={{
+                  fontSize: FONTSIZE.xl,
+                  fontWeight: 'bold',
+                }}>
+                전체 {product?.length}
+              </Text>
+              <View>
+                <DropDownPicker
+                  open={open}
+                  value={value}
+                  items={items}
+                  setOpen={setOpen}
+                  setValue={setValue}
+                  setItems={setItems}
+                  containerStyle={{
+                    width: wp("35%"),
+                  }}
+                  onChangeValue={(value) => {
+                    handleFilter(value);
+                  }}
+                />
+              </View>
+            </View>
           )}
           {loading ? <Loader /> : <ProductDetail product={product} />}
         </View>
@@ -110,4 +181,9 @@ export const Product = props => {
 
 const styles = StyleSheet.create({
   container: { backgroundColor: COLOR.white },
+  ddCont: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between"
+  }
 });

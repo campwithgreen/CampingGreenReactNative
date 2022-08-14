@@ -10,18 +10,35 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import React from 'react';
-import {navigateTo} from '../navigation/utils/RootNavigation';
+import { navigateTo } from '../navigation/utils/RootNavigation';
+import { cancelOrder } from '../apis/cart';
+import { showDefaultErrorAlert } from '../global/global';
 
-const ThirdScreen3 = () => {
+const ThirdScreen3 = (props) => {
+
+
+  const { currentCartData } = props;
+
+  const handleCancelOrder = async (orderId) => {
+    console.log("CANCELLING", orderId);
+
+    await cancelOrder(orderId).then((res) => {
+      console.log("CANCEL RES", res);
+      if (res) {
+        navigateTo('RoomReservationListScreen');
+      }
+    }).catch((err) => {
+      console.log("err", err);
+      showDefaultErrorAlert();
+    });
+
+  };
+
   return (
     <View style={styles.view1}>
       <TouchableOpacity
         onPress={() => {
-          ToastAndroid.showWithGravity(
-            'Cancel Order feature is not avaiable now',
-            ToastAndroid.LONG,
-            ToastAndroid.TOP,
-          );
+          handleCancelOrder(currentCartData?._id);
         }}>
         <Text style={styles.btn1}> 예약취소</Text>
       </TouchableOpacity>

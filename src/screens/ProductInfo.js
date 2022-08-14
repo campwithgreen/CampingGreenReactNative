@@ -76,7 +76,6 @@ const ProductInfo = props => {
   const yyyy = today.getFullYear();
 
   useEffect(() => {
-    console.log("ST", startDate, returnDate);
     var start = moment(startDate);
     var end = moment(returnDate);
     var totalDays = end.diff(start, "days") - 1;
@@ -154,11 +153,9 @@ const ProductInfo = props => {
   useEffect(() => {
     (async function getCartPayload() {
       await getCartId().then(async (cartId) => {
-        console.log("CART ID ___________________", cartId);
         if (cartId) {
           await getUserCartHistory(cartId, false).then((res) => {
             if (res) {
-              console.log("POPULATE PAYLOAD", res?.data?.data?.items);
               setPayloadItems([...res?.data?.data?.items,
               {
                 itemId: selected_item._id,
@@ -186,22 +183,36 @@ const ProductInfo = props => {
     items: payloadItems
   };
 
-  console.log("CART ITEMS +++++++++++++", cartItems);
-
   useEffect(() => {
-    dispatch(setStartDate(null));
-    dispatch(setReturnDate(null));
-  }, []);
+    getCartId().then((cart) => {
+      console.log("CART IT",);
+    });
+  });
 
   const handleCheckout = async () => {
     console.log('CHCKOUT ITEMS *****', cartItems);
     getCartId().then(async (cartId) => {
       if (cartId) {
-        ToastAndroid.showWithGravity(
-          'An active cart already present, Pls checkout that first',
-          ToastAndroid.SHORT,
-          ToastAndroid.TOP,
-        );
+        await createOrUpdateCart(cartItems, { "cartId": cartId })
+          .then(res => {
+            console.log("RESPONSE CART", res);
+            if (res) {
+              dispatch(setCurrentCheckoutCartDetails(res.data.data));
+              ToastAndroid.showWithGravity(
+                'Checkout In Progress',
+                ToastAndroid.SHORT,
+                ToastAndroid.TOP,
+              );
+              navigateTo('RoomPaymentScreen');
+              setModalVisible(false);
+            }
+          })
+          .catch(err => {
+            if (err) {
+              showDefaultErrorAlert(err?.response?.data?.error);
+              setModalVisible(false);
+            }
+          });
       } else {
         await createOrUpdateCart(cartItems)
           .then(res => {

@@ -30,6 +30,7 @@ import { getUserCartHistory } from '../apis/cart';
 import { setUserCartHistory } from '../redux/actions/common';
 import { showDefaultErrorAlert } from '../global/global';
 import { ORDER_STATUS } from "../utils/constants.json";
+import FONTSIZE from '../constants/fontSize';
 
 export default function ThirdScreen() {
   const dispatch = useDispatch();
@@ -106,7 +107,7 @@ export default function ThirdScreen() {
             .format('YYYY.MM.DD')} 23:59:59`}
         />
         <View style={styles.border2}></View>
-        <SecondScreen1 t1="현재상태" t2={ORDER_STATUS[current_cart_details.paymentStatus]} />
+        <SecondScreen1 t1="현재상태" t2={ORDER_STATUS[current_cart_details?.paymentStatus]} />
         <Text
           style={{
             fontWeight: 'bold',
@@ -142,10 +143,12 @@ export default function ThirdScreen() {
           <Text style={[styles.text1, { color: '#56C596' }]}>
             상담센터로{'  '}
           </Text>
-          <Image source={require('../assets/images/white_circle.png')} />
+          <Text>
+            &#x2192;
+          </Text>
           <Text style={styles.text1}>{'  '}전화바랍니다.</Text>
         </View>
-        <ThirdScreen3 />
+        <ThirdScreen3 currentCartData={current_cart_details} />
       </ScrollView>
     </View>
   );

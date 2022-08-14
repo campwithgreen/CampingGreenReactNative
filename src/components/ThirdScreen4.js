@@ -12,10 +12,10 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {RFPercentage} from 'react-native-responsive-fontsize';
 
+//Room Payment Item Screen
 const ThirdScreen4 = props => {
-  const {itemData} = props;
+  const { itemData } = props;
   const data = itemData?.itemId;
   return (
     <View
@@ -31,12 +31,12 @@ const ThirdScreen4 = props => {
           marginVertical: hp('3%'),
         }}>
         <Image
-          source={{uri: data.carousel[0]}}
-          style={{marginRight: wp('5%'), height: 100, width: 100}}
+          source={{ uri: data.carousel[0] }}
+          style={{ marginRight: wp('5%'), height: 100, width: 100 }}
         />
-        <View style={{display: 'flex', justifyContent: 'space-between'}}>
+        <View style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Text
-            style={{paddingRight: '5%', color: '#000000', fontWeight: 'bold'}}>
+            style={{ paddingRight: '5%', color: '#000000', fontWeight: 'bold', width: wp("60%") }}>
             {data.title}
           </Text>
           <View>
@@ -48,7 +48,7 @@ const ThirdScreen4 = props => {
               }}>
               {data.price * itemData.units}원
             </Text>
-            <Text style={{color: '#000000'}}>수량 {itemData.units}개</Text>
+            <Text style={{ color: '#000000' }}>수량 {itemData.units}개</Text>
           </View>
         </View>
       </View>

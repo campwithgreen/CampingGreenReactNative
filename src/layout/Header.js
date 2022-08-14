@@ -39,9 +39,6 @@ const Header = props => {
 
   const dispatch = useDispatch();
 
-
-  console.log("HEADER ISLOGIN", mainCartItems);
-
   const filterCartItems = (cartData) => {
     let filteredBag = cartData?.filter((item) => item.paymentStatus === "CHECKOUT_PENDING");
     dispatch(setMainCartItems(filteredBag));

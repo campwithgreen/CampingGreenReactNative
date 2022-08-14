@@ -11,7 +11,7 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import { RFPercentage } from 'react-native-responsive-fontsize';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../layout/Header';
 import Carousel from '../components/Carousel';
 import SecondScreen1 from '../components/SecondScreen1';
@@ -26,13 +26,14 @@ import { setCurrentCheckoutCartDetails } from '../redux/actions/common';
 import { showDefaultErrorAlert } from '../global/global';
 import { navigateTo, goBack } from '../navigation/utils/RootNavigation';
 import Counter from '../components/common/Counter';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //객실 정보 스크린 camping room detail screen
 const SecondScreen = () => {
   const { container, centeredView, modalView, termTitle, termsButtonWrapper } =
     styles;
   const selected_subLocation = useSelector(
-    st => st.common.selected_sub_location,
+    st => st.common?.selected_sub_location,
   );
 
   const dispatch = useDispatch();
@@ -44,10 +45,64 @@ const SecondScreen = () => {
   const quantity = useSelector(st => st.common?.quantity);
 
   const [modalVisible, setModalVisible] = useState(false);
-  console.log(
-    selected_subLocation?.specifications,
-    ' selected_subLocation?.specifications  item in SecondScreen',
-  );
+  const [payloadItems, setPayloadItems] = useState([]);
+
+  const getCartId = async () => {
+    try {
+      const cartId = await AsyncStorage.getItem('@cart_id');
+      return cartId != null ? cartId : null;
+    } catch (e) {
+      console.log("getting cart error", e);
+    }
+    console.log('Done.');
+  };
+
+  const storeCartId = async (value) => {
+    console.log("VALUE CARTID", value);
+    try {
+      await AsyncStorage.setItem('@cart_id', value);
+    } catch (e) {
+      console.log("STORING CART ID ERROR", e);
+    }
+  };
+
+  const removeCartId = async (value) => {
+    console.log("REMOVING CART ID");
+    try {
+      await AsyncStorage.removeItem('@cart_id');
+    } catch (e) {
+      console.log("STORING CART ID ERROR", e);
+    }
+  };
+
+  useEffect(() => {
+    (async function getCartPayload() {
+      await getCartId().then(async (cartId) => {
+        console.log("CART ID ___________________", cartId);
+        if (cartId) {
+          await getUserCartHistory(cartId, false).then((res) => {
+            if (res) {
+              setPayloadItems([...res?.data?.data?.items,
+              {
+                itemId: selected_subLocation?._id,
+                units: quantity || 1,
+                startDate: startDate,
+                endDate: returnDate,
+              },
+              ]);
+            }
+          });
+        } else setPayloadItems([
+          {
+            itemId: selected_subLocation?._id,
+            units: quantity || 1,
+            startDate: startDate,
+            endDate: returnDate,
+          },
+        ]);
+      });
+    }());
+  }, [selected_subLocation, quantity, startDate, returnDate]);
 
   const headerContent = {
     leftItemContents: {
@@ -84,60 +139,116 @@ const SecondScreen = () => {
     return false;
   };
 
+
   let cartItems = {
-    items: [
-      {
-        itemId: selected_subLocation?._id,
-        units: quantity || 1,
-        startDate: startDate,
-        endDate: returnDate,
-      },
-    ],
+    items: payloadItems
   };
+
 
   const handleCheckout = async () => {
-    console.log('CHCKOUT ITEMS', cartItems);
-    await createOrUpdateCart(cartItems)
-      .then(res => {
-        if (res) {
-          dispatch(setCurrentCheckoutCartDetails(res.data.data));
-          ToastAndroid.showWithGravity(
-            'Checkout In Progress',
-            ToastAndroid.SHORT,
-            ToastAndroid.TOP,
-          );
-          navigateTo('RoomPaymentScreen');
-          setModalVisible(false);
-        }
-      })
-      .catch(err => {
-        if (err) {
-          showDefaultErrorAlert();
-          setModalVisible(false);
-        }
-      });
+    console.log('CHCKOUT ITEMS *****', cartItems);
+    getCartId().then(async (cartId) => {
+      if (cartId) {
+        await createOrUpdateCart(cartItems, { "cartId": cartId })
+          .then(res => {
+            console.log("RESPONSE CART", res);
+            if (res) {
+              dispatch(setCurrentCheckoutCartDetails(res.data.data));
+              ToastAndroid.showWithGravity(
+                'Checkout In Progress',
+                ToastAndroid.SHORT,
+                ToastAndroid.TOP,
+              );
+              navigateTo('RoomPaymentScreen');
+              setModalVisible(false);
+            }
+          })
+          .catch(err => {
+            if (err) {
+              showDefaultErrorAlert(err?.response?.data?.error);
+              setModalVisible(false);
+            }
+          });
+      } else {
+        await createOrUpdateCart(cartItems)
+          .then(res => {
+            console.log("RESPONSE CART", res);
+            if (res) {
+              dispatch(setCurrentCheckoutCartDetails(res.data.data));
+              ToastAndroid.showWithGravity(
+                'Checkout In Progress',
+                ToastAndroid.SHORT,
+                ToastAndroid.TOP,
+              );
+              navigateTo('RoomPaymentScreen');
+              setModalVisible(false);
+            }
+          })
+          .catch(err => {
+            if (err) {
+              showDefaultErrorAlert(err?.response?.data?.error);
+              setModalVisible(false);
+            }
+          });
+      }
+    });
   };
 
+
   const handleAddToCart = async () => {
-    console.log('CHCKOUT ADD ITEMS', cartItems);
-    await createOrUpdateCart(cartItems)
-      .then(res => {
-        if (res) {
-          ToastAndroid.showWithGravity(
-            'Product added to cart',
-            ToastAndroid.SHORT,
-            ToastAndroid.TOP,
-          );
-          navigateTo('ProductShoppingBagScreen');
-          setModalVisible(false);
-        }
-      })
-      .catch(err => {
-        if (err) {
-          showDefaultErrorAlert();
-          setModalVisible(false);
-        }
-      });
+
+    getCartId().then(async (cartId) => {
+      console.log("THE CART ID =>", cartId);
+      if (cartId) {
+        await createOrUpdateCart(cartItems, { "cartId": cartId })
+          .then(res => {
+            console.log("RESPONSE CART", res);
+            storeCartId(res.data.data?._id);
+            if (res) {
+              ToastAndroid.showWithGravity(
+                'Product added to cart',
+                ToastAndroid.SHORT,
+                ToastAndroid.TOP,
+              );
+              navigateTo('ProductShoppingBagScreen');
+              setModalVisible(false);
+            }
+
+
+          })
+          .catch(err => {
+            if (err) {
+              console.log("ERROR", err);
+              showDefaultErrorAlert();
+              setModalVisible(false);
+            }
+          });
+      } else {
+        await createOrUpdateCart(cartItems)
+          .then(res => {
+            console.log("RESPONSE CART", res);
+            storeCartId(res.data.data?._id);
+            if (res) {
+              ToastAndroid.showWithGravity(
+                'Product added to cart',
+                ToastAndroid.SHORT,
+                ToastAndroid.TOP,
+              );
+              navigateTo('ProductShoppingBagScreen');
+              setModalVisible(false);
+            }
+          })
+          .catch(err => {
+            if (err) {
+              console.log("ERROR", err);
+              showDefaultErrorAlert();
+              setModalVisible(false);
+            }
+          });
+      }
+
+    });
+
   };
 
   return (

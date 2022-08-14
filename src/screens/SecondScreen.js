@@ -247,50 +247,52 @@ const SecondScreen = () => {
             paddingHorizontal: wp('5%'),
             justifyContent: 'space-between',
           }}>
-          {selected_subLocation.additional_charges.map((allFeature, i) => {
-            return (
-              <>
-                <View
-                  style={{
-                    flex: 1,
-                    width: '100%',
-
-                    justifyContent: 'space-between',
-                    flexDirection: 'row',
-                  }}>
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      color: 'black',
-                    }}>
-                    {allFeature.add_feature_title}
-                  </Text>
+          {selected_subLocation.additional_charges.length > 0 &&
+            selected_subLocation.additional_charges.map((allFeature, i) => {
+              return (
+                <>
                   <View
                     style={{
                       flex: 1,
+                      width: '100%',
+
+                      justifyContent: 'space-between',
+                      flexDirection: 'row',
                     }}>
-                    {Object.keys(allFeature?.add_feature_value)?.map(
-                      (spec, index) => {
-                        return (
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              justifyContent: 'flex-end',
-                            }}>
-                            <Text style={styles.text2}>{spec}</Text>
-                            <Text> </Text>
-                            <Text style={[styles.text2, {textAlign: 'right'}]}>
-                              {allFeature?.add_feature_value[spec]}
-                            </Text>
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        color: 'black',
+                      }}>
+                      {allFeature.add_feature_title}
+                    </Text>
+                    <View
+                      style={{
+                        flex: 1,
+                      }}>
+                      {Object?.keys(allFeature?.add_feature_value)?.map(
+                        (spec, index) => {
+                          return (
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                justifyContent: 'flex-end',
+                              }}>
+                              <Text style={styles.text2}>{spec}</Text>
+                              <Text> </Text>
+                              <Text
+                                style={[styles.text2, {textAlign: 'right'}]}>
+                                {allFeature?.add_feature_value[spec]}
+                              </Text>
 
-                            {/* {index === 1 || index === 2 ? <Text></Text> : null} */}
-                          </View>
-                        );
-                      },
-                    )}
-                  </View>
+                              {/* {index === 1 || index === 2 ? <Text></Text> : null} */}
+                            </View>
+                          );
+                        },
+                      )}
+                    </View>
 
-                  {/* <View style={styles.view1}>
+                    {/* <View style={styles.view1}>
                 <Text style={styles.text2}>바비큐 추가</Text>
                 <Text></Text>
                 <Text
@@ -298,11 +300,11 @@ const SecondScreen = () => {
                   숯불 포함 15,000{'\n'}숯불 미포함 10,000
                 </Text>
               </View> */}
-                </View>
-                <View style={styles.border2}></View>
-              </>
-            );
-          })}
+                  </View>
+                  <View style={styles.border2}></View>
+                </>
+              );
+            })}
         </View>
         {/* <View style={styles.view1}>
           <Text style={styles.text2}>인원추가 요금</Text>

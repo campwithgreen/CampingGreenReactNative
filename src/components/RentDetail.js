@@ -161,7 +161,7 @@ const RenderItem = ({item}) => {
             객실정보
           </Text>
           <Text style={{color: '#454C53', fontSize: RFPercentage(1.7)}}>
-            입실 {item.checkinTime} 퇴실 {item.checkoutTime}
+            입실 {item?.checkinTime} 퇴실 {item?.checkoutTime}
           </Text>
         </View>
         <View

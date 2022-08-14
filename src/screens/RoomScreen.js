@@ -24,8 +24,6 @@ import Geolocation from 'react-native-geolocation-service';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import map_location from '../assets/images/map_location.png';
 
-import Geocoder from 'react-native-geocoder';
-
 const {width, height} = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 const CARD_HEIGHT = 420;

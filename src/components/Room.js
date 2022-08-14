@@ -8,8 +8,7 @@ import {navigateTo} from '../navigation/utils/RootNavigation';
 import {useDispatch, useSelector} from 'react-redux';
 import {setSelectedLocation} from '../redux/actions/common';
 
-const Room = ({item}) => {
-  console.log('ITEM', item);
+const Room = ({item, cardHeight}) => {
   let finalPrice = 0;
   const dispatch = useDispatch();
 
@@ -18,6 +17,7 @@ const Room = ({item}) => {
 
   return (
     <TouchableOpacity
+      style={{height: cardHeight}}
       onPress={() => {
         dispatch(setSelectedLocation(item));
         navigateTo('Rent', {subLocations: item});

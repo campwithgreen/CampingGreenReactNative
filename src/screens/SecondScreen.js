@@ -10,8 +10,8 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import { RFPercentage } from 'react-native-responsive-fontsize';
-import React, { useState, useEffect } from 'react';
+import {RFPercentage} from 'react-native-responsive-fontsize';
+import React, {useState, useEffect} from 'react';
 import Header from '../layout/Header';
 import Carousel from '../components/Carousel';
 import SecondScreen1 from '../components/SecondScreen1';
@@ -27,7 +27,7 @@ import {showDefaultErrorAlert} from '../global/global';
 import {navigateTo, goBack} from '../navigation/utils/RootNavigation';
 import Counter from '../components/common/Counter';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import {getUserCartHistory} from '../apis/cart';
 //객실 정보 스크린 camping room detail screen
 const SecondScreen = () => {
   const {container, centeredView, modalView, termTitle, termsButtonWrapper} =
@@ -52,56 +52,58 @@ const SecondScreen = () => {
       const cartId = await AsyncStorage.getItem('@cart_id');
       return cartId != null ? cartId : null;
     } catch (e) {
-      console.log("getting cart error", e);
+      console.log('getting cart error', e);
     }
     console.log('Done.');
   };
 
-  const storeCartId = async (value) => {
-    console.log("VALUE CARTID", value);
+  const storeCartId = async value => {
+    console.log('VALUE CARTID', value);
     try {
       await AsyncStorage.setItem('@cart_id', value);
     } catch (e) {
-      console.log("STORING CART ID ERROR", e);
+      console.log('STORING CART ID ERROR', e);
     }
   };
 
-  const removeCartId = async (value) => {
-    console.log("REMOVING CART ID");
+  const removeCartId = async value => {
+    console.log('REMOVING CART ID');
     try {
       await AsyncStorage.removeItem('@cart_id');
     } catch (e) {
-      console.log("STORING CART ID ERROR", e);
+      console.log('STORING CART ID ERROR', e);
     }
   };
 
   useEffect(() => {
     (async function getCartPayload() {
-      await getCartId().then(async (cartId) => {
-        console.log("CART ID ___________________", cartId);
+      await getCartId().then(async cartId => {
+        console.log('CART ID ___________________', cartId);
         if (cartId) {
-          await getUserCartHistory(cartId, false).then((res) => {
+          await getUserCartHistory(cartId, false).then(res => {
             if (res) {
-              setPayloadItems([...res?.data?.data?.items,
-              {
-                itemId: selected_subLocation?._id,
-                units: quantity || 1,
-                startDate: startDate,
-                endDate: returnDate,
-              },
+              setPayloadItems([
+                ...res?.data?.data?.items,
+                {
+                  itemId: selected_subLocation?._id,
+                  units: quantity || 1,
+                  startDate: startDate,
+                  endDate: returnDate,
+                },
               ]);
             }
           });
-        } else setPayloadItems([
-          {
-            itemId: selected_subLocation?._id,
-            units: quantity || 1,
-            startDate: startDate,
-            endDate: returnDate,
-          },
-        ]);
+        } else
+          setPayloadItems([
+            {
+              itemId: selected_subLocation?._id,
+              units: quantity || 1,
+              startDate: startDate,
+              endDate: returnDate,
+            },
+          ]);
       });
-    }());
+    })();
   }, [selected_subLocation, quantity, startDate, returnDate]);
 
   const headerContent = {
@@ -139,19 +141,17 @@ const SecondScreen = () => {
     return false;
   };
 
-
   let cartItems = {
-    items: payloadItems
+    items: payloadItems,
   };
-
 
   const handleCheckout = async () => {
     console.log('CHCKOUT ITEMS *****', cartItems);
-    getCartId().then(async (cartId) => {
+    getCartId().then(async cartId => {
       if (cartId) {
-        await createOrUpdateCart(cartItems, { "cartId": cartId })
+        await createOrUpdateCart(cartItems, {cartId: cartId})
           .then(res => {
-            console.log("RESPONSE CART", res);
+            console.log('RESPONSE CART', res);
             if (res) {
               dispatch(setCurrentCheckoutCartDetails(res.data.data));
               ToastAndroid.showWithGravity(
@@ -172,7 +172,7 @@ const SecondScreen = () => {
       } else {
         await createOrUpdateCart(cartItems)
           .then(res => {
-            console.log("RESPONSE CART", res);
+            console.log('RESPONSE CART', res);
             if (res) {
               dispatch(setCurrentCheckoutCartDetails(res.data.data));
               ToastAndroid.showWithGravity(
@@ -194,15 +194,13 @@ const SecondScreen = () => {
     });
   };
 
-
   const handleAddToCart = async () => {
-
-    getCartId().then(async (cartId) => {
-      console.log("THE CART ID =>", cartId);
+    getCartId().then(async cartId => {
+      console.log('THE CART ID =>', cartId);
       if (cartId) {
-        await createOrUpdateCart(cartItems, { "cartId": cartId })
+        await createOrUpdateCart(cartItems, {cartId: cartId})
           .then(res => {
-            console.log("RESPONSE CART", res);
+            console.log('RESPONSE CART', res);
             storeCartId(res.data.data?._id);
             if (res) {
               ToastAndroid.showWithGravity(
@@ -213,12 +211,10 @@ const SecondScreen = () => {
               navigateTo('ProductShoppingBagScreen');
               setModalVisible(false);
             }
-
-
           })
           .catch(err => {
             if (err) {
-              console.log("ERROR", err);
+              console.log('ERROR', err);
               showDefaultErrorAlert();
               setModalVisible(false);
             }
@@ -226,7 +222,7 @@ const SecondScreen = () => {
       } else {
         await createOrUpdateCart(cartItems)
           .then(res => {
-            console.log("RESPONSE CART", res);
+            console.log('RESPONSE CART', res);
             storeCartId(res.data.data?._id);
             if (res) {
               ToastAndroid.showWithGravity(
@@ -240,15 +236,13 @@ const SecondScreen = () => {
           })
           .catch(err => {
             if (err) {
-              console.log("ERROR", err);
+              console.log('ERROR', err);
               showDefaultErrorAlert();
               setModalVisible(false);
             }
           });
       }
-
     });
-
   };
 
   return (

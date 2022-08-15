@@ -55,26 +55,30 @@ const RoomReservationListScreen = () => {
   return (
     <View style={{backgroundColor: 'white', height: hp('100%')}}>
       <Header headerContent={headerContent} />
-      <Text style={{borderBottomWidth: 1.5, borderBottomColor: '#515151'}} />
-      <ScrollView style={{marginBottom: heightPercentageToDP('15%')}}>
-        {Object?.keys(result)?.map(key => {
-          return (
-            <View style={globalStyle.mainContainerWrapper} key={key}>
-              <Comp1 date={key.split('_')[0]} total={result[key]?.length} />
-              {result[key]?.map(it => {
-                return (
-                  <View key={it?.items[0]._id}>
-                    <Comp2
-                      btnText={result[key][0].paymentStatus}
-                      itemData={it}
-                    />
-                    <Comp3 key={it?.items[0]._id} itemData={it} />
-                  </View>
-                );
-              })}
-            </View>
-          );
-        })}
+      <Text style={{ borderBottomWidth: 1.5, borderBottomColor: '#515151' }} />
+      <ScrollView style={{ marginBottom: heightPercentageToDP('15%') }}>
+        {Object?.keys(result)?.length >= 1 ?
+          Object?.keys(result)?.map(key => {
+            return (
+              <View style={globalStyle.mainContainerWrapper} key={key}>
+                <Comp1 date={key.split('_')[0]} total={result[key]?.length} />
+                {result[key]?.map(it => {
+                  return (
+                    <View key={it?.items[0]._id}>
+                      <Comp2
+                        btnText={result[key][0].paymentStatus}
+                        itemData={it}
+                      />
+                      <Comp3 key={it?.items[0]._id} itemData={it} />
+                    </View>
+                  );
+                })}
+              </View>
+            );
+          }) : <View style={styles.emptyCartWrapper}>
+            <Text style={styles.emptyCartText}>No Orders Has Been Made</Text>
+          </View>
+        }
       </ScrollView>
     </View>
   );
@@ -167,13 +171,22 @@ const styles = StyleSheet.create({
   },
   comp3Text1: {
     fontWeight: 'bold',
-    fontSize: FONTSIZE.l,
+    fontSize: FONTSIZE.xl,
     color: COLOR.black,
+    width: wp("55%"),
   },
   comp3Text2: {
     fontWeight: 'bold',
     color: '#515151',
   },
+  emptyCartWrapper: {
+    minHeight: hp("30%"),
+    marginVertical: hp("10%")
+  },
+  emptyCartText: {
+    textAlign: "center",
+    fontSize: FONTSIZE.xl
+  }
 });
 
 const Comp3 = ({itemData}) => {

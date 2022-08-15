@@ -28,6 +28,9 @@ import FONTSIZE from '../constants/fontSize';
 import globalStyle from '../global/globalStyle';
 import {setCurrentCheckoutCartDetails} from '../redux/actions/common';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { setUserCartHistory } from '../redux/actions/common';
+import { getUserCartHistory } from '../apis/cart';
+import { get } from 'react-hook-form';
 
 const Input = ({
   t1,
@@ -86,19 +89,16 @@ const RoomPaymentScreen = props => {
   let current_cart_details = useSelector(st => st.common.current_cart_details);
 
   const selectedProducts = route?.params?.selectedProducts;
-  const selectedCartDetails = route?.params?.selectedCartDetails;
+  const selectedCurrentCartDetails = route?.params?.selectedCurrentCartDetails;
 
   if (selectedProducts) {
-    current_cart_details = selectedCartDetails;
-    console.log(
-      'selectedProducts[95]>>>>>>>>>>>>>>>>>>>>',
-      route?.params?.selectedProducts,
-      'route?.params?.selectedCartDetails',
-      route?.params?.selectedCartDetails,
-    );
+    current_cart_details = selectedCurrentCartDetails;
   }
 
-  const [flag, setFlag] = useState({p1: false, p2: true, p3: true, p4: true});
+  console.log("SELECTED PRODUCTS", selectedProducts);
+  console.log("SELCTED CART DETAILS", selectedCurrentCartDetails);
+
+  const [flag, setFlag] = useState({ p1: false, p2: true, p3: true, p4: true });
 
   const getCartId = async () => {
     try {
@@ -127,7 +127,8 @@ const RoomPaymentScreen = props => {
       console.log('STORING CART ID ERROR', e);
     }
   };
-  const Comp = ({t1, t2, p}) => {
+
+  const Comp = ({ t1, t2, p }) => {
     return (
       <View
         style={[
@@ -161,9 +162,6 @@ const RoomPaymentScreen = props => {
   const [address, setAddress] = useState(null);
   const [remarks, setRemarks] = useState(null);
 
-  // const [secondNum, setSecondNum] = useState(null)
-  // const [firstNum, setFirstNum] = useState(null)
-
   const handleProceedCheckout = async () => {
     if (flag.p1) {
       let shipping_data = {
@@ -174,7 +172,7 @@ const RoomPaymentScreen = props => {
       };
 
       let query = {
-        cartId: current_cart_details._id,
+        cartId: await getCartId().then((res) => res) || current_cart_details._id,
       };
 
       let mainPayload = {
@@ -199,13 +197,31 @@ const RoomPaymentScreen = props => {
                     } else {
                       removeCartId();
                     }
-                    console.log(res.data);
+                    getCartId().then((cartId) => {
+                      console.log("*********************THE CART ID ******************", cartId);
+                    });
                     dispatch(setCurrentCheckoutCartDetails(res.data.data));
                     navigateTo('ThirdScreen');
+
+                    //for storing order history
+                    (async function getCartHistory() {
+                      await getUserCartHistory()
+                        .then(res => {
+                          if (res) {
+                            dispatch(setUserCartHistory(res.data.data));
+                          }
+                        })
+                        .catch(err => {
+                          if (err) {
+                            showDefaultErrorAlert(err?.response?.data?.error);
+                          }
+                        });
+                    })();
                   }
                 })
                 .catch(err => {
                   if (err) {
+                    console.log("ROOM PAYMENT ERROR", err);
                     showDefaultErrorAlert();
                   }
                 });
@@ -246,7 +262,11 @@ const RoomPaymentScreen = props => {
     }
   };
 
-  console.log('WF', phone_number);
+
+  getCartId().then((cartId) => {
+    console.log(" +++++++++++++   THE CART ID +++++++++++++++++++", cartId);
+  });
+
 
   return (
     <View style={styles.container}>

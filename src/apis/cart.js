@@ -48,3 +48,8 @@ export function getUserCartHistory(id, populate) {
 
     return axiosInstance.get(url);
 }
+
+export function cancelOrder(cartId) {
+    let endpoint = `/v2/cart/cancel/${cartId}`;
+    return axiosInstance.put(endpoint);
+}

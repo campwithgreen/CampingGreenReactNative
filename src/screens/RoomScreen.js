@@ -87,7 +87,6 @@ const RoomScreen = () => {
     },
   });
 
-  console.log('state>>>', state);
   // async function requestPermission() {
   //   try {
   //     if (Platform.OS === 'ios') {

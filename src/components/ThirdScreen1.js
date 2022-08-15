@@ -1,16 +1,15 @@
-import {StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import React from 'react';
 import moment from 'moment';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const ThirdScreen1 = props => {
-  const {currentCartData} = props;
+  const { currentCartData } = props;
   const user_name = useSelector(st => st.oauth?.user_data?.data?.firstName);
-  console.log('currentCartData', currentCartData);
   return (
     <View style={styles.view1}>
       <Text
@@ -34,7 +33,7 @@ const ThirdScreen1 = props => {
           marginBottom: hp('5%'),
         }}>
         <Text style={[styles.text2]}>주문번호 </Text>
-        <Text style={[styles.text2, {color: '#56C596'}]}>
+        <Text style={[styles.text2, { color: '#56C596' }]}>
           {currentCartData._id}
         </Text>
       </Text>
@@ -47,13 +46,13 @@ const ThirdScreen1 = props => {
               <Text style={styles.text2}>예약기간</Text>
             </View>
             <View style={styles.view2}>
-              <Text style={[styles.text2, {color: '#E8EBED'}]}>
+              <Text style={[styles.text2, { color: '#E8EBED' }]}>
                 {user_name || currentCartData?.shipping_data?.name}
               </Text>
-              <Text style={[styles.text2, {color: '#E8EBED'}]}>
+              <Text style={[styles.text2, { color: '#E8EBED' }]}>
                 {item.units * item?.itemId?.price}
               </Text>
-              <Text style={[styles.text2, {color: '#E8EBED'}]}>
+              <Text style={[styles.text2, { color: '#E8EBED' }]}>
                 {moment(item.startDate).utc().format('MM.DD')} -{' '}
                 {moment(item.endDate).utc().format('MM.DD')}
               </Text>

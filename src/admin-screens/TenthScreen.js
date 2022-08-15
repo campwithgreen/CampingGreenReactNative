@@ -24,11 +24,12 @@ const headerContent = {
   },
   middleItemContents: {
     type: 'text',
-    content: '용품 올리기',
+    content: '용품대여 수정하기',
     navigateScreen: 'RoomScreen',
   },
 };
-const EighthScreen = () => {
+
+const TenthScreen = () => {
   const [count, setCount] = useState(0);
   const decrement = () => {
     if (count > 0) {
@@ -36,7 +37,12 @@ const EighthScreen = () => {
     }
   };
   return (
-    <View style={{backgroundColor: 'white', paddingBottom: hp('15%')}}>
+    <View
+      style={{
+        backgroundColor: 'white',
+        height: '100%',
+        paddingBottom: wp('24%'),
+      }}>
       <Header headerContent={headerContent} />
       <Text style={{borderBottomWidth: 2, borderBottomColor: '#F8F8F8'}}></Text>
       <ScrollView>
@@ -51,81 +57,63 @@ const EighthScreen = () => {
                 flexDirection: 'row',
               }}>
               <TouchableOpacity>
-                <Text style={styles.text2} onPress={decrement}>
+                <Text style={[styles.text2, {height: 35}]} onPress={decrement}>
                   -
                 </Text>
               </TouchableOpacity>
 
-              <Text style={[styles.text2, styles.text1]}>{count}</Text>
+              <Text style={[styles.text2, styles.text1, {height: 35}]}>
+                {count}
+              </Text>
               <TouchableOpacity>
-                <Text style={styles.text2} onPress={() => setCount(i => i + 1)}>
+                <Text
+                  style={[styles.text2, {height: 35}]}
+                  onPress={() => setCount(i => i + 1)}>
                   +
                 </Text>
               </TouchableOpacity>
             </View>
           </View>
         </View>
-        <Text
-          style={[
-            styles.text1,
-            {
-              paddingTop: hp('4%'),
-              paddingHorizontal: wp('5%'),
-              paddingBottom: hp('1%'),
-            },
-          ]}>
+        <Text style={[styles.text1, {paddingHorizontal: wp('5%')}]}>
           상세설명
         </Text>
         <Text
           style={{
             paddingHorizontal: wp('5%'),
-            fontWeight: '600',
-            paddingVertical: hp('0.7%'),
+            fontSize: 12,
+            paddingTop: wp('4%'),
+            fontWeight: 'bold',
+            paddingBottom: wp('2%'),
           }}>
           카테고리
         </Text>
-        <Comp2 p1="Ex) 색상" p2="코랄" t1="삭제" />
-        <Comp2 p1="Ex) 사이즈" p2="XL" t1="삭제" />
-        <Comp3 t1="카테고리 추가하기" />
-        <View
+        <Comp6 placeholder1="Ex) 색상" placeholder2="코랄" text="삭제" />
+        <Comp6 placeholder1="Ex) 사이즈" placeholder2="XL" text="삭제" />
+        <Comp7 t1="카테고리 추가하기" />
+        <Text
+          style={[
+            styles.text1,
+            {
+              paddingHorizontal: wp('5%'),
+              paddingBottom: wp('2%'),
+            },
+          ]}>
+          사진 업로드
+        </Text>
+        <ImageComp8 />
+        <TextInput
           style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
+            backgroundColor: '#F8F8F8',
+            height: 35,
+            textAlignVertical: 'top',
+            paddingLeft: wp('3%'),
+            marginTop: wp('3%'),
             marginHorizontal: wp('5%'),
-          }}>
-          <Text style={styles.text1}>사진 업로드</Text>
-          <View style={{display: 'flex', flexDirection: 'row'}}>
-            <Text
-              style={{
-                fontSize: 14,
-                marginRight: wp('3%'),
-                fontWeight: 'bold',
-              }}>
-              +
-            </Text>
-            <Text
-              style={{
-                fontSize: 14,
-                fontWeight: 'bold',
-              }}>
-              사진 추가하기
-            </Text>
-          </View>
-        </View>
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginHorizontal: wp('5%'),
-            paddingTop: wp('1%'),
-            paddingBottom: hp('25%'),
-          }}>
-          <ImageComp />
-          <ImageComp />
-          <WithoutImageComp />
-        </View>
+          }}
+          placeholder="설명 추가 …"
+        />
+        <Comp7 t1="사진 추가하기" />
       </ScrollView>
       <Button text="수정 완료" />
     </View>
@@ -140,34 +128,47 @@ const Comp1 = ({t1}) => {
     </View>
   );
 };
-const Comp2 = ({p1, p2, t1}) => {
+
+const Comp6 = ({placeholder1, placeholder2, text}) => {
   return (
-    <View style={[styles.view1, {paddingBottom: 0, paddingTop: hp('0.1%')}]}>
+    <View
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        paddingHorizontal: wp('5%'),
+        alignItems: 'center',
+        marginVertical: wp('2%'),
+      }}>
       <TextInput
-        style={{
-          backgroundColor: '#F8F8F8',
-          width: wp('23%'),
-          height: '80%',
-          paddingLeft: wp('3%'),
-          fontWeight: '600',
-        }}
-        placeholder={p1}
+        style={[
+          styles.textinput1,
+          {
+            width: wp('20%'),
+            marginRight: wp('3%'),
+            backgroundColor: '#F8F8F8',
+            paddingLeft: wp('3%'),
+          },
+        ]}
+        placeholder={placeholder1}
       />
       <TextInput
-        style={{
-          backgroundColor: '#F8F8F8',
-          width: wp('55%'),
-          height: '80%',
-          paddingLeft: wp('3%'),
-          fontWeight: '600',
-        }}
-        placeholder={p2}
+        style={[
+          styles.textinput1,
+          {
+            width: wp('56%'),
+            marginRight: wp('3%'),
+            backgroundColor: '#F8F8F8',
+            paddingLeft: wp('3%'),
+          },
+        ]}
+        placeholder={placeholder2}
       />
-      <Text style={{fontWeight: '600'}}>{t1}</Text>
+      <Text>{text}</Text>
     </View>
   );
 };
-const Comp3 = ({t1}) => {
+
+const Comp7 = ({t1}) => {
   return (
     <View
       style={{
@@ -176,6 +177,7 @@ const Comp3 = ({t1}) => {
         justifyContent: 'center',
         alignItems: 'center',
         marginVertical: hp('1%'),
+        paddingBottom: wp('5%'),
       }}>
       <Text
         style={{
@@ -196,36 +198,30 @@ const Comp3 = ({t1}) => {
   );
 };
 
-const ImageComp = () => {
+const ImageComp8 = () => {
   return (
     <ImageBackground
       source={require('../assets/images/jorgen.jpg')}
       style={{
-        height: 106,
-        width: 106,
+        height: 96,
         borderWidth: 1,
         borderColor: 'lightgrey',
+        marginHorizontal: wp('5%'),
       }}>
-      <View
+      <Text
         style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'flex-start',
+          backgroundColor: 'white',
+          paddingHorizontal: 7,
+          paddingVertical: 2,
+          textAlign: 'center',
+          textAlignVertical: 'center',
+          color: 'black',
+          position: 'absolute',
+          left: 0,
+          top: 0,
         }}>
-        <Text
-          style={{
-            backgroundColor: 'white',
-            paddingHorizontal: 7,
-            paddingVertical: 2,
-            textAlign: 'center',
-            textAlignVertical: 'center',
-            color: 'black',
-          }}>
-          1
-        </Text>
-        <Text></Text>
-      </View>
+        1
+      </Text>
       <Text
         style={{
           color: 'white',
@@ -239,47 +235,15 @@ const ImageComp = () => {
       </Text>
       <Text
         style={{
-          position: 'absolute',
-          left: '50%',
-          top: '50%',
+          height: 96,
+          width: wp('80%'),
+          textAlign: 'center',
+          textAlignVertical: 'center',
           color: 'white',
-          transform: [{translateX: -30}, {translateY: -10}],
         }}>
-        사진 업로드
+        사진 업로드하기
       </Text>
     </ImageBackground>
-  );
-};
-
-const WithoutImageComp = () => {
-  return (
-    <View
-      style={{
-        height: 106,
-        width: 106,
-        backgroundColor: '#E5E5E5',
-      }}>
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'flex-start',
-        }}>
-        <Text
-          style={{
-            backgroundColor: 'white',
-            paddingHorizontal: 7,
-            paddingVertical: 2,
-            textAlign: 'center',
-            textAlignVertical: 'center',
-            color: 'white',
-          }}>
-          1
-        </Text>
-        <Text></Text>
-      </View>
-    </View>
   );
 };
 
@@ -293,7 +257,7 @@ const Button = ({text}) => {
   );
 };
 
-export default EighthScreen;
+export default TenthScreen;
 
 const styles = StyleSheet.create({
   view1: {
@@ -308,6 +272,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'black',
     fontSize: 16,
+    textAlignVertical: 'center',
   },
   text2: {
     borderWidth: 1,
@@ -323,12 +288,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'lightgrey',
     width: wp('70%'),
-    height: '80%',
+    height: 35,
   },
   btn: {
     backgroundColor: '#E5E5E5',
     position: 'absolute',
-    bottom: 0,
+    bottom: 15,
     zIndex: 22,
     paddingVertical: hp('2%'),
     width: wp('90%'),

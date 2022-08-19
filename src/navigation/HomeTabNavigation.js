@@ -1,29 +1,30 @@
 import React from 'react';
-import {Image, StyleSheet} from 'react-native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { Image, StyleSheet } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
   HomeNavigation,
   LocationNavigation,
   ProductNavigation,
   ProfileNavigation,
 } from './HomeNavigation';
-import {HeartScreen} from '../screens/HeartScreen';
-import {LocationScreen} from '../screens/LocationScreen';
-import {ChatScreen} from '../screens/ChatScreen';
-import {ProfileScreen} from '../screens/ProfileScreen';
-import {MyScreen} from '../screens/MyScreen';
+import { HeartScreen } from '../screens/HeartScreen';
+import { LocationScreen } from '../screens/LocationScreen';
+import { ChatScreen } from '../screens/ChatScreen';
+import { ProfileScreen } from '../screens/ProfileScreen';
+import { MyScreen } from '../screens/MyScreen';
 import SecondScreen from '../screens/SecondScreen';
 import ThirdScreen from '../screens/OrderSuccessItemScreen';
 import ForthScreen from '../screens/OrderSuccessCamp';
 import RoomScreen from '../screens/RoomScreen';
 import ProductShoppingBagScreen from '../screens/ProductShoppingBagScreen';
 import RoomPaymentScreen from '../screens/RoomPaymentScreen';
-import {Product} from '../screens/Product';
+import { Product } from '../screens/Product';
 import RoomReservationListScreen from '../screens/RoomReservationListScreen';
-import {connect, useSelector} from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import EquipmentRentalScreen from '../admin-screens/EquipmentRentalScreen';
 import FixRentalEquipmentScreen from '../admin-screens/FixRentalEquipmentScreen';
 import FixRentalSuppliesScreen from '../admin-screens/FixRentalSuppliesScreen';
+import NineteenthScreen from '../admin-screens/NineteenthScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -44,8 +45,8 @@ const mapStateToProps = (state, ownProps) => {
  * @function HomeTabNavigation
  **/
 const HomeTabNavigation = props => {
-  const {tabIcon} = styles;
-  const {role} = props;
+  const { tabIcon } = styles;
+  const { role } = props;
 
   console.log('ROLE ===>', role);
 
@@ -53,18 +54,18 @@ const HomeTabNavigation = props => {
     <Tab.Navigator
       initialRouteName="AdminProductScreen"
       screenOptions={tabs => {
-        const {name} = tabs.route;
+        const { name } = tabs.route;
         if (name === 'AdminProductScreen') {
           return {
             tabBarIcon: () => {
               return (
                 <Image
-                  style={{...tabIcon}}
+                  style={{ ...tabIcon }}
                   source={require('../assets/images/heart.png')}
                 />
               );
             },
-            tabBarLabel: 'AdminProductScreen',
+            tabBarLabel: '용품대여',
             tabBarStyle: {
               // height: 70,
             },
@@ -83,7 +84,7 @@ const HomeTabNavigation = props => {
                 />
               );
             },
-            tabBarLabel: 'AdminLocationScreen',
+            tabBarLabel: '캠핑장 예약',
             tabBarStyle: {
               // height: 70,
             },
@@ -102,7 +103,7 @@ const HomeTabNavigation = props => {
                 />
               );
             },
-            tabBarLabel: 'AdminOrderScreen',
+            tabBarLabel: '결제승인',
             tabBarStyle: {
               height: 70,
             },
@@ -121,7 +122,7 @@ const HomeTabNavigation = props => {
                 />
               );
             },
-            tabBarLabel: 'AdminUserScreen',
+            tabBarLabel: '회원관리',
             tabBarStyle: {
               height: 70,
             },
@@ -138,19 +139,19 @@ const HomeTabNavigation = props => {
         component={FixRentalEquipmentScreen}
       />
       <Tab.Screen name="AdminOrderScreen" component={FixRentalSuppliesScreen} />
-      <Tab.Screen name="AdminUserScreen" component={ChatScreen} />
+      <Tab.Screen name="AdminUserScreen" component={NineteenthScreen} />
     </Tab.Navigator>
   ) : (
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={tabs => {
-        const {name} = tabs.route;
+        const { name } = tabs.route;
         if (name === 'Home') {
           return {
             tabBarIcon: () => {
               return (
                 <Image
-                  style={{...tabIcon}}
+                  style={{ ...tabIcon }}
                   source={require('../assets/images/home.png')}
                 />
               );

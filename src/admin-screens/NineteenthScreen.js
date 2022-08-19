@@ -11,10 +11,11 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {RFPercentage} from 'react-native-responsive-fontsize';
-import React from 'react';
-import {useState} from 'react';
+import React, { useEffect } from 'react';
+import { useState } from 'react';
 import Header from '../layout/Header';
+import { getAllUsers } from '../apis/admin';
+import { showDefaultErrorAlert } from '../global/global';
 
 const headerContent = {
   middleItemContents: {
@@ -100,6 +101,24 @@ const data = [
 ];
 
 const NineteenthScreen = () => {
+
+  const getUsers = async () => {
+    await getAllUsers().then((res) => {
+      if (res) {
+        console.log("USERS", res);
+      }
+    }).catch((err) => {
+      console.log("ERR", err);
+      showDefaultErrorAlert();
+    });
+  };
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+
+
+
   return (
     <View
       style={{
@@ -108,7 +127,7 @@ const NineteenthScreen = () => {
         height: '100%',
       }}>
       <Header headerContent={headerContent} />
-      <Text style={{borderBottomWidth: 2, borderBottomColor: '#F8F8F8'}}></Text>
+      <Text style={{ borderBottomWidth: 2, borderBottomColor: '#F8F8F8' }}></Text>
       <ScrollView>
         <TextInput
           style={{
@@ -134,15 +153,17 @@ const NineteenthScreen = () => {
               justifyContent: 'space-between',
               paddingTop: wp('5%'),
             }}>
-            <Text style={{fontWeight: 'bold'}}>올리기올</Text>
-            <Text
+            <Text style={{ fontWeight: 'bold' }}>
+              최신순
+            </Text>
+            {/* <Text
               style={{
                 paddingLeft: wp('4%'),
                 fontWeight: 'bold',
                 color: 'black',
               }}>
-              올리기올
-            </Text>
+              오래된순
+            </Text> */}
           </View>
           <View></View>
         </View>
@@ -150,12 +171,12 @@ const NineteenthScreen = () => {
           <Comp1 item={ele} key={i} />
         ))}
       </ScrollView>
-      <Comp2 />
+      {/* <Comp2 /> */}
     </View>
   );
 };
 
-const Comp1 = ({flag, item}) => {
+const Comp1 = ({ flag, item }) => {
   return (
     <View
       style={{
@@ -169,8 +190,8 @@ const Comp1 = ({flag, item}) => {
         paddingVertical: wp('2%'),
         marginTop: hp('3%'),
       }}>
-      <View style={{display: 'flex'}}>
-        <Text style={[styles.text1, {color: flag ? 'white' : 'black'}]}>
+      <View style={{ display: 'flex' }}>
+        <Text style={[styles.text1, { color: flag ? 'white' : 'black' }]}>
           {item.h1}
         </Text>
         <Text></Text>
@@ -182,11 +203,11 @@ const Comp1 = ({flag, item}) => {
           justifyContent: 'space-between',
           paddingLeft: wp('5%'),
         }}>
-        <View style={{display: 'flex', flexDirection: 'row'}}>
-          <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
+        <View style={{ display: 'flex', flexDirection: 'row' }}>
+          <Text style={[styles.text3, { color: flag ? 'lightgrey' : '' }]}>
             {item.text11} :{' '}
           </Text>
-          <Text style={[styles.text2, {color: flag ? 'white' : 'black'}]}>
+          <Text style={[styles.text2, { color: flag ? 'white' : 'black' }]}>
             {item.text12}
           </Text>
         </View>
@@ -195,18 +216,18 @@ const Comp1 = ({flag, item}) => {
             display: 'flex',
             flexDirection: 'row',
           }}>
-          <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
+          <Text style={[styles.text3, { color: flag ? 'lightgrey' : '' }]}>
             {item.text21} :{' '}
           </Text>
-          <Text style={[styles.text2, {color: flag ? 'white' : 'black'}]}>
+          <Text style={[styles.text2, { color: flag ? 'white' : 'black' }]}>
             {item.text22}
           </Text>
         </View>
-        <View style={{display: 'flex', flexDirection: 'row'}}>
-          <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
+        <View style={{ display: 'flex', flexDirection: 'row' }}>
+          <Text style={[styles.text3, { color: flag ? 'lightgrey' : '' }]}>
             {item.text31} :{' '}
           </Text>
-          <Text style={[styles.text2, {color: flag ? 'white' : 'black'}]}>
+          <Text style={[styles.text2, { color: flag ? 'white' : 'black' }]}>
             {item.text32}
           </Text>
         </View>
@@ -224,13 +245,13 @@ const Comp2 = () => {
   });
   const fun = btn => {
     if (btn == 1) {
-      setBtn({btn1: true, btn2: false, btn3: false, btn4: false});
+      setBtn({ btn1: true, btn2: false, btn3: false, btn4: false });
     } else if (btn == 2) {
-      setBtn({btn1: false, btn2: true, btn3: false, btn4: false});
+      setBtn({ btn1: false, btn2: true, btn3: false, btn4: false });
     } else if (btn == 3) {
-      setBtn({btn1: false, btn2: false, btn3: true, btn4: false});
+      setBtn({ btn1: false, btn2: false, btn3: true, btn4: false });
     } else {
-      setBtn({btn1: false, btn2: false, btn3: false, btn4: true});
+      setBtn({ btn1: false, btn2: false, btn3: false, btn4: true });
     }
   };
   return (

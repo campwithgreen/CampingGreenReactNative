@@ -22,6 +22,7 @@ import TermsScreen from '../screens/TermsScreen';
 import EquipmentRentalScreen from '../admin-screens/EquipmentRentalScreen';
 import FixRentalEquipmentScreen from '../admin-screens/FixRentalEquipmentScreen';
 import FixRentalSuppliesScreen from '../admin-screens/FixRentalSuppliesScreen';
+import NineteenthScreen from '../admin-screens/NineteenthScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -162,6 +163,7 @@ export const AdminProductNavigation = props => {
       <Stack.Screen name="EquipmentRentalScreen" component={EquipmentRentalScreen} />
       <Stack.Screen name="FixRentalEquipmentScreen" component={FixRentalEquipmentScreen} />
       <Stack.Screen name="FixRentalSuppliesScreen" component={FixRentalSuppliesScreen} />
+      <Stack.Screen name="UserScreen" component={NineteenthScreen} />
     </Stack.Navigator>
   );
 };

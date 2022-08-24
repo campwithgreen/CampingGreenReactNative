@@ -13,8 +13,16 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {iteratorSymbol} from 'immer/dist/internal';
 import Header from '../layout/Header';
+import { getAllProducts } from '../apis/product';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setProductData } from '../redux/actions/product';
+import { showDefaultErrorAlert } from '../global/global';
+import Loader from '../components/common/Loader';
+import CheckBox from '@react-native-community/checkbox';
+import FONTSIZE from '../constants/fontSize';
+import COLOR from '../constants/colors';
 
 const data = [
   {
@@ -22,7 +30,7 @@ const data = [
     img: require('../assets/images/tambu.png'),
     hText: '코베아 텐트',
     mText: '가격',
-    bText1: '300,000 원',
+    bText1: '300,000 ',
     bText2: '남은 수량 총 3개',
   },
   {
@@ -74,30 +82,61 @@ const headerContent = {
   },
 };
 const EquipmentRentalScreen = () => {
+
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const product = useSelector(st => st.product?.product);
+
+
+  console.log("STORE P", product);
+
+  useEffect(() => {
+    (async function getAllProductsData() {
+      let data = { type: 'PRODUCT' };
+      setLoading(true);
+      await getAllProducts(data)
+        .then(res => {
+          if (res) {
+            console.log('product ===>', res);
+            dispatch(setProductData(res.data.data));
+            setLoading(false);
+          }
+        })
+        .catch(err => {
+          if (err) {
+            showDefaultErrorAlert();
+            setLoading(false);
+          }
+        });
+    })();
+  }, []);
+
+
+
   return (
-    <View style={{backgroundColor: 'white', paddingBottom: 130}}>
+    <View style={{ backgroundColor: COLOR.white, minHeight: hp("100%") }}>
       <Header headerContent={headerContent} />
-      <Text style={{borderBottomWidth: 2, borderBottomColor: '#F8F8F8'}}></Text>
-      <ScrollView>
-        <View style={styles.view1}>
-          <Text style={styles.text1}>- 삭제하기</Text>
-          <Text style={styles.text1}>+ 용품 올리기</Text>
-        </View>
-        {data.map((item, i) => (
-          <Comp1 item={item} key={i} />
-        ))}
-      </ScrollView>
-      <View style={styles.bottomView}>
-        <Text style={{fontWeight: 'bold', color: '#222222'}}>용품대여</Text>
-        <Text style={{fontWeight: '600'}}>캠핑장 예약</Text>
-        <Text style={{fontWeight: '600'}}>결제승인</Text>
-        <Text style={{fontWeight: '600'}}>회원관리</Text>
-      </View>
+      <Text style={{ borderBottomWidth: 2, borderBottomColor: '#F8F8F8' }}></Text>
+      {loading ? <Loader /> :
+        <ScrollView style={{ marginBottom: hp("20%") }}>
+          <View style={styles.view1}>
+            <Text style={styles.text1}>- 삭제하기</Text>
+            <Text style={styles.text1}>+ 용품 올리기</Text>
+          </View>
+          {product && product?.length >= 1 ? product.map((item, i) => (
+            <Comp1 item={item} key={i} />
+          )) : <View>
+            <Text style={{ textAlign: "center" }}>No Product Available</Text>
+          </View>}
+        </ScrollView>}
     </View>
   );
 };
 
-const Comp1 = ({item}) => {
+const Comp1 = ({ item }) => {
+
+  const [isSelected, setIsSelected] = useState(false);
+
   return (
     <View
       style={{
@@ -107,22 +146,20 @@ const Comp1 = ({item}) => {
         backgroundColor: '#F8F8F8',
         marginBottom: hp('3%'),
       }}>
-      <ImageBackground source={item.img} style={{width: 120, height: 110}}>
-        <Text
-          style={{
-            borderWidth: 1,
-            borderColor: 'grey',
-            backgroundColor: 'white',
-            position: 'absolute',
-            top: 1,
-            left: 0,
-            color: 'black',
-            fontWeight: 'bold',
-            paddingHorizontal: wp('2%'),
-            paddingVertical: wp('1%'),
-          }}>
-          V
-        </Text>
+      <ImageBackground
+        source={{
+          uri: item?.carousel[0]
+        }}
+        resizeMode="stretch"
+        style={{ width: wp("33%"), height: hp("15%") }}
+      >
+        <CheckBox
+          value={isSelected}
+          onValueChange={(value) => {
+            setIsSelected(value);
+          }}
+          style={{ padding: 0, margin: 0, backgroundColor: COLOR.white }}
+        />
       </ImageBackground>
       <View
         style={{
@@ -139,13 +176,14 @@ const Comp1 = ({item}) => {
             alignItems: 'center',
             width: wp('55%'),
             paddingRight: wp('4%'),
+
           }}>
-          <Text style={{color: '#222222', fontWeight: 'bold', fontSize: 18}}>
-            {item.hText}
+          <Text style={{ color: '#222222', fontWeight: 'bold', fontSize: FONTSIZE.xl, maxWidth: wp("40%") }}>
+            {item?.title}
           </Text>
           <Image source={require('../assets/images/pencil.png')} />
         </View>
-        <Text style={{fontWeight: '600'}}>{item.mText}</Text>
+        <Text style={{ fontWeight: '600' }}>가격</Text>
         <View>
           <View
             style={{
@@ -153,10 +191,10 @@ const Comp1 = ({item}) => {
               flexDirection: 'row',
               justifyContent: 'space-between',
             }}>
-            <Text style={{fontWeight: 'bold', fontSize: 16}}>
-              {item.bText1}
+            <Text style={{ fontWeight: 'bold', fontSize: FONTSIZE.l }}>
+              {item?.price} 원
             </Text>
-            <Text style={{fontWeight: '600'}}>{item.bText2}</Text>
+            <Text style={{ fontWeight: '600' }}>남은 수량 총 {item?.stock}개</Text>
             <Text></Text>
           </View>
         </View>
@@ -177,7 +215,7 @@ const styles = StyleSheet.create({
   text1: {
     fontWeight: '600',
     color: 'grey',
-    fontSize: 18,
+    fontSize: FONTSIZE.xll,
   },
   bottomView: {
     position: 'absolute',

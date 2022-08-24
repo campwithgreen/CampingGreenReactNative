@@ -8,65 +8,23 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import React from 'react';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {RFPercentage} from 'react-native-responsive-fontsize';
-import React from 'react';
-import {useState} from 'react';
 import Header from '../layout/Header';
+import { getAllProducts } from '../apis/product';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setLocationData } from '../redux/actions/product';
+import { showDefaultErrorAlert } from '../global/global';
+import Loader from '../components/common/Loader';
+import CheckBox from '@react-native-community/checkbox';
+import FONTSIZE from '../constants/fontSize';
+import COLOR from '../constants/colors';
 
-const data = [
-  {
-    id: '1',
-    img: require('../assets/images/tambu.png'),
-    hText: '코베아 텐트',
-    mText: '가격',
-    bText1: '300,000 원',
-    bText2: '남은 수량 총 3개',
-  },
-  {
-    id: '2',
-    img: require('../assets/images/tambu.png'),
-    hText: '코베아 텐트',
-    mText: '가격',
-    bText1: '300,000 원',
-    bText2: '남은 수량 총 3개',
-  },
-  {
-    id: '3',
-    img: require('../assets/images/tambu.png'),
-    hText: '코베아 텐트',
-    mText: '가격',
-    bText1: '300,000 원',
-    bText2: '남은 수량 총 3개',
-  },
-  {
-    id: '4',
-    img: require('../assets/images/tambu.png'),
-    hText: '코베아 텐트',
-    mText: '가격',
-    bText1: '300,000 원',
-    bText2: '남은 수량 총 3개',
-  },
-  {
-    id: '5',
-    img: require('../assets/images/tambu.png'),
-    hText: '코베아 텐트',
-    mText: '가격',
-    bText1: '300,000 원',
-    bText2: '남은 수량 총 3개',
-  },
-  {
-    id: '6',
-    img: require('../assets/images/tambu.png'),
-    hText: '코베아 텐트',
-    mText: '가격',
-    bText1: '300,000 원',
-    bText2: '남은 수량 총 3개',
-  },
-];
+
 const headerContent = {
   middleItemContents: {
     type: 'text',
@@ -74,31 +32,60 @@ const headerContent = {
     navigateScreen: 'RoomScreen',
   },
 };
-const FourteenthScreen = () => {
+
+const LocationRentalSceen = () => {
+
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const location = useSelector(st => st.product?.location);
+
+  useEffect(() => {
+    (async function getAllProductsData() {
+      let data = { type: 'LOCATION' };
+      setLoading(true);
+      await getAllProducts(data)
+        .then(res => {
+          if (res) {
+            console.log('location ===>', res);
+            dispatch(setLocationData(res.data.data));
+            setLoading(false);
+          }
+        })
+        .catch(err => {
+          if (err) {
+            showDefaultErrorAlert();
+            setLoading(false);
+          }
+        });
+    })();
+  }, []);
+
+
+
   return (
-    <View
-      style={{
-        backgroundColor: 'white',
-        height: '100%',
-        paddingBottom: hp('15%'),
-      }}>
+    <View style={{ backgroundColor: COLOR.white, minHeight: hp("100%") }}>
       <Header headerContent={headerContent} />
-      <Text style={{borderBottomWidth: 2, borderBottomColor: '#F8F8F8'}}></Text>
-      <ScrollView>
-        <View style={styles.view1}>
-          <Text style={styles.text1}>- 삭제하기</Text>
-          <Text style={styles.text1}>+ 용품 올리기</Text>
-        </View>
-        {data.map((item, i) => (
-          <Comp1 item={item} key={i} />
-        ))}
-      </ScrollView>
-      <Comp2 />
+      <Text style={{ borderBottomWidth: 2, borderBottomColor: '#F8F8F8' }}></Text>
+      {loading ? <Loader /> :
+        <ScrollView style={{ marginBottom: hp("15%") }}>
+          <View style={styles.view1}>
+            <Text style={styles.text1}>- 삭제하기</Text>
+            <Text style={styles.text1}>+ 용품 올리기</Text>
+          </View>
+          {location && location?.length >= 1 ? location.map((item, i) => (
+            <Comp1 item={item} key={i} />
+          )) : <View>
+            <Text style={{ textAlign: "center" }}>No Camps Available</Text>
+          </View>}
+        </ScrollView>}
     </View>
   );
 };
 
-const Comp1 = ({item}) => {
+const Comp1 = ({ item }) => {
+
+  const [isSelected, setIsSelected] = useState(false);
+
   return (
     <View
       style={{
@@ -108,22 +95,20 @@ const Comp1 = ({item}) => {
         backgroundColor: '#F8F8F8',
         marginBottom: hp('3%'),
       }}>
-      <ImageBackground source={item.img} style={{width: 120, height: 110}}>
-        <Text
-          style={{
-            borderWidth: 1,
-            borderColor: 'grey',
-            backgroundColor: 'white',
-            position: 'absolute',
-            top: 1,
-            left: 0,
-            color: 'black',
-            fontWeight: 'bold',
-            paddingHorizontal: wp('2%'),
-            paddingVertical: wp('1%'),
-          }}>
-          V
-        </Text>
+      <ImageBackground
+        source={{
+          uri: item?.carousel[0]
+        }}
+        resizeMode="stretch"
+        style={{ width: wp("33%"), height: hp("15%") }}
+      >
+        <CheckBox
+          value={isSelected}
+          onValueChange={(value) => {
+            setIsSelected(value);
+          }}
+          style={{ padding: 0, margin: 0, backgroundColor: COLOR.white }}
+        />
       </ImageBackground>
       <View
         style={{
@@ -141,12 +126,12 @@ const Comp1 = ({item}) => {
             width: wp('55%'),
             paddingRight: wp('4%'),
           }}>
-          <Text style={{color: '#222222', fontWeight: 'bold', fontSize: 18}}>
-            {item.hText}
+          <Text style={{ color: '#222222', fontWeight: 'bold', fontSize: FONTSIZE.xl, maxWidth: wp("40%") }}>
+            {item?.title}
           </Text>
           <Image source={require('../assets/images/pencil.png')} />
         </View>
-        <Text style={{fontWeight: '600'}}>{item.mText}</Text>
+        <Text style={{ fontWeight: '600' }}>가격</Text>
         <View>
           <View
             style={{
@@ -154,10 +139,10 @@ const Comp1 = ({item}) => {
               flexDirection: 'row',
               justifyContent: 'space-between',
             }}>
-            <Text style={{fontWeight: 'bold', fontSize: 16}}>
-              {item.bText1}
+            <Text style={{ fontWeight: 'bold', fontSize: FONTSIZE.l }}>
+              {item?.price} 원
             </Text>
-            <Text style={{fontWeight: '600'}}>{item.bText2}</Text>
+            <Text style={{ fontWeight: '600' }}>남은 수량 총 {item?.stock}개</Text>
             <Text></Text>
           </View>
         </View>
@@ -165,60 +150,7 @@ const Comp1 = ({item}) => {
     </View>
   );
 };
-
-const Comp2 = () => {
-  const [btn, setBtn] = useState({
-    btn1: false,
-    btn2: false,
-    btn3: true,
-    btn4: false,
-  });
-  const fun = btn => {
-    if (btn == 1) {
-      setBtn({btn1: true, btn2: false, btn3: false, btn4: false});
-    } else if (btn == 2) {
-      setBtn({btn1: false, btn2: true, btn3: false, btn4: false});
-    } else if (btn == 3) {
-      setBtn({btn1: false, btn2: false, btn3: true, btn4: false});
-    } else {
-      setBtn({btn1: false, btn2: false, btn3: false, btn4: true});
-    }
-  };
-  return (
-    <View style={styles.comp2View}>
-      <TouchableOpacity>
-        <Text
-          style={btn.btn1 ? styles.btntxt2 : styles.btntxt1}
-          onPress={() => fun(1)}>
-          용품대여
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <Text
-          style={btn.btn2 ? styles.btntxt2 : styles.btntxt1}
-          onPress={() => fun(2)}>
-          캠핑장 예약
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <Text
-          style={btn.btn3 ? styles.btntxt2 : styles.btntxt1}
-          onPress={() => fun(3)}>
-          결제승인
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <Text
-          style={btn.btn4 ? styles.btntxt2 : styles.btntxt1}
-          onPress={() => fun(4)}>
-          회원관리
-        </Text>
-      </TouchableOpacity>
-    </View>
-  );
-};
-
-export default FourteenthScreen;
+export default LocationRentalSceen;
 
 const styles = StyleSheet.create({
   view1: {
@@ -231,27 +163,18 @@ const styles = StyleSheet.create({
   text1: {
     fontWeight: '600',
     color: 'grey',
-    fontSize: 18,
+    fontSize: FONTSIZE.xll,
   },
-  comp2View: {
+  bottomView: {
+    position: 'absolute',
+    bottom: 0,
     backgroundColor: '#E5E5E5',
-    paddingHorizontal: wp('5%'),
+    width: wp('100%'),
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    height: hp('15%'),
-    paddingTop: wp('5%'),
-  },
-  btntxt1: {
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  btntxt2: {
-    fontWeight: 'bold',
-    fontSize: 16,
-    color: 'black',
+    height: 130,
+    paddingHorizontal: wp('4%'),
+    paddingTop: hp('3%'),
   },
 });

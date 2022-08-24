@@ -131,20 +131,11 @@ const Comp1 = ({ item }) => {
           </Text>
           <Image source={require('../assets/images/pencil.png')} />
         </View>
-        <Text style={{ fontWeight: '600' }}>가격</Text>
         <View>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}>
-            <Text style={{ fontWeight: 'bold', fontSize: FONTSIZE.l }}>
-              {item?.price} 원
-            </Text>
-            <Text style={{ fontWeight: '600' }}>남은 수량 총 {item?.stock}개</Text>
-            <Text></Text>
-          </View>
+          <Text style={{ fontWeight: '600', maxWidth: wp("45%"), fontSize: FONTSIZE.l }}>위치  {item?.description}</Text>
+        </View>
+        <View>
+          <Text style={{ fontWeight: '600', fontSize: FONTSIZE.l }}>위치  {item?.phone}</Text>
         </View>
       </View>
     </View>

@@ -183,7 +183,7 @@ const Comp1 = ({ item }) => {
           </Text>
           <Image source={require('../assets/images/pencil.png')} />
         </View>
-        <Text style={{ fontWeight: '600' }}>가격</Text>
+        <Text style={{ fontWeight: '600', fontSize: FONTSIZE.l }}>가격</Text>
         <View>
           <View
             style={{
@@ -194,7 +194,7 @@ const Comp1 = ({ item }) => {
             <Text style={{ fontWeight: 'bold', fontSize: FONTSIZE.l }}>
               {item?.price} 원
             </Text>
-            <Text style={{ fontWeight: '600' }}>남은 수량 총 {item?.stock}개</Text>
+            <Text style={{ fontWeight: '600', fontSize: FONTSIZE.l }}>남은 수량 총 {item?.stock}개</Text>
             <Text></Text>
           </View>
         </View>

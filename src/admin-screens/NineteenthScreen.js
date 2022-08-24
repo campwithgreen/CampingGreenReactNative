@@ -6,6 +6,7 @@ import {
   ImageBackground,
   ScrollView,
   TouchableOpacity,
+  Button,
 } from 'react-native';
 import {
   heightPercentageToDP as hp,
@@ -14,8 +15,10 @@ import {
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import Header from '../layout/Header';
-import { getAllUsers } from '../apis/admin';
+import { getAllUsers, searchUser } from '../apis/admin';
 import { showDefaultErrorAlert } from '../global/global';
+import Loader from "../components/common/Loader";
+import AdminSearchInput from '../components/AdminSearchInput';
 
 const headerContent = {
   middleItemContents: {
@@ -25,99 +28,35 @@ const headerContent = {
   },
 };
 
-const data = [
-  {
-    h1: '김그린 회원',
-    text11: '회원코드',
-    text12: '2022-2202',
-    text21: '전화번호',
-    text22: '010101001101',
-    text31: '구매내역',
-    text32: '별빛 캠핑장 외 1 건',
-  },
-  {
-    h1: '김그린 회원',
-    text11: '회원코드',
-    text12: '2022-2202',
-    text21: '전화번호',
-    text22: '010101001101',
-    text31: '구매내역',
-    text32: '별빛 캠핑장 외 1 건',
-  },
-  {
-    h1: '김그린 회원',
-    text11: '회원코드',
-    text12: '2022-2202',
-    text21: '전화번호',
-    text22: '010101001101',
-    text31: '구매내역',
-    text32: '별빛 캠핑장 외 1 건',
-  },
-  {
-    h1: '김그린 회원',
-    text11: '회원코드',
-    text12: '2022-2202',
-    text21: '전화번호',
-    text22: '010101001101',
-    text31: '구매내역',
-    text32: '별빛 캠핑장 외 1 건',
-  },
-  {
-    h1: '김그린 회원',
-    text11: '회원코드',
-    text12: '2022-2202',
-    text21: '전화번호',
-    text22: '010101001101',
-    text31: '구매내역',
-    text32: '별빛 캠핑장 외 1 건',
-  },
-  {
-    h1: '김그린 회원',
-    text11: '회원코드',
-    text12: '2022-2202',
-    text21: '전화번호',
-    text22: '010101001101',
-    text31: '구매내역',
-    text32: '별빛 캠핑장 외 1 건',
-  },
-  {
-    h1: '김그린 회원',
-    text11: '회원코드',
-    text12: '2022-2202',
-    text21: '전화번호',
-    text22: '010101001101',
-    text31: '구매내역',
-    text32: '별빛 캠핑장 외 1 건',
-  },
-  {
-    h1: '김그린 회원',
-    text11: '회원코드',
-    text12: '2022-2202',
-    text21: '전화번호',
-    text22: '010101001101',
-    text31: '구매내역',
-    text32: '별빛 캠핑장 외 1 건',
-  },
-];
 
 const NineteenthScreen = () => {
 
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const getUsers = async () => {
+    setLoading(true);
     await getAllUsers().then((res) => {
       if (res) {
-        console.log("USERS", res);
+        //keeping only users not admins
+        let users = res?.data?.data.filter((item) => item.role === "USER");
+        setUsers(users);
+        setLoading(false);
       }
     }).catch((err) => {
-      console.log("ERR", err);
+      console.log("GET ALL USR ERR", err);
+      setLoading(false);
       showDefaultErrorAlert();
     });
   };
+
 
   useEffect(() => {
     getUsers();
   }, []);
 
 
+  console.log("USERS", users);
 
   return (
     <View
@@ -127,36 +66,45 @@ const NineteenthScreen = () => {
         height: '100%',
       }}>
       <Header headerContent={headerContent} />
-      <Text style={{ borderBottomWidth: 2, borderBottomColor: '#F8F8F8' }}></Text>
-      <ScrollView>
-        <TextInput
-          style={{
-            borderWidth: 1,
-            borderColor: 'grey',
-            paddingHorizontal: wp('5%'),
-            marginHorizontal: wp('5%'),
-            marginVertical: wp('5%'),
-            height: 40,
-          }}
-        />
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginHorizontal: wp('5%'),
-          }}>
+      {loading ? <Loader /> : <View>
+        <Text style={{ borderBottomWidth: 2, borderBottomColor: '#F8F8F8' }}></Text>
+        <View>
+          <AdminSearchInput setUsers={setUsers} setLoading={setLoading} />
+        </View>
+        <ScrollView style={{ marginTop: hp("5%") }}>
+          {/* <TextInput
+                style={{
+                  borderWidth: 1,
+                  borderColor: 'grey',
+                  paddingHorizontal: wp('5%'),
+                  marginHorizontal: wp('5%'),
+                  marginVertical: wp('5%'),
+                  height: 40,
+                }}
+                onChangeText={(text) => {
+                  if (text?.length >= 4) {
+                    handleSearchUser(text);
+                  }
+                }}
+              /> */}
           <View
             style={{
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'space-between',
-              paddingTop: wp('5%'),
+              marginHorizontal: wp('5%'),
             }}>
-            <Text style={{ fontWeight: 'bold' }}>
-              최신순
-            </Text>
-            {/* <Text
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                paddingTop: wp('5%'),
+              }}>
+              <Text style={{ fontWeight: 'bold' }}>
+                최신순
+              </Text>
+              {/* <Text
               style={{
                 paddingLeft: wp('4%'),
                 fontWeight: 'bold',
@@ -164,13 +112,18 @@ const NineteenthScreen = () => {
               }}>
               오래된순
             </Text> */}
+            </View>
+            <View></View>
           </View>
-          <View></View>
-        </View>
-        {data.map((ele, i) => (
-          <Comp1 item={ele} key={i} />
-        ))}
-      </ScrollView>
+          {users && users.length >= 1 ? users.map((ele, i) => (
+            <Comp1 item={ele} key={i} />
+          )) : <View>
+            <Text style={{ textAlign: "center" }}>
+              No User Found
+            </Text>
+          </View>}
+        </ScrollView>
+      </View>}
       {/* <Comp2 /> */}
     </View>
   );
@@ -192,7 +145,7 @@ const Comp1 = ({ flag, item }) => {
       }}>
       <View style={{ display: 'flex' }}>
         <Text style={[styles.text1, { color: flag ? 'white' : 'black' }]}>
-          {item.h1}
+          {item?.firstName}
         </Text>
         <Text></Text>
         <Text></Text>
@@ -205,10 +158,10 @@ const Comp1 = ({ flag, item }) => {
         }}>
         <View style={{ display: 'flex', flexDirection: 'row' }}>
           <Text style={[styles.text3, { color: flag ? 'lightgrey' : '' }]}>
-            {item.text11} :{' '}
+            회원코드 :{' '}
           </Text>
           <Text style={[styles.text2, { color: flag ? 'white' : 'black' }]}>
-            {item.text12}
+            {item?.createdAt}
           </Text>
         </View>
         <View
@@ -217,18 +170,18 @@ const Comp1 = ({ flag, item }) => {
             flexDirection: 'row',
           }}>
           <Text style={[styles.text3, { color: flag ? 'lightgrey' : '' }]}>
-            {item.text21} :{' '}
+            전화번호 :{' '}
           </Text>
           <Text style={[styles.text2, { color: flag ? 'white' : 'black' }]}>
-            {item.text22}
+            {item?.phoneNumber}
           </Text>
         </View>
         <View style={{ display: 'flex', flexDirection: 'row' }}>
           <Text style={[styles.text3, { color: flag ? 'lightgrey' : '' }]}>
-            {item.text31} :{' '}
+            구매내역 :{' '}
           </Text>
           <Text style={[styles.text2, { color: flag ? 'white' : 'black' }]}>
-            {item.text32}
+            별빛 캠핑장 외 {item?.totalOrders} 건
           </Text>
         </View>
       </View>

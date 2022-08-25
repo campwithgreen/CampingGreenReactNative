@@ -5,6 +5,7 @@ import store from './src/redux/store';
 import SplashScreen from './src/screens/SplashScreen';
 import { LogBox } from 'react-native';
 
+
 /**
 * @author
 * @function App

@@ -25,6 +25,8 @@ import EquipmentRentalScreen from '../admin-screens/EquipmentRentalScreen';
 import FixRentalEquipmentScreen from '../admin-screens/FixRentalEquipmentScreen';
 import FixRentalSuppliesScreen from '../admin-screens/FixRentalSuppliesScreen';
 import NineteenthScreen from '../admin-screens/NineteenthScreen';
+import FourteenthScreen from '../admin-screens/FourteenthScreen';
+import SixteenScreen from '../admin-screens/SixteenScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -136,9 +138,9 @@ const HomeTabNavigation = props => {
       <Tab.Screen name="AdminProductScreen" component={EquipmentRentalScreen} />
       <Tab.Screen
         name="AdminLocationScreen"
-        component={FixRentalEquipmentScreen}
+        component={FourteenthScreen}
       />
-      <Tab.Screen name="AdminOrderScreen" component={FixRentalSuppliesScreen} />
+      <Tab.Screen name="AdminOrderScreen" component={SixteenScreen} />
       <Tab.Screen name="AdminUserScreen" component={NineteenthScreen} />
     </Tab.Navigator>
   ) : (

@@ -13,11 +13,15 @@ import React from 'react';
 import { navigateTo } from '../navigation/utils/RootNavigation';
 import { cancelOrder } from '../apis/cart';
 import { showDefaultErrorAlert } from '../global/global';
+import { getAllOrders, updateOrderStatus } from '../apis/admin';
+import { useDispatch } from 'react-redux';
+import { setUserCartHistory } from '../redux/actions/common';
 
 const ThirdScreen3 = (props) => {
 
 
-  const { currentCartData } = props;
+  const dispatch = useDispatch();
+  const { currentCartData, isOrder, orderStatus } = props;
 
   const handleCancelOrder = async (orderId) => {
     console.log("CANCELLING", orderId);
@@ -34,17 +38,39 @@ const ThirdScreen3 = (props) => {
 
   };
 
+  const handleOrderStatus = async (orderStatus) => {
+    let query = {
+      "status": orderStatus
+    };
+    await updateOrderStatus(query, currentCartData?._id).then(async (res) => {
+      if (res) {
+        console.log("UPDATE RES", res);
+        await getAllOrders().then((r) => {
+          dispatch(setUserCartHistory(r?.data?.data));
+        });
+        ToastAndroid.showWithGravity("Status Successfully Updated", ToastAndroid.LONG, ToastAndroid.TOP);
+      }
+    }).catch((err) => {
+      showDefaultErrorAlert();
+    });
+  };
+
   return (
     <View style={styles.view1}>
-      <TouchableOpacity
+      {!isOrder ? <TouchableOpacity
         onPress={() => {
           handleCancelOrder(currentCartData?._id);
         }}>
         <Text style={styles.btn1}> 예약취소</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> : <View></View>}
       <TouchableOpacity
         onPress={() => {
-          navigateTo('RoomReservationListScreen');
+          if (isOrder) {
+            handleOrderStatus(orderStatus);
+            console.log(orderStatus);
+          } else {
+            navigateTo('RoomReservationListScreen');
+          }
         }}>
         <Text style={styles.btn2}>주문목록</Text>
       </TouchableOpacity>

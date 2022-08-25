@@ -2,6 +2,8 @@ import React from 'react';
 import { Image, StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
+  AdminOrderNavigation,
+  AdminProductNavigation,
   HomeNavigation,
   LocationNavigation,
   ProductNavigation,
@@ -135,12 +137,12 @@ const HomeTabNavigation = props => {
           };
         }
       }}>
-      <Tab.Screen name="AdminProductScreen" component={EquipmentRentalScreen} />
+      <Tab.Screen name="AdminProductScreen" component={AdminProductNavigation} />
       <Tab.Screen
         name="AdminLocationScreen"
         component={FourteenthScreen}
       />
-      <Tab.Screen name="AdminOrderScreen" component={SixteenScreen} />
+      <Tab.Screen name="AdminOrderScreen" component={AdminOrderNavigation} />
       <Tab.Screen name="AdminUserScreen" component={NineteenthScreen} />
     </Tab.Navigator>
   ) : (

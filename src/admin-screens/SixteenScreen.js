@@ -23,6 +23,8 @@ import { connect, useDispatch } from 'react-redux';
 import { setUserCartHistory } from '../redux/actions/common';
 import Loader from '../components/common/Loader';
 import moment from 'moment';
+import { setCurrentCheckoutCartDetails } from '../redux/actions/common';
+import { navigateTo } from '../navigation/utils/RootNavigation';
 
 const headerContent = {
   middleItemContents: {
@@ -31,46 +33,6 @@ const headerContent = {
     navigateScreen: 'RoomScreen',
   },
 };
-
-const data = [
-  {
-    h1: '김그린 회원',
-    text11: '예약번호',
-    text12: '10101010101',
-    text21: '회원코드',
-    text22: '2022-2202',
-    text31: '예약 캠핑장',
-    text32: '2인 캠핑 패키지 코베마 외 1 건',
-  },
-  {
-    h1: '김그린 회원',
-    text11: '예약번호',
-    text12: '10101010101',
-    text21: '회원코드',
-    text22: '2022-2202',
-    text31: '예약 캠핑장',
-    text32: '2인 캠핑 패키지 코베마 외 1 건',
-  },
-  {
-    h1: '김그린 회원',
-    text11: '예약번호',
-    text12: '10101010101',
-    text21: '회원코드',
-    text22: '2022-2202',
-    text31: '예약 캠핑장',
-    text32: '2인 캠핑 패키지 코베마 외 1 건',
-  },
-  {
-    h1: '김그린 회원',
-    text11: '예약번호',
-    text12: '10101010101',
-    text21: '회원코드',
-    text22: '2022-2202',
-    text31: '예약 캠핑장',
-    text32: '2인 캠핑 패키지 코베마 외 1 건',
-  },
-];
-
 
 
 const mapStateToProps = ((sto, ownProps) => {
@@ -104,7 +66,7 @@ const SixteenScreen = (props) => {
   }, Object.create(null));
 
 
-  console.log("THE STORE CH", cart_history);
+  console.log("THE STORE CH", st);
   console.log("RESULT", result);
 
   useEffect(() => {
@@ -180,6 +142,7 @@ const SixteenScreen = (props) => {
 };
 
 const Comp1 = ({ flag, item }) => {
+  const dispatch = useDispatch();
   return (
     <View
       style={{
@@ -193,6 +156,7 @@ const Comp1 = ({ flag, item }) => {
         paddingHorizontal: wp('3%'),
         paddingVertical: wp('2%'),
         marginTop: hp('3%'),
+        minHeight: hp("12%")
       }}>
       <View style={{ display: 'flex', width: wp("20%") }}>
         <Text style={[styles.text1, { color: flag ? 'white' : 'black' }]}>
@@ -232,7 +196,12 @@ const Comp1 = ({ flag, item }) => {
         </View>
       </View>
       <View style={{ display: "flex", alignSelf: "center" }}>
-        <Image source={require('../assets/images/icon_movepage.png')} style={{ height: hp("5%"), width: wp("5%") }} />
+        <TouchableOpacity onPress={() => {
+          dispatch(setCurrentCheckoutCartDetails(item));
+          navigateTo('OrderDetailsScreen');
+        }}>
+          <Image source={require('../assets/images/icon_movepage.png')} style={{ height: hp("7%"), width: wp("7%") }} />
+        </TouchableOpacity>
       </View>
     </View>
   );

@@ -31,3 +31,9 @@ export function getAllOrders(query) {
     }
     return axiosInstance.get(endpoint);
 }
+
+
+export function updateOrderStatus(body, cartId) {
+    let endpoint = `/v2/cart/${cartId}`;
+    return axiosInstance.put(endpoint, body);
+}

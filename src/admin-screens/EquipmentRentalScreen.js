@@ -78,7 +78,6 @@ const headerContent = {
   middleItemContents: {
     type: 'text',
     content: '용품 대여',
-    navigateScreen: 'RoomScreen',
   },
 };
 const EquipmentRentalScreen = () => {

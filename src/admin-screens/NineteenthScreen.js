@@ -23,8 +23,7 @@ import AdminSearchInput from '../components/AdminSearchInput';
 const headerContent = {
   middleItemContents: {
     type: 'text',
-    content: '용품 올리기',
-    navigateScreen: 'RoomScreen',
+    content: '회원 관리',
   },
 };
 

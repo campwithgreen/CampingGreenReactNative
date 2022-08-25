@@ -29,8 +29,7 @@ import { navigateTo } from '../navigation/utils/RootNavigation';
 const headerContent = {
   middleItemContents: {
     type: 'text',
-    content: '용품 올리기',
-    navigateScreen: 'RoomScreen',
+    content: '결제승인',
   },
 };
 

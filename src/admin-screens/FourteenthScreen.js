@@ -28,8 +28,7 @@ import COLOR from '../constants/colors';
 const headerContent = {
   middleItemContents: {
     type: 'text',
-    content: '용품 대여',
-    navigateScreen: 'RoomScreen',
+    content: '캠핑장 예약',
   },
 };
 

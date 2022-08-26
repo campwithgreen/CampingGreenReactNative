@@ -21,6 +21,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { setCurrentCheckoutCartDetails } from '../redux/actions/common';
 import { navigateTo } from '../navigation/utils/RootNavigation';
+import { ORDER_STATUS } from "../utils/constants.json";
+
 const headerContent = {
   middleItemContents: {
     type: 'text',
@@ -110,7 +112,7 @@ const Comp2 = ({ btnText, itemData }) => {
   const dispatch = useDispatch();
   return (
     <View style={[styles.compView, { paddingBottom: hp('3%') }]}>
-      <Text style={styles.comp2Text1}>{btnText}</Text>
+      <Text style={[styles.comp2Text1, { borderColor: btnText === "PAYMENT_DONE" ? COLOR.compGreenI : COLOR.red, color: btnText === "PAYMENT_DONE" ? COLOR.compGreenI : COLOR.red }]}>{ORDER_STATUS[btnText]}</Text>
       <TouchableOpacity
         onPress={() => {
           dispatch(setCurrentCheckoutCartDetails(itemData));
@@ -142,9 +144,7 @@ const styles = StyleSheet.create({
   },
   comp2Text1: {
     fontWeight: 'bold',
-    color: 'red',
     borderWidth: 1,
-    borderColor: 'red',
     paddingHorizontal: wp('2%'),
     paddingVertical: wp('1%'),
     textAlign: 'center',

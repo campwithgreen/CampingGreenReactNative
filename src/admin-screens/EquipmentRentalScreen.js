@@ -23,6 +23,7 @@ import Loader from '../components/common/Loader';
 import CheckBox from '@react-native-community/checkbox';
 import FONTSIZE from '../constants/fontSize';
 import COLOR from '../constants/colors';
+import { navigateTo } from '../navigation/utils/RootNavigation';
 
 const data = [
   {
@@ -180,7 +181,11 @@ const Comp1 = ({ item }) => {
           <Text style={{ color: '#222222', fontWeight: 'bold', fontSize: FONTSIZE.xl, maxWidth: wp("40%") }}>
             {item?.title}
           </Text>
-          <Image source={require('../assets/images/pencil.png')} />
+          <TouchableOpacity onPress={() => {
+            navigateTo("FixRentalEquipmentScreen", { product: item });
+          }}>
+            <Image source={require('../assets/images/pencil.png')} />
+          </TouchableOpacity>
         </View>
         <Text style={{ fontWeight: '600', fontSize: FONTSIZE.l }}>가격</Text>
         <View>

@@ -116,7 +116,6 @@ export const HomeScreen = props => {
                     style={{
                       color: '#454C53',
                       fontSize: RFPercentage(1.8),
-                      fontFamily: 'Pretendard',
                     }}>
                     용품대여 홈으로 이동
                   </Text>
@@ -158,7 +157,7 @@ export const HomeScreen = props => {
                   style={{
                     color: '#454C53',
                     fontSize: RFPercentage(2.1),
-                    fontFamily: 'Pretendard',
+
                     fontWeight: 'bold',
                   }}>
                   6개월동안 누리는 혜택,{'\n'}수수료 0원!

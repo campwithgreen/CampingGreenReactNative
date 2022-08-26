@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   Text,
   Image,
+  Platform,
 } from 'react-native';
 import {goBack, navigateTo} from '../navigation/utils/RootNavigation';
 import {
@@ -37,8 +38,10 @@ const Header = props => {
 
   const dispatch = useDispatch();
 
-  const filterCartItems = (cartData) => {
-    let filteredBag = cartData?.filter((item) => item.paymentStatus === "CHECKOUT_PENDING");
+  const filterCartItems = cartData => {
+    let filteredBag = cartData?.filter(
+      item => item.paymentStatus === 'CHECKOUT_PENDING',
+    );
     dispatch(setMainCartItems(filteredBag));
   };
 
@@ -146,8 +149,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerIcon: {
-    height: hp('4%'),
-    width: hp('4%'),
+    height: Platform.OS == 'android' ? hp('4%') : hp('3%'),
+    width: Platform.OS == 'android' ? hp('4%') : hp('3%'),
   },
   headerTitle: {
     fontWeight: '900',

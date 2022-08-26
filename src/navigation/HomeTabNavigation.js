@@ -2,6 +2,8 @@ import React from 'react';
 import {Image, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {
+  AdminOrderNavigation,
+  AdminProductNavigation,
   HomeNavigation,
   LocationNavigation,
   ProductNavigation,
@@ -24,6 +26,9 @@ import {connect, useSelector} from 'react-redux';
 import EquipmentRentalScreen from '../admin-screens/EquipmentRentalScreen';
 import FixRentalEquipmentScreen from '../admin-screens/FixRentalEquipmentScreen';
 import FixRentalSuppliesScreen from '../admin-screens/FixRentalSuppliesScreen';
+import NineteenthScreen from '../admin-screens/NineteenthScreen';
+import FourteenthScreen from '../admin-screens/FourteenthScreen';
+import SixteenScreen from '../admin-screens/SixteenScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -64,7 +69,7 @@ const HomeTabNavigation = props => {
                 />
               );
             },
-            tabBarLabel: 'AdminProductScreen',
+            tabBarLabel: '용품대여',
             tabBarStyle: {
               // height: 70,
             },
@@ -83,7 +88,7 @@ const HomeTabNavigation = props => {
                 />
               );
             },
-            tabBarLabel: 'AdminLocationScreen',
+            tabBarLabel: '캠핑장 예약',
             tabBarStyle: {
               // height: 70,
             },
@@ -102,7 +107,7 @@ const HomeTabNavigation = props => {
                 />
               );
             },
-            tabBarLabel: 'AdminOrderScreen',
+            tabBarLabel: '결제승인',
             tabBarStyle: {
               height: 70,
             },
@@ -121,7 +126,7 @@ const HomeTabNavigation = props => {
                 />
               );
             },
-            tabBarLabel: 'AdminUserScreen',
+            tabBarLabel: '회원관리',
             tabBarStyle: {
               height: 70,
             },
@@ -132,13 +137,13 @@ const HomeTabNavigation = props => {
           };
         }
       }}>
-      <Tab.Screen name="AdminProductScreen" component={EquipmentRentalScreen} />
       <Tab.Screen
-        name="AdminLocationScreen"
-        component={FixRentalEquipmentScreen}
+        name="AdminProductScreen"
+        component={AdminProductNavigation}
       />
-      <Tab.Screen name="AdminOrderScreen" component={FixRentalSuppliesScreen} />
-      <Tab.Screen name="AdminUserScreen" component={ChatScreen} />
+      <Tab.Screen name="AdminLocationScreen" component={FourteenthScreen} />
+      <Tab.Screen name="AdminOrderScreen" component={AdminOrderNavigation} />
+      <Tab.Screen name="AdminUserScreen" component={NineteenthScreen} />
     </Tab.Navigator>
   ) : (
     <Tab.Navigator

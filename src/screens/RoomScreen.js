@@ -193,7 +193,12 @@ const RoomScreen = () => {
   };
 
   return (
-    <View style={{backgroundColor: 'white', flex: 1}}>
+    <View
+      style={{
+        backgroundColor: 'white',
+        flex: 1,
+        marginTop: Platform.OS === 'android' ? 0 : 20,
+      }}>
       <SearchInput />
 
       {loading ? (

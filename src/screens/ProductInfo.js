@@ -152,17 +152,18 @@ const ProductInfo = props => {
 
   useEffect(() => {
     (async function getCartPayload() {
-      await getCartId().then(async (cartId) => {
+      await getCartId().then(async cartId => {
         if (cartId) {
           await getUserCartHistory(cartId, false).then(res => {
             if (res) {
-              setPayloadItems([...res?.data?.data?.items,
-              {
-                itemId: selected_item._id,
-                units: quantity || 1,
-                startDate: startDate,
-                endDate: returnDate,
-              }
+              setPayloadItems([
+                ...res?.data?.data?.items,
+                {
+                  itemId: selected_item._id,
+                  units: quantity || 1,
+                  startDate: startDate,
+                  endDate: returnDate,
+                },
               ]);
             }
           });
@@ -184,8 +185,8 @@ const ProductInfo = props => {
   };
 
   useEffect(() => {
-    getCartId().then((cart) => {
-      console.log("CART IT",);
+    getCartId().then(cart => {
+      console.log('CART IT');
     });
   });
 
@@ -193,9 +194,9 @@ const ProductInfo = props => {
     console.log('CHCKOUT ITEMS *****', cartItems);
     getCartId().then(async cartId => {
       if (cartId) {
-        await createOrUpdateCart(cartItems, { "cartId": cartId })
+        await createOrUpdateCart(cartItems, {cartId: cartId})
           .then(res => {
-            console.log("RESPONSE CART", res);
+            console.log('RESPONSE CART', res);
             if (res) {
               dispatch(setCurrentCheckoutCartDetails(res.data.data));
               ToastAndroid.showWithGravity(
@@ -347,7 +348,7 @@ const ProductInfo = props => {
                     onPress={() => {
                       handleCheckout();
                     }}
-                    color={COLOR.compGreen}
+                    color={Platform.OS === 'android' ? COLOR.compGreen : '#fff'}
                   />
                 </View>
               </View>

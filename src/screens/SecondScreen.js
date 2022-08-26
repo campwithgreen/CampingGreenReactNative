@@ -274,13 +274,20 @@ const SecondScreen = () => {
                     color={COLOR.grey}
                   />
                 </View>
-                <View style={{width: '47%'}}>
+                <View
+                  style={{
+                    width: '47%',
+                    borderRadius: 7,
+                    borderWidth: 1,
+                    backgroundColor: COLOR.compGreen,
+                    borderColor: COLOR.compGreen,
+                  }}>
                   <Button
                     title="바로 대여하기"
                     onPress={() => {
                       handleCheckout();
                     }}
-                    color={COLOR.compGreen}
+                    color={Platform.OS === 'android' ? COLOR.compGreen : '#fff'}
                   />
                 </View>
               </View>

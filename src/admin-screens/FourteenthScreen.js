@@ -17,88 +17,36 @@ import Header from '../layout/Header';
 import { getAllProducts } from '../apis/product';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setProductData } from '../redux/actions/product';
+import { setLocationData } from '../redux/actions/product';
 import { showDefaultErrorAlert } from '../global/global';
 import Loader from '../components/common/Loader';
 import CheckBox from '@react-native-community/checkbox';
 import FONTSIZE from '../constants/fontSize';
 import COLOR from '../constants/colors';
-import { navigateTo } from '../navigation/utils/RootNavigation';
 
-const data = [
-  {
-    id: '1',
-    img: require('../assets/images/tambu.png'),
-    hText: '코베아 텐트',
-    mText: '가격',
-    bText1: '300,000 ',
-    bText2: '남은 수량 총 3개',
-  },
-  {
-    id: '2',
-    img: require('../assets/images/tambu.png'),
-    hText: '코베아 텐트',
-    mText: '가격',
-    bText1: '300,000 원',
-    bText2: '남은 수량 총 3개',
-  },
-  {
-    id: '3',
-    img: require('../assets/images/tambu.png'),
-    hText: '코베아 텐트',
-    mText: '가격',
-    bText1: '300,000 원',
-    bText2: '남은 수량 총 3개',
-  },
-  {
-    id: '4',
-    img: require('../assets/images/tambu.png'),
-    hText: '코베아 텐트',
-    mText: '가격',
-    bText1: '300,000 원',
-    bText2: '남은 수량 총 3개',
-  },
-  {
-    id: '5',
-    img: require('../assets/images/tambu.png'),
-    hText: '코베아 텐트',
-    mText: '가격',
-    bText1: '300,000 원',
-    bText2: '남은 수량 총 3개',
-  },
-  {
-    id: '6',
-    img: require('../assets/images/tambu.png'),
-    hText: '코베아 텐트',
-    mText: '가격',
-    bText1: '300,000 원',
-    bText2: '남은 수량 총 3개',
-  },
-];
+
 const headerContent = {
   middleItemContents: {
     type: 'text',
-    content: '용품 대여',
+    content: '캠핑장 예약',
   },
 };
-const EquipmentRentalScreen = () => {
+
+const LocationRentalSceen = () => {
 
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const product = useSelector(st => st.product?.product);
-
-
-  console.log("STORE P", product);
+  const location = useSelector(st => st.product?.location);
 
   useEffect(() => {
     (async function getAllProductsData() {
-      let data = { type: 'PRODUCT' };
+      let data = { type: 'LOCATION' };
       setLoading(true);
       await getAllProducts(data)
         .then(res => {
           if (res) {
-            console.log('product ===>', res);
-            dispatch(setProductData(res.data.data));
+            console.log('location ===>', res);
+            dispatch(setLocationData(res.data.data));
             setLoading(false);
           }
         })
@@ -118,15 +66,15 @@ const EquipmentRentalScreen = () => {
       <Header headerContent={headerContent} />
       <Text style={{ borderBottomWidth: 2, borderBottomColor: '#F8F8F8' }}></Text>
       {loading ? <Loader /> :
-        <ScrollView style={{ marginBottom: hp("20%") }}>
+        <ScrollView style={{ marginBottom: hp("15%") }}>
           <View style={styles.view1}>
             <Text style={styles.text1}>- 삭제하기</Text>
             <Text style={styles.text1}>+ 용품 올리기</Text>
           </View>
-          {product && product?.length >= 1 ? product.map((item, i) => (
+          {location && location?.length >= 1 ? location.map((item, i) => (
             <Comp1 item={item} key={i} />
           )) : <View>
-            <Text style={{ textAlign: "center" }}>No Product Available</Text>
+            <Text style={{ textAlign: "center" }}>No Camps Available</Text>
           </View>}
         </ScrollView>}
     </View>
@@ -176,37 +124,23 @@ const Comp1 = ({ item }) => {
             alignItems: 'center',
             width: wp('55%'),
             paddingRight: wp('4%'),
-
           }}>
           <Text style={{ color: '#222222', fontWeight: 'bold', fontSize: FONTSIZE.xl, maxWidth: wp("40%") }}>
             {item?.title}
           </Text>
-          <TouchableOpacity onPress={() => {
-            navigateTo("FixRentalEquipmentScreen", { product: item });
-          }}>
-            <Image source={require('../assets/images/pencil.png')} />
-          </TouchableOpacity>
+          <Image source={require('../assets/images/pencil.png')} />
         </View>
-        <Text style={{ fontWeight: '600', fontSize: FONTSIZE.l }}>가격</Text>
         <View>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}>
-            <Text style={{ fontWeight: 'bold', fontSize: FONTSIZE.l }}>
-              {item?.price} 원
-            </Text>
-            <Text style={{ fontWeight: '600', fontSize: FONTSIZE.l }}>남은 수량 총 {item?.stock}개</Text>
-            <Text></Text>
-          </View>
+          <Text style={{ fontWeight: '600', maxWidth: wp("45%"), fontSize: FONTSIZE.l }}>위치  {item?.description}</Text>
+        </View>
+        <View>
+          <Text style={{ fontWeight: '600', fontSize: FONTSIZE.l }}>위치  {item?.phone}</Text>
         </View>
       </View>
     </View>
   );
 };
-export default EquipmentRentalScreen;
+export default LocationRentalSceen;
 
 const styles = StyleSheet.create({
   view1: {

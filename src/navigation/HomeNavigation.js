@@ -22,6 +22,9 @@ import TermsScreen from '../screens/TermsScreen';
 import EquipmentRentalScreen from '../admin-screens/EquipmentRentalScreen';
 import FixRentalEquipmentScreen from '../admin-screens/FixRentalEquipmentScreen';
 import FixRentalSuppliesScreen from '../admin-screens/FixRentalSuppliesScreen';
+import NineteenthScreen from '../admin-screens/NineteenthScreen';
+import OrderDetailsScreen from '../admin-screens/OrderDetailsScreen';
+import SixteenScreen from '../admin-screens/SixteenScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -162,8 +165,25 @@ export const AdminProductNavigation = props => {
       <Stack.Screen name="EquipmentRentalScreen" component={EquipmentRentalScreen} />
       <Stack.Screen name="FixRentalEquipmentScreen" component={FixRentalEquipmentScreen} />
       <Stack.Screen name="FixRentalSuppliesScreen" component={FixRentalSuppliesScreen} />
+      <Stack.Screen name="UserScreen" component={NineteenthScreen} />
+      <Stack.Screen name="OrderDetailsScreen" component={OrderDetailsScreen} />
     </Stack.Navigator>
   );
 };
 
+
+/**
+ * @author
+ * @function HomeNavigation
+ **/
+export const AdminOrderNavigation = props => {
+  return (
+    <Stack.Navigator
+      initialRouteName="SixteenScreen"
+      screenOptions={AppNavigatorOptions}>
+      <Stack.Screen name="SixteenScreen" component={SixteenScreen} />
+      <Stack.Screen name="OrderDetailsScreen" component={OrderDetailsScreen} />
+    </Stack.Navigator>
+  );
+};
 

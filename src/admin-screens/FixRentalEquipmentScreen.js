@@ -6,30 +6,56 @@ import {
   ImageBackground,
   ScrollView,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {RFPercentage} from 'react-native-responsive-fontsize';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 import React from 'react';
-import {useState} from 'react';
+import { useState } from 'react';
+import { goBack } from '../navigation/utils/RootNavigation';
+import Header from '../layout/Header';
+import FONTSIZE from '../constants/fontSize';
 
-const FixRentalEquipmentScreen = () => {
-  const [count, setCount] = useState(0);
+const FixRentalEquipmentScreen = (props) => {
+
+  let { product } = props?.route?.params;
+  const [selectedProduct, setSelectedProduct] = useState(product);
+
+  console.log("THE PRODUCT", product);
+  console.log("THE SELECTED PRODUCT ====>", selectedProduct);
+
+  const headerContent = {
+    leftItemContents: {
+      type: 'image',
+      content: require('../assets/images/arrow-left.png'),
+      navigateScreen: () => goBack(),
+    },
+    middleItemContents: {
+      type: "text",
+      content: "용품대여 수정하기"
+    }
+  };
+
+  const [count, setCount] = useState(selectedProduct?.stock);
   const decrement = () => {
     if (count > 0) {
       setCount(i => i - 1);
+    } else {
+      ToastAndroid.showWithGravity("Stock unit cannot be lower than 0", ToastAndroid.LONG, ToastAndroid.TOP);
     }
   };
   return (
-    <View style={{backgroundColor: 'white'}}>
+    <View style={{ backgroundColor: 'white' }}>
+      <Header headerContent={headerContent} />
       <ScrollView>
-        <Comp1 />
-        <Comp1 />
+        <Comp1 isProductName={true} selectedProduct={selectedProduct} setSelectedProduct={selectedProduct} />
+        <Comp1 isPrice={true} selectedProduct={selectedProduct} setSelectedProduct={selectedProduct} />
         <View style={styles.view1}>
           <Text style={styles.text1}>잔여수량</Text>
-          <View style={{width: wp('70%')}}>
+          <View style={{ width: wp('70%') }}>
             <View
               style={{
                 display: 'flex',
@@ -66,12 +92,14 @@ const FixRentalEquipmentScreen = () => {
             paddingHorizontal: wp('5%'),
             fontWeight: '600',
             paddingVertical: hp('0.7%'),
+            fontSize: FONTSIZE.m
           }}>
           카테고리
         </Text>
-        <Comp2 p1="Ex) 색상" p2="코랄" t1="삭제" />
-        <Comp2 p1="Ex) 사이즈" p2="XL" t1="삭제" />
-        <Comp3 t1="카테고리 추가하기" />
+        {Object?.keys(selectedProduct?.specifications)?.map((key) => {
+          return <Comp2 p1="Ex) 색상" p2="코랄" t1="삭제" att={key} attValue={selectedProduct?.specifications[key]} />;
+        })}
+        <Comp3 t1="카테고리 추가하기" selectedProduct={selectedProduct} setSelectedProduct={setSelectedProduct} />
         <Text
           style={[
             styles.text1,
@@ -84,14 +112,17 @@ const FixRentalEquipmentScreen = () => {
           사진 업로드
         </Text>
         <ImageBackground
-          source={require('../assets/images/jorgen.jpg')}
+          // source={require('../assets/images/jorgen.jpg')}
+          source={{ uri: selectedProduct?.carousel[0] }}
           style={{
             height: 140,
             width: wp('90%'),
             borderWidth: 1,
             borderColor: 'lightgrey',
             marginHorizontal: wp('5%'),
-          }}>
+          }}
+          resizeMode="contain"
+        >
           <View
             style={{
               display: 'flex',
@@ -115,7 +146,7 @@ const FixRentalEquipmentScreen = () => {
           <Text
             style={{
               color: 'white',
-              transform: [{rotate: '45deg'}],
+              transform: [{ rotate: '45deg' }],
               fontSize: 40,
               position: 'absolute',
               right: 5,
@@ -128,9 +159,9 @@ const FixRentalEquipmentScreen = () => {
               position: 'absolute',
               left: '50%',
               color: 'white',
-              transform: [{translateX: -50}, {translateY: 53}],
+              transform: [{ translateX: -50 }, { translateY: 53 }],
             }}>
-            사진 업로드하기
+            설명 추가 …
           </Text>
         </ImageBackground>
         <TextInput
@@ -143,7 +174,7 @@ const FixRentalEquipmentScreen = () => {
             marginTop: hp('3%'),
           }}
         />
-        <View style={{paddingBottom: hp('20%')}}>
+        <View style={{ paddingBottom: hp('20%') }}>
           <Comp3 t1="사진 추가하기" />
         </View>
       </ScrollView>
@@ -155,17 +186,21 @@ const FixRentalEquipmentScreen = () => {
     </View>
   );
 };
-const Comp1 = () => {
+const Comp1 = ({ isPrice, isProductName, selectedProduct, setSelectedProduct }) => {
   return (
     <View style={styles.view1}>
-      <Text style={styles.text1}>상품명</Text>
-      <TextInput style={styles.textinput1} />
+      <Text style={styles.text1}>{isPrice ? "가격" : "상품명"}</Text>
+      <TextInput
+        keyboardType={isPrice ? "number-pad" : "email-address"}
+        style={styles.textinput1}
+        defaultValue={isPrice ? selectedProduct?.price?.toString() : selectedProduct?.title}
+      />
     </View>
   );
 };
-const Comp2 = ({p1, p2, t1}) => {
+const Comp2 = ({ p1, p2, t1, att, attValue }) => {
   return (
-    <View style={[styles.view1, {paddingBottom: 0, paddingTop: hp('0.1%')}]}>
+    <View style={[styles.view1, { paddingBottom: 0, paddingTop: hp('0.1%') }]}>
       <TextInput
         style={{
           backgroundColor: '#F8F8F8',
@@ -175,6 +210,7 @@ const Comp2 = ({p1, p2, t1}) => {
           fontWeight: '600',
         }}
         placeholder={p1}
+        defaultValue={att}
       />
       <TextInput
         style={{
@@ -185,12 +221,24 @@ const Comp2 = ({p1, p2, t1}) => {
           fontWeight: '600',
         }}
         placeholder={p2}
+        defaultValue={attValue}
       />
-      <Text style={{fontWeight: '600'}}>{t1}</Text>
+      <Text style={{ fontWeight: '600' }}>{t1}</Text>
     </View>
   );
 };
-const Comp3 = ({t1}) => {
+const Comp3 = ({ t1, selectedProduct, setSelectedProduct }) => {
+
+  const handleAddNewSpecifications = () => {
+
+    let newSelectedProduct = { ...selectedProduct };
+    //Adding New Text Field for  adding new specification
+    newSelectedProduct.specifications = { ...newSelectedProduct?.specifications, "": "" };
+    setSelectedProduct(newSelectedProduct);
+
+  };
+
+
   return (
     <View
       style={{
@@ -200,20 +248,24 @@ const Comp3 = ({t1}) => {
         alignItems: 'center',
         marginVertical: hp('1%'),
       }}>
-      <Text
-        style={{
-          backgroundColor: 'lightgrey',
-          borderRadius: 50,
-          color: 'white',
-          fontSize: 24,
-          fontWeight: 'bold',
-          paddingHorizontal: wp('2.6%'),
-          textAlign: 'center',
-          textAlignVertical: 'center',
-          marginRight: wp('4%'),
-        }}>
-        +
-      </Text>
+      <TouchableOpacity onPress={() => {
+        handleAddNewSpecifications();
+      }}>
+        <Text
+          style={{
+            backgroundColor: 'lightgrey',
+            borderRadius: 50,
+            color: 'white',
+            fontSize: 24,
+            fontWeight: 'bold',
+            paddingHorizontal: wp('2.6%'),
+            textAlign: 'center',
+            textAlignVertical: 'center',
+            marginRight: wp('4%'),
+          }}>
+          +
+        </Text>
+      </TouchableOpacity>
       <Text>{t1}</Text>
     </View>
   );

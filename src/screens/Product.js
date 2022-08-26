@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   FlatList,
+  Platform,
 } from 'react-native';
 import Header from '../layout/Header';
 import {
@@ -156,6 +157,7 @@ export const Product = props => {
                   setItems={setItems}
                   containerStyle={{
                     width: wp('35%'),
+                    zIndex: Platform.OS === 'android' ? 10000 : 90000,
                   }}
                   onChangeValue={value => {
                     handleFilter(value);
@@ -177,5 +179,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    zIndex: Platform.OS === 'android' ? 10000 : 90000,
   },
 });

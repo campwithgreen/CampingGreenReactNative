@@ -21,6 +21,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import moment from 'moment';
 import {setCurrentCheckoutCartDetails} from '../redux/actions/common';
 import {navigateTo} from '../navigation/utils/RootNavigation';
+import {ORDER_STATUS} from '../utils/constants.json';
+
 const headerContent = {
   middleItemContents: {
     type: 'text',
@@ -55,9 +57,9 @@ const RoomReservationListScreen = () => {
   return (
     <View style={{backgroundColor: 'white', height: hp('100%')}}>
       <Header headerContent={headerContent} />
-      <Text style={{ borderBottomWidth: 1.5, borderBottomColor: '#515151' }} />
-      <ScrollView style={{ marginBottom: heightPercentageToDP('15%') }}>
-        {Object?.keys(result)?.length >= 1 ?
+      <Text style={{borderBottomWidth: 1.5, borderBottomColor: '#515151'}} />
+      <ScrollView style={{marginBottom: heightPercentageToDP('15%')}}>
+        {Object?.keys(result)?.length >= 1 ? (
           Object?.keys(result)?.map(key => {
             return (
               <View style={globalStyle.mainContainerWrapper} key={key}>
@@ -75,10 +77,12 @@ const RoomReservationListScreen = () => {
                 })}
               </View>
             );
-          }) : <View style={styles.emptyCartWrapper}>
+          })
+        ) : (
+          <View style={styles.emptyCartWrapper}>
             <Text style={styles.emptyCartText}>No Orders Has Been Made</Text>
           </View>
-        }
+        )}
       </ScrollView>
     </View>
   );
@@ -110,7 +114,17 @@ const Comp2 = ({btnText, itemData}) => {
   const dispatch = useDispatch();
   return (
     <View style={[styles.compView, {paddingBottom: hp('3%')}]}>
-      <Text style={styles.comp2Text1}>{btnText}</Text>
+      <Text
+        style={[
+          styles.comp2Text1,
+          {
+            borderColor:
+              btnText === 'PAYMENT_DONE' ? COLOR.compGreenI : COLOR.red,
+            color: btnText === 'PAYMENT_DONE' ? COLOR.compGreenI : COLOR.red,
+          },
+        ]}>
+        {ORDER_STATUS[btnText]}
+      </Text>
       <TouchableOpacity
         onPress={() => {
           dispatch(setCurrentCheckoutCartDetails(itemData));
@@ -142,9 +156,7 @@ const styles = StyleSheet.create({
   },
   comp2Text1: {
     fontWeight: 'bold',
-    color: 'red',
     borderWidth: 1,
-    borderColor: 'red',
     paddingHorizontal: wp('2%'),
     paddingVertical: wp('1%'),
     textAlign: 'center',
@@ -173,20 +185,20 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: FONTSIZE.xl,
     color: COLOR.black,
-    width: wp("55%"),
+    width: wp('55%'),
   },
   comp3Text2: {
     fontWeight: 'bold',
     color: '#515151',
   },
   emptyCartWrapper: {
-    minHeight: hp("30%"),
-    marginVertical: hp("10%")
+    minHeight: hp('30%'),
+    marginVertical: hp('10%'),
   },
   emptyCartText: {
-    textAlign: "center",
-    fontSize: FONTSIZE.xl
-  }
+    textAlign: 'center',
+    fontSize: FONTSIZE.xl,
+  },
 });
 
 const Comp3 = ({itemData}) => {

@@ -334,6 +334,24 @@ const FixRentalEquipmentNewScreen = (props) => {
 
     const [selectedURL, setSelectedURL] = useState(null);
 
+
+    const uploadImage = async (image) => {
+        const data = new FormData();
+        data.append("file", image);
+        data.append("upload_preset", "campgreen");
+        data.append("cloud_name", "dchcqwskd");
+        await fetch("https://api.cloudinary.com/v1_1/dchcqwskd/image/upload",
+            {
+                method: "post",
+                body: data
+            })
+            .then(resp => resp.json())
+            .then(data => {
+                console.log("UPLOADED", data);
+            })
+            .catch(err => console.log(err));
+    };
+
     const pickImage = async (selectedIndx) => {
 
         setSelectedURL(true);
@@ -349,6 +367,17 @@ const FixRentalEquipmentNewScreen = (props) => {
             console.log("CAROUSEL IMAGES ++++++++++", carouselImages);
             let newCarouselImages = [...carouselImages];
             newCarouselImages[selectedIndx].imgUrl = result?.assets[0]?.uri;
+            console.log("IMAGE DATA", result);
+            let fName = result?.assets[0]?.fileName.split(".")[0];
+            // let newFile = {
+            //     uri: result.assets[0].uri,
+            //     type: `test/${result.assets[0].uri.split(".")[1]}`,
+            //     name: `test/${result.assets[0].uri.split(".")[1]}`
+            // };
+            uploadImage(
+                { ...result.assets[0], name: fName });
+
+
             setCarouselImages(newCarouselImages);
         }
     };

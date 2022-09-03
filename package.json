@@ -23,6 +23,7 @@
     "react-native": "0.68.2",
     "react-native-calendars": "^1.1284.0",
     "react-native-dropdown-picker": "^5.4.2",
+    "react-native-image-picker": "^4.10.0",
     "react-native-pager-view": "^5.4.24",
     "react-native-responsive-fontsize": "^0.5.1",
     "react-native-responsive-screen": "^1.4.2",

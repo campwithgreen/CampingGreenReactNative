@@ -21,6 +21,7 @@ import { RegisterScreen } from '../screens/RegisterScreen';
 import TermsScreen from '../screens/TermsScreen';
 import EquipmentRentalScreen from '../admin-screens/EquipmentRentalScreen';
 import FixRentalEquipmentScreen from '../admin-screens/FixRentalEquipmentScreen';
+import FixRentalEquipmentNewScreen from '../admin-screens/FixRentalEquipmentNewScreen';
 import FixRentalSuppliesScreen from '../admin-screens/FixRentalSuppliesScreen';
 import NineteenthScreen from '../admin-screens/NineteenthScreen';
 import OrderDetailsScreen from '../admin-screens/OrderDetailsScreen';
@@ -166,6 +167,7 @@ export const AdminProductNavigation = props => {
       <Stack.Screen name="FixRentalEquipmentScreen" component={FixRentalEquipmentScreen} />
       <Stack.Screen name="FixRentalSuppliesScreen" component={FixRentalSuppliesScreen} />
       <Stack.Screen name="UserScreen" component={NineteenthScreen} />
+      <Stack.Screen name="FixRentalEquipmentNewScreen" component={FixRentalEquipmentNewScreen} />
       <Stack.Screen name="OrderDetailsScreen" component={OrderDetailsScreen} />
     </Stack.Navigator>
   );

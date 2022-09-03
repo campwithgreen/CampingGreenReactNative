@@ -50,7 +50,7 @@ const FixRentalSuppliesScreen = () => {
   );
 };
 
-const Comp = ({img, id}) => {
+const Comp = ({ img, id }) => {
   return (
     <View>
       <ImageBackground
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   },
   cross: {
     color: 'white',
-    transform: [{rotate: '45deg'}],
+    transform: [{ rotate: '45deg' }],
     fontSize: 40,
     position: 'absolute',
     right: 5,

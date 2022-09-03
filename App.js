@@ -13,7 +13,7 @@ import { LogBox } from 'react-native';
 const App = (props) => {
 
   useEffect(() => {
-    LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
+    LogBox.ignoreLogs(["VirtualizedLists should never be nested", 'Warning: ...']);
   }, []);
 
   const [splash, setSplash] = useState(true);

@@ -13,6 +13,8 @@ import {
 } from 'react-native-responsive-screen';
 import React from 'react';
 import Header from '../layout/Header';
+import { goBack } from '../navigation/utils/RootNavigation';
+import { connect } from 'react-redux';
 
 const data = [
   {
@@ -24,18 +26,33 @@ const data = [
     img: require('../assets/images/jorgen.jpg'),
   },
 ];
+
+
+const mapStateToProps = (st, ownProps) => {
+  const storee = st;
+  return {
+    storee
+  };
+};
+
+
 const headerContent = {
   leftItemContents: {
     type: 'image',
     content: require('../assets/images/arrow-left.png'),
-    navigateScreen: 'RoomScreen',
+    navigateScreen: () => goBack(),
   },
 };
 
-const FixRentalSuppliesScreen = () => {
+const FixRentalSuppliesScreen = (props) => {
+
+  const { storee } = props;
+  console.log("THE MAIN STORE", storee);
+
+
   return (
     <View>
-      {/* <Header headerContent={headerContent} /> */}
+      <Header headerContent={headerContent} />
       <ScrollView>
         {data.map((item, i) => {
           return <Comp img={item.img} id={item.id} key={i} />;
@@ -80,7 +97,7 @@ const Comp = ({ img, id }) => {
   );
 };
 
-export default FixRentalSuppliesScreen;
+export default connect(mapStateToProps, null)(FixRentalSuppliesScreen);
 
 const styles = StyleSheet.create({
   view: {

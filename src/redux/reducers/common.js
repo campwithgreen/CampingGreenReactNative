@@ -31,6 +31,8 @@ export default function (state = INITIAL_STATE, action) {
             return { ...state, selected_sub_location: payload };
         case COMMON.SET_MAIN_CART_ITEMS:
             return { ...state, main_cart_items: payload };
+        case COMMON.CREATE_NEW_ITEM:
+            return { ...state, new_item_data: payload };
         default:
             return state;
     }

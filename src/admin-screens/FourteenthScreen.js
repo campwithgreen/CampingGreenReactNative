@@ -118,7 +118,9 @@ const LocationRentalSceen = () => {
               <Text style={styles.text1}>- 삭제하기</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {
-              navigateTo("FixRentalEquipmentNewScreen");
+              navigateTo("FixRentalEquipmentNewScreen", {
+                type: "LOCATION"
+              });
             }}>
               <Text style={styles.text1}>+ 용품 올리기</Text>
             </TouchableOpacity>

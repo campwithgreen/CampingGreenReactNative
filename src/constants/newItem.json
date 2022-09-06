@@ -1,0 +1,34 @@
+ {
+                    "carousel": [
+                       
+                    ],
+                    "category": [  
+                    ],
+                    "tag": [],
+                    "subLocations": [
+                    ],
+                    "hasSublocation": false,
+                    "isDisabled": false,
+                    "title": "",
+                    "description": "",
+                    "stock":"",
+                    "type": "",
+                    "specifications": {
+                    },
+                    "allFeatures": [
+                          {
+                            "featureName": "",
+                            "image": "",
+                            "description": ""
+                        }
+                    ],
+                    "additional_charges": [],
+                    "latitude": "",
+                    "longitude": "",
+                    "contactNumber": "",
+                    "locationAddress": "",
+                    "price": "",
+                    "campLink":"",
+                    "cheapestSublocation": ""
+                    
+}

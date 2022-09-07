@@ -275,7 +275,7 @@ const RoomPaymentScreen = (props) => {
     <View style={styles.container}>
       <Header headerContent={headerContent} />
       <View style={styles.border2}></View>
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps="always">
         <View style={{ backgroundColor: COLOR.white }}>
           <Text style={[styles.text1, styles.ph1, { paddingBottom: hp('3%') }]}>
             대여 기간

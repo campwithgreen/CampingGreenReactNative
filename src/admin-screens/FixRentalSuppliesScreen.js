@@ -6,15 +6,22 @@ import {
   ImageBackground,
   ScrollView,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../layout/Header';
-import { goBack } from '../navigation/utils/RootNavigation';
-import { connect } from 'react-redux';
+import { goBack, navigateTo } from '../navigation/utils/RootNavigation';
+import { connect, useDispatch } from 'react-redux';
+import { createNewItemData } from '../redux/actions/common';
+import COLOR from '../constants/colors';
+import FONTSIZE from '../constants/fontSize';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { createItem } from '../apis/admin';
+import { showDefaultErrorAlert } from '../global/global';
 
 const data = [
   {
@@ -30,8 +37,10 @@ const data = [
 
 const mapStateToProps = (st, ownProps) => {
   const storee = st;
+  const new_item_data = st?.common?.new_item_data;
   return {
-    storee
+    storee,
+    new_item_data
   };
 };
 
@@ -46,53 +55,265 @@ const headerContent = {
 
 const FixRentalSuppliesScreen = (props) => {
 
-  const { storee } = props;
+  const { storee, new_item_data } = props;
   console.log("THE MAIN STORE", storee);
+  console.log("Proceeding New Item data", new_item_data);
+  const dispatch = useDispatch();
+  const [newItemHolder, setNewItemHolder] = useState(new_item_data);
 
+  const [allFeatures, setAllFeatures] = useState([
+    {
+      imgUrl: null,
+      description: "",
+      id: allFeatures?.length + 1 || 1
+    }
+  ]);
+
+  useEffect(() => {
+    let updateSpec = [];
+    const updateSpecificationstoNewItem = () => {
+      allFeatures.map((feature, ind) => {
+        updateSpec.push(
+          {
+            featureName: feature.FeatureName,
+            description: feature.description,
+            image: feature.mainImgUrl
+          }
+        );
+      });
+    };
+    updateSpecificationstoNewItem();
+    let updatedItem = { ...new_item_data, allFeatures: updateSpec };
+    setNewItemHolder(updatedItem);
+  }, [allFeatures]);
+
+
+  const createNewItem = async () => {
+    await createItem(newItemHolder).then((res) => {
+      if (res) {
+        console.log("MESSAGE", res.data?.message);
+        ToastAndroid.showWithGravity("Product Create Successfully", ToastAndroid.TOP, ToastAndroid.CENTER);
+        setTimeout(() => {
+          navigateTo("AdminProductScreen");
+        }, 1000);
+      }
+    }).catch((err) => {
+      console.log("ERROR", err);
+      showDefaultErrorAlert();
+    });
+  };
+
+  useEffect(() => {
+    dispatch(createNewItemData(newItemHolder));
+  }, [newItemHolder]);
+
+
+  console.log("ALL FEATURE", allFeatures);
 
   return (
-    <View>
+    <View style={{
+      backgroundColor: COLOR.white,
+      flex: 1,
+    }}>
       <Header headerContent={headerContent} />
-      <ScrollView>
-        {data.map((item, i) => {
-          return <Comp img={item.img} id={item.id} key={i} />;
-        })}
-      </ScrollView>
-      <View style={styles.btn}>
-        <TouchableOpacity>
-          <Text style={styles.btnText}>완료</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+      <View>
+        <ScrollView keyboardShouldPersistTaps="always">
+          <View style={{ marginBottom: hp("15%"), minHeight: hp("100%") }}>
+            {allFeatures.map((item, i) => {
+              return <View key={i} style={{ marginVertical: hp("1%") }}>
+                <Comp
+                  img={item.imgUrl}
+                  id={i + 1}
+                  newItemHolder={newItemHolder}
+                  setNewItemHolder={setNewItemHolder}
+                  imgIndx={i}
+                  allFeatures={allFeatures}
+                  setAllFeatures={setAllFeatures}
+                />
+              </View>;
+            })}
+          </View>
+        </ScrollView>
+        <View style={styles.btn}>
+          <TouchableOpacity onPress={() => {
+            createNewItem();
+          }}>
+            <Text style={styles.btnText}>완료</Text>
+          </TouchableOpacity>
+        </View>
+      </View >
+    </View >
   );
 };
 
-const Comp = ({ img, id }) => {
+const Comp = (props) => {
+  let { img, id, handleFeatureDescription, handleFeatureTitle, imgIndx, allFeatures, setAllFeatures } = props;
+
+  const uploadImage = async (image) => {
+    let uploadedUrl = "";
+    const data = new FormData();
+    data.append("file", image);
+    data.append("upload_preset", "campgreen");
+    data.append("cloud_name", "dchcqwskd");
+    await fetch("https://api.cloudinary.com/v1_1/dchcqwskd/image/upload", {
+      method: "post",
+      body: data
+    })
+      .then(resp => resp.json())
+      .then(data => {
+        console.log("UPLOADED", data);
+        uploadedUrl = data.url;
+      })
+      .catch(err => console.log(err));
+    return uploadedUrl;
+  };
+
+  //picking image and setting up to newItem
+  const pickImage = async (selectedIndx) => {
+
+    let options = {
+      saveToPhotos: true,
+      mediaType: "photo"
+    };
+    const result = await launchImageLibrary(options);
+    if (result) {
+      let newCarouselImages = [...allFeatures];
+      newCarouselImages[selectedIndx].imgUrl = result?.assets[0]?.uri;
+      let fName = result?.assets[0]?.fileName.split(".")[0];
+      await uploadImage({ ...result.assets[0], name: fName }).then((upURL) => {
+        newCarouselImages[selectedIndx].mainImgUrl = upURL;
+      }).catch((err) => {
+        console.log("Image Upload Error", err);
+        showDefaultErrorAlert();
+      });
+      setAllFeatures(newCarouselImages);
+    }
+  };
+
+  const handleDeleteImage = (ind) => {
+
+
+    console.log("DELETING");
+    let newCarouselImages = [...allFeatures];
+    if (allFeatures.length > 1) {
+      allFeatures.splice(ind, 1);
+    } else {
+      ToastAndroid.showWithGravity("Pls add atleast one specification", ToastAndroid.LONG, ToastAndroid.TOP);
+    }
+    setAllFeatures(newCarouselImages);
+
+  };
+
+
+  const handleAdd = () => {
+    let newCarouselImages = [...allFeatures,
+    {
+      imgUrl: null,
+      imgDescription: "",
+      id: allFeatures?.length + 1 || 1
+    }
+    ];
+    setAllFeatures(newCarouselImages);
+
+  };
+
   return (
     <View>
-      <ImageBackground
-        source={img}
-        style={{
-          height: 300,
-          width: wp('100%'),
-          borderWidth: 1,
-          borderColor: 'lightgrey',
+      {img ? <View>
+        <ImageBackground
+          source={{ uri: img }}
+          style={{
+            height: 300,
+            width: wp('100%'),
+            borderWidth: 1,
+            borderColor: 'lightgrey',
+          }}>
+          <View style={styles.view}>
+            <Text style={styles.num}>{id}</Text>
+            <Text></Text>
+          </View>
+          <TouchableOpacity onPress={() => {
+            let newCarouImage = [...allFeatures];
+            newCarouImage[imgIndx].imgUrl = null;
+            newCarouImage[imgIndx].image = null;
+            setAllFeatures(newCarouImage);
+          }}>
+            <Text style={styles.cross}>+</Text>
+          </TouchableOpacity>
+        </ImageBackground>
+        <TextInput
+          placeholder="Add Feature Title…"
+          style={{
+            paddingLeft: wp('10%'),
+            backgroundColor: 'white',
+            height: 35,
+            color: 'grey',
+          }}
+          onChangeText={(value) => {
+            let newCarouImage = [...allFeatures];
+            newCarouImage[imgIndx].FeatureName = value;
+            setAllFeatures(newCarouImage);
+          }}
+        />
+        <TextInput
+          placeholder="설명 추가 …"
+          style={{
+            paddingLeft: wp('10%'),
+            backgroundColor: 'white',
+            height: 35,
+            color: 'grey',
+          }}
+          onChangeText={(value) => {
+            let newCarouImage = [...allFeatures];
+            newCarouImage[imgIndx].description = value;
+            setAllFeatures(newCarouImage);
+          }}
+        /></View> : <TouchableOpacity
+          onPress={() => {
+            pickImage(imgIndx);
+          }}>
+        {(img === "" || img === null) &&
+          <View>
+            <View style={{
+              height: 140,
+              width: wp('90%'),
+              borderWidth: 1,
+              borderColor: 'lightgrey',
+              marginHorizontal: wp('5%'),
+              marginVertical: hp("1%"),
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center"
+            }}>
+              <Text style={{ fontSize: FONTSIZE.l, fontWeight: "bold" }}>Pic Image</Text>
+            </View>
+            {imgIndx !== 0 && <TouchableOpacity
+              onPress={() => {
+                handleDeleteImage(imgIndx);
+              }}>
+              <Text
+                style={{
+                  color: COLOR.black,
+                  transform: [{ rotate: '45deg' }],
+                  fontSize: 40,
+                  position: 'absolute',
+                  right: 25,
+                  top: -150
+                }}>
+                +
+              </Text>
+            </TouchableOpacity>}
+          </View>
+        }
+
+      </TouchableOpacity>}
+      {imgIndx === allFeatures.length - 1 && <View style={{ backgroundColor: COLOR.lgrey, marginHorizontal: wp("5%"), paddingVertical: hp("2%") }}>
+        <TouchableOpacity onPress={() => {
+          handleAdd();
         }}>
-        <View style={styles.view}>
-          <Text style={styles.num}>{id}</Text>
-          <Text></Text>
-        </View>
-        <Text style={styles.cross}>+</Text>
-      </ImageBackground>
-      <TextInput
-        placeholder="설명 추가 …"
-        style={{
-          paddingLeft: wp('10%'),
-          backgroundColor: 'white',
-          height: 35,
-          color: 'grey',
-        }}
-      />
+          <Text style={{ textAlign: "center" }}>Add More </Text>
+        </TouchableOpacity>
+      </View>}
     </View>
   );
 };
@@ -104,7 +325,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    // paddingHorizontal: wp('5%'),
+    paddingHorizontal: wp('5%'),
     alignItems: 'flex-start',
   },
   num: {
@@ -126,11 +347,11 @@ const styles = StyleSheet.create({
   btn: {
     backgroundColor: '#E5E5E5',
     position: 'absolute',
-    bottom: 30,
-    zIndex: 22,
+    bottom: 80,
     paddingVertical: hp('2%'),
     width: wp('90%'),
     marginHorizontal: wp('5%'),
+    paddingVertical: hp('2%'),
   },
   btnText: {
     textAlign: 'center',

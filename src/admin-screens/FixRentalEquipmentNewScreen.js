@@ -22,7 +22,6 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import { createItem } from '../apis/admin';
 import { showDefaultErrorAlert } from '../global/global';
 import { connect, useDispatch } from 'react-redux';
-import { createNewItemData } from '../redux/actions/common';
 import newItem from "../constants/newItem.json";
 import newItemLoc from "../constants/newItemLoc.json";
 
@@ -78,73 +77,64 @@ const FixRentalEquipmentNewScreen = (props) => {
     };
 
     const [count, setCount] = useState(0);
-    const [newProduct, setNewProduct] = useState(
-        {
-            "carousel": [
-                "https://res.cloudinary.com/campwithgreen/image/upload/v1658571335/camping_items/몬타나_N블랙_텐트_uh142q.png",
-                "https://res.cloudinary.com/campwithgreen/image/upload/v1658847821/camping_items/2_ghuupy.png"
-            ],
-            "category": [
-                "텐트"
-            ],
-            "tag": [],
-            "subLocations": [],
-            "hasSublocation": false,
-            "isDisabled": false,
-            "title": "DELETING",
-            "description": "",
-            "price": 50000,
-            "stock": 1,
-            "type": "PRODUCT",
-            "specifications": {
-                "크기": "본체 220X250X115cm(설치시),이너텐트 220X150X110cm(설치시),그라운드시트 220X145cm",
-                "중량": "2.6kg",
-                "색상": "black",
-                "재질": "본체 나일론,이너텐트 나일론,바닥 나일론,그라운드시트 폴리에스터,메인폴 알루미늄    "
-            },
-            "allFeatures": [
-                {
-                    "featureName": "HEY",
-                    "image": "https://res.cloudinary.com/campwithgreen/image/upload/v1658847995/camping_items/1_zxo1wh.png",
-                    "description": "01. 고급스러운 탄 컬러의 나일론 원단을 사용하여 유니크한 스타일은 물론 내구성과 안정성이 우수"
-                },
-                {
-                    "featureName": "TEST",
-                    "image": "https://res.cloudinary.com/campwithgreen/image/upload/v1658848115/camping_items/2_eyuom8.png",
-                    "description": "02. 이너텐트만 설치하여 피크닉 및 타프가든 내부의 이너텐트로 활용이 가능"
-                },
-                {
-                    "featureName": "CODING_HUMANS",
-                    "image": "https://res.cloudinary.com/campwithgreen/image/upload/v1658848150/camping_items/3_xsmhxp.png",
-                    "description": "03. 개방감 탁월한 이너텐트 메쉬창"
-                },
-                {
-                    "featureName": "CODERS",
-                    "image": "https://res.cloudinary.com/campwithgreen/image/upload/v1658848184/camping_items/4_fcborj.png",
-                    "description": "04. 빠른 설치를 위한 SR벌트 적용"
-                },
-                {
-                    "featureName": "그라운드시트"
-                },
-                {
-                    "featureName": "수납케이스"
-                }
-            ],
-            "additional_charges": [],
-        }
-    );
+    // const [newProduct, setNewProduct] = useState(
+    //     {
+    //         "carousel": [
+    //             "https://res.cloudinary.com/campwithgreen/image/upload/v1658571335/camping_items/몬타나_N블랙_텐트_uh142q.png",
+    //             "https://res.cloudinary.com/campwithgreen/image/upload/v1658847821/camping_items/2_ghuupy.png"
+    //         ],
+    //         "category": [
+    //             "텐트"
+    //         ],
+    //         "tag": [],
+    //         "subLocations": [],
+    //         "hasSublocation": false,
+    //         "isDisabled": false,
+    //         "title": "DELETING",
+    //         "description": "",
+    //         "price": 50000,
+    //         "stock": 1,
+    //         "type": "PRODUCT",
+    //         "specifications": {
+    //             "크기": "본체 220X250X115cm(설치시),이너텐트 220X150X110cm(설치시),그라운드시트 220X145cm",
+    //             "중량": "2.6kg",
+    //             "색상": "black",
+    //             "재질": "본체 나일론,이너텐트 나일론,바닥 나일론,그라운드시트 폴리에스터,메인폴 알루미늄    "
+    //         },
+    //         "allFeatures": [
+    //             {
+    //                 "featureName": "HEY",
+    //                 "image": "https://res.cloudinary.com/campwithgreen/image/upload/v1658847995/camping_items/1_zxo1wh.png",
+    //                 "description": "01. 고급스러운 탄 컬러의 나일론 원단을 사용하여 유니크한 스타일은 물론 내구성과 안정성이 우수"
+    //             },
+    //             {
+    //                 "featureName": "TEST",
+    //                 "image": "https://res.cloudinary.com/campwithgreen/image/upload/v1658848115/camping_items/2_eyuom8.png",
+    //                 "description": "02. 이너텐트만 설치하여 피크닉 및 타프가든 내부의 이너텐트로 활용이 가능"
+    //             },
+    //             {
+    //                 "featureName": "CODING_HUMANS",
+    //                 "image": "https://res.cloudinary.com/campwithgreen/image/upload/v1658848150/camping_items/3_xsmhxp.png",
+    //                 "description": "03. 개방감 탁월한 이너텐트 메쉬창"
+    //             },
+    //             {
+    //                 "featureName": "CODERS",
+    //                 "image": "https://res.cloudinary.com/campwithgreen/image/upload/v1658848184/camping_items/4_fcborj.png",
+    //                 "description": "04. 빠른 설치를 위한 SR벌트 적용"
+    //             },
+    //             {
+    //                 "featureName": "그라운드시트"
+    //             },
+    //             {
+    //                 "featureName": "수납케이스"
+    //             }
+    //         ],
+    //         "additional_charges": [],
+    //     }
+    // );
 
 
-    const createNewItem = async () => {
-        await createItem(newProduct).then((res) => {
-            if (res) {
-                console.log("MESSAGE", res.data?.message);
-            }
-        }).catch((err) => {
-            console.log("ERROR", err);
-            showDefaultErrorAlert();
-        });
-    };
+
 
     const decrement = () => {
         if (count > 0) {
@@ -203,6 +193,9 @@ const FixRentalEquipmentNewScreen = (props) => {
             }]
         }
     ]);
+
+
+    console.log("ADDITIONAL CHARGES", additionalCharges);
 
 
     const handleDeleteImage = (ind) => {
@@ -335,9 +328,17 @@ const FixRentalEquipmentNewScreen = (props) => {
         let updateAdditional = [];
         const updateAdditionalToNew = () => {
             additionalCharges.map((item, index) => {
-                updateAdditional.push(item);
+                let newIt = { ...item };
+                let updateSpec = {};
+                const updateSpecificationstoNewItem = () => {
+                    item.add_feature_value.map((item, index) => {
+                        updateSpec[item.keyAtt] = item.valueAtt;
+                    });
+                };
+                updateSpecificationstoNewItem();
+                newIt.add_feature_value = updateSpec;
+                updateAdditional.push(newIt);
             });
-
         };
         updateAdditionalToNew();
         let updatedItem = { ...new_item_data, additional_charges: updateAdditional };
@@ -362,7 +363,7 @@ const FixRentalEquipmentNewScreen = (props) => {
                 <Comp1
                     isPrice={true}
                     onChange={(value) => {
-                        let updatedItem = { ...new_item_data, prices: Number(value) };
+                        let updatedItem = { ...new_item_data, price: Number(value) };
                         setNewItemHolder(updatedItem);
                     }}
                     type="number"
@@ -664,21 +665,24 @@ const FixRentalEquipmentNewScreen = (props) => {
                 </Text>
                 {additionalCharges.map((sp, index) => {
                     return <View key={sp.id}>
-                        <TextInput style={{
-                            backgroundColor: '#F8F8F8',
-                            width: wp("70%"),
-                            paddingLeft: wp('3%'),
-                            fontWeight: '600',
-                        }}
-                            placeholder={"AC Title"}
-                            defaultValue={additionalCharges[index]?.add_feature_title}
-                            onChangeText={(text) => {
-                                let newSpecification = [...additionalCharges];
-                                newSpecification[index].add_feature_title = text;
-                                setAdditionalCharges(newSpecification);
-                            }} />
+                        <View style={{ width: hp("8%") }}>
+                            <TextInput style={{
+                                backgroundColor: '#F8F8F8',
+                                width: wp("70%"),
+                                marginLeft: wp('5%'),
+                                fontWeight: '600',
+                            }}
+                                placeholder={"AC Title"}
+                                defaultValue={additionalCharges[index]?.add_feature_title}
+                                onChangeText={(text) => {
+                                    let newSpecification = [...additionalCharges];
+                                    newSpecification[index].add_feature_title = text;
+                                    setAdditionalCharges(newSpecification);
+                                }} />
+                        </View>
                         {sp?.add_feature_value?.map((it, ind) => {
                             return <Comp2
+                                key={ind}
                                 parInd={index}
                                 p1={it.p1}
                                 p2={it.p2}
@@ -694,6 +698,7 @@ const FixRentalEquipmentNewScreen = (props) => {
                             addAdditionalChargeFeature={true}
                             specification={additionalCharges}
                             setSpecification={setAdditionalCharges}
+                            parentIndex={index}
                         />
                     </View>;
                 })}
@@ -725,7 +730,6 @@ const FixRentalEquipmentNewScreen = (props) => {
                 <View style={{ paddingBottom: hp('20%') }}>
 
                     <TouchableOpacity onPress={() => {
-                        console.log("NEXT SLOT");
                         navigateTo("FixRentalSuppliesScreen");
                         // createNewItem();
                     }}>
@@ -853,21 +857,37 @@ const Comp2 = (props) => {
 const Comp3 = (props) => {
 
 
-    let { t1, addSpecification, specification, setSpecification, addImage, carouselImages, setCarouselImages, addTag, addCategory,
-        addAdditionalCharge, addAdditionalChargeFeature } = props;
+    let { t1,
+        addSpecification,
+        specification, setSpecification, addImage, carouselImages,
+        setCarouselImages, addTag, addCategory,
+        addAdditionalCharge,
+        addAdditionalChargeFeature,
+        parentIndex
+    } = props;
 
     const handleAddSpecificaiton = () => {
         if (addAdditionalChargeFeature) {
-            let sp = {
+            let newSpecification = [...specification];
+            newSpecification[parentIndex].add_feature_title = newSpecification[parentIndex].add_feature_title;
+            newSpecification[parentIndex].add_feature_value = [...newSpecification[parentIndex].add_feature_value, {
                 p1: "Ex)",
                 p2: "코랄",
-                t1: "삭제"
+                keyAtt: "",
+                valueAtt: ""
+            }];
+            setSpecification(newSpecification);
+        } else if (addAdditionalCharge) {
+            let sp = {
+                add_feature_title: "",
+                add_feature_value: [{
+                    p1: "Ex)",
+                    p2: "코랄",
+                    keyAtt: "",
+                    valueAtt: ""
+                }]
             };
-            let newSpecification = [
-                {
-                    ...specification,
-                    add_feature_value: [...specification.add_feature_value, sp]
-                }];
+            let newSpecification = [...specification, sp];
             setSpecification(newSpecification);
         } else {
             let sp = {

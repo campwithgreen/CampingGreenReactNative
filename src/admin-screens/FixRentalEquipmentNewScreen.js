@@ -19,11 +19,12 @@ import Header from '../layout/Header';
 import FONTSIZE from '../constants/fontSize';
 import COLOR from '../constants/colors';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { createItem } from '../apis/admin';
 import { showDefaultErrorAlert } from '../global/global';
 import { connect, useDispatch } from 'react-redux';
 import newItem from "../constants/newItem.json";
+import { createNewItemData } from '../redux/actions/common';
 import newItemLoc from "../constants/newItemLoc.json";
+import { createItem } from '../apis/admin';
 
 
 

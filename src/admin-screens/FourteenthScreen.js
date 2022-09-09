@@ -198,7 +198,7 @@ const Comp1 = (props) => {
           <Text style={{ fontWeight: '600', maxWidth: wp("45%"), fontSize: FONTSIZE.l }}>위치  {item?.description}</Text>
         </View>
         <View>
-          <Text style={{ fontWeight: '600', fontSize: FONTSIZE.l }}>위치  {item?.phone}</Text>
+          <Text style={{ fontWeight: '600', fontSize: FONTSIZE.l }}>위치  {item?.phone || item?.contactNumber}</Text>
         </View>
       </View>
     </View>

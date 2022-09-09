@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   ToastAndroid,
+  Alert,
 } from 'react-native';
 import {
   heightPercentageToDP as hp,
@@ -58,8 +59,10 @@ const FixRentalSuppliesScreen = (props) => {
   const { storee, new_item_data } = props;
   console.log("THE MAIN STORE", storee);
   console.log("Proceeding New Item data", new_item_data);
+  const type = new_item_data?.type;
   const dispatch = useDispatch();
   const [newItemHolder, setNewItemHolder] = useState(new_item_data);
+  console.log("THE TYPE", type);
 
   const [allFeatures, setAllFeatures] = useState([
     {
@@ -91,11 +94,29 @@ const FixRentalSuppliesScreen = (props) => {
   const createNewItem = async () => {
     await createItem(newItemHolder).then((res) => {
       if (res) {
-        console.log("MESSAGE", res.data?.message);
-        ToastAndroid.showWithGravity("Product Create Successfully", ToastAndroid.TOP, ToastAndroid.CENTER);
-        setTimeout(() => {
+        ToastAndroid.showWithGravity(`${type} CREATED SUCCESSFULLY`, ToastAndroid.TOP, ToastAndroid.CENTER);
+        console.log("MESSAGE", res.data);
+        if (type === "PRODUCT") {
           navigateTo("AdminProductScreen");
-        }, 1000);
+        } else if (type === "LOCATION") {
+          Alert.alert("Add Sub Location Details",
+            "Please add Sub Location details in the parent location created",
+            [
+              {
+                text: "Cancel",
+                onPress: () => console.log("Deletion Cancelled"),
+                style: "cancel"
+              },
+              {
+                text: "OK", onPress: () => {
+                  navigateTo("FillSubLocationFirstScreen", { type: "SUBLOCATION", parLocId: res?.data?.data._id });
+                }
+              }
+            ]);
+
+        } else if (type === "SUBLOCATION") {
+
+        }
       }
     }).catch((err) => {
       console.log("ERROR", err);
@@ -119,20 +140,51 @@ const FixRentalSuppliesScreen = (props) => {
       <View>
         <ScrollView keyboardShouldPersistTaps="always">
           <View style={{ marginBottom: hp("15%"), minHeight: hp("100%") }}>
-            {allFeatures.map((item, i) => {
-              return <View key={i} style={{ marginVertical: hp("1%") }}>
-                <Comp
-                  img={item.imgUrl}
-                  id={i + 1}
-                  newItemHolder={newItemHolder}
-                  setNewItemHolder={setNewItemHolder}
-                  imgIndx={i}
-                  allFeatures={allFeatures}
-                  setAllFeatures={setAllFeatures}
-                />
-              </View>;
-            })}
+            <View>
+              {allFeatures.map((item, i) => {
+                return <View key={i} style={{ marginVertical: hp("1%") }}>
+                  <Comp
+                    img={item.imgUrl}
+                    id={i + 1}
+                    newItemHolder={newItemHolder}
+                    setNewItemHolder={setNewItemHolder}
+                    imgIndx={i}
+                    allFeatures={allFeatures}
+                    setAllFeatures={setAllFeatures}
+                  />
+                </View>;
+              })}
+            </View>
+            {(type === "LOCATION" || type === "SUBLOCATION") &&
+              <View>
+                <FieldContainer
+                  keyPad="numeric"
+                  title={"Contact Number"}
+                  onChange={(value) => {
+                    let updatedItem = { ...newItemHolder };
+                    updatedItem.contactNumber = value;
+                    setNewItemHolder(updatedItem);
+                  }} />
+                <FieldContainer
+                  keyPad="numeric"
+                  title={"Latitude"}
+                  onChange={(value) => {
+                    let updatedItem = { ...newItemHolder };
+                    updatedItem.latitude = value;
+                    setNewItemHolder(updatedItem);
+                  }} />
+                <FieldContainer
+                  keyPad="numeric"
+                  title={"Longitude"}
+                  onChange={(value) => {
+                    let updatedItem = { ...newItemHolder };
+                    updatedItem.longitude = value;
+                    setNewItemHolder(updatedItem);
+                  }} />
+              </View>
+            }
           </View>
+
         </ScrollView>
         <View style={styles.btn}>
           <TouchableOpacity onPress={() => {
@@ -192,8 +244,6 @@ const Comp = (props) => {
 
   const handleDeleteImage = (ind) => {
 
-
-    console.log("DELETING");
     let newCarouselImages = [...allFeatures];
     if (allFeatures.length > 1) {
       allFeatures.splice(ind, 1);
@@ -311,11 +361,27 @@ const Comp = (props) => {
         <TouchableOpacity onPress={() => {
           handleAdd();
         }}>
-          <Text style={{ textAlign: "center" }}>Add More </Text>
+          <Text style={{ textAlign: "center" }}>Add More All Features </Text>
         </TouchableOpacity>
       </View>}
     </View>
   );
+};
+
+const FieldContainer = (props) => {
+  const { title, onChange, keyPad } = props;
+  return <View style={styles.view1}>
+    {title !== "" && <Text style={styles.text1}>{title}</Text>}
+    <View style={{ height: wp("15%"), width: "100%" }}>
+      <TextInput
+        keyboardType={keyPad}
+        style={styles.textinput1}
+        onChangeText={(text) => {
+          onChange(text);
+        }}
+      />
+    </View>
+  </View>;
 };
 
 export default connect(mapStateToProps, null)(FixRentalSuppliesScreen);
@@ -359,5 +425,31 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
     color: '#000000',
+  },
+  view1: {
+    display: 'flex',
+    marginHorizontal: wp('5%'),
+    paddingVertical: hp('1%'),
+  },
+  text1: {
+    fontWeight: 'bold',
+    color: 'black',
+    fontSize: 16,
+  },
+  text2: {
+    borderWidth: 1,
+    borderColor: 'lightgrey',
+    paddingHorizontal: wp('4%'),
+    paddingVertical: hp('0.7%'),
+    fontWeight: 'bold',
+    fontSize: 22,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+  },
+  textinput1: {
+    borderWidth: 1,
+    borderColor: 'lightgrey',
+    width: '100%',
+    height: '80%',
   },
 });

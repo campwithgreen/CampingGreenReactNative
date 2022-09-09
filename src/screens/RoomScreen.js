@@ -8,84 +8,23 @@ import {
   TouchableOpacity,
   ToastAndroid,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import SearchInput from '../components/SearchInput';
 import Room from '../components/Room';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {getAllProducts} from '../apis/product';
-import {useDispatch, useSelector} from 'react-redux';
-import {setLocationData} from '../redux/actions/product';
+import { getAllProducts } from '../apis/product';
+import { useDispatch, useSelector } from 'react-redux';
+import { setLocationData } from '../redux/actions/product';
 import Loader from '../components/common/Loader';
-import {showDefaultErrorAlert} from '../global/global';
-import {goBack} from '../navigation/utils/RootNavigation';
+import { showDefaultErrorAlert } from '../global/global';
+import { goBack } from '../navigation/utils/RootNavigation';
 import Header from '../layout/Header';
 
 const RoomScreen = () => {
-  const roomData = [
-    {
-      id: '1',
-      btn1: '홍천',
-      btn2: '보리울 캠핑장',
-      btn3: '홍천',
-      heading: '홍천 보리울 캠핑장',
-      subheading: '경기도 과천시 과천동 과천1로 산림휴양소',
-      greenText: '남은자리 23개',
-      price: '77,000',
-      currency: '원~',
-      img: require('../assets/images/map_below_house.png'),
-    },
-    {
-      id: '2',
-      btn1: '홍천',
-      btn2: '보리울 캠핑장',
-      btn3: '홍천',
-      heading: '홍천 보리울 캠핑장',
-      subheading: '경기도 과천시 과천동 과천1로 산림휴양소',
-      greenText: '남은자리 23개',
-      price: '89,000',
-      currency: '원~',
-      img: require('../assets/images/map_below_house.png'),
-    },
-    {
-      id: '3',
-      btn1: '홍천',
-      btn2: '보리울 캠핑장',
-      btn3: '홍천',
-      heading: '홍천 보리울 캠핑장',
-      subheading: '경기도 과천시 과천동 과천1로 산림휴양소',
-      greenText: '남은자리 23개',
-      price: '89,000',
-      currency: '원~',
-      img: require('../assets/images/map_below_house.png'),
-    },
-    {
-      id: '4',
-      btn1: '홍천',
-      btn2: '보리울 캠핑장',
-      btn3: '홍천',
-      heading: '홍천 보리울 캠핑장',
-      subheading: '경기도 과천시 과천동 과천1로 산림휴양소',
-      greenText: '남은자리 23개',
-      price: '89,000',
-      currency: '원~',
-      img: require('../assets/images/map_below_house.png'),
-    },
-    {
-      id: '5',
-      btn1: '홍천',
-      btn2: '보리울 캠핑장',
-      btn3: '홍천',
-      heading: '홍천 보리울 캠핑장',
-      subheading: '경기도 과천시 과천동 과천1로 산림휴양소',
-      greenText: '남은자리 23개',
-      price: '89,000',
-      currency: '원~',
-      img: require('../assets/images/map_below_house.png'),
-    },
-  ];
+
 
   const dispatch = useDispatch();
 
@@ -93,7 +32,7 @@ const RoomScreen = () => {
 
   useEffect(() => {
     (async function getLocationData() {
-      let data = {type: 'LOCATION'};
+      let data = { type: 'LOCATION' };
       setLoading(true);
       await getAllProducts(data)
         .then(res => {
@@ -118,7 +57,7 @@ const RoomScreen = () => {
   console.log('STORE', st);
 
   return (
-    <View style={{backgroundColor: 'white'}}>
+    <View style={{ backgroundColor: 'white' }}>
       <SearchInput />
       {loading ? (
         <Loader />
@@ -128,7 +67,7 @@ const RoomScreen = () => {
           ListHeaderComponent={ListHeaderComponent}
           showsHorizontalScrollIndicator={false}
           data={location}
-          renderItem={({item}) => {
+          renderItem={({ item }) => {
             return <Room item={item} key={item._id} />;
           }}
         />
@@ -149,7 +88,7 @@ const ListHeaderComponent = () => {
           ToastAndroid.TOP,
         );
       }}>
-      <View style={{paddingBottom: 20, paddingTop: 70}}>
+      <View style={{ paddingBottom: 20, paddingTop: 70 }}>
         <Image
           source={require('../assets/images/map1.png')}
           style={styles.img1}

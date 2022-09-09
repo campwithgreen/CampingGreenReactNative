@@ -175,8 +175,6 @@ const ProductShoppingBagScreen = (props) => {
   }, [isLogin]);
 
   const handleIndividualCartItemDelete = (ID, cartPayload) => {
-    console.log("INDIVIDUAL DELETE");
-    console.log("C P", cartPayload);
     var removeIndex = cartPayload.map(item => item?._id).indexOf(ID);
     ~removeIndex && cartPayload.splice(removeIndex, 1);
     console.log("Delete Payload", cartPayload);

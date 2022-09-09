@@ -58,7 +58,7 @@ const Room = ({ item }) => {
         </Text>
         <View style={styles.view2}>
           <Text>
-            <Text style={[styles.text1, { fontSize: 20 }]}>{item?.cheapestSublocation}</Text>
+            <Text style={[styles.text1, { fontSize: 20 }]}>{item?.cheapestSublocation === 0 ? item?.price : item?.cheapestSublocation}</Text>
             <Text style={{ fontSize: 12, fontWeight: '600', color: '#454C53' }}>
               원~
             </Text>

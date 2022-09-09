@@ -38,26 +38,24 @@ const mapDispatchToProps = (st, ownProps) => {
 
 };
 
-const FixRentalEquipmentNewScreen = (props) => {
+const FillSubLocationFirst = (props) => {
 
 
     const { storee, new_item_data } = props;
     const { type } = props?.route?.params;
     const dispatch = useDispatch();
-    const [newItemHolder, setNewItemHolder] = useState({ ...newItem, type: type });
-
+    const [newItemHolder, setNewItemHolder] = useState({ ...new_item_data, type: type, hasSublocation: true, subLocations: [] });
 
 
     useEffect(() => {
-
         dispatch(createNewItemData(newItemHolder));
-
     }, [type, newItemHolder]);
 
 
 
-    console.log("THE STORE ====>", storee);
     console.log("NEW ITEM DATA", new_item_data);
+    console.log("THE ALL IT ====>", newItemHolder);
+
 
     const headerContent = {
         leftItemContents: {
@@ -75,7 +73,11 @@ const FixRentalEquipmentNewScreen = (props) => {
 
     const decrement = () => {
         if (count > 0) {
-            let updatedItem = { ...new_item_data, stock: count - 1 };
+            let updatedItem = {
+                ...new_item_data, type: "LOCATION",
+                hasSublocation: true,
+                subLocations: [{ ...new_item_data.subLocations[0], stock: count - 1 }]
+            };
             setNewItemHolder(updatedItem);
             setCount(i => i - 1);
         } else {
@@ -197,8 +199,10 @@ const FixRentalEquipmentNewScreen = (props) => {
 
         };
         updateSpecificationstoNewItem();
-        console.log("UPDATED SPEC", updateSpec);
-        let updatedItem = { ...new_item_data, specifications: updateSpec };
+        let updatedItem = {
+            ...new_item_data, type: "LOCATION", hasSublocation: true,
+            subLocations: [{ ...new_item_data.subLocations[0], specifications: updateSpec }]
+        };
         setNewItemHolder(updatedItem);
 
     }, [specification]);
@@ -214,7 +218,10 @@ const FixRentalEquipmentNewScreen = (props) => {
             });
         };
         updateCarouseltoNewItem();
-        let updatedItem = { ...new_item_data, carousel: updateCaro };
+        let updatedItem = {
+            ...new_item_data, type: "LOCATION", hasSublocation: true,
+            subLocations: [{ ...new_item_data.subLocations[0], carousel: updateCaro }]
+        };
         setNewItemHolder(updatedItem);
 
     }, [carouselImages]);
@@ -229,7 +236,10 @@ const FixRentalEquipmentNewScreen = (props) => {
             });
         };
         updateCategorytoNewItem();
-        let updatedItem = { ...new_item_data, category: updateCat };
+        let updatedItem = {
+            ...new_item_data, type: "LOCATION", hasSublocation: true,
+            subLocations: [{ ...new_item_data.subLocations[0], category: updateCat }]
+        };
         setNewItemHolder(updatedItem);
 
     }, [category]);
@@ -245,7 +255,10 @@ const FixRentalEquipmentNewScreen = (props) => {
             });
         };
         updateTagtoNewItem();
-        let updatedItem = { ...new_item_data, tag: updateTag };
+        let updatedItem = {
+            ...new_item_data, type: "LOCATION", hasSublocation: true,
+            subLocations: [{ ...new_item_data.subLocations[0], tag: updateTag }]
+        };
         setNewItemHolder(updatedItem);
 
     }, [tag]);
@@ -268,7 +281,10 @@ const FixRentalEquipmentNewScreen = (props) => {
             });
         };
         updateAdditionalToNew();
-        let updatedItem = { ...new_item_data, additional_charges: updateAdditional };
+        let updatedItem = {
+            ...new_item_data, type: "LOCATION", hasSublocation: true,
+            subLocations: [{ ...new_item_data.subLocations[0], additional_charges: updateAdditional }]
+        };
         setNewItemHolder(updatedItem);
 
     }, [additionalCharges]);
@@ -284,14 +300,17 @@ const FixRentalEquipmentNewScreen = (props) => {
                     <Comp1
                         isProductName={true}
                         onChange={async (value) => {
-                            let updatedItem = { ...new_item_data, title: value, type: type };
+                            let updatedItem = { ...new_item_data, type: "LOCATION", hasSublocation: true, subLocations: [{ title: value, type: type }] };
                             setNewItemHolder(updatedItem);
                         }}
                     />
                     <Comp1
                         isPrice={true}
                         onChange={(value) => {
-                            let updatedItem = { ...new_item_data, price: Number(value) };
+                            let updatedItem = {
+                                ...new_item_data, type: "LOCATION", hasSublocation: true,
+                                subLocations: [{ ...new_item_data.subLocations[0], price: Number(value) }]
+                            };
                             setNewItemHolder(updatedItem);
                         }}
                         type="number"
@@ -317,9 +336,11 @@ const FixRentalEquipmentNewScreen = (props) => {
                                         style={styles.text2}
                                         onPress={() => {
                                             setCount(i => i + 1);
-                                            let updatedItem = { ...new_item_data, stock: count + 1 };
+                                            let updatedItem = {
+                                                ...new_item_data, type: "LOCATION", hasSublocation: true,
+                                                subLocations: [{ ...new_item_data.subLocations[0], stock: count + 1 }]
+                                            };
                                             setNewItemHolder(updatedItem);
-
                                         }}>
                                         +
                                     </Text>
@@ -659,7 +680,7 @@ const FixRentalEquipmentNewScreen = (props) => {
             </ScrollView>
             <View>
                 <TouchableOpacity onPress={() => {
-                    navigateTo("FixRentalSuppliesScreen");
+                    navigateTo("FillSubLocationSecondScreen");
                 }}>
                     <View style={styles.btn}>
                         <Text style={styles.btnText}>수정 완료</Text>
@@ -874,7 +895,7 @@ const Comp3 = (props) => {
     );
 };
 
-export default connect(mapDispatchToProps, null)(FixRentalEquipmentNewScreen);
+export default connect(mapDispatchToProps, null)(FillSubLocationFirst);
 
 const styles = StyleSheet.create({
     view1: {

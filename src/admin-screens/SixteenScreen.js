@@ -89,15 +89,16 @@ const SixteenScreen = (props) => {
     <View style={{ backgroundColor: COLOR.white, minHeight: hp("100%") }}>
       <Header headerContent={headerContent} />
       <Text style={{ borderBottomWidth: 2, borderBottomColor: '#F8F8F8' }}></Text>
-      {loading ? <Loader /> : <ScrollView>
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginHorizontal: wp('5%'),
-          }}>
-          {/* <View
+      {loading ? <Loader /> :
+        <ScrollView>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginHorizontal: wp('5%'),
+            }}>
+            {/* <View
             style={{
               display: 'flex',
               flexDirection: 'row',
@@ -125,17 +126,19 @@ const SixteenScreen = (props) => {
             </TouchableOpacity>
           </View>
           <View></View> */}
-        </View>
-        {(result && Object.keys(result)?.length >= 1) ? Object.keys(result)?.map((key) => {
-          return <View>
-            <Text style={styles.dateWithBoldLine}>{moment(key?.split('_')[0]).format('YYYY.MM.DD')}</Text>
-            {result[key]?.map((item) => {
-              console.log("THE ITEM", item, key);
-              return <Comp1 flag={item.paymentStatus === "PAYMENT_DONE"} item={item} key={item?._id} />;
-            })}
-          </View>;
-        }) : <View><Text> NO ORDERS</Text></View>}
-      </ScrollView>}
+          </View>
+          <View style={{ marginBottom: hp("30%") }}>
+            {(result && Object.keys(result)?.length >= 1) ? Object.keys(result)?.map((key) => {
+              return <View >
+                <Text style={styles.dateWithBoldLine}>{moment(key?.split('_')[0]).format('YYYY.MM.DD')}</Text>
+                {result[key]?.map((item) => {
+                  console.log("THE ITEM", item, key);
+                  return <Comp1 flag={item.paymentStatus === "PAYMENT_DONE"} item={item} key={item?._id} />;
+                })}
+              </View>;
+            }) : <View><Text> NO ORDERS</Text></View>}
+          </View>
+        </ScrollView>}
     </View>
   );
 };

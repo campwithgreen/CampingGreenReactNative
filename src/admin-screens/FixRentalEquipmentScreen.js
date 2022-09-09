@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   ToastAndroid,
+  Button,
 } from 'react-native';
 import {
   heightPercentageToDP as hp,
@@ -18,6 +19,7 @@ import { useState } from 'react';
 import { goBack } from '../navigation/utils/RootNavigation';
 import Header from '../layout/Header';
 import FONTSIZE from '../constants/fontSize';
+import COLOR from '../constants/colors';
 
 const FixRentalEquipmentScreen = (props) => {
 
@@ -111,71 +113,78 @@ const FixRentalEquipmentScreen = (props) => {
           ]}>
           사진 업로드
         </Text>
-        <ImageBackground
-          // source={require('../assets/images/jorgen.jpg')}
-          source={{ uri: selectedProduct?.carousel[0] }}
-          style={{
-            height: 140,
-            width: wp('90%'),
-            borderWidth: 1,
-            borderColor: 'lightgrey',
-            marginHorizontal: wp('5%'),
-          }}
-          resizeMode="contain"
-        >
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'flex-start',
-            }}>
-            <Text
+        {/* image upload */}
+        {selectedProduct?.carousel.map((image, index) => {
+          return <View style={{ marginVertical: hp("2%") }}>
+            <ImageBackground
+              source={{ uri: image }}
               style={{
-                backgroundColor: 'white',
-                paddingHorizontal: 7,
-                paddingVertical: 2,
-                textAlign: 'center',
-                textAlignVertical: 'center',
-                color: 'black',
-              }}>
-              1
-            </Text>
-            <Text></Text>
-          </View>
-          <Text
-            style={{
-              color: 'white',
-              transform: [{ rotate: '45deg' }],
-              fontSize: 40,
-              position: 'absolute',
-              right: 5,
-              top: -12,
-            }}>
-            +
-          </Text>
-          <Text
-            style={{
-              position: 'absolute',
-              left: '50%',
-              color: 'white',
-              transform: [{ translateX: -50 }, { translateY: 53 }],
-            }}>
-            설명 추가 …
-          </Text>
-        </ImageBackground>
-        <TextInput
-          placeholder="설명 추가 …"
-          style={{
-            backgroundColor: '#F8F8F8',
-            fontWeight: '600',
-            marginHorizontal: wp('5%'),
-            paddingLeft: wp('4%'),
-            marginTop: hp('3%'),
-          }}
-        />
+                height: hp("30%"),
+                width: wp('90%'),
+                borderWidth: 1,
+                borderColor: 'lightgrey',
+                marginHorizontal: wp('5%'),
+              }}
+              resizeMode="stretch"
+            >
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'flex-start',
+                }}>
+                <Text
+                  style={{
+                    backgroundColor: 'white',
+                    paddingHorizontal: 7,
+                    paddingVertical: 2,
+                    textAlign: 'center',
+                    textAlignVertical: 'center',
+                    color: 'black',
+                  }}>
+                  {index + 1}
+                </Text>
+              </View>
+              {/* <Text
+                style={{
+                  color: 'white',
+                  transform: [{ rotate: '45deg' }],
+                  fontSize: 40,
+                  position: 'absolute',
+                  right: 5,
+                  top: -12,
+                }}>
+                +
+              </Text> */}
+              {/* <Text
+                style={{
+                  position: 'absolute',
+                  left: '50%',
+                  color: 'white',
+                  transform: [{ translateX: -50 }, { translateY: 53 }],
+                }}>
+                설명 추가 …
+              </Text> */}
+            </ImageBackground>
+            {/* <TextInput
+              placeholder="설명 추가 …"
+              style={{
+                backgroundColor: '#F8F8F8',
+                fontWeight: '600',
+                marginHorizontal: wp('5%'),
+                paddingLeft: wp('4%'),
+                marginTop: hp('3%'),
+              }}
+            /> */}
+          </View>;
+
+        })}
         <View style={{ paddingBottom: hp('20%') }}>
-          <Comp3 t1="사진 추가하기" />
+          <Comp3 t1="사진 추가하기" addImage={true} />
+          <View style={{ marginTop: hp("10%"), marginHorizontal: wp("2%") }}>
+            <Button title='NEXT' color={COLOR.lgrey} ></Button>
+          </View>
         </View>
       </ScrollView>
       <View style={styles.btn}>
@@ -227,7 +236,7 @@ const Comp2 = ({ p1, p2, t1, att, attValue }) => {
     </View>
   );
 };
-const Comp3 = ({ t1, selectedProduct, setSelectedProduct }) => {
+const Comp3 = ({ t1, selectedProduct, setSelectedProduct, addImage }) => {
 
   const handleAddNewSpecifications = () => {
 
@@ -236,6 +245,11 @@ const Comp3 = ({ t1, selectedProduct, setSelectedProduct }) => {
     newSelectedProduct.specifications = { ...newSelectedProduct?.specifications, "": "" };
     setSelectedProduct(newSelectedProduct);
 
+  };
+
+
+  const handleAddImage = () => {
+    console.log("ADDING AND PICKING IMAGES");
   };
 
 
@@ -249,7 +263,11 @@ const Comp3 = ({ t1, selectedProduct, setSelectedProduct }) => {
         marginVertical: hp('1%'),
       }}>
       <TouchableOpacity onPress={() => {
-        handleAddNewSpecifications();
+        if (addImage) {
+          handleAddImage();
+        } else {
+          handleAddNewSpecifications();
+        }
       }}>
         <Text
           style={{

@@ -7,6 +7,8 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  ToastAndroid,
+  Alert,
 } from 'react-native';
 import React from 'react';
 import {
@@ -24,57 +26,10 @@ import CheckBox from '@react-native-community/checkbox';
 import FONTSIZE from '../constants/fontSize';
 import COLOR from '../constants/colors';
 import { navigateTo } from '../navigation/utils/RootNavigation';
+import { set } from 'react-hook-form';
+import { deleteItem } from '../apis/admin';
 
-const data = [
-  {
-    id: '1',
-    img: require('../assets/images/tambu.png'),
-    hText: '코베아 텐트',
-    mText: '가격',
-    bText1: '300,000 ',
-    bText2: '남은 수량 총 3개',
-  },
-  {
-    id: '2',
-    img: require('../assets/images/tambu.png'),
-    hText: '코베아 텐트',
-    mText: '가격',
-    bText1: '300,000 원',
-    bText2: '남은 수량 총 3개',
-  },
-  {
-    id: '3',
-    img: require('../assets/images/tambu.png'),
-    hText: '코베아 텐트',
-    mText: '가격',
-    bText1: '300,000 원',
-    bText2: '남은 수량 총 3개',
-  },
-  {
-    id: '4',
-    img: require('../assets/images/tambu.png'),
-    hText: '코베아 텐트',
-    mText: '가격',
-    bText1: '300,000 원',
-    bText2: '남은 수량 총 3개',
-  },
-  {
-    id: '5',
-    img: require('../assets/images/tambu.png'),
-    hText: '코베아 텐트',
-    mText: '가격',
-    bText1: '300,000 원',
-    bText2: '남은 수량 총 3개',
-  },
-  {
-    id: '6',
-    img: require('../assets/images/tambu.png'),
-    hText: '코베아 텐트',
-    mText: '가격',
-    bText1: '300,000 원',
-    bText2: '남은 수량 총 3개',
-  },
-];
+
 const headerContent = {
   middleItemContents: {
     type: 'text',
@@ -86,9 +41,48 @@ const EquipmentRentalScreen = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const product = useSelector(st => st.product?.product);
+  const [fetch, setFetch] = useState(false);
+  const [selectedProductIds, setSelectedProductIds] = useState([]);
 
 
   console.log("STORE P", product);
+  console.log("SELECTED IDS", selectedProductIds);
+
+
+  const deleteItems = async () => {
+    if (selectedProductIds.length >= 1) {
+      let payload = {
+        "ids": selectedProductIds
+      };
+      Alert.alert("Confirm Product  Deletion",
+        "Are you sure you want to delete the selected products, This will be permanently deleted if you proceed",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Deletion Cancelled"),
+            style: "cancel"
+          },
+          {
+            text: "Delete", onPress: async () => {
+              await deleteItem(payload).then((res) => {
+                if (res) {
+                  console.log("DELETED", res);
+                }
+                setFetch(!fetch);
+                setSelectedProductIds([]);
+              }).catch((err) => {
+                showDefaultErrorAlert();
+                setSelectedProductIds([]);
+              });
+            }
+          }
+        ]);
+    } else {
+      ToastAndroid.showWithGravity("Please select at least one item to delete", ToastAndroid.TOP, ToastAndroid.LONG);
+      setSelectedProductIds([]);
+    }
+  };
+
 
   useEffect(() => {
     (async function getAllProductsData() {
@@ -109,7 +103,7 @@ const EquipmentRentalScreen = () => {
           }
         });
     })();
-  }, []);
+  }, [fetch]);
 
 
 
@@ -118,23 +112,35 @@ const EquipmentRentalScreen = () => {
       <Header headerContent={headerContent} />
       <Text style={{ borderBottomWidth: 2, borderBottomColor: '#F8F8F8' }}></Text>
       {loading ? <Loader /> :
-        <ScrollView style={{ marginBottom: hp("20%") }}>
+        <ScrollView style={{ marginBottom: hp("20%") }} keyboardShouldPersistTaps="always">
           <View style={styles.view1}>
-            <Text style={styles.text1}>- 삭제하기</Text>
-            <Text style={styles.text1}>+ 용품 올리기</Text>
+            <TouchableOpacity onPress={() => {
+              deleteItems();
+            }}>
+              <Text style={styles.text1}>- 삭제하기</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {
+              navigateTo("FixRentalEquipmentNewScreen", {
+                type: "PRODUCT"
+              });
+            }}>
+              <Text style={styles.text1}>+ 용품 올리기</Text>
+            </TouchableOpacity>
           </View>
           {product && product?.length >= 1 ? product.map((item, i) => (
-            <Comp1 item={item} key={i} />
-          )) : <View>
-            <Text style={{ textAlign: "center" }}>No Product Available</Text>
-          </View>}
+            <Comp1 item={item} key={i} setSelectedProductIds={setSelectedProductIds} selectedProductIds={selectedProductIds} />
+          )) :
+            <View>
+              <Text style={{ textAlign: "center" }}>No Product Available</Text>
+            </View>}
         </ScrollView>}
     </View>
   );
 };
 
-const Comp1 = ({ item }) => {
+const Comp1 = (props) => {
 
+  let { item, selectedProductIds, setSelectedProductIds } = props;
   const [isSelected, setIsSelected] = useState(false);
 
   return (
@@ -156,7 +162,19 @@ const Comp1 = ({ item }) => {
         <CheckBox
           value={isSelected}
           onValueChange={(value) => {
-            setIsSelected(value);
+
+            if (value) {
+              let newSelectedProductIds = [...selectedProductIds, item._id];
+              setSelectedProductIds(newSelectedProductIds);
+              setIsSelected(value);
+            } else {
+              let newSProductIds = [...selectedProductIds];
+              let filteredProduct = newSProductIds.filter((it) => it !== item._id);
+              console.log("NNN", filteredProduct);
+              setSelectedProductIds(filteredProduct);
+              setIsSelected(value);
+            }
+
           }}
           style={{ padding: 0, margin: 0, backgroundColor: COLOR.white }}
         />

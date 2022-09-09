@@ -4,7 +4,6 @@ import rootReducer from './reducers/index';
 
 
 const middleware = [thunk];
-
 let composeEnhancers = compose;
 
 if (true) {

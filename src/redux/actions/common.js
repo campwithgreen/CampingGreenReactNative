@@ -60,3 +60,9 @@ export function setMainCartItems(data) {
         dispatch({ type: COMMON.SET_MAIN_CART_ITEMS, payload: data });
     };
 }
+
+export function createNewItemData(data) {
+    return (dispatch, getState) => {
+        dispatch({ type: COMMON.CREATE_NEW_ITEM, payload: data });
+    };
+}

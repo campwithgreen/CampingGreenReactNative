@@ -9,6 +9,7 @@ import {
   ToastAndroid,
   Alert,
   Modal,
+  Platform,
 } from 'react-native';
 import Header from '../layout/Header';
 import {goBack, navigateTo} from '../navigation/utils/RootNavigation';
@@ -273,7 +274,9 @@ export const RegisterScreen = props => {
               <Button
                 title="회원가입 완료"
                 onPress={() => handleRegister()}
-                color={COLOR.compGreen}
+                color={
+                  Platform.OS === 'android' ? COLOR.compGreen : COLOR.white
+                }
                 disabled={disableButton()}
               />
             </View>

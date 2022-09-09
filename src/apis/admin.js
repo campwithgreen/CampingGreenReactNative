@@ -37,3 +37,15 @@ export function updateOrderStatus(body, cartId) {
     let endpoint = `/v2/cart/${cartId}`;
     return axiosInstance.put(endpoint, body);
 }
+
+
+export function createItem(itemData) {
+    let endpoint = "v2/item";
+    return axiosInstance.post(endpoint, itemData);
+}
+
+
+export function deleteItem(payload) {
+    let endpoint = "v2/item";
+    return axiosInstance.delete(endpoint, { "data": payload });
+}

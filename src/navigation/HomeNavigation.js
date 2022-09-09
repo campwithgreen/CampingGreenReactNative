@@ -21,10 +21,14 @@ import { RegisterScreen } from '../screens/RegisterScreen';
 import TermsScreen from '../screens/TermsScreen';
 import EquipmentRentalScreen from '../admin-screens/EquipmentRentalScreen';
 import FixRentalEquipmentScreen from '../admin-screens/FixRentalEquipmentScreen';
+import FixRentalEquipmentNewScreen from '../admin-screens/FixRentalEquipmentNewScreen';
 import FixRentalSuppliesScreen from '../admin-screens/FixRentalSuppliesScreen';
 import NineteenthScreen from '../admin-screens/NineteenthScreen';
 import OrderDetailsScreen from '../admin-screens/OrderDetailsScreen';
 import SixteenScreen from '../admin-screens/SixteenScreen';
+import FourteenthScreen from '../admin-screens/FourteenthScreen';
+import FillSublocationFirst from '../admin-screens/FillSublocationFirst';
+import FillSublocationSecond from '../admin-screens/FillSublocationSecond';
 
 const Stack = createNativeStackNavigator();
 
@@ -166,7 +170,20 @@ export const AdminProductNavigation = props => {
       <Stack.Screen name="FixRentalEquipmentScreen" component={FixRentalEquipmentScreen} />
       <Stack.Screen name="FixRentalSuppliesScreen" component={FixRentalSuppliesScreen} />
       <Stack.Screen name="UserScreen" component={NineteenthScreen} />
+      <Stack.Screen name="FixRentalEquipmentNewScreen" component={FixRentalEquipmentNewScreen} />
       <Stack.Screen name="OrderDetailsScreen" component={OrderDetailsScreen} />
+    </Stack.Navigator>
+  );
+};
+
+export const AdminLocationNavigation = props => {
+  return (
+    <Stack.Navigator
+      initialRouteName="FourteenthScreen"
+      screenOptions={AppNavigatorOptions}>
+      <Stack.Screen name="FourteenthScreen" component={FourteenthScreen} />
+      <Stack.Screen name="FillSubLocationFirstScreen" component={FillSublocationFirst} />
+      <Stack.Screen name="FillSubLocationSecondScreen" component={FillSublocationSecond} />
     </Stack.Navigator>
   );
 };

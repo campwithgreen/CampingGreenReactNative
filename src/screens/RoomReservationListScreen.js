@@ -43,7 +43,7 @@ const RoomReservationListScreen = () => {
     item => item.paymentStatus !== 'CHECKOUT_PENDING',
   );
 
-  let result = cart_history.reduce(function (r, a) {
+  let result = cart_history?.reduce(function (r, a) {
     r[`${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${a.paymentStatus}`] =
       r[
         `${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${a.paymentStatus}`
@@ -59,7 +59,7 @@ const RoomReservationListScreen = () => {
       <Header headerContent={headerContent} />
       <Text style={{borderBottomWidth: 1.5, borderBottomColor: '#515151'}} />
       <ScrollView style={{marginBottom: heightPercentageToDP('15%')}}>
-        {Object?.keys(result)?.length >= 1 ? (
+        {result && Object?.keys(result)?.length >= 1 ? (
           Object?.keys(result)?.map(key => {
             return (
               <View style={globalStyle.mainContainerWrapper} key={key}>

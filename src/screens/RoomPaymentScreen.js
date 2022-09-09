@@ -28,9 +28,9 @@ import FONTSIZE from '../constants/fontSize';
 import globalStyle from '../global/globalStyle';
 import {setCurrentCheckoutCartDetails} from '../redux/actions/common';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { setUserCartHistory } from '../redux/actions/common';
-import { getUserCartHistory } from '../apis/cart';
-import { get } from 'react-hook-form';
+import {setUserCartHistory} from '../redux/actions/common';
+import {getUserCartHistory} from '../apis/cart';
+import {get} from 'react-hook-form';
 
 const Input = ({
   t1,
@@ -95,10 +95,10 @@ const RoomPaymentScreen = props => {
     current_cart_details = selectedCurrentCartDetails;
   }
 
-  console.log("SELECTED PRODUCTS", selectedProducts);
-  console.log("SELCTED CART DETAILS", selectedCurrentCartDetails);
+  console.log('SELECTED PRODUCTS', selectedProducts);
+  console.log('SELCTED CART DETAILS', selectedCurrentCartDetails);
 
-  const [flag, setFlag] = useState({ p1: false, p2: true, p3: true, p4: true });
+  const [flag, setFlag] = useState({p1: false, p2: true, p3: true, p4: true});
 
   const getCartId = async () => {
     try {
@@ -128,7 +128,7 @@ const RoomPaymentScreen = props => {
     }
   };
 
-  const Comp = ({ t1, t2, p }) => {
+  const Comp = ({t1, t2, p}) => {
     return (
       <View
         style={[
@@ -172,7 +172,8 @@ const RoomPaymentScreen = props => {
       };
 
       let query = {
-        cartId: await getCartId().then((res) => res) || current_cart_details._id,
+        cartId:
+          (await getCartId().then(res => res)) || current_cart_details._id,
       };
 
       let mainPayload = {
@@ -197,8 +198,11 @@ const RoomPaymentScreen = props => {
                     } else {
                       removeCartId();
                     }
-                    getCartId().then((cartId) => {
-                      console.log("*********************THE CART ID ******************", cartId);
+                    getCartId().then(cartId => {
+                      console.log(
+                        '*********************THE CART ID ******************',
+                        cartId,
+                      );
                     });
                     dispatch(setCurrentCheckoutCartDetails(res.data.data));
                     navigateTo('ThirdScreen');
@@ -221,7 +225,7 @@ const RoomPaymentScreen = props => {
                 })
                 .catch(err => {
                   if (err) {
-                    console.log("ROOM PAYMENT ERROR", err);
+                    console.log('ROOM PAYMENT ERROR', err);
                     showDefaultErrorAlert();
                   }
                 });
@@ -262,17 +266,15 @@ const RoomPaymentScreen = props => {
     }
   };
 
-
-  getCartId().then((cartId) => {
-    console.log(" +++++++++++++   THE CART ID +++++++++++++++++++", cartId);
+  getCartId().then(cartId => {
+    console.log(' +++++++++++++   THE CART ID +++++++++++++++++++', cartId);
   });
-
 
   return (
     <View style={styles.container}>
       <Header headerContent={headerContent} />
       <View style={styles.border2}></View>
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps="always">
         <View style={{backgroundColor: COLOR.white}}>
           <Text style={[styles.text1, styles.ph1, {paddingBottom: hp('3%')}]}>
             대여 기간

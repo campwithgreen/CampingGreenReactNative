@@ -41,7 +41,7 @@ export const Product = props => {
   const headerContent = {
     leftItemContents: {
       type: 'text',
-      content: 'CAMPING GREEEN',
+      content: 'CAMPING GREEN',
       navigateScreen: 'HomeScreenDetail1',
     },
     rightItemContents: {

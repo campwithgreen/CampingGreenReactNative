@@ -46,7 +46,7 @@ export const HomeScreen = props => {
   const headerContent = {
     leftItemContents: {
       type: 'text',
-      content: 'CAMPING GREEEN',
+      content: 'CAMPING GREEN',
     },
     rightItemContents: {
       type: 'cart',

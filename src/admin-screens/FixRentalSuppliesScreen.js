@@ -23,17 +23,8 @@ import FONTSIZE from '../constants/fontSize';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { createItem } from '../apis/admin';
 import { showDefaultErrorAlert } from '../global/global';
-
-const data = [
-  {
-    id: '1',
-    img: require('../assets/images/jorgen.jpg'),
-  },
-  {
-    id: '2',
-    img: require('../assets/images/jorgen.jpg'),
-  },
-];
+import { getAllProducts } from '../apis/product';
+import { setProductData } from '../redux/actions/product';
 
 
 const mapStateToProps = (st, ownProps) => {
@@ -91,13 +82,28 @@ const FixRentalSuppliesScreen = (props) => {
   }, [allFeatures]);
 
 
+  const fetchAndSetProducts = async () => {
+    let data = { type: 'PRODUCT' };
+    await getAllProducts(data)
+      .then(res => {
+        if (res) {
+          dispatch(setProductData(res.data.data));
+        }
+      })
+      .catch(err => {
+        if (err) {
+          showDefaultErrorAlert();
+        }
+      });
+  };
+
   const createNewItem = async () => {
     await createItem(newItemHolder).then((res) => {
       if (res) {
-        ToastAndroid.showWithGravity(`${type} CREATED SUCCESSFULLY`, ToastAndroid.TOP, ToastAndroid.CENTER);
-        console.log("MESSAGE", res.data);
         if (type === "PRODUCT") {
-          navigateTo("AdminProductScreen");
+          fetchAndSetProducts();
+          ToastAndroid.showWithGravity(`${type} CREATED SUCCESSFULLY`, ToastAndroid.TOP, ToastAndroid.CENTER);
+          navigateTo("EquipmentRentalScreen");
         } else if (type === "LOCATION") {
           Alert.alert("Add Sub Location Details",
             "Please add Sub Location details in the parent location created",

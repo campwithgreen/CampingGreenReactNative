@@ -54,3 +54,8 @@ export function addSubLocation(body, cartId) {
     let endpoint = `v2/item/addsublocation/${cartId}`;
     return axiosInstance.put(endpoint, body);
 }
+
+export function updateItem(body, cartId) {
+    let endpoint = `v2/item/${cartId}`;
+    return axiosInstance.put(endpoint, body);
+}

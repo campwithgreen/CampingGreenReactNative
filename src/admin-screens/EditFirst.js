@@ -23,8 +23,6 @@ import { showDefaultErrorAlert } from '../global/global';
 import { connect, useDispatch } from 'react-redux';
 import newItem from "../constants/newItem.json";
 import { createNewItemData } from '../redux/actions/common';
-import { createItem } from '../apis/admin';
-
 
 
 const mapDispatchToProps = (st, ownProps) => {
@@ -38,24 +36,28 @@ const mapDispatchToProps = (st, ownProps) => {
 
 };
 
-const FillSubLocationFirst = (props) => {
+const EditFirst = (props) => {
+
+    console.log("THE PROPS", props);
 
 
     const { storee, new_item_data } = props;
-    const { type } = props?.route?.params;
+    const { type, updateId, product } = props?.route?.params;
     const dispatch = useDispatch();
-    const [newItemHolder, setNewItemHolder] = useState({ ...new_item_data, type: type, hasSublocation: true, subLocations: [] });
+    const [newItemHolder, setNewItemHolder] = useState({ ...newItem, type: type });
+
 
 
     useEffect(() => {
+
         dispatch(createNewItemData(newItemHolder));
+
     }, [type, newItemHolder]);
 
 
 
+    console.log("THE STORE ====>", storee);
     console.log("NEW ITEM DATA", new_item_data);
-    console.log("THE ALL IT ====>", newItemHolder);
-
 
     const headerContent = {
         leftItemContents: {
@@ -69,15 +71,11 @@ const FillSubLocationFirst = (props) => {
         }
     };
 
-    const [count, setCount] = useState(0);
+    const [count, setCount] = useState(product?.stock);
 
     const decrement = () => {
         if (count > 0) {
-            let updatedItem = {
-                ...new_item_data, type: "LOCATION",
-                hasSublocation: true,
-                subLocations: [{ ...new_item_data.subLocations[0], stock: count - 1 }]
-            };
+            let updatedItem = { ...new_item_data, stock: count - 1 };
             setNewItemHolder(updatedItem);
             setCount(i => i - 1);
         } else {
@@ -85,53 +83,98 @@ const FillSubLocationFirst = (props) => {
         }
     };
 
-    const [specification, setSpecification] = useState([
-        {
-            id: specification?.length + 1 || 1,
-            p1: "Ex)",
-            p2: "코랄",
-            keyAtt: "",
-            valueAtt: "",
-        }
-    ]);
-    const [category, setCategory] = useState([
-        {
-            id: category?.length + 1 || 1,
-            p1: "Ex)",
-            p2: "코랄",
-            keyAtt: "",
-            valueAtt: "",
-        }
-    ]);
-    const [tag, setTag] = useState([
-        {
-            id: tag?.length + 1 || 1,
-            p1: "Ex)",
-            p2: "코랄",
-            keyAtt: "",
-            valueAtt: "",
-        }
-    ]);
-    const [carouselImages, setCarouselImages] = useState([
-        {
-            imgUrl: null,
-            mainImgUrl: "",
-            id: carouselImages?.length + 1 || 1
-        }
-    ]);
-    const [additionalCharges, setAdditionalCharges] = useState([
-        {
-            add_feature_title: "",
-            id: additionalCharges?.length + 1 || 1,
-            add_feature_value: [{
-                id: additionalCharges?.add_feature_value.length + 1 || 1,
+    let spp = [];
+    if (product?.specifications) {
+        Object?.keys(product?.specifications)?.map((key, ind) => {
+            spp.push({
+                id: ind + 1,
                 p1: "Ex)",
                 p2: "코랄",
-                keyAtt: "",
-                valueAtt: "",
-            }]
-        }
-    ]);
+                d1: key,
+                d2: product.specifications[key],
+                keyAtt: key,
+                valueAtt: product.specifications[key],
+            });
+        });
+    }
+
+    const [specification, setSpecification] = useState(spp);
+
+
+    let cc = [];
+    product.category.map((cat, ind) => {
+        cc.push(
+            {
+                id: ind + 1,
+                p1: "Ex)",
+                p2: "코랄",
+                d1: cat,
+                d2: cat,
+                keyAtt: cat,
+                valueAtt: cat,
+            }
+        );
+    });
+
+    const [category, setCategory] = useState(cc);
+
+
+    let tt = [];
+    product.tag.map((tagg, ind) => {
+        tt.push(
+            {
+                id: ind + 1,
+                p1: "Ex)",
+                p2: "코랄",
+                d1: tagg,
+                d2: tagg,
+                keyAtt: tagg,
+                valueAtt: tagg,
+            }
+        );
+    });
+    const [tag, setTag] = useState(tt);
+
+
+    let ci = [];
+    product.carousel.map((imU, ind) => {
+        ci.push({
+            imgUrl: imU,
+            mainImgUrl: imU,
+            id: ind + 1
+        });
+    });
+
+    const [carouselImages, setCarouselImages] = useState(ci);
+    let af = [];
+    if (product.additional_charges) {
+        let afv = [];
+        product.additional_charges.map((ac, ind) => {
+
+            Object?.keys(ac?.add_feature_value)?.map((key, indd) => {
+                afv.push({
+                    id: indd + 1,
+                    p1: "Ex)",
+                    p2: "코랄",
+                    d1: key,
+                    d2: ac?.add_feature_value[key],
+                    keyAtt: key,
+                    valueAtt: ac?.add_feature_value[key],
+                });
+            });
+            af.push(
+                {
+                    add_feature_title: ac.add_feature_title,
+                    id: ind + 1,
+                    add_feature_value: afv
+                }
+            );
+
+        });
+    }
+    const [additionalCharges, setAdditionalCharges] = useState(af);
+
+    console.log("THE SPEC +++++++++++++++++++", specification);
 
 
     const handleDeleteImage = (ind) => {
@@ -199,10 +242,8 @@ const FillSubLocationFirst = (props) => {
 
         };
         updateSpecificationstoNewItem();
-        let updatedItem = {
-            ...new_item_data, type: "LOCATION", hasSublocation: true,
-            subLocations: [{ ...new_item_data.subLocations[0], specifications: updateSpec }]
-        };
+        console.log("UPDATED SPEC", updateSpec);
+        let updatedItem = { ...new_item_data, specifications: updateSpec };
         setNewItemHolder(updatedItem);
 
     }, [specification]);
@@ -218,10 +259,7 @@ const FillSubLocationFirst = (props) => {
             });
         };
         updateCarouseltoNewItem();
-        let updatedItem = {
-            ...new_item_data, type: "LOCATION", hasSublocation: true,
-            subLocations: [{ ...new_item_data.subLocations[0], carousel: updateCaro }]
-        };
+        let updatedItem = { ...new_item_data, carousel: updateCaro };
         setNewItemHolder(updatedItem);
 
     }, [carouselImages]);
@@ -236,10 +274,7 @@ const FillSubLocationFirst = (props) => {
             });
         };
         updateCategorytoNewItem();
-        let updatedItem = {
-            ...new_item_data, type: "LOCATION", hasSublocation: true,
-            subLocations: [{ ...new_item_data.subLocations[0], category: updateCat }]
-        };
+        let updatedItem = { ...new_item_data, category: updateCat };
         setNewItemHolder(updatedItem);
 
     }, [category]);
@@ -255,10 +290,7 @@ const FillSubLocationFirst = (props) => {
             });
         };
         updateTagtoNewItem();
-        let updatedItem = {
-            ...new_item_data, type: "LOCATION", hasSublocation: true,
-            subLocations: [{ ...new_item_data.subLocations[0], tag: updateTag }]
-        };
+        let updatedItem = { ...new_item_data, tag: updateTag };
         setNewItemHolder(updatedItem);
 
     }, [tag]);
@@ -281,11 +313,9 @@ const FillSubLocationFirst = (props) => {
             });
         };
         updateAdditionalToNew();
-        let updatedItem = {
-            ...new_item_data, type: "LOCATION", hasSublocation: true,
-            subLocations: [{ ...new_item_data.subLocations[0], additional_charges: updateAdditional }]
-        };
+        let updatedItem = { ...new_item_data, additional_charges: updateAdditional };
         setNewItemHolder(updatedItem);
+
 
     }, [additionalCharges]);
 
@@ -300,20 +330,19 @@ const FillSubLocationFirst = (props) => {
                     <Comp1
                         isProductName={true}
                         onChange={async (value) => {
-                            let updatedItem = { ...new_item_data, type: "LOCATION", hasSublocation: true, subLocations: [{ title: value, type: type }] };
+                            let updatedItem = { ...new_item_data, title: value, type: type };
                             setNewItemHolder(updatedItem);
                         }}
+                        defaultValue={product?.title}
                     />
                     <Comp1
                         isPrice={true}
                         onChange={(value) => {
-                            let updatedItem = {
-                                ...new_item_data, type: "LOCATION", hasSublocation: true,
-                                subLocations: [{ ...new_item_data.subLocations[0], price: Number(value) }]
-                            };
+                            let updatedItem = { ...new_item_data, price: Number(value) };
                             setNewItemHolder(updatedItem);
                         }}
                         type="number"
+                        defaultValue={Number(product?.price)}
                     />
                     <View style={styles.view1}>
                         <Text style={styles.text1}>잔여수량</Text>
@@ -336,11 +365,9 @@ const FillSubLocationFirst = (props) => {
                                         style={styles.text2}
                                         onPress={() => {
                                             setCount(i => i + 1);
-                                            let updatedItem = {
-                                                ...new_item_data, type: "LOCATION", hasSublocation: true,
-                                                subLocations: [{ ...new_item_data.subLocations[0], stock: count + 1 }]
-                                            };
+                                            let updatedItem = { ...new_item_data, stock: count + 1 };
                                             setNewItemHolder(updatedItem);
+
                                         }}>
                                         +
                                     </Text>
@@ -370,9 +397,11 @@ const FillSubLocationFirst = (props) => {
                     </Text>
                     {specification.map((sp, index) => {
                         return <Comp2
-                            key={sp.id}
+                            key={index}
                             p1={sp.p1}
                             p2={sp.p2}
+                            d1={sp.d1}
+                            d2={sp.d2}
                             t1={sp.t1}
                             ind={index}
                             specification={specification}
@@ -540,6 +569,7 @@ const FillSubLocationFirst = (props) => {
                             let updatedItem = { ...new_item_data, description: value };
                             setNewItemHolder(updatedItem);
                         }}
+                        defaultValue={product.description}
                     />
                     <View>
                         <Text
@@ -555,10 +585,12 @@ const FillSubLocationFirst = (props) => {
                         </Text>
                         {category.map((sp, index) => {
                             return <Comp2
-                                key={sp.id}
+                                key={index}
                                 p1={sp.p1}
                                 p2={sp.p2}
                                 t1={sp.t1}
+                                d1={sp.d1}
+                                d2={sp.d2}
                                 ind={index}
                                 specification={category}
                                 setSpecification={setCategory}
@@ -587,6 +619,8 @@ const FillSubLocationFirst = (props) => {
                                 key={sp.id}
                                 p1={sp.p1}
                                 p2={sp.p2}
+                                d1={sp.d1}
+                                d2={sp.d2}
                                 t1={sp.t1}
                                 ind={index}
                                 specification={tag}
@@ -635,6 +669,8 @@ const FillSubLocationFirst = (props) => {
                                     parInd={index}
                                     p1={it.p1}
                                     p2={it.p2}
+                                    d1={it.d1}
+                                    d2={it.d2}
                                     t1={it.t1}
                                     ind={ind}
                                     specification={additionalCharges}
@@ -675,12 +711,18 @@ const FillSubLocationFirst = (props) => {
                             let updatedItem = { ...new_item_data, campLink: value };
                             setNewItemHolder(updatedItem);
                         }}
+                        defaultValue={product.campLink}
                     />
                 </View>
             </ScrollView>
             <View>
                 <TouchableOpacity onPress={() => {
-                    navigateTo("FillSubLocationSecondScreen");
+                    navigateTo("EditSecondScreen",
+                        {
+                            type: type,
+                            updateId: updateId,
+                            product: product
+                        });
                 }}>
                     <View style={styles.btn}>
                         <Text style={styles.btnText}>수정 완료</Text>
@@ -692,7 +734,7 @@ const FillSubLocationFirst = (props) => {
 };
 const Comp1 = (props) => {
 
-    const { isPrice, onChange, isCampLink, isDescription } = props;
+    const { isPrice, onChange, isCampLink, isDescription, defaultValue } = props;
 
     let title = "가격";
     let keyPad = "email-address";
@@ -711,6 +753,7 @@ const Comp1 = (props) => {
         keyPad = "email-address";
     }
 
+
     return (
         <View style={styles.view1}>
             {title !== "" && <Text style={styles.text1}>{title}</Text>}
@@ -720,13 +763,15 @@ const Comp1 = (props) => {
                 onChangeText={(text) => {
                     onChange(text);
                 }}
+                defaultValue={isPrice ? defaultValue?.toString() : defaultValue}
             />
         </View>
     );
 };
 const Comp2 = (props) => {
 
-    let { p1, p2, t1, ind, specification, setSpecification, type, parInd } = props;
+    let { p1, p2, d1, d2, t1, ind, specification, setSpecification, type, parInd } = props;
+
 
     let showSecondField = false;
     if (type === "specification" || type === "additionalCharges") {
@@ -755,13 +800,14 @@ const Comp2 = (props) => {
                     fontWeight: '600',
                 }}
                 placeholder={p1}
-                defaultValue={specification[ind]?.keyAtt}
+                defaultValue={d1}
                 onChangeText={(text) => {
                     if (type === "additionalCharges") {
                         let newSpecification = [...specification];
                         newSpecification[parInd].add_feature_value[ind].keyAtt = text;
                         setSpecification(newSpecification);
                     } else {
+                        console.log("THE SPECIFICATION INDEX", specification, ind);
                         let newSpecification = [...specification];
                         newSpecification[ind].keyAtt = text;
                         setSpecification(newSpecification);
@@ -779,7 +825,7 @@ const Comp2 = (props) => {
                         fontWeight: '600',
                     }}
                     placeholder={p2}
-                    defaultValue={specification[ind]?.valueAtt}
+                    defaultValue={d2}
                     onChangeText={(text) => {
                         if (type === "additionalCharges") {
                             let newSpecification = [...specification];
@@ -895,7 +941,7 @@ const Comp3 = (props) => {
     );
 };
 
-export default connect(mapDispatchToProps, null)(FillSubLocationFirst);
+export default connect(mapDispatchToProps, null)(EditFirst);
 
 const styles = StyleSheet.create({
     view1: {

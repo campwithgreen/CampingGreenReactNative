@@ -192,7 +192,11 @@ const Comp1 = (props) => {
           <Text style={{ color: '#222222', fontWeight: 'bold', fontSize: FONTSIZE.xl, maxWidth: wp("40%") }}>
             {item?.title}
           </Text>
-          <Image source={require('../assets/images/pencil.png')} />
+          <TouchableOpacity onPress={() => {
+            navigateTo("EditFirstScreen", { product: item, updateId: item?._id, type: "LOCATION" });
+          }}>
+            <Image source={require('../assets/images/pencil.png')} />
+          </TouchableOpacity>
         </View>
         <View>
           <Text style={{ fontWeight: '600', maxWidth: wp("45%"), fontSize: FONTSIZE.l }}>위치  {item?.description}</Text>

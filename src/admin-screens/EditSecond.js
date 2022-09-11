@@ -21,19 +21,10 @@ import { createNewItemData } from '../redux/actions/common';
 import COLOR from '../constants/colors';
 import FONTSIZE from '../constants/fontSize';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { createItem } from '../apis/admin';
+import { addSubLocation, createItem, updateItem } from '../apis/admin';
 import { showDefaultErrorAlert } from '../global/global';
-
-const data = [
-    {
-        id: '1',
-        img: require('../assets/images/jorgen.jpg'),
-    },
-    {
-        id: '2',
-        img: require('../assets/images/jorgen.jpg'),
-    },
-];
+import { getAllProducts } from '../apis/product';
+import { setProductData, setLocationData } from '../redux/actions/product';
 
 
 const mapStateToProps = (st, ownProps) => {
@@ -54,23 +45,33 @@ const headerContent = {
     },
 };
 
-const FillSubLocationSecond = (props) => {
+const EditSecond = (props) => {
 
     const { storee, new_item_data } = props;
     console.log("THE MAIN STORE", storee);
     console.log("Proceeding New Item data", new_item_data);
-    const type = new_item_data?.type;
+    const { type, updateId, product } = props?.route?.params;
     const dispatch = useDispatch();
     const [newItemHolder, setNewItemHolder] = useState(new_item_data);
-    console.log("THE TYPE", type);
+    console.log("THE TYPE =========>", type, updateId, props);
 
-    const [allFeatures, setAllFeatures] = useState([
-        {
-            imgUrl: null,
-            description: "",
-            id: allFeatures?.length + 1 || 1
-        }
-    ]);
+    console.log("PROD AF", product.allFeatures);
+
+
+    let aff = [];
+    if (product.allFeatures) {
+        product.allFeatures.map((af, ind) => {
+            aff.push(
+                {
+                    featureName: af.featureName,
+                    imgUrl: af.image,
+                    description: af.description,
+                    id: ind + 1
+                });
+        });
+    }
+
+    const [allFeatures, setAllFeatures] = useState(aff);
 
     useEffect(() => {
         let updateSpec = [];
@@ -80,7 +81,7 @@ const FillSubLocationSecond = (props) => {
                     {
                         featureName: feature.FeatureName,
                         description: feature.description,
-                        image: feature.mainImgUrl
+                        image: feature.imgUrl
                     }
                 );
             });
@@ -91,31 +92,36 @@ const FillSubLocationSecond = (props) => {
     }, [allFeatures]);
 
 
-    const createNewItem = async () => {
-        await createItem(newItemHolder).then((res) => {
+    const fetchAndSetProducts = async (fetchType) => {
+        let data = { type: fetchType };
+        await getAllProducts(data)
+            .then(res => {
+                if (res) {
+                    if (fetchType === "PRODUCT") {
+                        dispatch(setProductData(res.data.data));
+                    } else if (fetchType === "LOCATION") {
+                        dispatch(setLocationData(res.data.data));
+                    }
+                }
+            })
+            .catch(err => {
+                if (err) {
+                    showDefaultErrorAlert();
+                }
+            });
+    };
+
+
+
+    const updateItemData = async () => {
+        await updateItem(newItemHolder, updateId).then((res) => {
             if (res) {
-                ToastAndroid.showWithGravity(`${type} CREATED SUCCESSFULLY`, ToastAndroid.TOP, ToastAndroid.CENTER);
-                console.log("MESSAGE", res.data);
-                if (type === "PRODUCT") {
-                    navigateTo("AdminProductScreen");
-                } else if (type === "LOCATION") {
-                    Alert.alert("Add Sub Location Details",
-                        "Please add Sub Location details in the parent location created",
-                        [
-                            {
-                                text: "Cancel",
-                                onPress: () => console.log("Deletion Cancelled"),
-                                style: "cancel"
-                            },
-                            {
-                                text: "OK", onPress: () => {
-                                    navigateTo("FixRentalEquipmentNewScreen", { type: "SUBLOCATION" });
-                                }
-                            }
-                        ]);
-
-                } else if (type === "SUBLOCATION") {
-
+                fetchAndSetProducts(type);
+                ToastAndroid.showWithGravity(`${type} UPDATED SUCCESSFULLY`, ToastAndroid.TOP, ToastAndroid.CENTER);
+                if (type === "LOCATION") {
+                    navigateTo("FourteenthScreen");
+                } else {
+                    navigateTo("EquipmentRentalScreen");
                 }
             }
         }).catch((err) => {
@@ -129,7 +135,6 @@ const FillSubLocationSecond = (props) => {
     }, [newItemHolder]);
 
 
-    console.log("ALL FEATURE", allFeatures);
 
     return (
         <View style={{
@@ -145,6 +150,7 @@ const FillSubLocationSecond = (props) => {
                                 return <View key={i} style={{ marginVertical: hp("1%") }}>
                                     <Comp
                                         img={item.imgUrl}
+                                        item={item}
                                         id={i + 1}
                                         newItemHolder={newItemHolder}
                                         setNewItemHolder={setNewItemHolder}
@@ -160,6 +166,7 @@ const FillSubLocationSecond = (props) => {
                                 <FieldContainer
                                     keyPad="numeric"
                                     title={"Contact Number"}
+                                    defaultValue={product.contactNumber}
                                     onChange={(value) => {
                                         let updatedItem = { ...newItemHolder };
                                         updatedItem.contactNumber = value;
@@ -168,6 +175,7 @@ const FillSubLocationSecond = (props) => {
                                 <FieldContainer
                                     keyPad="numeric"
                                     title={"Latitude"}
+                                    defaultValue={product.latitude}
                                     onChange={(value) => {
                                         let updatedItem = { ...newItemHolder };
                                         updatedItem.latitude = value;
@@ -176,9 +184,28 @@ const FillSubLocationSecond = (props) => {
                                 <FieldContainer
                                     keyPad="numeric"
                                     title={"Longitude"}
+                                    defaultValue={product.longitude}
                                     onChange={(value) => {
                                         let updatedItem = { ...newItemHolder };
                                         updatedItem.longitude = value;
+                                        setNewItemHolder(updatedItem);
+                                    }} />
+                                <FieldContainer
+                                    keyPad="numeric"
+                                    title={"Check In Time"}
+                                    defaultValue={product.checkinTime}
+                                    onChange={(value) => {
+                                        let updatedItem = { ...newItemHolder };
+                                        updatedItem.checkinTime = value;
+                                        setNewItemHolder(updatedItem);
+                                    }} />
+                                <FieldContainer
+                                    keyPad="numeric"
+                                    title={"Check Out Time"}
+                                    defaultValue={product.checkoutTime}
+                                    onChange={(value) => {
+                                        let updatedItem = { ...newItemHolder };
+                                        updatedItem.checkoutTime = value;
                                         setNewItemHolder(updatedItem);
                                     }} />
                             </View>
@@ -188,7 +215,7 @@ const FillSubLocationSecond = (props) => {
                 </ScrollView>
                 <View style={styles.btn}>
                     <TouchableOpacity onPress={() => {
-                        createNewItem();
+                        updateItemData();
                     }}>
                         <Text style={styles.btnText}>완료</Text>
                     </TouchableOpacity>
@@ -199,7 +226,7 @@ const FillSubLocationSecond = (props) => {
 };
 
 const Comp = (props) => {
-    let { img, id, handleFeatureDescription, handleFeatureTitle, imgIndx, allFeatures, setAllFeatures } = props;
+    let { img, id, handleFeatureDescription, handleFeatureTitle, imgIndx, allFeatures, setAllFeatures, item } = props;
 
     const uploadImage = async (image) => {
         let uploadedUrl = "";
@@ -267,6 +294,8 @@ const Comp = (props) => {
 
     };
 
+    console.log("THE AFF ITEM", item);
+
     return (
         <View>
             {img ? <View>
@@ -299,6 +328,7 @@ const Comp = (props) => {
                         height: 35,
                         color: 'grey',
                     }}
+                    defaultValue={item?.featureName}
                     onChangeText={(value) => {
                         let newCarouImage = [...allFeatures];
                         newCarouImage[imgIndx].FeatureName = value;
@@ -313,6 +343,7 @@ const Comp = (props) => {
                         height: 35,
                         color: 'grey',
                     }}
+                    defaultValue={item.description}
                     onChangeText={(value) => {
                         let newCarouImage = [...allFeatures];
                         newCarouImage[imgIndx].description = value;
@@ -369,13 +400,14 @@ const Comp = (props) => {
 };
 
 const FieldContainer = (props) => {
-    const { title, onChange, keyPad } = props;
+    const { title, onChange, keyPad, defaultValue } = props;
     return <View style={styles.view1}>
         {title !== "" && <Text style={styles.text1}>{title}</Text>}
         <View style={{ height: wp("15%"), width: "100%" }}>
             <TextInput
                 keyboardType={keyPad}
                 style={styles.textinput1}
+                defaultValue={defaultValue}
                 onChangeText={(text) => {
                     onChange(text);
                 }}
@@ -384,7 +416,7 @@ const FieldContainer = (props) => {
     </View>;
 };
 
-export default connect(mapStateToProps, null)(FillSubLocationSecond);
+export default connect(mapStateToProps, null)(EditSecond);
 
 const styles = StyleSheet.create({
     view: {

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Platform } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -43,6 +43,9 @@ const SecondScreen1 = ({ isOrder, t1, t2, setOrderStatus }) => {
             setOpen={setOpen}
             setValue={setValue}
             setItems={setItems}
+            containerStyle={{
+              zIndex: Platform.OS === 'android' ? 10000 : 90000,
+            }}
             onChangeValue={(value) => {
               setOrderStatus(value);
             }}

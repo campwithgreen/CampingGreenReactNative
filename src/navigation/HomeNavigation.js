@@ -27,8 +27,8 @@ import NineteenthScreen from '../admin-screens/NineteenthScreen';
 import OrderDetailsScreen from '../admin-screens/OrderDetailsScreen';
 import SixteenScreen from '../admin-screens/SixteenScreen';
 import FourteenthScreen from '../admin-screens/FourteenthScreen';
-import FillSublocationFirst from '../admin-screens/FillSublocationFirst';
-import FillSublocationSecond from '../admin-screens/FillSublocationSecond';
+import EditFirst from '../admin-screens/EditFirst';
+import EditSecond from '../admin-screens/EditSecond';
 
 const Stack = createNativeStackNavigator();
 
@@ -166,12 +166,15 @@ export const AdminProductNavigation = props => {
     <Stack.Navigator
       initialRouteName="EquipmentRentalScreen"
       screenOptions={AppNavigatorOptions}>
+      <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="EquipmentRentalScreen" component={EquipmentRentalScreen} />
       <Stack.Screen name="FixRentalEquipmentScreen" component={FixRentalEquipmentScreen} />
       <Stack.Screen name="FixRentalSuppliesScreen" component={FixRentalSuppliesScreen} />
       <Stack.Screen name="UserScreen" component={NineteenthScreen} />
       <Stack.Screen name="FixRentalEquipmentNewScreen" component={FixRentalEquipmentNewScreen} />
       <Stack.Screen name="OrderDetailsScreen" component={OrderDetailsScreen} />
+      <Stack.Screen name="EditFirstScreen" component={EditFirst} />
+      <Stack.Screen name="EditSecondScreen" component={EditSecond} />
     </Stack.Navigator>
   );
 };
@@ -182,8 +185,8 @@ export const AdminLocationNavigation = props => {
       initialRouteName="FourteenthScreen"
       screenOptions={AppNavigatorOptions}>
       <Stack.Screen name="FourteenthScreen" component={FourteenthScreen} />
-      <Stack.Screen name="FillSubLocationFirstScreen" component={FillSublocationFirst} />
-      <Stack.Screen name="FillSubLocationSecondScreen" component={FillSublocationSecond} />
+      <Stack.Screen name="EditFirstScreen" component={EditFirst} />
+      <Stack.Screen name="EditSecondScreen" component={EditSecond} />
     </Stack.Navigator>
   );
 };

@@ -40,8 +40,10 @@ const AppNavigatorOptions = {
 
 const mapStateToProps = (state, ownProps) => {
   const role = state?.oauth?.user_data?.data?.role;
+  const isLogin = state?.oauth?.isLogin;
   return {
     role,
+    isLogin,
   };
 };
 
@@ -51,11 +53,11 @@ const mapStateToProps = (state, ownProps) => {
  **/
 const HomeTabNavigation = props => {
   const {tabIcon} = styles;
-  const {role} = props;
+  const {role, isLogin} = props;
 
   console.log('ROLE ===>', role);
 
-  return role === 'ADMIN' ? (
+  return role === 'ADMIN' && isLogin ? (
     <Tab.Navigator
       initialRouteName="AdminProductScreen"
       screenOptions={tabs => {

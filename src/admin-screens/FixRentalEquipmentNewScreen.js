@@ -23,8 +23,6 @@ import { showDefaultErrorAlert } from '../global/global';
 import { connect, useDispatch } from 'react-redux';
 import newItem from "../constants/newItem.json";
 import { createNewItemData } from '../redux/actions/common';
-import { createItem } from '../apis/admin';
-
 
 
 const mapDispatchToProps = (st, ownProps) => {
@@ -42,7 +40,7 @@ const FixRentalEquipmentNewScreen = (props) => {
 
 
     const { storee, new_item_data } = props;
-    const { type } = props?.route?.params;
+    const { type, parLocId } = props?.route?.params;
     const dispatch = useDispatch();
     const [newItemHolder, setNewItemHolder] = useState({ ...newItem, type: type });
 
@@ -659,7 +657,11 @@ const FixRentalEquipmentNewScreen = (props) => {
             </ScrollView>
             <View>
                 <TouchableOpacity onPress={() => {
-                    navigateTo("FixRentalSuppliesScreen");
+                    navigateTo("FixRentalSuppliesScreen",
+                        {
+                            type: type,
+                            parLocId: parLocId
+                        });
                 }}>
                     <View style={styles.btn}>
                         <Text style={styles.btnText}>수정 완료</Text>

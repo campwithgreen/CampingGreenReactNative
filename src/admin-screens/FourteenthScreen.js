@@ -192,7 +192,11 @@ const Comp1 = (props) => {
           <Text style={{ color: '#222222', fontWeight: 'bold', fontSize: FONTSIZE.xl, maxWidth: wp("40%") }}>
             {item?.title}
           </Text>
-          <Image source={require('../assets/images/pencil.png')} />
+          <TouchableOpacity onPress={() => {
+            navigateTo("EditFirstScreen", { product: item, updateId: item?._id, type: "LOCATION" });
+          }}>
+            <Image source={require('../assets/images/pencil.png')} />
+          </TouchableOpacity>
         </View>
         <View>
           <Text style={{ fontWeight: '600', maxWidth: wp("45%"), fontSize: FONTSIZE.l }}>위치  {item?.description}</Text>
@@ -200,6 +204,21 @@ const Comp1 = (props) => {
         <View>
           <Text style={{ fontWeight: '600', fontSize: FONTSIZE.l }}>위치  {item?.phone || item?.contactNumber}</Text>
         </View>
+        <TouchableOpacity onPress={() => {
+          navigateTo("FixRentalEquipmentNewScreen",
+            {
+              type: "SUBLOCATION",
+              parLocId: item?._id
+            });
+        }}>
+          <Text style={{
+            color: COLOR.compGreen,
+            fontWeight: 'bold',
+            fontSize: FONTSIZE.l
+          }}>
+            Add Sub Location
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

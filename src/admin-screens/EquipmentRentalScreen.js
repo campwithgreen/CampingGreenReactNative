@@ -26,7 +26,6 @@ import CheckBox from '@react-native-community/checkbox';
 import FONTSIZE from '../constants/fontSize';
 import COLOR from '../constants/colors';
 import { navigateTo } from '../navigation/utils/RootNavigation';
-import { set } from 'react-hook-form';
 import { deleteItem } from '../apis/admin';
 
 
@@ -43,10 +42,11 @@ const EquipmentRentalScreen = () => {
   const product = useSelector(st => st.product?.product);
   const [fetch, setFetch] = useState(false);
   const [selectedProductIds, setSelectedProductIds] = useState([]);
+  const isLogin = useSelector(st => st.oauth.isLogin);
 
 
   console.log("STORE P", product);
-  console.log("SELECTED IDS", selectedProductIds);
+  console.log("Is   Login", isLogin);
 
 
   const deleteItems = async () => {
@@ -82,6 +82,12 @@ const EquipmentRentalScreen = () => {
       setSelectedProductIds([]);
     }
   };
+
+  useEffect(() => {
+    if (!isLogin) {
+      navigateTo("LoginScreen");
+    }
+  }, []);
 
 
   useEffect(() => {
@@ -170,7 +176,6 @@ const Comp1 = (props) => {
             } else {
               let newSProductIds = [...selectedProductIds];
               let filteredProduct = newSProductIds.filter((it) => it !== item._id);
-              console.log("NNN", filteredProduct);
               setSelectedProductIds(filteredProduct);
               setIsSelected(value);
             }
@@ -200,7 +205,7 @@ const Comp1 = (props) => {
             {item?.title}
           </Text>
           <TouchableOpacity onPress={() => {
-            navigateTo("FixRentalEquipmentScreen", { product: item });
+            navigateTo("EditFirstScreen", { product: item, updateId: item?._id, type: "PRODUCT" });
           }}>
             <Image source={require('../assets/images/pencil.png')} />
           </TouchableOpacity>

@@ -39,7 +39,7 @@ const headerContent = {
 
 export default function LoginScreen() {
   const st = useSelector(st => st);
-  console.log('STORE', st);
+  console.log('STORE ++++++++++++++++++++', st);
 
   const {
     container,
@@ -58,10 +58,12 @@ export default function LoginScreen() {
   const [otpAutoFocus, setOtpAutoFocus] = useState(false);
 
   const isLogin = useSelector(st => st.oauth?.isLogin);
+  const role = useSelector(st => st?.oauth?.user_data?.data?.role);
+
   const [otpsent, setOptSent] = useState(false);
 
   useEffect(() => {
-    if (isLogin) {
+    if (isLogin && role == "USER") {
       navigateTo('HomeScreen');
     }
   }, [isLogin]);
@@ -110,6 +112,7 @@ export default function LoginScreen() {
           setOtpAutoFocus(true);
           dispatch(setUserData(res.data));
           if (res.data.formSubmissionRequired) {
+            console.log("ENTERED REGISTER REQUIRED");
             ToastAndroid.showWithGravity(
               'OTP Successfully Sent, Pls verify your number and register you account',
               ToastAndroid.SHORT,
@@ -117,6 +120,7 @@ export default function LoginScreen() {
             );
             setGetOtpButtonEnabled(false);
           } else {
+            console.log("ENTERED REGISTER REQUIRED 2");
             setOptSent(true);
             ToastAndroid.showWithGravity(
               'OTP Successfully Sent',
@@ -145,6 +149,7 @@ export default function LoginScreen() {
   };
 
   const handleLogin = async () => {
+    console.log("ENTERED THE CONSOLLING");
     console.log(phoneNumber, otp);
 
     let payload = {

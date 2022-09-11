@@ -49,3 +49,13 @@ export function deleteItem(payload) {
     let endpoint = "v2/item";
     return axiosInstance.delete(endpoint, { "data": payload });
 }
+
+export function addSubLocation(body, cartId) {
+    let endpoint = `v2/item/addsublocation/${cartId}`;
+    return axiosInstance.put(endpoint, body);
+}
+
+export function updateItem(body, cartId) {
+    let endpoint = `v2/item/${cartId}`;
+    return axiosInstance.put(endpoint, body);
+}

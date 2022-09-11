@@ -200,6 +200,21 @@ const Comp1 = (props) => {
         <View>
           <Text style={{ fontWeight: '600', fontSize: FONTSIZE.l }}>위치  {item?.phone || item?.contactNumber}</Text>
         </View>
+        <TouchableOpacity onPress={() => {
+          navigateTo("FixRentalEquipmentNewScreen",
+            {
+              type: "SUBLOCATION",
+              parLocId: item?._id
+            });
+        }}>
+          <Text style={{
+            color: COLOR.compGreen,
+            fontWeight: 'bold',
+            fontSize: FONTSIZE.l
+          }}>
+            Add Sub Location
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

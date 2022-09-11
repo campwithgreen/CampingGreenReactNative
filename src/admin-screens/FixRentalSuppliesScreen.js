@@ -21,7 +21,7 @@ import { createNewItemData } from '../redux/actions/common';
 import COLOR from '../constants/colors';
 import FONTSIZE from '../constants/fontSize';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { createItem } from '../apis/admin';
+import { addSubLocation, createItem } from '../apis/admin';
 import { showDefaultErrorAlert } from '../global/global';
 import { getAllProducts } from '../apis/product';
 import { setProductData, setLocationData } from '../redux/actions/product';
@@ -50,10 +50,10 @@ const FixRentalSuppliesScreen = (props) => {
   const { storee, new_item_data } = props;
   console.log("THE MAIN STORE", storee);
   console.log("Proceeding New Item data", new_item_data);
-  const type = new_item_data?.type;
+  const { type, parLocId } = props?.route?.params;
   const dispatch = useDispatch();
   const [newItemHolder, setNewItemHolder] = useState(new_item_data);
-  console.log("THE TYPE", type);
+  console.log("THE TYPE =========>", type, parLocId, props);
 
   const [allFeatures, setAllFeatures] = useState([
     {
@@ -112,21 +112,20 @@ const FixRentalSuppliesScreen = (props) => {
           fetchAndSetProducts("LOCATION");
           ToastAndroid.showWithGravity(`${type} CREATED SUCCESSFULLY`, ToastAndroid.TOP, ToastAndroid.CENTER);
           navigateTo("FourteenthScreen");
-          // Alert.alert("Add Sub Location Details",
-          //   "Please add Sub Location details in the parent location created",
-          //   [
-          //     {
-          //       text: "Cancel",
-          //       onPress: () => console.log("Deletion Cancelled"),
-          //       style: "cancel"
-          //     },
-          //     {
-          //       text: "OK", onPress: () => {
-          //         navigateTo("FillSubLocationFirstScreen", { type: "SUBLOCATION", parLocId: res?.data?.data._id });
-          //       }
-          //     }
-          //   ]);
         }
+      }
+    }).catch((err) => {
+      console.log("ERROR", err);
+      showDefaultErrorAlert();
+    });
+  };
+
+  const addSubLocationData = async () => {
+    await addSubLocation(newItemHolder, parLocId).then((res) => {
+      if (res) {
+        fetchAndSetProducts("LOCATION");
+        ToastAndroid.showWithGravity(`${type} ADDED SUCCESSFULLY`, ToastAndroid.TOP, ToastAndroid.CENTER);
+        navigateTo("FourteenthScreen");
       }
     }).catch((err) => {
       console.log("ERROR", err);
@@ -191,6 +190,22 @@ const FixRentalSuppliesScreen = (props) => {
                     updatedItem.longitude = value;
                     setNewItemHolder(updatedItem);
                   }} />
+                <FieldContainer
+                  keyPad="numeric"
+                  title={"Check In Time"}
+                  onChange={(value) => {
+                    let updatedItem = { ...newItemHolder };
+                    updatedItem.checkinTime = value;
+                    setNewItemHolder(updatedItem);
+                  }} />
+                <FieldContainer
+                  keyPad="numeric"
+                  title={"Check Out Time"}
+                  onChange={(value) => {
+                    let updatedItem = { ...newItemHolder };
+                    updatedItem.checkoutTime = value;
+                    setNewItemHolder(updatedItem);
+                  }} />
               </View>
             }
           </View>
@@ -198,7 +213,11 @@ const FixRentalSuppliesScreen = (props) => {
         </ScrollView>
         <View style={styles.btn}>
           <TouchableOpacity onPress={() => {
-            createNewItem();
+            if (type === "SUBLOCATION") {
+              addSubLocationData();
+            } else {
+              createNewItem();
+            }
           }}>
             <Text style={styles.btnText}>완료</Text>
           </TouchableOpacity>

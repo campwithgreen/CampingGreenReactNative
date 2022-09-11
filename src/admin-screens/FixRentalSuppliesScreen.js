@@ -24,7 +24,7 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import { createItem } from '../apis/admin';
 import { showDefaultErrorAlert } from '../global/global';
 import { getAllProducts } from '../apis/product';
-import { setProductData } from '../redux/actions/product';
+import { setProductData, setLocationData } from '../redux/actions/product';
 
 
 const mapStateToProps = (st, ownProps) => {
@@ -82,12 +82,16 @@ const FixRentalSuppliesScreen = (props) => {
   }, [allFeatures]);
 
 
-  const fetchAndSetProducts = async () => {
-    let data = { type: 'PRODUCT' };
+  const fetchAndSetProducts = async (fetchType) => {
+    let data = { type: fetchType };
     await getAllProducts(data)
       .then(res => {
         if (res) {
-          dispatch(setProductData(res.data.data));
+          if (fetchType === "PRODUCT") {
+            dispatch(setProductData(res.data.data));
+          } else if (fetchType === "LOCATION") {
+            dispatch(setLocationData(res.data.data));
+          }
         }
       })
       .catch(err => {
@@ -101,27 +105,27 @@ const FixRentalSuppliesScreen = (props) => {
     await createItem(newItemHolder).then((res) => {
       if (res) {
         if (type === "PRODUCT") {
-          fetchAndSetProducts();
+          fetchAndSetProducts("PRODUCT");
           ToastAndroid.showWithGravity(`${type} CREATED SUCCESSFULLY`, ToastAndroid.TOP, ToastAndroid.CENTER);
           navigateTo("EquipmentRentalScreen");
         } else if (type === "LOCATION") {
-          Alert.alert("Add Sub Location Details",
-            "Please add Sub Location details in the parent location created",
-            [
-              {
-                text: "Cancel",
-                onPress: () => console.log("Deletion Cancelled"),
-                style: "cancel"
-              },
-              {
-                text: "OK", onPress: () => {
-                  navigateTo("FillSubLocationFirstScreen", { type: "SUBLOCATION", parLocId: res?.data?.data._id });
-                }
-              }
-            ]);
-
-        } else if (type === "SUBLOCATION") {
-
+          fetchAndSetProducts("LOCATION");
+          ToastAndroid.showWithGravity(`${type} CREATED SUCCESSFULLY`, ToastAndroid.TOP, ToastAndroid.CENTER);
+          navigateTo("FourteenthScreen");
+          // Alert.alert("Add Sub Location Details",
+          //   "Please add Sub Location details in the parent location created",
+          //   [
+          //     {
+          //       text: "Cancel",
+          //       onPress: () => console.log("Deletion Cancelled"),
+          //       style: "cancel"
+          //     },
+          //     {
+          //       text: "OK", onPress: () => {
+          //         navigateTo("FillSubLocationFirstScreen", { type: "SUBLOCATION", parLocId: res?.data?.data._id });
+          //       }
+          //     }
+          //   ]);
         }
       }
     }).catch((err) => {

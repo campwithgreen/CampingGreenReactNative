@@ -25,6 +25,7 @@ import Loader from '../components/common/Loader';
 import moment from 'moment';
 import { setCurrentCheckoutCartDetails } from '../redux/actions/common';
 import { navigateTo } from '../navigation/utils/RootNavigation';
+import { ORDER_STATUS } from "../utils/constants.json";
 
 const headerContent = {
   middleItemContents: {
@@ -65,8 +66,6 @@ const SixteenScreen = (props) => {
   }, Object.create(null));
 
 
-  console.log("THE STORE CH", st);
-  console.log("RESULT", result);
 
   useEffect(() => {
 
@@ -130,7 +129,7 @@ const SixteenScreen = (props) => {
           <View style={{ marginBottom: hp("30%") }}>
             {(result && Object.keys(result)?.length >= 1) ? Object.keys(result)?.map((key) => {
               return <View >
-                <Text style={styles.dateWithBoldLine}>{moment(key?.split('_')[0]).format('YYYY.MM.DD')}</Text>
+                <Text style={styles.dateWithBoldLine}>{key?.split('_')[0]}</Text>
                 {result[key]?.map((item) => {
                   console.log("THE ITEM", item, key);
                   return <Comp1 flag={item.paymentStatus === "PAYMENT_DONE"} item={item} key={item?._id} />;
@@ -194,6 +193,14 @@ const Comp1 = ({ flag, item }) => {
           </Text>
           <Text style={[styles.text2, { color: flag ? 'white' : 'black' }]}>
             {item?.items[0]?.itemId?.title.length > 19 ? item?.items[0]?.itemId?.title.substring(0, 19) + '...' : item?.items[0]?.itemId?.title}
+          </Text>
+        </View>
+        <View style={{ display: 'flex', flexDirection: 'row' }}>
+          <Text style={[styles.text3, { color: flag ? 'lightgrey' : '' }]}>
+            지불 상태 :{' '}
+          </Text>
+          <Text style={[styles.text2, { color: flag ? 'white' : 'black' }]}>
+            {ORDER_STATUS[item?.paymentStatus]}
           </Text>
         </View>
       </View>

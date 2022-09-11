@@ -166,6 +166,7 @@ export const AdminProductNavigation = props => {
     <Stack.Navigator
       initialRouteName="EquipmentRentalScreen"
       screenOptions={AppNavigatorOptions}>
+      <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="EquipmentRentalScreen" component={EquipmentRentalScreen} />
       <Stack.Screen name="FixRentalEquipmentScreen" component={FixRentalEquipmentScreen} />
       <Stack.Screen name="FixRentalSuppliesScreen" component={FixRentalSuppliesScreen} />

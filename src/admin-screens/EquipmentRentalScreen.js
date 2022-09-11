@@ -42,10 +42,11 @@ const EquipmentRentalScreen = () => {
   const product = useSelector(st => st.product?.product);
   const [fetch, setFetch] = useState(false);
   const [selectedProductIds, setSelectedProductIds] = useState([]);
+  const isLogin = useSelector(st => st.oauth.isLogin);
 
 
   console.log("STORE P", product);
-  console.log("SELECTED IDS", selectedProductIds);
+  console.log("Is   Login", isLogin);
 
 
   const deleteItems = async () => {
@@ -81,6 +82,12 @@ const EquipmentRentalScreen = () => {
       setSelectedProductIds([]);
     }
   };
+
+  useEffect(() => {
+    if (!isLogin) {
+      navigateTo("LoginScreen");
+    }
+  }, []);
 
 
   useEffect(() => {

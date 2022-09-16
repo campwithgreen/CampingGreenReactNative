@@ -396,7 +396,7 @@ const RoomPaymentScreen = (props) => {
                 {current_cart_details?.items.map(cart => {
                   let directItem = cart?.itemId;
                   return (
-                    <View>
+                    <View key={cart?.itemId}>
                       <View
                         style={{
                           display: 'flex',

@@ -28,6 +28,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login, setUserData, setUserToken } from '../redux/actions/oauth';
 import { setUserCartHistory } from '../redux/actions/common';
 import { getUserCartHistory } from '../apis/cart';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const headerContent = {
   leftItemContents: {
@@ -62,6 +63,16 @@ export default function LoginScreen() {
 
   const [otpsent, setOptSent] = useState(false);
 
+  const removeCartId = async (value) => {
+    console.log("REMOVING CART ID");
+    try {
+      await AsyncStorage.removeItem('@cart_id');
+    } catch (e) {
+      console.log("REMOVING CART ID ERROR", e);
+    }
+  };
+
+
   useEffect(() => {
     if (isLogin && role == "USER") {
       navigateTo('HomeScreen');
@@ -71,12 +82,15 @@ export default function LoginScreen() {
 
   useEffect(() => {
     if (isLogin) {
-      console.log("RUNNING");
       (async function getCartHistory() {
         await getUserCartHistory()
           .then(res => {
             if (res) {
               dispatch(setUserCartHistory(res.data.data));
+              console.log("THE C HIS", res.data.data[0].items?.length);
+              if (res?.data?.data[0].items?.length === 0) {
+                removeCartId();
+              }
             }
           })
           .catch(err => {

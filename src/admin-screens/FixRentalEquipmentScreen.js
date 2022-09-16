@@ -52,7 +52,7 @@ const FixRentalEquipmentScreen = (props) => {
   return (
     <View style={{ backgroundColor: 'white' }}>
       <Header headerContent={headerContent} />
-      <ScrollView>
+      <ScrollView >
         <Comp1 isProductName={true} selectedProduct={selectedProduct} setSelectedProduct={selectedProduct} />
         <Comp1 isPrice={true} selectedProduct={selectedProduct} setSelectedProduct={selectedProduct} />
         <View style={styles.view1}>

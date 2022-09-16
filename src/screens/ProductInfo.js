@@ -183,11 +183,6 @@ const ProductInfo = props => {
     items: payloadItems
   };
 
-  useEffect(() => {
-    getCartId().then((cart) => {
-      console.log("CART IT",);
-    });
-  });
 
   const handleCheckout = async () => {
     console.log('CHCKOUT ITEMS *****', cartItems);
@@ -230,6 +225,7 @@ const ProductInfo = props => {
           })
           .catch(err => {
             if (err) {
+              console.log("CHECKING OUT ERR", err);
               showDefaultErrorAlert(err?.response?.data?.error);
               setModalVisible(false);
             }

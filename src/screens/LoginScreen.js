@@ -63,7 +63,7 @@ export default function LoginScreen() {
   const [otpsent, setOptSent] = useState(false);
 
   useEffect(() => {
-    if (isLogin && role == "USER") {
+    if (isLogin && role == 'USER') {
       navigateTo('HomeScreen');
     }
   }, [isLogin]);
@@ -112,7 +112,7 @@ export default function LoginScreen() {
           setOtpAutoFocus(true);
           dispatch(setUserData(res.data));
           if (res.data.formSubmissionRequired) {
-            console.log("ENTERED REGISTER REQUIRED");
+            console.log('ENTERED REGISTER REQUIRED');
             ToastAndroid.showWithGravity(
               'OTP Successfully Sent, Pls verify your number and register you account',
               ToastAndroid.SHORT,
@@ -120,7 +120,7 @@ export default function LoginScreen() {
             );
             setGetOtpButtonEnabled(false);
           } else {
-            console.log("ENTERED REGISTER REQUIRED 2");
+            console.log('ENTERED REGISTER REQUIRED 2');
             setOptSent(true);
             ToastAndroid.showWithGravity(
               'OTP Successfully Sent',
@@ -149,7 +149,7 @@ export default function LoginScreen() {
   };
 
   const handleLogin = async () => {
-    console.log("ENTERED THE CONSOLLING");
+    console.log('ENTERED THE CONSOLLING');
     console.log(phoneNumber, otp);
 
     let payload = {
@@ -237,7 +237,6 @@ export default function LoginScreen() {
                     placeholder="1011112222 -없이 숫자만 입력해주세요"
                     onFocus={() => onFocus()}
                     onBlur={() => onBlur()}
-                    keyboardType="number-pad"
                     onChangeText={value => {
                       setPhoneNumber(value);
                     }}
@@ -329,6 +328,6 @@ const styles = StyleSheet.create({
   },
   buttonWrapper: {
     marginHorizontal: widthPercentageToDP('5%'),
-    marginBottom: hp('3%'),
+    marginBottom: Platform.OS === 'android' ? hp('3%') : hp('30%'),
   },
 });

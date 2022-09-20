@@ -12,12 +12,12 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import React, { useEffect } from 'react';
-import { useState } from 'react';
+import React, {useEffect} from 'react';
+import {useState} from 'react';
 import Header from '../layout/Header';
-import { getAllUsers, searchUser } from '../apis/admin';
-import { showDefaultErrorAlert } from '../global/global';
-import Loader from "../components/common/Loader";
+import {getAllUsers, searchUser} from '../apis/admin';
+import {showDefaultErrorAlert} from '../global/global';
+import Loader from '../components/common/Loader';
 import AdminSearchInput from '../components/AdminSearchInput';
 
 const headerContent = {
@@ -27,35 +27,33 @@ const headerContent = {
   },
 };
 
-
 const NineteenthScreen = () => {
-
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const getUsers = async () => {
     setLoading(true);
-    await getAllUsers().then((res) => {
-      if (res) {
-        //keeping only users not admins
-        let users = res?.data?.data.filter((item) => item.role === "USER");
-        setUsers(users);
+    await getAllUsers()
+      .then(res => {
+        if (res) {
+          //keeping only users not admins
+          let users = res?.data?.data.filter(item => item.role === 'USER');
+          setUsers(users);
+          setLoading(false);
+        }
+      })
+      .catch(err => {
+        console.log('GET ALL USR ERR', err);
         setLoading(false);
-      }
-    }).catch((err) => {
-      console.log("GET ALL USR ERR", err);
-      setLoading(false);
-      showDefaultErrorAlert();
-    });
+        showDefaultErrorAlert();
+      });
   };
-
 
   useEffect(() => {
     getUsers();
   }, []);
 
-
-  console.log("USERS", users);
+  console.log('USERS', users);
 
   return (
     <View
@@ -65,13 +63,17 @@ const NineteenthScreen = () => {
         height: '100%',
       }}>
       <Header headerContent={headerContent} />
-      {loading ? <Loader /> : <View>
-        <Text style={{ borderBottomWidth: 2, borderBottomColor: '#F8F8F8' }}></Text>
+      {loading ? (
+        <Loader />
+      ) : (
         <View>
-          <AdminSearchInput setUsers={setUsers} setLoading={setLoading} />
-        </View>
-        <ScrollView style={{ marginTop: hp("5%") }}>
-          {/* <TextInput
+          <Text
+            style={{borderBottomWidth: 2, borderBottomColor: '#F8F8F8'}}></Text>
+          <View>
+            <AdminSearchInput setUsers={setUsers} setLoading={setLoading} />
+          </View>
+          <ScrollView style={{marginTop: hp('10%')}}>
+            {/* <TextInput
                 style={{
                   borderWidth: 1,
                   borderColor: 'grey',
@@ -86,24 +88,22 @@ const NineteenthScreen = () => {
                   }
                 }}
               /> */}
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginHorizontal: wp('5%'),
-            }}>
             <View
               style={{
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                paddingTop: wp('5%'),
+                marginHorizontal: wp('5%'),
               }}>
-              <Text style={{ fontWeight: 'bold' }}>
-                최신순
-              </Text>
-              {/* <Text
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  paddingTop: wp('5%'),
+                }}>
+                <Text style={{fontWeight: 'bold'}}>최신순</Text>
+                {/* <Text
               style={{
                 paddingLeft: wp('4%'),
                 fontWeight: 'bold',
@@ -111,24 +111,25 @@ const NineteenthScreen = () => {
               }}>
               오래된순
             </Text> */}
+              </View>
+              <View></View>
             </View>
-            <View></View>
-          </View>
-          {users && users.length >= 1 ? users.map((ele, i) => (
-            <Comp1 item={ele} key={i} />
-          )) : <View>
-            <Text style={{ textAlign: "center" }}>
-              No User Found
-            </Text>
-          </View>}
-        </ScrollView>
-      </View>}
+            {users && users.length >= 1 ? (
+              users.map((ele, i) => <Comp1 item={ele} key={i} />)
+            ) : (
+              <View>
+                <Text style={{textAlign: 'center'}}>No User Found</Text>
+              </View>
+            )}
+          </ScrollView>
+        </View>
+      )}
       {/* <Comp2 /> */}
     </View>
   );
 };
 
-const Comp1 = ({ flag, item }) => {
+const Comp1 = ({flag, item}) => {
   return (
     <View
       style={{
@@ -142,9 +143,9 @@ const Comp1 = ({ flag, item }) => {
         paddingVertical: wp('2%'),
         marginTop: hp('3%'),
       }}>
-      <View style={{ display: 'flex' }}>
-        <Text style={[styles.text1, { color: flag ? 'white' : 'black' }]}>
-          {item?.firstName}
+      <View style={{display: 'flex'}}>
+        <Text style={[styles.text1, {color: flag ? 'white' : 'black'}]}>
+          {item?.firstName} 회원
         </Text>
         <Text></Text>
         <Text></Text>
@@ -155,11 +156,11 @@ const Comp1 = ({ flag, item }) => {
           justifyContent: 'space-between',
           paddingLeft: wp('5%'),
         }}>
-        <View style={{ display: 'flex', flexDirection: 'row' }}>
-          <Text style={[styles.text3, { color: flag ? 'lightgrey' : '' }]}>
+        <View style={{display: 'flex', flexDirection: 'row'}}>
+          <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
             회원코드 :{' '}
           </Text>
-          <Text style={[styles.text2, { color: flag ? 'white' : 'black' }]}>
+          <Text style={[styles.text2, {color: flag ? 'white' : 'black'}]}>
             {item?.createdAt}
           </Text>
         </View>
@@ -168,18 +169,18 @@ const Comp1 = ({ flag, item }) => {
             display: 'flex',
             flexDirection: 'row',
           }}>
-          <Text style={[styles.text3, { color: flag ? 'lightgrey' : '' }]}>
+          <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
             전화번호 :{' '}
           </Text>
-          <Text style={[styles.text2, { color: flag ? 'white' : 'black' }]}>
+          <Text style={[styles.text2, {color: flag ? 'white' : 'black'}]}>
             {item?.phoneNumber}
           </Text>
         </View>
-        <View style={{ display: 'flex', flexDirection: 'row' }}>
-          <Text style={[styles.text3, { color: flag ? 'lightgrey' : '' }]}>
+        <View style={{display: 'flex', flexDirection: 'row'}}>
+          <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
             구매내역 :{' '}
           </Text>
-          <Text style={[styles.text2, { color: flag ? 'white' : 'black' }]}>
+          <Text style={[styles.text2, {color: flag ? 'white' : 'black'}]}>
             별빛 캠핑장 외 {item?.totalOrders} 건
           </Text>
         </View>
@@ -197,13 +198,13 @@ const Comp2 = () => {
   });
   const fun = btn => {
     if (btn == 1) {
-      setBtn({ btn1: true, btn2: false, btn3: false, btn4: false });
+      setBtn({btn1: true, btn2: false, btn3: false, btn4: false});
     } else if (btn == 2) {
-      setBtn({ btn1: false, btn2: true, btn3: false, btn4: false });
+      setBtn({btn1: false, btn2: true, btn3: false, btn4: false});
     } else if (btn == 3) {
-      setBtn({ btn1: false, btn2: false, btn3: true, btn4: false });
+      setBtn({btn1: false, btn2: false, btn3: true, btn4: false});
     } else {
-      setBtn({ btn1: false, btn2: false, btn3: false, btn4: true });
+      setBtn({btn1: false, btn2: false, btn3: false, btn4: true});
     }
   };
   return (

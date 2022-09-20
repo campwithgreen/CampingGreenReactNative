@@ -34,13 +34,17 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Camera access needed for videocall</string>
+	<string>Camera access needed for app to take photos</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Camping needs to access location to recommend new camping places </string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Camping recomendations will be presented based on your location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Camping recomendations will be presented based on your location</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Microphone access for our app</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photo library access needed for uploading photos</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

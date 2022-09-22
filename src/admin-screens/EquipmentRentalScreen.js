@@ -45,9 +45,6 @@ const EquipmentRentalScreen = () => {
   const isLogin = useSelector(st => st.oauth.isLogin);
 
 
-  console.log("STORE P", product);
-  console.log("Is   Login", isLogin);
-
 
   const deleteItems = async () => {
     if (selectedProductIds.length >= 1) {
@@ -201,7 +198,7 @@ const Comp1 = (props) => {
             paddingRight: wp('4%'),
 
           }}>
-          <Text style={{ color: '#222222', fontWeight: 'bold', fontSize: FONTSIZE.xl, maxWidth: wp("40%") }}>
+          <Text style={{ color: COLOR.black, fontWeight: 'bold', fontSize: FONTSIZE.xl, maxWidth: wp("40%") }}>
             {item?.title}
           </Text>
           <TouchableOpacity onPress={() => {
@@ -218,10 +215,10 @@ const Comp1 = (props) => {
               flexDirection: 'row',
               justifyContent: 'space-between',
             }}>
-            <Text style={{ fontWeight: 'bold', fontSize: FONTSIZE.l }}>
+            <Text style={{ fontWeight: 'bold', fontSize: FONTSIZE.l, color: COLOR.grey }}>
               {item?.price} 원
             </Text>
-            <Text style={{ fontWeight: '600', fontSize: FONTSIZE.l }}>남은 수량 총 {item?.stock}개</Text>
+            <Text style={{ fontWeight: '600', fontSize: FONTSIZE.l, color: COLOR.grey }}>남은 수량 총 {item?.stock}개</Text>
             <Text></Text>
           </View>
         </View>

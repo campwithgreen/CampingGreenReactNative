@@ -44,7 +44,6 @@ const LocationRentalSceen = () => {
   const [selectedProductIds, setSelectedProductIds] = useState([]);
 
 
-  console.log("SELECTED IDS", selectedProductIds);
 
   const deleteItems = async () => {
     if (selectedProductIds.length >= 1) {
@@ -88,7 +87,6 @@ const LocationRentalSceen = () => {
       await getAllProducts(data)
         .then(res => {
           if (res) {
-            console.log('location ===>', res);
             dispatch(setLocationData(res.data.data));
             setLoading(false);
           }
@@ -108,7 +106,7 @@ const LocationRentalSceen = () => {
   return (
     <View style={{ backgroundColor: COLOR.white, minHeight: hp("100%") }}>
       <Header headerContent={headerContent} />
-      <Text style={{ borderBottomWidth: 2, borderBottomColor: '#F8F8F8' }}></Text>
+      <Text style={{ borderBottomWidth: 2, borderBottomColor: '#F8F8F8', color: COLOR.black }}></Text>
       {loading ? <Loader /> :
         <ScrollView style={{ marginBottom: hp("15%") }} keyboardShouldPersistTaps="always">
           <View style={styles.view1}>
@@ -128,7 +126,7 @@ const LocationRentalSceen = () => {
           {location && location?.length >= 1 ? location.map((item, i) => (
             <Comp1 item={item} key={i} setSelectedProductIds={setSelectedProductIds} selectedProductIds={selectedProductIds} />
           )) : <View>
-            <Text style={{ textAlign: "center" }}>No Camps Available</Text>
+            <Text style={{ textAlign: "center", color: COLOR.black }}>No Camps Available</Text>
           </View>}
         </ScrollView>}
     </View>
@@ -189,7 +187,7 @@ const Comp1 = (props) => {
             width: wp('55%'),
             paddingRight: wp('4%'),
           }}>
-          <Text style={{ color: '#222222', fontWeight: 'bold', fontSize: FONTSIZE.xl, maxWidth: wp("40%") }}>
+          <Text style={{ color: COLOR.black, fontWeight: 'bold', fontSize: FONTSIZE.xl, maxWidth: wp("40%") }}>
             {item?.title}
           </Text>
           <TouchableOpacity onPress={() => {
@@ -199,10 +197,10 @@ const Comp1 = (props) => {
           </TouchableOpacity>
         </View>
         <View>
-          <Text style={{ fontWeight: '600', maxWidth: wp("45%"), fontSize: FONTSIZE.l }}>위치  {item?.description}</Text>
+          <Text style={{ fontWeight: '600', maxWidth: wp("45%"), fontSize: FONTSIZE.l, color: COLOR.grey }}>위치  {item?.description}</Text>
         </View>
         <View>
-          <Text style={{ fontWeight: '600', fontSize: FONTSIZE.l }}>위치  {item?.phone || item?.contactNumber}</Text>
+          <Text style={{ fontWeight: '600', fontSize: FONTSIZE.l, color: COLOR.grey }}>위치  {item?.phone || item?.contactNumber}</Text>
         </View>
         <TouchableOpacity onPress={() => {
           navigateTo("FixRentalEquipmentNewScreen",
@@ -211,11 +209,12 @@ const Comp1 = (props) => {
               parLocId: item?._id
             });
         }}>
-          <Text style={{
-            color: COLOR.compGreen,
-            fontWeight: 'bold',
-            fontSize: FONTSIZE.l
-          }}>
+          <Text
+            style={{
+              color: COLOR.compGreen,
+              fontWeight: 'bold',
+              fontSize: FONTSIZE.l
+            }}>
             Add Sub Location
           </Text>
         </TouchableOpacity>

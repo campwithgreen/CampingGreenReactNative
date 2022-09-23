@@ -2,8 +2,7 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
-  ImageBackground,
+  ToastAndroid,
   ScrollView,
   TouchableOpacity,
   Button,
@@ -19,6 +18,9 @@ import { getAllUsers, searchUser } from '../apis/admin';
 import { showDefaultErrorAlert } from '../global/global';
 import Loader from "../components/common/Loader";
 import AdminSearchInput from '../components/AdminSearchInput';
+import COLOR from '../constants/colors';
+import { logout } from '../redux/actions/oauth';
+import { useDispatch } from 'react-redux';
 
 const headerContent = {
   middleItemContents: {
@@ -32,6 +34,7 @@ const NineteenthScreen = () => {
 
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const getUsers = async () => {
     setLoading(true);
@@ -55,7 +58,14 @@ const NineteenthScreen = () => {
   }, []);
 
 
-  console.log("USERS", users);
+  const handleLogout = () => {
+    dispatch(logout());
+    ToastAndroid.showWithGravity(
+      'Logged Out Successfully',
+      ToastAndroid.LONG,
+      ToastAndroid.TOP,
+    );
+  };
 
   return (
     <View
@@ -67,6 +77,15 @@ const NineteenthScreen = () => {
       <Header headerContent={headerContent} />
       {loading ? <Loader /> : <View>
         <Text style={{ borderBottomWidth: 2, borderBottomColor: '#F8F8F8' }}></Text>
+        <View>
+          <Button
+            title='Logout'
+            onPress={() => {
+              handleLogout();
+            }}
+            color={COLOR.compGreen}
+          />
+        </View>
         <View>
           <AdminSearchInput setUsers={setUsers} setLoading={setLoading} />
         </View>

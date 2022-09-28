@@ -41,8 +41,6 @@ const LocationRentalSceen = () => {
   const [fetch, setFetch] = useState(false);
   const [selectedProductIds, setSelectedProductIds] = useState([]);
 
-  console.log('SELECTED IDS', selectedProductIds);
-
   const deleteItems = async () => {
     if (selectedProductIds.length >= 1) {
       let payload = {
@@ -94,7 +92,6 @@ const LocationRentalSceen = () => {
       await getAllProducts(data)
         .then(res => {
           if (res) {
-            console.log('location ===>', res);
             dispatch(setLocationData(res.data.data));
             setLoading(false);
           }
@@ -112,7 +109,12 @@ const LocationRentalSceen = () => {
   return (
     <View style={{backgroundColor: COLOR.white, minHeight: hp('100%')}}>
       <Header headerContent={headerContent} />
-      <Text style={{borderBottomWidth: 2, borderBottomColor: '#F8F8F8'}}></Text>
+      <Text
+        style={{
+          borderBottomWidth: 2,
+          borderBottomColor: '#F8F8F8',
+          color: COLOR.black,
+        }}></Text>
       {loading ? (
         <Loader />
       ) : (
@@ -146,7 +148,9 @@ const LocationRentalSceen = () => {
             ))
           ) : (
             <View>
-              <Text style={{textAlign: 'center'}}>No Camps Available</Text>
+              <Text style={{textAlign: 'center', color: COLOR.black}}>
+                No Camps Available
+              </Text>
             </View>
           )}
         </ScrollView>
@@ -211,7 +215,7 @@ const Comp1 = props => {
           }}>
           <Text
             style={{
-              color: '#222222',
+              color: COLOR.black,
               fontWeight: 'bold',
               fontSize: FONTSIZE.xl,
               maxWidth: wp('40%'),
@@ -239,12 +243,18 @@ const Comp1 = props => {
               fontWeight: '600',
               maxWidth: wp('45%'),
               fontSize: FONTSIZE.l,
+              color: COLOR.grey,
             }}>
             위치 {item?.description}
           </Text>
         </View>
         <View>
-          <Text style={{fontWeight: '600', fontSize: FONTSIZE.l}}>
+          <Text
+            style={{
+              fontWeight: '600',
+              fontSize: FONTSIZE.l,
+              color: COLOR.grey,
+            }}>
             위치 {item?.phone || item?.contactNumber}
           </Text>
         </View>
@@ -261,7 +271,7 @@ const Comp1 = props => {
               fontWeight: 'bold',
               fontSize: FONTSIZE.l,
             }}>
-            객실 추가하기
+            Add Sub Location
           </Text>
         </TouchableOpacity>
       </View>

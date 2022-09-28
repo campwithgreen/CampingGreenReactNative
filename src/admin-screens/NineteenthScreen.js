@@ -2,8 +2,7 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
-  ImageBackground,
+  ToastAndroid,
   ScrollView,
   TouchableOpacity,
   Button,
@@ -19,6 +18,9 @@ import {getAllUsers, searchUser} from '../apis/admin';
 import {showDefaultErrorAlert} from '../global/global';
 import Loader from '../components/common/Loader';
 import AdminSearchInput from '../components/AdminSearchInput';
+import COLOR from '../constants/colors';
+import {logout} from '../redux/actions/oauth';
+import {useDispatch} from 'react-redux';
 
 const headerContent = {
   middleItemContents: {
@@ -30,6 +32,7 @@ const headerContent = {
 const NineteenthScreen = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const getUsers = async () => {
     setLoading(true);
@@ -53,7 +56,14 @@ const NineteenthScreen = () => {
     getUsers();
   }, []);
 
-  console.log('USERS', users);
+  const handleLogout = () => {
+    dispatch(logout());
+    ToastAndroid.showWithGravity(
+      'Logged Out Successfully',
+      ToastAndroid.LONG,
+      ToastAndroid.TOP,
+    );
+  };
 
   return (
     <View
@@ -69,10 +79,19 @@ const NineteenthScreen = () => {
         <View>
           <Text
             style={{borderBottomWidth: 2, borderBottomColor: '#F8F8F8'}}></Text>
+          <View style={{marginHorizontal: 20}}>
+            <Button
+              title="Logout"
+              onPress={() => {
+                handleLogout();
+              }}
+              color={COLOR.compGreen}
+            />
+          </View>
           <View>
             <AdminSearchInput setUsers={setUsers} setLoading={setLoading} />
           </View>
-          <ScrollView style={{marginTop: hp('10%')}}>
+          <ScrollView style={{marginTop: hp('5%')}}>
             {/* <TextInput
                 style={{
                   borderWidth: 1,
@@ -145,7 +164,7 @@ const Comp1 = ({flag, item}) => {
       }}>
       <View style={{display: 'flex'}}>
         <Text style={[styles.text1, {color: flag ? 'white' : 'black'}]}>
-          {item?.firstName} 회원
+          {item?.firstName}
         </Text>
         <Text></Text>
         <Text></Text>

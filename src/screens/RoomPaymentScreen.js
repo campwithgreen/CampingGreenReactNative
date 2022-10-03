@@ -593,7 +593,7 @@ const styles = StyleSheet.create({
   border2: {
     borderWidth: 0.5,
     borderColor: 'lightgrey',
-    marginVertical: hp('3%'),
+    marginVertical: hp('1%'),
   },
   button1: {
     backgroundColor: '#191919',

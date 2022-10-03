@@ -28,7 +28,7 @@ const {width, height} = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 const CARD_HEIGHT = 420;
 const CARD_WIDTH = width * 0.8;
-const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
+const SPACING_FOR_CARD_INSET = width * 0.1 - 40;
 
 const LATITUD_DELTA = 0.0086111111;
 const LONGITUDE_DELTA = LATITUD_DELTA * ASPECT_RATIO;
@@ -197,7 +197,7 @@ const RoomScreen = () => {
       style={{
         backgroundColor: 'white',
         flex: 1,
-        marginTop: Platform.OS === 'android' ? 0 : 20,
+        marginTop: Platform.OS === 'android' ? 0 : 30,
       }}>
       <SearchInput />
 
@@ -289,7 +289,8 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-    paddingVertical: 10,
+    // paddingVertical: 10,
+    width: width,
   },
   endPadding: {
     paddingRight: width - CARD_WIDTH,

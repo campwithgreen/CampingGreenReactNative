@@ -135,9 +135,10 @@ export default connect(mapStateToProps, null)(Header);
 const styles = StyleSheet.create({
   initial: {
     backgroundColor: '#fff',
+    height: Platform.OS === 'android' ? hp('6%') : hp('6%'),
   },
   wrapper: {
-    height: hp('9%'),
+    height: Platform.OS === 'android' ? hp('6%') : hp('6%'),
     backgroundColor: '#ffff',
     width: '100%',
   },

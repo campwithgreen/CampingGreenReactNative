@@ -1,0 +1,175 @@
+ {
+                    "carousel": [
+                        "https://res.cloudinary.com/campwithgreen/image/upload/v1659273537/camping_items/1_1main_wrwzjs.png",
+                        "https://res.cloudinary.com/campwithgreen/image/upload/v1659273557/camping_items/1_2main_lihfiw.png"
+                    ],
+                    "category": [
+                        "수영장",
+                        "힐링",
+                        "감성"
+                    ],
+                    "tag": [],
+                    "subLocations": [
+                        {
+                            "carousel": [
+                                "https://res.cloudinary.com/campwithgreen/image/upload/v1659274695/camping_items/A%CC%81%C3%9FI%CC%A8u%CC%881_wahvet.png",
+                                "https://res.cloudinary.com/campwithgreen/image/upload/v1659274699/camping_items/A%CC%81%C3%9FI%CC%A8u%CC%882_tyupsh.png",
+                                "https://res.cloudinary.com/campwithgreen/image/upload/v1659274717/camping_items/A%CC%81%C3%9FI%CC%A8u%CC%883_izv5si.png"
+                            ],
+                            "category": [],
+                            "tag": [],
+                            "subLocations": [],
+                            "hasSublocation": false,
+                            "isDisabled": false,
+                            "title": "TESTING_LOCATION",
+                            "price": 120000,
+                            "stock": -2,
+                            "type": "SUBLOCATION",
+                            "additional_charges": [
+                                {
+                                    "add_feature_title": "인원 추가",
+                                    "add_feature_value": {
+                                        "1인 추가": "10000원",
+                                        "24개월 미만": "무료"
+                                    }
+                                },
+                                {
+                                    "add_feature_title": "바비큐 추가",
+                                    "add_feature_value": {
+                                        "바비큐그릴 망, 숯불 포함": "20000원",
+                                        "숯불 추가 시": "10000원"
+                                    }
+                                }
+                            ],
+                            "createdAt": "2022-07-11T15:06:17.704Z",
+                            "updatedAt": "2022-08-23T17:08:14.261Z",
+                            "__v": 1,
+                            "specifications": {
+                                "인원": "기준 2인/ 최대 4인",
+                                "인원추가": "가능",
+                                "객실특징": "X",
+                                "객실정보": "전기사용가능",
+                                "구비시설": "식탁, 에어컨, 커피포트, 침대1(퀸), 소파, 냉장고, 바비큐 수영장",
+                                "기준차량": "총 1대"
+                            },
+                            "checkinTime": "13:00",
+                            "checkoutTime": "11:00",
+                            "description": "놀터1, 놀터5, 놀터6, 놀터7",
+                            "allFeatures": []
+                        },
+                        {
+                            "carousel": [
+                                "https://res.cloudinary.com/campwithgreen/image/upload/v1659279492/camping_items/%E1%84%83%E1%85%A2%E1%84%92%E1%85%A7%E1%86%BC1_mzwqud.png",
+                                "https://res.cloudinary.com/campwithgreen/image/upload/v1659279507/camping_items/%E1%84%83%E1%85%A2%E1%84%92%E1%85%A7%E1%86%BC2_de2c35.png",
+                                "https://res.cloudinary.com/campwithgreen/image/upload/v1659279521/camping_items/%E1%84%83%E1%85%A2%E1%84%92%E1%85%A7%E1%86%BC3_vepa2a.png"
+                            ],
+                            "category": [],
+                            "tag": [],
+                            "subLocations": [],
+                            "hasSublocation": false,
+                            "isDisabled": false,
+                            "title": "대형글램핑장",
+                            "description": "놀터2, 놀터3",
+                            "price": 150000,
+                            "stock": 2,
+                            "type": "SUBLOCATION",
+                            "additional_charges": [
+                                {
+                                    "add_feature_title": "인원 추가",
+                                    "add_feature_value": {
+                                        "1인 추가": "10000원",
+                                        "24개월 미만": "무료"
+                                    }
+                                },
+                                {
+                                    "add_feature_title": "바비큐 추가",
+                                    "add_feature_value": {
+                                        "바비큐그릴 망, 숯불 포함": "20000원",
+                                        "숯불 추가 시": "10000원"
+                                    }
+                                }
+                            ],
+                            "createdAt": "2022-07-11T15:06:20.772Z",
+                            "updatedAt": "2022-07-25T12:21:23.916Z",
+                            "__v": 0,
+                            "specifications": {
+                                "인원": "기준 4인/ 최대 6인",
+                                "인원추가": "가능",
+                                "객실특징": "X",
+                                "객실정보": "전기사용가능",
+                                "구비시설": "식탁, 에어컨, 커피포트, 침대2(퀸 싱글), 소파, 냉장고, 바비큐 수영장",
+                                "기준차량": "총 1대"
+                            },
+                            "checkinTime": "13:00",
+                            "checkoutTime": "11:00",
+                            "allFeatures": []
+                        },
+                        {
+                            "carousel": [
+                                "https://res.cloudinary.com/campwithgreen/image/upload/v1659280297/camping_items/%E1%84%90%E1%85%B3%E1%86%A8%E1%84%83%E1%85%A2%E1%84%92%E1%85%A7%E1%86%BC1_nco0ei.png",
+                                "https://res.cloudinary.com/campwithgreen/image/upload/v1659280308/camping_items/%E1%84%90%E1%85%B3%E1%86%A8%E1%84%83%E1%85%A2%E1%84%92%E1%85%A7%E1%86%BC2_ipnfzr.png",
+                                "https://res.cloudinary.com/campwithgreen/image/upload/v1659280322/camping_items/%E1%84%90%E1%85%B3%E1%86%A8%E1%84%83%E1%85%A2%E1%84%92%E1%85%A7%E1%86%BC3_chnivy.png"
+                            ],
+                            "category": [],
+                            "tag": [],
+                            "subLocations": [],
+                            "hasSublocation": false,
+                            "isDisabled": false,
+                            "title": "특대형글램핑",
+                            "description": "놀터8",
+                            "price": 180000,
+                            "stock": 1,
+                            "type": "SUBLOCATION",
+                            "additional_charges": [
+                                {
+                                    "add_feature_title": "인원 추가",
+                                    "add_feature_value": {
+                                        "1인 추가": "10000원",
+                                        "24개월 미만": "무료"
+                                    }
+                                },
+                                {
+                                    "add_feature_title": "바비큐 추가",
+                                    "add_feature_value": {
+                                        "바비큐그릴 망, 숯불 포함": "20000원",
+                                        "숯불 추가 시": "10000원"
+                                    }
+                                }
+                            ],
+                            "createdAt": "2022-07-13T13:07:41.473Z",
+                            "updatedAt": "2022-08-14T16:11:56.131Z",
+                            "__v": 1,
+                            "specifications": {
+                                "인원": "기준 5인/ 최대 7인",
+                                "인원추가": "가능",
+                                "객실특징": "X",
+                                "객실정보": "전기사용가능",
+                                "구비시설": " 식탁, 에어컨, 커피포트, 침대7(2층3개, 싱글1), 소파, 냉장고, 바비큐 수영장",
+                                "기준차량": "총 1대"
+                            },
+                            "checkinTime": "13:00",
+                            "checkoutTime": "11:00",
+                            "allFeatures": []
+                        }
+                    ],
+                    "hasSublocation": true,
+                    "isDisabled": false,
+                    "title": "놀터 글램핑",
+                    "description": "경기도 동두천시 신천로 274-57",
+                    "type": "LOCATION",
+                    "specifications": {
+                        "campIntro": "놀터는 카페를 시작으로 스포츠 공간과 프라이빗한 글램핑을 제공합니다.\n일상에서의 바쁜 생활에서 벗어나 자유로운 공간은 물론 프라이빗한 글램핑을 통해 개인 공간처럼 쉴 수 있는 새로운 “쉼” 공간 입니다. 놀터는 많은 글램핑을 운영하지 않습니다. 놀터만의 공간에서 “쉼”이라는 단어에 맞게 공간 설계하였습니다. 북적이는 캠핑장과 펜션 글램핑장과는 다릅니다.",
+                        "facilityInfo": "무료 Wi-Fi, 바비큐, 글램핑, 주차가능, 수영장, 노래방, 입퇴실시간 : 15시 – 11시",
+                        "useInfo": "애완동물 출입 절대 금지\n최대인원 초과 시 입실 불가\n개인 화기류 반입금지\n수건 및 세면도구 미제공\n일회용 부탄가스 미제공",
+                        "image": "https://res.cloudinary.com/campwithgreen/image/upload/v1659274130/camping_items/%E1%84%86%E1%85%A1%E1%84%8C%E1%85%B5%E1%84%86%E1%85%A1%E1%86%A8_grya1t.png"
+                    },
+                    "allFeatures": [],
+                    "additional_charges": [],
+                    "latitude": 1234,
+                    "longitude": 1234567,
+                    "contactNumber": 6283964311,
+                    "locationAddress": "Sukhia Darj",
+                    "price": 120000,
+                    "campLink": "http://xn—bj0bj0ee1g6v3acle.jdweb.kr/",
+                    "cheapestSublocation": 120000
+                }

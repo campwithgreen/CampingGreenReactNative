@@ -26,10 +26,10 @@ const headerContent = {
     navigateScreen: 'ProductShoppingBagScreen',
   },
 };
-import { getUserCartHistory } from '../apis/cart';
-import { setUserCartHistory } from '../redux/actions/common';
-import { showDefaultErrorAlert } from '../global/global';
-import { ORDER_STATUS } from "../utils/constants.json";
+import {getUserCartHistory} from '../apis/cart';
+import {setUserCartHistory} from '../redux/actions/common';
+import {showDefaultErrorAlert} from '../global/global';
+import {ORDER_STATUS} from '../utils/constants.json';
 import FONTSIZE from '../constants/fontSize';
 
 export default function ThirdScreen() {
@@ -58,7 +58,7 @@ export default function ThirdScreen() {
   }, []);
   // console.log('current_cart_details', current_cart_details);
   return (
-    <View style={{backgroundColor: 'white'}}>
+    <View style={{backgroundColor: '#fff'}}>
       <ScrollView>
         <Header headerContent={headerContent} />
         <ThirdScreen1 currentCartData={current_cart_details} />
@@ -107,7 +107,10 @@ export default function ThirdScreen() {
             .format('YYYY.MM.DD')} 23:59:59`}
         />
         <View style={styles.border2}></View>
-        <SecondScreen1 t1="현재상태" t2={ORDER_STATUS[current_cart_details?.paymentStatus]} />
+        <SecondScreen1
+          t1="현재상태"
+          t2={ORDER_STATUS[current_cart_details?.paymentStatus]}
+        />
         <Text
           style={{
             fontWeight: 'bold',
@@ -143,9 +146,7 @@ export default function ThirdScreen() {
           <Text style={[styles.text1, {color: '#56C596'}]}>
             상담센터로{'  '}
           </Text>
-          <Text>
-            &#x2192;
-          </Text>
+          <Text>&#x2192;</Text>
           <Text style={styles.text1}>{'  '}전화바랍니다.</Text>
         </View>
         <ThirdScreen3 currentCartData={current_cart_details} />

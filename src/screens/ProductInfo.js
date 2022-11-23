@@ -494,7 +494,7 @@ const ProductInfo = props => {
                   {
                     width: widthPercentageToDP('50%'),
                     height: heightPercentageToDP('10%'),
-                    backgroundColor: 'white',
+                    backgroundColor: '#fff',
                     paddingHorizontal: widthPercentageToDP('3%'),
                     borderBottomColor:
                       tabIndex === 1 ? COLOR.compGreen : COLOR.lgrey,
@@ -522,7 +522,7 @@ const ProductInfo = props => {
                   {
                     width: widthPercentageToDP('50%'),
                     height: heightPercentageToDP('10%'),
-                    backgroundColor: 'white',
+                    backgroundColor: '#fff',
                     paddingHorizontal: widthPercentageToDP('3%'),
                     padding: hp('2%'),
                     borderBottomColor:
@@ -583,7 +583,7 @@ const ProductInfo = props => {
                 </View>
                 <View
                   style={{
-                    backgroundColor: 'white',
+                    backgroundColor: '#fff',
                     marginTop: hp('3%'),
                     padding: wp('2%'),
                     justifyContent: 'center',
@@ -676,7 +676,7 @@ const ProductInfo = props => {
                 </View>
                 <View
                   style={{
-                    backgroundColor: 'white',
+                    backgroundColor: '#fff',
                     marginTop: hp('3%'),
                     padding: wp('2%'),
                     width: wp('60%'),

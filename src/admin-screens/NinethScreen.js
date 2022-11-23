@@ -78,7 +78,7 @@ const NinethScreen = () => {
   return (
     <View
       style={{
-        backgroundColor: 'white',
+        backgroundColor: '#fff',
         height: '100%',
         paddingBottom: hp('15%'),
       }}>
@@ -113,11 +113,11 @@ const Comp1 = ({item}) => {
           style={{
             borderWidth: 1,
             borderColor: 'grey',
-            backgroundColor: 'white',
+            backgroundColor: '#fff',
             position: 'absolute',
             top: 1,
             left: 0,
-            color: 'black',
+            color: '#000',
             fontWeight: 'bold',
             paddingHorizontal: wp('2%'),
             paddingVertical: wp('1%'),
@@ -252,6 +252,6 @@ const styles = StyleSheet.create({
   btntxt2: {
     fontWeight: 'bold',
     fontSize: 16,
-    color: 'black',
+    color: '#000',
   },
 });

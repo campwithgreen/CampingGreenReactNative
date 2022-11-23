@@ -44,7 +44,7 @@ export default function CustomCalendar({screenType}) {
         selected: true,
         marked: true,
         color: COLOR.compGreen,
-        textColor: 'white',
+        textColor: '#fff',
       };
     }
     setdates({...newDates});

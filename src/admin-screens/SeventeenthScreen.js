@@ -47,7 +47,7 @@ const data = [
 
 const SeventeenthScreen = () => {
   return (
-    <View style={{backgroundColor: 'white', paddingBottom: hp('25%')}}>
+    <View style={{backgroundColor: '#fff', paddingBottom: hp('25%')}}>
       <Header headerContent={headerContent} />
       <Text style={{borderBottomWidth: 2, borderBottomColor: '#F8F8F8'}}></Text>
       <ScrollView>
@@ -70,7 +70,7 @@ const SeventeenthScreen = () => {
               style={{
                 paddingLeft: wp('4%'),
                 fontWeight: 'bold',
-                color: 'black',
+                color: '#000',
               }}>
               캠핑용품
             </Text>
@@ -102,13 +102,13 @@ const Comp1 = ({flag, item}) => {
         marginHorizontal: wp('5%'),
         borderWidth: 2,
         borderColor: flag ? '#4AAC82' : 'lightgrey',
-        backgroundColor: flag ? '#4AAC82' : 'white',
+        backgroundColor: flag ? '#4AAC82' : '#fff',
         paddingHorizontal: wp('3%'),
         paddingVertical: wp('2%'),
         marginTop: hp('3%'),
       }}>
       <View style={{display: 'flex'}}>
-        <Text style={[styles.text1, {color: flag ? 'white' : 'black'}]}>
+        <Text style={[styles.text1, {color: flag ? '#fff' : '#000'}]}>
           {item.h1}
         </Text>
         <Text></Text>
@@ -119,7 +119,7 @@ const Comp1 = ({flag, item}) => {
           <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
             {item.text11} :{' '}
           </Text>
-          <Text style={[styles.text2, {color: flag ? 'white' : 'black'}]}>
+          <Text style={[styles.text2, {color: flag ? '#fff' : '#000'}]}>
             {item.text12}
           </Text>
         </View>
@@ -131,7 +131,7 @@ const Comp1 = ({flag, item}) => {
           <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
             {item.text21} :{' '}
           </Text>
-          <Text style={[styles.text2, {color: flag ? 'white' : 'black'}]}>
+          <Text style={[styles.text2, {color: flag ? '#fff' : '#000'}]}>
             {item.text22}
           </Text>
         </View>
@@ -139,14 +139,14 @@ const Comp1 = ({flag, item}) => {
           <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
             {item.text31} :{' '}
           </Text>
-          <Text style={[styles.text2, {color: flag ? 'white' : 'black'}]}>
+          <Text style={[styles.text2, {color: flag ? '#fff' : '#000'}]}>
             {item.text32}
           </Text>
         </View>
       </View>
       <View style={{display: 'flex'}}>
         <Text></Text>
-        <Text style={{color: flag ? 'white' : ''}}>></Text>
+        <Text style={{color: flag ? '#fff' : ''}}></Text>
         <Text></Text>
       </View>
     </View>
@@ -211,12 +211,12 @@ const styles = StyleSheet.create({
   dateWithBoldLine: {
     fontWeight: 'bold',
     fontSize: 18,
-    color: 'black',
+    color: '#000',
     marginHorizontal: wp('5%'),
     paddingTop: hp('2%'),
     paddingBottom: hp('1%'),
     borderBottomWidth: 4,
-    borderBottomColor: 'black',
+    borderBottomColor: '#000',
   },
   text1: {
     fontSize: 14,
@@ -250,6 +250,6 @@ const styles = StyleSheet.create({
   btntxt2: {
     fontWeight: 'bold',
     fontSize: 16,
-    color: 'black',
+    color: '#000',
   },
 });

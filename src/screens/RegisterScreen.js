@@ -238,7 +238,7 @@ export const RegisterScreen = props => {
       <View
         style={[
           container,
-          modalVisible && {backgroundColor: 'black', opacity: 0.3},
+          modalVisible && {backgroundColor: '#000', opacity: 0.3},
         ]}>
         <Header headerContent={headerContent} />
         <ScrollView keyboardShouldPersistTaps="always">

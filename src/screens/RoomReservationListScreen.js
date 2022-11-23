@@ -55,7 +55,7 @@ const RoomReservationListScreen = () => {
   }, Object.create(null));
 
   return (
-    <View style={{backgroundColor: 'white', height: hp('100%')}}>
+    <View style={{backgroundColor: '#fff', height: hp('100%')}}>
       <Header headerContent={headerContent} />
       <Text style={{borderBottomWidth: 1.5, borderBottomColor: '#515151'}} />
       <ScrollView style={{marginBottom: heightPercentageToDP('15%')}}>
@@ -95,7 +95,7 @@ const Comp1 = ({date, total}) => {
         styles.compView,
         {
           borderBottomWidth: 6,
-          borderBottomColor: 'black',
+          borderBottomColor: '#000',
           paddingBottom: wp('2%'),
           marginBottom: hp('4%'),
           marginTop: hp('5%'),
@@ -210,7 +210,7 @@ const Comp3 = ({itemData}) => {
         <Text style={styles.comp3Text1}>{directItem.title}</Text>
         {directItem.type === 'LOCATION' && (
           <Text>
-            <Text style={{fontWeight: 'bold'}}>{'hello'} </Text>
+            <Text style={{fontWeight: 'bold', color: '#000'}}>{'hello'} </Text>
             <Text style={styles.comp3Text1}>{'hello'}</Text>
           </Text>
         )}

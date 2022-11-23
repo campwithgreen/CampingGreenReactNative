@@ -68,7 +68,7 @@ const NineteenthScreen = () => {
   return (
     <View
       style={{
-        backgroundColor: 'white',
+        backgroundColor: '#fff',
         paddingBottom: hp('17%'),
         height: '100%',
       }}>
@@ -126,7 +126,7 @@ const NineteenthScreen = () => {
               style={{
                 paddingLeft: wp('4%'),
                 fontWeight: 'bold',
-                color: 'black',
+                color: "#000",
               }}>
               오래된순
             </Text> */}
@@ -157,13 +157,13 @@ const Comp1 = ({flag, item}) => {
         marginHorizontal: wp('5%'),
         borderWidth: 2,
         borderColor: flag ? '#4AAC82' : 'lightgrey',
-        backgroundColor: flag ? '#4AAC82' : 'white',
+        backgroundColor: flag ? '#4AAC82' : '#fff',
         paddingHorizontal: wp('3%'),
         paddingVertical: wp('2%'),
         marginTop: hp('3%'),
       }}>
       <View style={{display: 'flex'}}>
-        <Text style={[styles.text1, {color: flag ? 'white' : 'black'}]}>
+        <Text style={[styles.text1, {color: flag ? '#fff' : '#000'}]}>
           {item?.firstName}
         </Text>
         <Text></Text>
@@ -179,7 +179,7 @@ const Comp1 = ({flag, item}) => {
           <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
             회원코드 :{' '}
           </Text>
-          <Text style={[styles.text2, {color: flag ? 'white' : 'black'}]}>
+          <Text style={[styles.text2, {color: flag ? '#fff' : '#000'}]}>
             {item?.createdAt}
           </Text>
         </View>
@@ -191,7 +191,7 @@ const Comp1 = ({flag, item}) => {
           <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
             전화번호 :{' '}
           </Text>
-          <Text style={[styles.text2, {color: flag ? 'white' : 'black'}]}>
+          <Text style={[styles.text2, {color: flag ? '#fff' : '#000'}]}>
             {item?.phoneNumber}
           </Text>
         </View>
@@ -199,7 +199,7 @@ const Comp1 = ({flag, item}) => {
           <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
             구매내역 :{' '}
           </Text>
-          <Text style={[styles.text2, {color: flag ? 'white' : 'black'}]}>
+          <Text style={[styles.text2, {color: flag ? '#fff' : '#000'}]}>
             별빛 캠핑장 외 {item?.totalOrders} 건
           </Text>
         </View>
@@ -294,6 +294,6 @@ const styles = StyleSheet.create({
   btntxt2: {
     fontWeight: 'bold',
     fontSize: 16,
-    color: 'black',
+    color: '#000',
   },
 });

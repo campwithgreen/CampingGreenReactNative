@@ -10,59 +10,68 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import React from 'react';
-import { navigateTo } from '../navigation/utils/RootNavigation';
-import { cancelOrder } from '../apis/cart';
-import { showDefaultErrorAlert } from '../global/global';
-import { getAllOrders, updateOrderStatus } from '../apis/admin';
-import { useDispatch } from 'react-redux';
-import { setUserCartHistory } from '../redux/actions/common';
+import {navigateTo} from '../navigation/utils/RootNavigation';
+import {cancelOrder} from '../apis/cart';
+import {showDefaultErrorAlert} from '../global/global';
+import {getAllOrders, updateOrderStatus} from '../apis/admin';
+import {useDispatch} from 'react-redux';
+import {setUserCartHistory} from '../redux/actions/common';
 
-const ThirdScreen3 = (props) => {
-
-
+const ThirdScreen3 = props => {
   const dispatch = useDispatch();
-  const { currentCartData, isOrder, orderStatus } = props;
+  const {currentCartData, isOrder, orderStatus} = props;
 
-  const handleCancelOrder = async (orderId) => {
-    console.log("CANCELLING", orderId);
+  const handleCancelOrder = async orderId => {
+    console.log('CANCELLING', orderId);
 
-    await cancelOrder(orderId).then((res) => {
-      console.log("CANCEL RES", res);
-      if (res) {
-        navigateTo('RoomReservationListScreen');
-      }
-    }).catch((err) => {
-      console.log("err", err);
-      showDefaultErrorAlert();
-    });
-
+    await cancelOrder(orderId)
+      .then(res => {
+        console.log('CANCEL RES', res);
+        if (res) {
+          navigateTo('RoomReservationListScreen');
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+        showDefaultErrorAlert();
+      });
   };
 
-  const handleOrderStatus = async (orderStatus) => {
+  const handleOrderStatus = async orderStatus => {
     let query = {
-      "status": orderStatus
+      status: orderStatus,
     };
-    await updateOrderStatus(query, currentCartData?._id).then(async (res) => {
-      if (res) {
-        console.log("UPDATE RES", res);
-        await getAllOrders().then((r) => {
-          dispatch(setUserCartHistory(r?.data?.data));
-        });
-        ToastAndroid.showWithGravity("Status Successfully Updated", ToastAndroid.LONG, ToastAndroid.TOP);
-      }
-    }).catch((err) => {
-      showDefaultErrorAlert();
-    });
+    await updateOrderStatus(query, currentCartData?._id)
+      .then(async res => {
+        if (res) {
+          console.log('UPDATE RES', res);
+          await getAllOrders().then(r => {
+            dispatch(setUserCartHistory(r?.data?.data));
+          });
+          ToastAndroid.showWithGravity(
+            'Status Successfully Updated',
+            ToastAndroid.LONG,
+            ToastAndroid.TOP,
+          );
+        }
+      })
+      .catch(err => {
+        showDefaultErrorAlert();
+      });
   };
 
   return (
     <View style={styles.view1}>
-      {!isOrder ? <TouchableOpacity
-        onPress={() => {
-          handleCancelOrder(currentCartData?._id);
-        }}>
-        <Text style={styles.btn1}> 예약취소</Text>
-      </TouchableOpacity> : <View></View>}
+      {!isOrder ? (
+        <TouchableOpacity
+          onPress={() => {
+            handleCancelOrder(currentCartData?._id);
+          }}>
+          <Text style={styles.btn1}> 예약취소</Text>
+        </TouchableOpacity>
+      ) : (
+        <View></View>
+      )}
       <TouchableOpacity
         onPress={() => {
           if (isOrder) {
@@ -96,7 +105,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     borderRadius: 10,
-    color: 'white',
+    color: '#fff',
   },
   btn2: {
     color: '#56C596',

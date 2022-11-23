@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
     width: wp('18%'),
     paddingHorizontal: wp('2%'),
     borderWidth: 1.4,
@@ -184,13 +184,13 @@ const styles = StyleSheet.create({
   textTitle: {
     fontWeight: 'bold',
     fontSize: FONTSIZE.l,
-    color: 'black',
+    color: '#000',
     width: wp('55%'),
   },
   text: {
     fontWeight: 'bold',
     fontSize: FONTSIZE.l,
-    color: 'black',
+    color: '#000',
   },
   text1: {
     color: '#454C53',
@@ -200,12 +200,12 @@ const styles = StyleSheet.create({
   text2: {
     fontWeight: 'bold',
     // fontSize: 15,
-    color: 'black',
+    color: '#000',
   },
   text3: {
     fontWeight: 'bold',
     fontSize: 18,
-    color: 'black',
+    color: '#000',
   },
   border: {
     borderBottomWidth: 1.7,

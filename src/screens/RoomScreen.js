@@ -195,7 +195,7 @@ const RoomScreen = () => {
   return (
     <View
       style={{
-        backgroundColor: 'white',
+        backgroundColor: '#fff',
         flex: 1,
         marginTop: Platform.OS === 'android' ? 0 : 30,
       }}>
@@ -211,7 +211,7 @@ const RoomScreen = () => {
             style={{height: 300}}
             initialRegion={state.region}>
             {state?.markers?.length > 0 &&
-              state.markers.map((marker, index) => {
+              state?.markers?.map((marker, index) => {
                 const scaleStyle = {
                   transform: [
                     {

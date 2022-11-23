@@ -58,7 +58,7 @@ const MyScreen1 = () => {
               justifyContent: 'space-between',
             }}>
             <Text style={{fontWeight: 'bold', color: '#55C595'}}>65,000</Text>
-            <Text>1개</Text>
+            <Text style={{color: '#000'}}>1개</Text>
             <Text></Text>
           </View>
         </View>

@@ -44,7 +44,7 @@ export default function FormField(props) {
             <View style={{width: '70%'}}>
               <TextInput
                 style={{
-                  color: 'black',
+                  color: '#000',
                   borderBottomWidth: 1,
                   borderBottomColor: lineColor,
                   width: '100%',
@@ -74,7 +74,7 @@ export default function FormField(props) {
                   borderColor: 'grey',
                   padding: 4,
                 }}>
-                <Text>번인증번</Text>
+                <Text style={{color: '#000'}}>번인증번</Text>
               </View>
             </TouchableHighlight>
           </View>
@@ -91,7 +91,7 @@ export default function FormField(props) {
             }}>
             <TextInput
               style={{
-                color: 'black',
+                color: '#000',
                 borderBottomWidth: 1,
                 borderBottomColor: lineColor,
                 width: '100%',

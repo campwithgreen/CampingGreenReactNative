@@ -43,7 +43,7 @@ const RenderItem = ({item}) => {
       <View>
         <Text
           style={{
-            color: 'black',
+            color: '#000',
             fontSize: RFPercentage(2.1),
             paddingTop: hp('2%'),
           }}>
@@ -65,7 +65,7 @@ const RenderItem = ({item}) => {
       <View>
         <Text
           style={{
-            color: 'black',
+            color: '#000',
             fontSize: RFPercentage(2),
             paddingBottom: hp('1%'),
           }}>
@@ -82,7 +82,7 @@ const ProductDetail = props => {
   const ProductData = [
     {
       specifications: {
-        color: 'black',
+        color: '#000',
         weight: '40kg',
         dimensions: '4x4x5',
         사이즈: '290*280*115',

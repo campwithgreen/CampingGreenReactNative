@@ -93,6 +93,7 @@ export default function LoginScreen() {
           })
           .catch(err => {
             if (err) {
+              console.log('into catch if err useEffect');
               showDefaultErrorAlert();
               setLoading(false);
             }
@@ -105,7 +106,7 @@ export default function LoginScreen() {
   const onFocus = () => setLineColor(COLOR.compGreen);
 
   const onBlur = () => {
-    setLineColor('black');
+    setLineColor('#000');
   };
 
   const [getOtpButtonEnabled, setGetOtpButtonEnabled] = useState(true);
@@ -145,6 +146,7 @@ export default function LoginScreen() {
         })
         .catch(err => {
           if (err) {
+            console.log('handleGetOtp>>>> error');
             showDefaultErrorAlert();
           }
         });
@@ -207,6 +209,7 @@ export default function LoginScreen() {
       })
       .catch(err => {
         if (err) {
+          console.log('handleLogin>>>>', err);
           showDefaultErrorAlert();
         }
       });
@@ -241,7 +244,7 @@ export default function LoginScreen() {
                 <View style={{width: '70%'}}>
                   <TextInput
                     style={{
-                      color: 'black',
+                      color: '#000',
                       borderBottomWidth: 1,
                       borderBottomColor: lineColor,
                       width: '100%',
@@ -325,7 +328,7 @@ const styles = StyleSheet.create({
     marginVertical: hp('3.5%'),
   },
   mainText: {
-    color: 'black',
+    color: '#000',
     fontSize: RFPercentage(3),
     fontWeight: '900',
   },

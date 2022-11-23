@@ -373,7 +373,7 @@ const SecondScreen = () => {
                   <Text
                     style={{
                       fontSize: 16,
-                      color: 'black',
+                      color: '#000',
                     }}>
                     {allFeature.add_feature_title}
                   </Text>
@@ -527,7 +527,7 @@ const styles = StyleSheet.create({
   text1: {
     fontWeight: '900',
     fontSize: 16,
-    color: 'black',
+    color: '#000',
   },
   text2: {fontWeight: '600', color: '#454C53'},
   border1: {borderWidth: 4, borderColor: 'lightgrey', marginVertical: hp('5%')},

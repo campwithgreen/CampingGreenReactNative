@@ -21,7 +21,7 @@ const headerContent = {
 };
 export default function ForthScreen() {
   return (
-    <View style={{backgroundColor: 'white'}}>
+    <View style={{backgroundColor: '#fff'}}>
       <ScrollView>
         <Header headerContent={headerContent} />
         <ThirdScreen1 />

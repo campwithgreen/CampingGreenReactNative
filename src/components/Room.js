@@ -102,12 +102,12 @@ const styles = StyleSheet.create({
   text1: {
     fontWeight: '900',
     fontSize: 16,
-    color: 'black',
+    color: '#000',
   },
   text2: {fontWeight: '600', color: '#454C53'},
   button1: {
     backgroundColor: 'grey',
-    color: 'white',
+    color: '#fff',
     marginRight: wp('5%'),
     paddingHorizontal: wp('3%'),
     paddingVertical: 3,

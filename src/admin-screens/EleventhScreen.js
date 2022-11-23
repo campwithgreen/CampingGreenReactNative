@@ -12,7 +12,7 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import React from 'react';
-import { useState } from 'react';
+import {useState} from 'react';
 import Header from '../layout/Header';
 
 const headerContent = {
@@ -38,35 +38,35 @@ const EleventhScreen = () => {
   return (
     <View
       style={{
-        backgroundColor: 'white',
+        backgroundColor: '#fff',
         height: '100%',
         paddingBottom: wp('24%'),
       }}>
       <Header headerContent={headerContent} />
-      <Text style={{ borderBottomWidth: 2, borderBottomColor: '#F8F8F8' }}></Text>
+      <Text style={{borderBottomWidth: 2, borderBottomColor: '#F8F8F8'}}></Text>
       <ScrollView>
         <Comp1 t1="상품명" />
         <Comp1 t1="가격" />
         <View style={styles.view1}>
           <Text style={styles.text1}>잔여수량</Text>
-          <View style={{ width: wp('70%') }}>
+          <View style={{width: wp('70%')}}>
             <View
               style={{
                 display: 'flex',
                 flexDirection: 'row',
               }}>
               <TouchableOpacity>
-                <Text style={[styles.text2, { height: 35 }]} onPress={decrement}>
+                <Text style={[styles.text2, {height: 35}]} onPress={decrement}>
                   -
                 </Text>
               </TouchableOpacity>
 
-              <Text style={[styles.text2, styles.text1, { height: 35 }]}>
+              <Text style={[styles.text2, styles.text1, {height: 35}]}>
                 {count}
               </Text>
               <TouchableOpacity>
                 <Text
-                  style={[styles.text2, { height: 35 }]}
+                  style={[styles.text2, {height: 35}]}
                   onPress={() => setCount(i => i + 1)}>
                   +
                 </Text>
@@ -74,7 +74,7 @@ const EleventhScreen = () => {
             </View>
           </View>
         </View>
-        <Text style={[styles.text1, { paddingHorizontal: wp('5%') }]}>
+        <Text style={[styles.text1, {paddingHorizontal: wp('5%')}]}>
           상세설명
         </Text>
         <Text
@@ -119,7 +119,7 @@ const EleventhScreen = () => {
   );
 };
 
-const Comp1 = ({ t1 }) => {
+const Comp1 = ({t1}) => {
   return (
     <View style={styles.view1}>
       <Text style={styles.text1}>{t1}</Text>
@@ -128,7 +128,7 @@ const Comp1 = ({ t1 }) => {
   );
 };
 
-const Comp6 = ({ placeholder1, placeholder2, text }) => {
+const Comp6 = ({placeholder1, placeholder2, text}) => {
   return (
     <View
       style={{
@@ -162,12 +162,12 @@ const Comp6 = ({ placeholder1, placeholder2, text }) => {
         ]}
         placeholder={placeholder2}
       />
-      <Text>{text}</Text>
+      <Text style={{color: '#000'}}>{text}</Text>
     </View>
   );
 };
 
-const Comp7 = ({ t1 }) => {
+const Comp7 = ({t1}) => {
   return (
     <View
       style={{
@@ -182,7 +182,7 @@ const Comp7 = ({ t1 }) => {
         style={{
           backgroundColor: 'lightgrey',
           borderRadius: 50,
-          color: 'white',
+          color: '#fff',
           fontSize: 24,
           fontWeight: 'bold',
           paddingHorizontal: wp('2.6%'),
@@ -209,12 +209,12 @@ const ImageComp8 = () => {
       }}>
       <Text
         style={{
-          backgroundColor: 'white',
+          backgroundColor: '#fff',
           paddingHorizontal: 7,
           paddingVertical: 2,
           textAlign: 'center',
           textAlignVertical: 'center',
-          color: 'black',
+          color: '#000',
           position: 'absolute',
           left: 0,
           top: 0,
@@ -223,8 +223,8 @@ const ImageComp8 = () => {
       </Text>
       <Text
         style={{
-          color: 'white',
-          transform: [{ rotate: '45deg' }],
+          color: '#fff',
+          transform: [{rotate: '45deg'}],
           fontSize: 24,
           position: 'absolute',
           right: 5,
@@ -238,7 +238,7 @@ const ImageComp8 = () => {
           width: wp('80%'),
           textAlign: 'center',
           textAlignVertical: 'center',
-          color: 'white',
+          color: '#fff',
         }}>
         사진 업로드하기
       </Text>
@@ -246,7 +246,7 @@ const ImageComp8 = () => {
   );
 };
 
-const Button = ({ text }) => {
+const Button = ({text}) => {
   return (
     <View style={styles.btn}>
       <TouchableOpacity>
@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
   },
   text1: {
     fontWeight: 'bold',
-    color: 'black',
+    color: '#000',
     fontSize: 16,
     textAlignVertical: 'center',
   },

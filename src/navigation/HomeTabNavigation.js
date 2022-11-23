@@ -257,7 +257,7 @@ const HomeTabNavigation = props => {
       <Tab.Screen name="Home" component={HomeNavigation} />
       <Tab.Screen name="Heart" component={ProductNavigation} />
       <Tab.Screen name="Location" component={LocationNavigation} />
-      <Tab.Screen name="Chat" component={ChatScreen} />
+      {/* <Tab.Screen name="Chat" component={ChatScreen} /> */}
       <Tab.Screen name="Profile" component={ProfileNavigation} />
     </Tab.Navigator>
   );

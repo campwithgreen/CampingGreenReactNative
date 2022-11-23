@@ -10,7 +10,7 @@ import {
   ToastAndroid,
   Linking,
   Pressable,
-  Alert
+  Alert,
 } from 'react-native';
 import Header from '../layout/Header';
 import {
@@ -27,7 +27,6 @@ import CustomButton from '../components/common/CustomButton';
 import {navigateTo, goBack} from '../navigation/utils/RootNavigation';
 import FONTSIZE from '../constants/fontSize';
 import Counter from '../components/common/Counter';
-
 
 const headerContent = {
   leftItemContents: {
@@ -252,7 +251,7 @@ const Rent = props => {
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'center',
-              backgroundColor: 'white',
+              backgroundColor: '#fff',
             }}>
             <TouchableOpacity
               onPress={() => {

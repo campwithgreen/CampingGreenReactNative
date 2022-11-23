@@ -36,7 +36,7 @@ const EighthScreen = () => {
     }
   };
   return (
-    <View style={{backgroundColor: 'white', paddingBottom: hp('15%')}}>
+    <View style={{backgroundColor: '#fff', paddingBottom: hp('15%')}}>
       <Header headerContent={headerContent} />
       <Text style={{borderBottomWidth: 2, borderBottomColor: '#F8F8F8'}}></Text>
       <ScrollView>
@@ -181,7 +181,7 @@ const Comp3 = ({t1}) => {
         style={{
           backgroundColor: 'lightgrey',
           borderRadius: 50,
-          color: 'white',
+          color: '#fff',
           fontSize: 24,
           fontWeight: 'bold',
           paddingHorizontal: wp('2.6%'),
@@ -191,7 +191,7 @@ const Comp3 = ({t1}) => {
         }}>
         +
       </Text>
-      <Text>{t1}</Text>
+      <Text style={{color: '#000'}}>{t1}</Text>
     </View>
   );
 };
@@ -215,12 +215,12 @@ const ImageComp = () => {
         }}>
         <Text
           style={{
-            backgroundColor: 'white',
+            backgroundColor: '#fff',
             paddingHorizontal: 7,
             paddingVertical: 2,
             textAlign: 'center',
             textAlignVertical: 'center',
-            color: 'black',
+            color: '#000',
           }}>
           1
         </Text>
@@ -228,7 +228,7 @@ const ImageComp = () => {
       </View>
       <Text
         style={{
-          color: 'white',
+          color: '#fff',
           transform: [{rotate: '45deg'}],
           fontSize: 24,
           position: 'absolute',
@@ -242,7 +242,7 @@ const ImageComp = () => {
           position: 'absolute',
           left: '50%',
           top: '50%',
-          color: 'white',
+          color: '#fff',
           transform: [{translateX: -30}, {translateY: -10}],
         }}>
         사진 업로드
@@ -268,12 +268,12 @@ const WithoutImageComp = () => {
         }}>
         <Text
           style={{
-            backgroundColor: 'white',
+            backgroundColor: '#fff',
             paddingHorizontal: 7,
             paddingVertical: 2,
             textAlign: 'center',
             textAlignVertical: 'center',
-            color: 'white',
+            color: '#fff',
           }}>
           1
         </Text>
@@ -306,7 +306,7 @@ const styles = StyleSheet.create({
   },
   text1: {
     fontWeight: 'bold',
-    color: 'black',
+    color: '#000',
     fontSize: 16,
   },
   text2: {

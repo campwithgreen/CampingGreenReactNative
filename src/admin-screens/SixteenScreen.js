@@ -6,26 +6,26 @@ import {
   ImageBackground,
   ScrollView,
   TouchableOpacity,
-  Image
+  Image,
 } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import { RFPercentage } from 'react-native-responsive-fontsize';
-import React, { useState, useEffect } from 'react';
+import {RFPercentage} from 'react-native-responsive-fontsize';
+import React, {useState, useEffect} from 'react';
 import Header from '../layout/Header';
 import FONTSIZE from '../constants/fontSize';
 import COLOR from '../constants/colors';
-import { getAllOrders } from '../apis/admin';
-import { showDefaultErrorAlert } from '../global/global';
-import { connect, useDispatch } from 'react-redux';
-import { setUserCartHistory } from '../redux/actions/common';
+import {getAllOrders} from '../apis/admin';
+import {showDefaultErrorAlert} from '../global/global';
+import {connect, useDispatch} from 'react-redux';
+import {setUserCartHistory} from '../redux/actions/common';
 import Loader from '../components/common/Loader';
 import moment from 'moment';
-import { setCurrentCheckoutCartDetails } from '../redux/actions/common';
-import { navigateTo } from '../navigation/utils/RootNavigation';
-import { ORDER_STATUS } from "../utils/constants.json";
+import {setCurrentCheckoutCartDetails} from '../redux/actions/common';
+import {navigateTo} from '../navigation/utils/RootNavigation';
+import {ORDER_STATUS} from '../utils/constants.json';
 
 const headerContent = {
   middleItemContents: {
@@ -34,30 +34,29 @@ const headerContent = {
   },
 };
 
-
-const mapStateToProps = ((sto, ownProps) => {
+const mapStateToProps = (sto, ownProps) => {
   const st = sto;
   const cart_history = sto?.common?.cart_history;
   return {
     st,
-    cart_history
+    cart_history,
   };
-});
+};
 
-const SixteenScreen = (props) => {
-
-  let { st, cart_history } = props;
+const SixteenScreen = props => {
+  let {st, cart_history} = props;
   const dispatch = useDispatch();
-  const [orderType, setOrderType] = useState("PRODUCT");
+  const [orderType, setOrderType] = useState('PRODUCT');
   const [loading, setLoading] = useState(false);
 
-
-  cart_history = cart_history?.filter((item) => item.paymentStatus !== "CHECKOUT_PENDING");
+  cart_history = cart_history?.filter(
+    item => item.paymentStatus !== 'CHECKOUT_PENDING',
+  );
 
   let result = cart_history?.reduce(function (r, a) {
     r[`${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${a.paymentStatus}`] =
       r[
-      `${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${a.paymentStatus}`
+        `${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${a.paymentStatus}`
       ] || [];
     r[
       `${moment(a.createdAt).utc().format('MM-DD-YYYY')}_${a.paymentStatus}`
@@ -65,30 +64,29 @@ const SixteenScreen = (props) => {
     return r;
   }, Object.create(null));
 
-
-
   useEffect(() => {
-
     (async function handleGetAllOrders() {
       setLoading(true);
-      await getAllOrders().then((res) => {
-        dispatch(setUserCartHistory(res.data.data));
-        setLoading(false);
-      }).catch((err) => {
-        console.log("ERR", err);
-        showDefaultErrorAlert();
-        setLoading(true);
-      });
+      await getAllOrders()
+        .then(res => {
+          dispatch(setUserCartHistory(res.data.data));
+          setLoading(false);
+        })
+        .catch(err => {
+          console.log('ERR', err);
+          showDefaultErrorAlert();
+          setLoading(true);
+        });
     })();
-
   }, []);
 
-
   return (
-    <View style={{ backgroundColor: COLOR.white, minHeight: hp("100%") }}>
+    <View style={{backgroundColor: COLOR.white, minHeight: hp('100%')}}>
       <Header headerContent={headerContent} />
-      <Text style={{ borderBottomWidth: 2, borderBottomColor: '#F8F8F8' }}></Text>
-      {loading ? <Loader /> :
+      <Text style={{borderBottomWidth: 2, borderBottomColor: '#F8F8F8'}}></Text>
+      {loading ? (
+        <Loader />
+      ) : (
         <ScrollView>
           <View
             style={{
@@ -126,23 +124,40 @@ const SixteenScreen = (props) => {
           </View>
           <View></View> */}
           </View>
-          <View style={{ marginBottom: hp("30%") }}>
-            {(result && Object.keys(result)?.length >= 1) ? Object.keys(result)?.map((key) => {
-              return <View >
-                <Text style={styles.dateWithBoldLine}>{key?.split('_')[0]}</Text>
-                {result[key]?.map((item) => {
-                  console.log("THE ITEM", item, key);
-                  return <Comp1 flag={item.paymentStatus === "PAYMENT_DONE"} item={item} key={item?._id} />;
-                })}
-              </View>;
-            }) : <View><Text> NO ORDERS</Text></View>}
+          <View style={{marginBottom: hp('30%')}}>
+            {result && Object.keys(result)?.length >= 1 ? (
+              Object.keys(result)?.map(key => {
+                return (
+                  <View>
+                    <Text style={styles.dateWithBoldLine}>
+                      {key?.split('_')[0]}
+                    </Text>
+                    {result[key]?.map(item => {
+                      console.log('THE ITEM', item, key);
+                      return (
+                        <Comp1
+                          flag={item.paymentStatus === 'PAYMENT_DONE'}
+                          item={item}
+                          key={item?._id}
+                        />
+                      );
+                    })}
+                  </View>
+                );
+              })
+            ) : (
+              <View>
+                <Text style={{color: '#000'}}> NO ORDERS</Text>
+              </View>
+            )}
           </View>
-        </ScrollView>}
+        </ScrollView>
+      )}
     </View>
   );
 };
 
-const Comp1 = ({ flag, item }) => {
+const Comp1 = ({flag, item}) => {
   const dispatch = useDispatch();
   return (
     <View
@@ -153,25 +168,25 @@ const Comp1 = ({ flag, item }) => {
         marginHorizontal: wp('5%'),
         borderWidth: 2,
         borderColor: flag ? '#4AAC82' : 'lightgrey',
-        backgroundColor: flag ? '#4AAC82' : 'white',
+        backgroundColor: flag ? '#4AAC82' : '#fff',
         paddingHorizontal: wp('3%'),
         paddingVertical: wp('2%'),
         marginTop: hp('3%'),
-        minHeight: hp("12%")
+        minHeight: hp('12%'),
       }}>
-      <View style={{ display: 'flex', width: wp("20%") }}>
-        <Text style={[styles.text1, { color: flag ? 'white' : 'black' }]}>
+      <View style={{display: 'flex', width: wp('20%')}}>
+        <Text style={[styles.text1, {color: flag ? '#fff' : '#000'}]}>
           {item?.userId?.firstName}
         </Text>
         <Text></Text>
         <Text></Text>
       </View>
-      <View style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <View style={{ display: 'flex', flexDirection: 'row' }}>
-          <Text style={[styles.text3, { color: flag ? 'lightgrey' : '' }]}>
+      <View style={{display: 'flex', justifyContent: 'space-between'}}>
+        <View style={{display: 'flex', flexDirection: 'row'}}>
+          <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
             예약번호 :{' '}
           </Text>
-          <Text style={[styles.text2, { color: flag ? 'white' : 'black' }]}>
+          <Text style={[styles.text2, {color: flag ? '#fff' : '#000'}]}>
             {item?._id}
           </Text>
         </View>
@@ -180,36 +195,42 @@ const Comp1 = ({ flag, item }) => {
             display: 'flex',
             flexDirection: 'row',
           }}>
-          <Text style={[styles.text3, { color: flag ? 'lightgrey' : '' }]}>
+          <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
             회원코드 :{' '}
           </Text>
-          <Text style={[styles.text2, { color: flag ? 'white' : 'black' }]}>
-            {moment(item?.userId?.createdAt).format("YYYY.MM.DD")}
+          <Text style={[styles.text2, {color: flag ? '#fff' : '#000'}]}>
+            {moment(item?.userId?.createdAt).format('YYYY.MM.DD')}
           </Text>
         </View>
-        <View style={{ display: 'flex', flexDirection: 'row' }}>
-          <Text style={[styles.text3, { color: flag ? 'lightgrey' : '' }]}>
+        <View style={{display: 'flex', flexDirection: 'row'}}>
+          <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
             예약 캠핑장 :{' '}
           </Text>
-          <Text style={[styles.text2, { color: flag ? 'white' : 'black' }]}>
-            {item?.items[0]?.itemId?.title.length > 19 ? item?.items[0]?.itemId?.title.substring(0, 19) + '...' : item?.items[0]?.itemId?.title}
+          <Text style={[styles.text2, {color: flag ? '#fff' : '#000'}]}>
+            {item?.items[0]?.itemId?.title.length > 19
+              ? item?.items[0]?.itemId?.title.substring(0, 19) + '...'
+              : item?.items[0]?.itemId?.title}
           </Text>
         </View>
-        <View style={{ display: 'flex', flexDirection: 'row' }}>
-          <Text style={[styles.text3, { color: flag ? 'lightgrey' : '' }]}>
+        <View style={{display: 'flex', flexDirection: 'row'}}>
+          <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
             지불 상태 :{' '}
           </Text>
-          <Text style={[styles.text2, { color: flag ? 'white' : 'black' }]}>
+          <Text style={[styles.text2, {color: flag ? '#fff' : '#000'}]}>
             {ORDER_STATUS[item?.paymentStatus]}
           </Text>
         </View>
       </View>
-      <View style={{ display: "flex", alignSelf: "center" }}>
-        <TouchableOpacity onPress={() => {
-          dispatch(setCurrentCheckoutCartDetails(item));
-          navigateTo('OrderDetailsScreen');
-        }}>
-          <Image source={require('../assets/images/icon_movepage.png')} style={{ height: hp("7%"), width: wp("7%") }} />
+      <View style={{display: 'flex', alignSelf: 'center'}}>
+        <TouchableOpacity
+          onPress={() => {
+            dispatch(setCurrentCheckoutCartDetails(item));
+            navigateTo('OrderDetailsScreen');
+          }}>
+          <Image
+            source={require('../assets/images/icon_movepage.png')}
+            style={{height: hp('7%'), width: wp('7%')}}
+          />
         </TouchableOpacity>
       </View>
     </View>
@@ -274,12 +295,12 @@ const styles = StyleSheet.create({
   dateWithBoldLine: {
     fontWeight: 'bold',
     fontSize: 18,
-    color: 'black',
+    color: '#000',
     marginHorizontal: wp('5%'),
     paddingTop: hp('2%'),
     paddingBottom: hp('1%'),
     borderBottomWidth: 4,
-    borderBottomColor: 'black',
+    borderBottomColor: '#000',
   },
   text1: {
     fontSize: FONTSIZE.m,
@@ -313,6 +334,6 @@ const styles = StyleSheet.create({
   btntxt2: {
     fontWeight: 'bold',
     fontSize: 16,
-    color: 'black',
+    color: '#000',
   },
 });

@@ -44,12 +44,12 @@ const Carousel = ({
             borderRadius: wp('3%'),
             padding: 3,
             paddingHorizontal: 8,
-            backgroundColor: paginationType === 'right' ? '#fff' : 'black',
+            backgroundColor: paginationType === 'right' ? '#fff' : '#000',
             color: '#ffff',
           }}>
           <Text
             style={{
-              color: paginationType === 'right' ? 'black' : '#fff',
+              color: paginationType === 'right' ? '#000' : '#fff',
               fontSize: RFPercentage(1.9),
             }}>
             {index + 1} / {total}
@@ -106,7 +106,7 @@ const Carousel = ({
                 paddingBottom: hp('2%'),
                 fontSize: RFPercentage(3.65),
                 fontWeight: 'bold',
-                color: 'white',
+                color: "#fff",
               }}>
               나만 알고싶은{'\n'}힙한 캠핑장 지금 공개
             </Text>
@@ -116,7 +116,7 @@ const Carousel = ({
               style={{
                 fontSize: RFPercentage(2.2),
                 fontWeight: '300',
-                color: 'white',
+                color: "#fff",
               }}>
               바퀴달린집 출연 캠핑장 최대 할인가로{'\n'}떠나보면 어때요?
             </Text>
@@ -139,7 +139,7 @@ const Carousel = ({
                         paddingBottom: hp('2%'),
                         fontSize: RFPercentage(3.65),
                         fontWeight: 'bold',
-                        color: 'white',
+                        color: '#fff',
                       }}>
                       나만 알고싶은{'\n'}힙한 캠핑장 지금 공개
                     </Text>
@@ -149,7 +149,7 @@ const Carousel = ({
                       style={{
                         fontSize: RFPercentage(2.2),
                         fontWeight: '300',
-                        color: 'white',
+                        color: '#fff',
                       }}>
                       바퀴달린집 출연 캠핑장 최대 할인가로{'\n'}떠나보면 어때요?
                     </Text>

@@ -27,7 +27,7 @@ const ThirdScreen2 = () => {
           style={{
             backgroundColor: '#9EA4AA',
             borderRadius: 30,
-            color: 'white',
+            color: '#fff',
             paddingHorizontal: wp('3.5%'),
             paddingVertical: hp('0.8%'),
             fontSize: 12,

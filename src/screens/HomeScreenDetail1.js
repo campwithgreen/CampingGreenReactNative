@@ -13,8 +13,8 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import { RFPercentage } from 'react-native-responsive-fontsize';
-import { goBack } from '../navigation/utils/RootNavigation';
+import {RFPercentage} from 'react-native-responsive-fontsize';
+import {goBack} from '../navigation/utils/RootNavigation';
 
 const HomeScreenDetail1Data = [
   {
@@ -51,9 +51,9 @@ const headerContent = {
 };
 
 export const HomeScreenDetail1 = props => {
-  const { container } = styles;
-  console.log("HOME SCREEN PROPS", props)
-  const { route } = props
+  const {container} = styles;
+  console.log('HOME SCREEN PROPS', props);
+  const {route} = props;
 
   return (
     <View style={container}>
@@ -93,7 +93,7 @@ export const HomeScreenDetail1 = props => {
             paddingLeft: wp('5%'),
             paddingRight: wp('5%'),
           }}>
-          <Text style={{ color: '#454C53', fontSize: RFPercentage(2) }}>
+          <Text style={{color: '#454C53', fontSize: RFPercentage(2)}}>
             우선 UX writer가 카피라이터와 비슷한지 의문을 갖는 분들도 있을 것
             같습니다. 카피라이터의 주요 목표는 제품, 서비스, 도구 및 창의적인
             물건 등 무언가를 판매하는 텍스트를 만드는 것입니다. UX writer의
@@ -130,7 +130,7 @@ export const HomeScreenDetail1 = props => {
 
 const styles = StyleSheet.create({
   container: {
-    color: 'black',
+    color: '#000',
     flex: 1,
     backgroundColor: '#ffff',
   },

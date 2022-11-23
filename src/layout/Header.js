@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontWeight: '900',
     fontSize: 16,
-    color: 'black',
+    color: '#000',
   },
   wrapperC: {
     position: 'relative',

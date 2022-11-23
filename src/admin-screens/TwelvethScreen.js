@@ -47,7 +47,7 @@ const TwelvethScreen = () => {
   return (
     <View
       style={{
-        backgroundColor: 'white',
+        backgroundColor: '#fff',
         height: '100%',
         paddingBottom: wp('24%'),
       }}>
@@ -259,12 +259,12 @@ const ImageComp = () => {
       }}>
       <Text
         style={{
-          backgroundColor: 'white',
+          backgroundColor: '#fff',
           paddingHorizontal: 7,
           paddingVertical: 2,
           textAlign: 'center',
           textAlignVertical: 'center',
-          color: 'black',
+          color: '#000',
           position: 'absolute',
           left: 0,
           top: 0,
@@ -273,7 +273,7 @@ const ImageComp = () => {
       </Text>
       <Text
         style={{
-          color: 'white',
+          color: '#fff',
           transform: [{rotate: '45deg'}],
           fontSize: 24,
           position: 'absolute',
@@ -296,12 +296,12 @@ const WithoutImageComp = () => {
       }}>
       <Text
         style={{
-          backgroundColor: 'white',
+          backgroundColor: '#fff',
           paddingHorizontal: 7,
           paddingVertical: 2,
           textAlign: 'center',
           textAlignVertical: 'center',
-          color: 'white',
+          color: '#fff',
           position: 'absolute',
           left: 0,
           top: 0,
@@ -382,7 +382,7 @@ const Comp6 = ({placeholder1, placeholder2, text}) => {
         ]}
         placeholder={placeholder2}
       />
-      <Text>{text}</Text>
+      <Text style={{color: '#000'}}>{text}</Text>
     </View>
   );
 };
@@ -402,7 +402,7 @@ const Comp7 = ({t1}) => {
         style={{
           backgroundColor: 'lightgrey',
           borderRadius: 50,
-          color: 'white',
+          color: '#fff',
           fontSize: 24,
           fontWeight: 'bold',
           paddingHorizontal: wp('2.6%'),
@@ -429,12 +429,12 @@ const ImageComp8 = () => {
       }}>
       <Text
         style={{
-          backgroundColor: 'white',
+          backgroundColor: '#fff',
           paddingHorizontal: 7,
           paddingVertical: 2,
           textAlign: 'center',
           textAlignVertical: 'center',
-          color: 'black',
+          color: '#000',
           position: 'absolute',
           left: 0,
           top: 0,
@@ -443,7 +443,7 @@ const ImageComp8 = () => {
       </Text>
       <Text
         style={{
-          color: 'white',
+          color: '#fff',
           transform: [{rotate: '45deg'}],
           fontSize: 24,
           position: 'absolute',
@@ -458,7 +458,7 @@ const ImageComp8 = () => {
           width: wp('80%'),
           textAlign: 'center',
           textAlignVertical: 'center',
-          color: 'white',
+          color: '#fff',
         }}>
         사진 업로드하기
       </Text>
@@ -489,7 +489,7 @@ const styles = StyleSheet.create({
   },
   text1: {
     fontWeight: 'bold',
-    color: 'black',
+    color: '#000',
     fontSize: 16,
     textAlignVertical: 'center',
   },

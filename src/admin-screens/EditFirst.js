@@ -448,7 +448,7 @@ const EditFirst = props => {
                       style={{
                         position: 'absolute',
                         left: '50%',
-                        color: 'white',
+                        color: '#fff',
                         transform: [{translateX: -50}, {translateY: 53}],
                       }}>
                       사진 업로드하기
@@ -922,7 +922,7 @@ const Comp3 = props => {
           style={{
             backgroundColor: 'lightgrey',
             borderRadius: 50,
-            color: 'white',
+            color: '#fff',
             fontSize: 24,
             fontWeight: 'bold',
             paddingHorizontal: wp('2.6%'),
@@ -933,7 +933,7 @@ const Comp3 = props => {
           +
         </Text>
       </TouchableOpacity>
-      <Text>{t1}</Text>
+      <Text style={{color: '#000'}}>{t1}</Text>
     </View>
   );
 };
@@ -951,7 +951,7 @@ const styles = StyleSheet.create({
   },
   text1: {
     fontWeight: 'bold',
-    color: 'black',
+    color: '#000',
     fontSize: 16,
   },
   text2: {

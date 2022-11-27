@@ -87,8 +87,7 @@ export default function LoginScreen() {
           .then(res => {
             if (res) {
               dispatch(setUserCartHistory(res.data.data));
-              console.log("THE C HIS", res.data.data[0].items?.length);
-              if (res?.data?.data[0].items?.length === 0) {
+              if (res?.data?.data[0]?.items?.length === 0) {
                 removeCartId();
               }
             }
@@ -96,7 +95,6 @@ export default function LoginScreen() {
           .catch(err => {
             if (err) {
               showDefaultErrorAlert();
-              setLoading(false);
             }
           });
       })();

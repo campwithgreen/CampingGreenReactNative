@@ -1,3 +1,4 @@
+
 {
   "name": "Greencamp",
   "version": "1.0.0",
@@ -35,6 +36,7 @@
     "react-native-safe-area-context": "^4.2.5",
     "react-native-screens": "^3.13.1",
     "react-native-slick": "^1.6.0",
+    "react-native-simple-toast": "^1.1.4",
     "react-native-version": "^4.0.0",
     "react-redux": "^8.0.2",
     "redux": "^4.2.0",
@@ -54,3 +56,4 @@
     "preset": "react-native"
   }
 }
+

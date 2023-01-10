@@ -7,8 +7,8 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
-  ToastAndroid,
 } from 'react-native';
+import Toast from 'react-native-simple-toast';
 import React from 'react';
 import {
   heightPercentageToDP as hp,
@@ -34,10 +34,12 @@ const headerContent = {
   },
 };
 
-const LocationRentalSceen = () => {
+const LocationRentalSceen = ({route}) => {
+  console.log('props', route);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const location = useSelector(st => st.product?.location);
+
   const [fetch, setFetch] = useState(false);
   const [selectedProductIds, setSelectedProductIds] = useState([]);
 
@@ -75,10 +77,10 @@ const LocationRentalSceen = () => {
         ],
       );
     } else {
-      ToastAndroid.showWithGravity(
+      Toast.showWithGravity(
         'Please select at least one item to delete',
-        ToastAndroid.TOP,
-        ToastAndroid.LONG,
+        Toast.TOP,
+        Toast.LONG,
       );
       setSelectedProductIds([]);
       setFetch(!fetch);
@@ -105,6 +107,17 @@ const LocationRentalSceen = () => {
         });
     })();
   }, [fetch]);
+  useEffect(() => {
+    if (route.params) {
+      if (route.params.newItemCreated === true) {
+        setFetch(true);
+      }
+    }
+
+    return () => {
+      route.params.newItemCreated = false;
+    };
+  }, [route.params]);
 
   return (
     <View style={{backgroundColor: COLOR.white, minHeight: hp('100%')}}>
@@ -134,7 +147,7 @@ const LocationRentalSceen = () => {
                   type: 'LOCATION',
                 });
               }}>
-              <Text style={styles.text1}>+ 캠핑장 추가하기</Text>
+              <Text style={styles.text1}>+ 용품 올리기</Text>
             </TouchableOpacity>
           </View>
           {location && location?.length >= 1 ? (
@@ -194,7 +207,7 @@ const Comp1 = props => {
               setIsSelected(value);
             }
           }}
-          style={{padding: 0, margin: 0, backgroundColor: '#E5E5E5'}}
+          style={{padding: 0, margin: 0, backgroundColor: COLOR.white}}
         />
       </ImageBackground>
       <View
@@ -223,7 +236,6 @@ const Comp1 = props => {
             {item?.title}
           </Text>
           <TouchableOpacity
-            style={{backgroundColor: '#E5E5E5', width: 20, height: 30}}
             onPress={() => {
               navigateTo('EditFirstScreen', {
                 product: item,
@@ -231,10 +243,7 @@ const Comp1 = props => {
                 type: 'LOCATION',
               });
             }}>
-            <Image
-              style={{width: 20, height: 30, resizeMode: 'contain'}}
-              source={require('../assets/images/pencil.png')}
-            />
+            <Image source={require('../assets/images/pencil.png')} />
           </TouchableOpacity>
         </View>
         <View>
@@ -255,7 +264,7 @@ const Comp1 = props => {
               fontSize: FONTSIZE.l,
               color: COLOR.grey,
             }}>
-            위치 {item?.phone || item?.contactNumber}
+            전화번호 {item?.phone || item?.contactNumber}
           </Text>
         </View>
         <TouchableOpacity

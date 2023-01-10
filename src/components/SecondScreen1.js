@@ -27,13 +27,13 @@ const SecondScreen1 = ({isOrder, t1, t2, setOrderStatus}) => {
   ) : (
     <View style={styles.container}>
       <Text style={styles.text2}>{t1}</Text>
-      <Text></Text>
+
       <View
         style={{
-          zIndex: Platform.OS === 'android' ? 90000 : 90000,
           width: wp('30%'),
           height: hp('5%'),
           backgroundColor: '#fff',
+          zIndex: Platform.OS === 'android' ? 10000 : 190000,
         }}>
         <DropDownPicker
           open={open}
@@ -44,12 +44,13 @@ const SecondScreen1 = ({isOrder, t1, t2, setOrderStatus}) => {
           setItems={setItems}
           containerStyle={{
             width: wp('30%'),
-            zIndex: Platform.OS === 'android' ? 90000 : 90000,
-            backgroundColor: '#fff',
+
+            zIndex: Platform.OS === 'android' ? 100000 : 900000,
+            // backgroundColor: '#fff',
           }}
           dropDownContainerStyle={{
             backgroundColor: '#fff',
-            zIndex: Platform.OS === 'android' ? 90000 : 90000,
+            zIndex: Platform.OS === 'android' ? 900000 : 900000,
           }}
           onChangeValue={value => {
             setOrderStatus(value);

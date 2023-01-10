@@ -6,8 +6,6 @@ import {
   ImageBackground,
   ScrollView,
   TouchableOpacity,
-  ToastAndroid,
-  Alert,
 } from 'react-native';
 import {
   heightPercentageToDP as hp,
@@ -25,6 +23,7 @@ import {addSubLocation, createItem, updateItem} from '../apis/admin';
 import {showDefaultErrorAlert} from '../global/global';
 import {getAllProducts} from '../apis/product';
 import {setProductData, setLocationData} from '../redux/actions/product';
+import Toast from 'react-native-simple-toast';
 
 const mapStateToProps = (st, ownProps) => {
   const storee = st;
@@ -45,18 +44,22 @@ const headerContent = {
 
 const EditSecond = props => {
   const {storee, new_item_data} = props;
-  console.log('THE MAIN STORE', storee);
-  console.log('Proceeding New Item data', new_item_data);
+  // console.log("THE MAIN STORE", storee);
+  // console.log('Proceeding New Item data', new_item_data);
   const {type, updateId, product} = props?.route?.params;
+
   const dispatch = useDispatch();
   const [newItemHolder, setNewItemHolder] = useState(new_item_data);
-  console.log('THE TYPE =========>', type, updateId, props);
+  const [latitude, setLatitude] = useState(product?.coordinate?.latitude);
+  const [longitude, setLongitude] = useState(product?.coordinate?.longitude);
 
-  console.log('PROD AF', product.allFeatures);
+  // console.log('THE TYPE =========>', type, updateId, props);
+
+  // console.log('PROD latitude', latitude, longitude);
 
   let aff = [];
   if (product.allFeatures) {
-    product.allFeatures.map((af, ind) => {
+    product?.allFeatures?.map((af, ind) => {
       aff.push({
         featureName: af.featureName,
         imgUrl: af.image,
@@ -65,13 +68,13 @@ const EditSecond = props => {
       });
     });
   }
-
+  // console.log('THE AFF ITEM', product.coordinate.latitude);
   const [allFeatures, setAllFeatures] = useState(aff);
 
   useEffect(() => {
     let updateSpec = [];
     const updateSpecificationstoNewItem = () => {
-      allFeatures.map((feature, ind) => {
+      allFeatures?.map((feature, ind) => {
         updateSpec.push({
           featureName: feature.FeatureName,
           description: feature.description,
@@ -80,7 +83,7 @@ const EditSecond = props => {
       });
     };
     updateSpecificationstoNewItem();
-    let updatedItem = {...new_item_data, allFeatures: updateSpec};
+    let updatedItem = {...newItemHolder, allFeatures: updateSpec};
     setNewItemHolder(updatedItem);
   }, [allFeatures]);
 
@@ -104,14 +107,29 @@ const EditSecond = props => {
   };
 
   const updateItemData = async () => {
+    if (
+      (type == 'LOCATION' || type == 'SUBLOCATION') &&
+      latitude &&
+      longitude
+    ) {
+      let coordinates = {
+        latitude: latitude || '',
+        longitude: longitude || '',
+      };
+      let updatedItem = {...newItemHolder};
+      updatedItem.coordinate = coordinates;
+
+      setNewItemHolder(updatedItem);
+    }
+    console.log('final newItemHolder', newItemHolder);
     await updateItem(newItemHolder, updateId)
       .then(res => {
         if (res) {
           fetchAndSetProducts(type);
-          ToastAndroid.showWithGravity(
-            `${type} UPDATED SUCCESSFULLY`,
-            ToastAndroid.TOP,
-            ToastAndroid.CENTER,
+          Toast.showWithGravity(
+            '성공적으로 수정되었습니다.',
+            Toast.LONG,
+            Toast.TOP,
           );
           if (type === 'LOCATION') {
             navigateTo('FourteenthScreen');
@@ -138,10 +156,12 @@ const EditSecond = props => {
       }}>
       <Header headerContent={headerContent} />
       <View>
-        <ScrollView keyboardShouldPersistTaps="always">
+        <ScrollView
+          keyboardShouldPersistTaps="always"
+          style={{marginBottom: 30}}>
           <View style={{marginBottom: hp('15%'), minHeight: hp('100%')}}>
             <View>
-              {allFeatures.map((item, i) => {
+              {allFeatures?.map((item, i) => {
                 return (
                   <View key={i} style={{marginVertical: hp('1%')}}>
                     <Comp
@@ -163,33 +183,38 @@ const EditSecond = props => {
                 <FieldContainer
                   keyPad="numeric"
                   title={'Contact Number'}
-                  defaultValue={product.contactNumber}
+                  defaultValue={product.phone}
                   onChange={value => {
                     let updatedItem = {...newItemHolder};
-                    updatedItem.contactNumber = value;
+                    updatedItem.phone = value;
                     setNewItemHolder(updatedItem);
                   }}
                 />
+
                 <FieldContainer
                   keyPad="numeric"
                   title={'Latitude'}
-                  defaultValue={product.latitude}
+                  defaultValue={product.coordinate.latitude}
                   onChange={value => {
-                    let updatedItem = {...newItemHolder};
-                    updatedItem.latitude = value;
-                    setNewItemHolder(updatedItem);
+                    setLatitude(value);
+                    // let updatedItem = {...newItemHolder};
+                    // updatedItem.latitude = value;
+                    // setNewItemHolder(updatedItem);
                   }}
                 />
+
                 <FieldContainer
                   keyPad="numeric"
                   title={'Longitude'}
-                  defaultValue={product.longitude}
+                  defaultValue={product.coordinate.longitude}
                   onChange={value => {
-                    let updatedItem = {...newItemHolder};
-                    updatedItem.longitude = value;
-                    setNewItemHolder(updatedItem);
+                    setLongitude(value);
+                    // let updatedItem = {...newItemHolder};
+                    // updatedItem.longitude = value;
+                    // setNewItemHolder(updatedItem);
                   }}
                 />
+
                 <FieldContainer
                   keyPad="numeric"
                   title={'Check In Time'}
@@ -214,7 +239,7 @@ const EditSecond = props => {
             )}
           </View>
         </ScrollView>
-        <View style={styles.btn}>
+        <View style={[styles.btn, {bottom: 100}]}>
           <TouchableOpacity
             onPress={() => {
               updateItemData();
@@ -286,10 +311,10 @@ const Comp = props => {
     if (allFeatures.length > 1) {
       allFeatures.splice(ind, 1);
     } else {
-      ToastAndroid.showWithGravity(
+      Toast.showWithGravity(
         'Pls add atleast one specification',
-        ToastAndroid.LONG,
-        ToastAndroid.TOP,
+        Toast.LONG,
+        Toast.TOP,
       );
     }
     setAllFeatures(newCarouselImages);
@@ -307,8 +332,6 @@ const Comp = props => {
     setAllFeatures(newCarouselImages);
   };
 
-  console.log('THE AFF ITEM', item);
-
   return (
     <View>
       {img ? (
@@ -322,7 +345,7 @@ const Comp = props => {
               borderColor: 'lightgrey',
             }}>
             <View style={styles.view}>
-              <Text style={styles.num}>{id}</Text>
+              {id && <Text style={styles.num}>{id}</Text>}
               <Text></Text>
             </View>
             <TouchableOpacity
@@ -339,7 +362,7 @@ const Comp = props => {
             placeholder="Add Feature Title…"
             style={{
               paddingLeft: wp('10%'),
-              backgroundColor: '#fff',
+              backgroundColor: 'white',
               height: 35,
               color: 'grey',
             }}
@@ -354,7 +377,7 @@ const Comp = props => {
             placeholder="설명 추가 …"
             style={{
               paddingLeft: wp('10%'),
-              backgroundColor: '#fff',
+              backgroundColor: 'white',
               height: 35,
               color: 'grey',
             }}
@@ -432,6 +455,7 @@ const Comp = props => {
 
 const FieldContainer = props => {
   const {title, onChange, keyPad, defaultValue} = props;
+
   return (
     <View style={styles.view1}>
       {title !== '' && <Text style={styles.text1}>{title}</Text>}
@@ -440,6 +464,7 @@ const FieldContainer = props => {
           keyboardType={keyPad}
           style={styles.textinput1}
           defaultValue={defaultValue}
+          // value={defaultValue}
           onChangeText={text => {
             onChange(text);
           }}
@@ -460,15 +485,15 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   num: {
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     paddingHorizontal: 7,
     paddingVertical: 2,
     textAlign: 'center',
     textAlignVertical: 'center',
-    color: '#000',
+    color: 'black',
   },
   cross: {
-    color: '#fff',
+    color: 'white',
     transform: [{rotate: '45deg'}],
     fontSize: 40,
     position: 'absolute',
@@ -498,7 +523,7 @@ const styles = StyleSheet.create({
   },
   text1: {
     fontWeight: 'bold',
-    color: '#000',
+    color: 'black',
     fontSize: 16,
   },
   text2: {
@@ -516,5 +541,6 @@ const styles = StyleSheet.create({
     borderColor: 'lightgrey',
     width: '100%',
     height: '80%',
+    color: '#000',
   },
 });

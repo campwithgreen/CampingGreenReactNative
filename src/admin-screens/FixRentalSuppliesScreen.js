@@ -6,8 +6,6 @@ import {
   ImageBackground,
   ScrollView,
   TouchableOpacity,
-  ToastAndroid,
-  Alert,
 } from 'react-native';
 import {
   heightPercentageToDP as hp,
@@ -25,6 +23,7 @@ import {addSubLocation, createItem} from '../apis/admin';
 import {showDefaultErrorAlert} from '../global/global';
 import {getAllProducts} from '../apis/product';
 import {setProductData, setLocationData} from '../redux/actions/product';
+import Toast from 'react-native-simple-toast';
 
 const mapStateToProps = (st, ownProps) => {
   const storee = st;
@@ -101,20 +100,20 @@ const FixRentalSuppliesScreen = props => {
         if (res) {
           if (type === 'PRODUCT') {
             fetchAndSetProducts('PRODUCT');
-            ToastAndroid.showWithGravity(
+            Toast.showWithGravity(
               `${type} CREATED SUCCESSFULLY`,
-              ToastAndroid.TOP,
-              ToastAndroid.CENTER,
+              Toast.TOP,
+              Toast.LONG,
             );
             navigateTo('EquipmentRentalScreen');
           } else if (type === 'LOCATION') {
             fetchAndSetProducts('LOCATION');
-            ToastAndroid.showWithGravity(
+            Toast.showWithGravity(
               `${type} CREATED SUCCESSFULLY`,
-              ToastAndroid.TOP,
-              ToastAndroid.CENTER,
+              Toast.TOP,
+              Toast.LONG,
             );
-            navigateTo('FourteenthScreen');
+            navigateTo('FourteenthScreen', {newItemCreated: true});
           }
         }
       })
@@ -129,10 +128,10 @@ const FixRentalSuppliesScreen = props => {
       .then(res => {
         if (res) {
           fetchAndSetProducts('LOCATION');
-          ToastAndroid.showWithGravity(
+          Toast.showWithGravity(
             `${type} ADDED SUCCESSFULLY`,
-            ToastAndroid.TOP,
-            ToastAndroid.CENTER,
+            Toast.TOP,
+            Toast.LONG,
           );
           navigateTo('FourteenthScreen');
         }
@@ -302,10 +301,10 @@ const Comp = props => {
     if (allFeatures.length > 1) {
       allFeatures.splice(ind, 1);
     } else {
-      ToastAndroid.showWithGravity(
+      Toast.showWithGravity(
         'Pls add atleast one specification',
-        ToastAndroid.LONG,
-        ToastAndroid.TOP,
+        Toast.LONG,
+        Toast.TOP,
       );
     }
     setAllFeatures(newCarouselImages);
@@ -353,7 +352,7 @@ const Comp = props => {
             placeholder="Add Feature Title…"
             style={{
               paddingLeft: wp('10%'),
-              backgroundColor: '#fff',
+              backgroundColor: 'white',
               height: 35,
               color: 'grey',
             }}
@@ -367,7 +366,7 @@ const Comp = props => {
             placeholder="설명 추가 …"
             style={{
               paddingLeft: wp('10%'),
-              backgroundColor: '#fff',
+              backgroundColor: 'white',
               height: 35,
               color: 'grey',
             }}
@@ -489,7 +488,7 @@ const styles = StyleSheet.create({
   btn: {
     backgroundColor: '#E5E5E5',
     position: 'absolute',
-    bottom: 80,
+    bottom: 90,
     paddingVertical: hp('2%'),
     width: wp('90%'),
     marginHorizontal: wp('5%'),

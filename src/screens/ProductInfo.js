@@ -7,11 +7,11 @@ import {
   ScrollView,
   TouchableOpacity,
   ImageBackground,
-  ToastAndroid,
   Button,
   Platform,
 } from 'react-native';
 import Header from '../layout/Header';
+import Toast from 'react-native-simple-toast';
 import {
   heightPercentageToDP,
   heightPercentageToDP as hp,
@@ -24,7 +24,7 @@ import FONTSIZE from '../constants/fontSize';
 import COLOR from '../constants/colors';
 import {navigateTo} from '../navigation/utils/RootNavigation';
 import Footer from '../components/Footer';
-import {connect, useDispatch} from 'react-redux';
+import {connect, useDispatch, useSelector} from 'react-redux';
 import CustomButton from '../components/common/CustomButton';
 import Counter from '../components/common/Counter';
 import {createOrUpdateCart, getUserCartHistory} from '../apis/cart';
@@ -57,7 +57,8 @@ const mapStateToProps = (state, ownProps) => {
 };
 const ProductInfo = props => {
   const {container} = styles;
-
+  const user_data = useSelector(st => st.oauth?.user_data?.data);
+  console.log('user_data', user_data);
   const {
     selected_item,
     startDate,
@@ -68,6 +69,7 @@ const ProductInfo = props => {
   } = props;
 
   const item = props.route.params || selected_item;
+
   const [tabIndex, setTabIndex] = useState(1);
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -99,10 +101,10 @@ const ProductInfo = props => {
       content: require('../assets/images/cart.png'),
       navigateScreen: () => {
         if (!isLoggedIn) {
-          ToastAndroid.showWithGravity(
+          Toast.showWithGravity(
             'Pls Login to View Cart',
-            ToastAndroid.LONG,
-            ToastAndroid.TOP,
+            Toast.LONG,
+            Toast.TOP,
           );
         } else {
           navigateTo('ProductShoppingBagScreen');
@@ -125,6 +127,7 @@ const ProductInfo = props => {
   const getCartId = async () => {
     try {
       const cartId = await AsyncStorage.getItem('@cart_id');
+      console.log('cartId>>>', cartId);
       return cartId != null ? cartId : null;
     } catch (e) {
       console.log('getting cart error', e);
@@ -185,18 +188,18 @@ const ProductInfo = props => {
   };
 
   const handleCheckout = async () => {
-    console.log('CHCKOUT ITEMS *****', cartItems);
+    // console.log('CHCKOUT ITEMS *****', cartItems);
     getCartId().then(async cartId => {
       if (cartId) {
         await createOrUpdateCart(cartItems, {cartId: cartId})
           .then(res => {
-            console.log('RESPONSE CART', res);
+            // console.log('RESPONSE CART', res);
             if (res) {
               dispatch(setCurrentCheckoutCartDetails(res.data.data));
-              ToastAndroid.showWithGravity(
+              Toast.showWithGravity(
                 'Checkout In Progress',
-                ToastAndroid.SHORT,
-                ToastAndroid.TOP,
+                Toast.SHORT,
+                Toast.TOP,
               );
               navigateTo('RoomPaymentScreen');
               setModalVisible(false);
@@ -211,13 +214,13 @@ const ProductInfo = props => {
       } else {
         await createOrUpdateCart(cartItems)
           .then(res => {
-            console.log('RESPONSE CART', res);
+            // console.log('RESPONSE CART', res);
             if (res) {
               dispatch(setCurrentCheckoutCartDetails(res.data.data));
-              ToastAndroid.showWithGravity(
+              Toast.showWithGravity(
                 'Checkout In Progress',
-                ToastAndroid.SHORT,
-                ToastAndroid.TOP,
+                Toast.SHORT,
+                Toast.TOP,
               );
               navigateTo('RoomPaymentScreen');
               setModalVisible(false);
@@ -237,16 +240,16 @@ const ProductInfo = props => {
   const handleAddToCart = async () => {
     getCartId().then(async cartId => {
       console.log('THE CART ID =>', cartId);
-      if (cartId) {
+      if (cartId != null || cartId == null) {
         await createOrUpdateCart(cartItems, {cartId: cartId})
           .then(res => {
-            console.log('RESPONSE CART', res);
+            // console.log('RESPONSE CART', res);
             storeCartId(res.data.data?._id);
             if (res) {
-              ToastAndroid.showWithGravity(
+              Toast.showWithGravity(
                 'Product added to cart',
-                ToastAndroid.SHORT,
-                ToastAndroid.TOP,
+                Toast.SHORT,
+                Toast.TOP,
               );
               navigateTo('ProductShoppingBagScreen');
               setModalVisible(false);
@@ -254,7 +257,7 @@ const ProductInfo = props => {
           })
           .catch(err => {
             if (err) {
-              console.log('ERROR', err);
+              console.log('ERROR>>>', err);
               showDefaultErrorAlert();
               setModalVisible(false);
             }
@@ -262,13 +265,13 @@ const ProductInfo = props => {
       } else {
         await createOrUpdateCart(cartItems)
           .then(res => {
-            console.log('RESPONSE CART', res);
+            // console.log('RESPONSE CART', res);
             storeCartId(res.data.data?._id);
             if (res) {
-              ToastAndroid.showWithGravity(
+              Toast.showWithGravity(
                 'Product added to cart',
-                ToastAndroid.SHORT,
-                ToastAndroid.TOP,
+                Toast.SHORT,
+                Toast.TOP,
               );
               navigateTo('ProductShoppingBagScreen');
               setModalVisible(false);
@@ -418,10 +421,10 @@ const ProductInfo = props => {
                     if (isLoggedIn) {
                       navigateTo('CalendarScreen');
                     } else {
-                      ToastAndroid.showWithGravity(
+                      Toast.showWithGravity(
                         'You have to Login to Proceed with Renting Date',
-                        ToastAndroid.LONG,
-                        ToastAndroid.TOP,
+                        Toast.LONG,
+                        Toast.TOP,
                       );
                     }
                   }}>
@@ -456,10 +459,10 @@ const ProductInfo = props => {
                     if (isLoggedIn) {
                       navigateTo('CalendarScreen');
                     } else {
-                      ToastAndroid.showWithGravity(
+                      Toast.showWithGravity(
                         'You have to Login to Proceed with Renting Date',
-                        ToastAndroid.LONG,
-                        ToastAndroid.TOP,
+                        Toast.LONG,
+                        Toast.TOP,
                       );
                     }
                   }}>
@@ -588,7 +591,7 @@ const ProductInfo = props => {
                     padding: wp('2%'),
                     justifyContent: 'center',
 
-                    // width: wp('60%'),
+                    width: wp('60%'),
                   }}>
                   {item.specifications != undefined &&
                     Object?.keys(item?.specifications)?.map(key => {
@@ -867,17 +870,17 @@ const ProductInfo = props => {
                 if (enableCheckout()) {
                   setModalVisible(true);
                 } else {
-                  ToastAndroid.showWithGravity(
-                    'Please Select the Date for Checkout',
-                    ToastAndroid.LONG,
-                    ToastAndroid.TOP,
+                  Toast.showWithGravity(
+                    '날짜를 선택하세요',
+                    Toast.LONG,
+                    Toast.TOP,
                   );
                 }
               } else {
-                ToastAndroid.showWithGravity(
-                  'You have to Login to Proceed Renting',
-                  ToastAndroid.LONG,
-                  ToastAndroid.TOP,
+                Toast.showWithGravity(
+                  '로그인 필요합니다.',
+                  Toast.LONG,
+                  Toast.TOP,
                 );
                 navigateTo('LoginScreen');
               }

@@ -88,6 +88,7 @@ const Header = props => {
                   <Text
                     style={{
                       fontSize: FONTSIZE.sm,
+                      color: '#fff',
                     }}>
                     {mainCartItems && mainCartItems[0]?.items.length}
                   </Text>

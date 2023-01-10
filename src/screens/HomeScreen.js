@@ -6,8 +6,8 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  ToastAndroid,
 } from 'react-native';
+import Toast from 'react-native-simple-toast';
 import Header from '../layout/Header';
 import HomeScreenDetail from '../components/HomeScreenDetail';
 import {
@@ -53,10 +53,10 @@ export const HomeScreen = props => {
       content: require('../assets/images/cart.png'),
       navigateScreen: () => {
         if (!isLogin) {
-          ToastAndroid.showWithGravity(
+          Toast.showWithGravity(
             'Pls Login to View Cart',
-            ToastAndroid.LONG,
-            ToastAndroid.TOP,
+            Toast.LONG,
+            Toast.TOP,
           );
         } else {
           navigateTo('ProductShoppingBagScreen');
@@ -157,7 +157,6 @@ export const HomeScreen = props => {
                   style={{
                     color: '#454C53',
                     fontSize: RFPercentage(2.1),
-
                     fontWeight: 'bold',
                   }}>
                   6개월동안 누리는 혜택,{'\n'}수수료 0원!

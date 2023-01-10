@@ -6,7 +6,6 @@ import {
   ImageBackground,
   ScrollView,
   TouchableOpacity,
-  ToastAndroid,
   Image,
 } from 'react-native';
 import {
@@ -23,7 +22,7 @@ import {showDefaultErrorAlert} from '../global/global';
 import {connect, useDispatch} from 'react-redux';
 import newItem from '../constants/newItem.json';
 import {createNewItemData} from '../redux/actions/common';
-
+import Toast from 'react-native-simple-toast';
 const mapDispatchToProps = (st, ownProps) => {
   const storee = st;
   const new_item_data = st?.common?.new_item_data;
@@ -43,8 +42,8 @@ const FixRentalEquipmentNewScreen = props => {
     dispatch(createNewItemData(newItemHolder));
   }, [type, newItemHolder]);
 
-  console.log('THE STORE ====>', storee);
-  console.log('NEW ITEM DATA', new_item_data);
+  // console.log("THE STORE ====>", storee);
+  console.log('NEW ITEM newItemHolder>>>>>>>', newItemHolder);
 
   const headerContent = {
     leftItemContents: {
@@ -62,14 +61,14 @@ const FixRentalEquipmentNewScreen = props => {
 
   const decrement = () => {
     if (count > 0) {
-      let updatedItem = {...new_item_data, stock: count - 1};
+      let updatedItem = {...newItemHolder, stock: count - 1};
       setNewItemHolder(updatedItem);
       setCount(i => i - 1);
     } else {
-      ToastAndroid.showWithGravity(
+      Toast.showWithGravity(
         'Stock unit cannot be lower than 0',
-        ToastAndroid.LONG,
-        ToastAndroid.TOP,
+        Toast.LONG,
+        Toast.TOP,
       );
     }
   };
@@ -129,10 +128,10 @@ const FixRentalEquipmentNewScreen = props => {
     if (carouselImages.length > 1) {
       newCarouselImages.splice(ind, 1);
     } else {
-      ToastAndroid.showWithGravity(
+      Toast.showWithGravity(
         'Pls add atleast one specification',
-        ToastAndroid.LONG,
-        ToastAndroid.TOP,
+        Toast.LONG,
+        Toast.TOP,
       );
     }
     setCarouselImages(newCarouselImages);
@@ -190,7 +189,7 @@ const FixRentalEquipmentNewScreen = props => {
     };
     updateSpecificationstoNewItem();
     console.log('UPDATED SPEC', updateSpec);
-    let updatedItem = {...new_item_data, specifications: updateSpec};
+    let updatedItem = {...newItemHolder, specifications: updateSpec};
     setNewItemHolder(updatedItem);
   }, [specification]);
 
@@ -203,7 +202,7 @@ const FixRentalEquipmentNewScreen = props => {
       });
     };
     updateCarouseltoNewItem();
-    let updatedItem = {...new_item_data, carousel: updateCaro};
+    let updatedItem = {...newItemHolder, carousel: updateCaro};
     setNewItemHolder(updatedItem);
   }, [carouselImages]);
 
@@ -216,7 +215,7 @@ const FixRentalEquipmentNewScreen = props => {
       });
     };
     updateCategorytoNewItem();
-    let updatedItem = {...new_item_data, category: updateCat};
+    let updatedItem = {...newItemHolder, category: updateCat};
     setNewItemHolder(updatedItem);
   }, [category]);
 
@@ -229,7 +228,7 @@ const FixRentalEquipmentNewScreen = props => {
       });
     };
     updateTagtoNewItem();
-    let updatedItem = {...new_item_data, tag: updateTag};
+    let updatedItem = {...newItemHolder, tag: updateTag};
     setNewItemHolder(updatedItem);
   }, [tag]);
 
@@ -250,7 +249,7 @@ const FixRentalEquipmentNewScreen = props => {
       });
     };
     updateAdditionalToNew();
-    let updatedItem = {...new_item_data, additional_charges: updateAdditional};
+    let updatedItem = {...newItemHolder, additional_charges: updateAdditional};
     setNewItemHolder(updatedItem);
   }, [additionalCharges]);
 
@@ -262,14 +261,14 @@ const FixRentalEquipmentNewScreen = props => {
           <Comp1
             isProductName={true}
             onChange={async value => {
-              let updatedItem = {...new_item_data, title: value, type: type};
+              let updatedItem = {...newItemHolder, title: value, type: type};
               setNewItemHolder(updatedItem);
             }}
           />
           <Comp1
             isPrice={true}
             onChange={value => {
-              let updatedItem = {...new_item_data, price: Number(value)};
+              let updatedItem = {...newItemHolder, price: Number(value)};
               setNewItemHolder(updatedItem);
             }}
             type="number"
@@ -294,7 +293,7 @@ const FixRentalEquipmentNewScreen = props => {
                     style={styles.text2}
                     onPress={() => {
                       setCount(i => i + 1);
-                      let updatedItem = {...new_item_data, stock: count + 1};
+                      let updatedItem = {...newItemHolder, stock: count + 1};
                       setNewItemHolder(updatedItem);
                     }}>
                     +
@@ -410,7 +409,7 @@ const FixRentalEquipmentNewScreen = props => {
                       style={{
                         position: 'absolute',
                         left: '50%',
-                        color: '#fff',
+                        color: 'white',
                         transform: [{translateX: -50}, {translateY: 53}],
                       }}>
                       사진 업로드하기
@@ -497,7 +496,7 @@ const FixRentalEquipmentNewScreen = props => {
           <Comp1
             isDescription={true}
             onChange={value => {
-              let updatedItem = {...new_item_data, description: value};
+              let updatedItem = {...newItemHolder, description: value};
               setNewItemHolder(updatedItem);
             }}
           />
@@ -642,7 +641,7 @@ const FixRentalEquipmentNewScreen = props => {
           <Comp1
             isCampLink={true}
             onChange={async value => {
-              let updatedItem = {...new_item_data, campLink: value};
+              let updatedItem = {...newItemHolder, campLink: value};
               setNewItemHolder(updatedItem);
             }}
           />
@@ -711,10 +710,10 @@ const Comp2 = props => {
     if (specification.length > 1) {
       newSpecification.splice(ind, 1);
     } else {
-      ToastAndroid.showWithGravity(
+      Toast.showWithGravity(
         'Pls add atleast one specification',
-        ToastAndroid.LONG,
-        ToastAndroid.TOP,
+        Toast.LONG,
+        Toast.TOP,
       );
     }
     setSpecification(newSpecification);
@@ -732,6 +731,7 @@ const Comp2 = props => {
           height: '80%',
           paddingLeft: wp('3%'),
           fontWeight: '600',
+          padding: 10,
         }}
         placeholder={p1}
         defaultValue={specification[ind]?.keyAtt}
@@ -755,6 +755,7 @@ const Comp2 = props => {
             height: '80%',
             paddingLeft: wp('3%'),
             fontWeight: '600',
+            padding: 10,
           }}
           placeholder={p2}
           defaultValue={specification[ind]?.valueAtt}
@@ -872,7 +873,7 @@ const Comp3 = props => {
           style={{
             backgroundColor: 'lightgrey',
             borderRadius: 50,
-            color: '#fff',
+            color: 'white',
             fontSize: 24,
             fontWeight: 'bold',
             paddingHorizontal: wp('2.6%'),
@@ -901,7 +902,7 @@ const styles = StyleSheet.create({
   },
   text1: {
     fontWeight: 'bold',
-    color: '#000',
+    color: 'black',
     fontSize: 16,
   },
   text2: {
@@ -919,13 +920,14 @@ const styles = StyleSheet.create({
     borderColor: 'lightgrey',
     width: wp('70%'),
     height: '80%',
+    padding: 10,
   },
   btn: {
     backgroundColor: '#E5E5E5',
     paddingVertical: hp('2%'),
     width: wp('90%'),
     marginHorizontal: wp('5%'),
-    marginBottom: hp('3%'),
+    marginBottom: hp('5%'),
   },
   btnText: {
     textAlign: 'center',

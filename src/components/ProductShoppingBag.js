@@ -1,12 +1,6 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  ToastAndroid,
-  TouchableOpacity,
-} from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import React, {useState, useEffect} from 'react';
+import Toast from 'react-native-simple-toast';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -58,10 +52,10 @@ const ProductShoppingBag = props => {
       setProductList(newData);
       setCount(i => i - 1);
     } else {
-      ToastAndroid.showWithGravity(
+      Toast.showWithGravity(
         'Minimum 1 unit must be for a cart item',
-        ToastAndroid.LONG,
-        ToastAndroid.TOP,
+        Toast.LONG,
+        Toast.TOP,
       );
     }
   };

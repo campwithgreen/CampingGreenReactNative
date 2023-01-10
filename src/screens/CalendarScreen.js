@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  ScrollView,
-  Dimensions,
-  ToastAndroid,
-} from 'react-native';
+import {View, StyleSheet, ScrollView, Dimensions} from 'react-native';
 import Header from '../layout/Header';
 import {
   heightPercentageToDP as hp,
@@ -16,6 +10,7 @@ import CustomCalendar from '../components/common/Calendar';
 import {goBack, navigateTo} from '../navigation/utils/RootNavigation';
 import CustomButton from '../components/common/CustomButton';
 import {useSelector} from 'react-redux';
+import Toast from 'react-native-simple-toast';
 import COLOR from '../constants/colors';
 
 const headerContent = {
@@ -64,10 +59,10 @@ const CalendarScreen = props => {
               navigateTo('ProductInfo');
             }
           } else {
-            ToastAndroid.showWithGravity(
+            Toast.showWithGravity(
               'Please Select the Date for Checkout',
-              ToastAndroid.LONG,
-              ToastAndroid.TOP,
+              Toast.LONG,
+              Toast.TOP,
             );
           }
         }}

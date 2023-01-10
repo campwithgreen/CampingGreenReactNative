@@ -39,7 +39,7 @@ export default function OrderDetailsScreen() {
   console.log('ORDER STATUS', orderStatus);
 
   return (
-    <View style={{backgroundColor: '#fff'}}>
+    <View style={{backgroundColor: 'white'}}>
       <ScrollView>
         <Header headerContent={headerContent} />
         <ThirdScreen1 currentCartData={current_cart_details} />
@@ -94,25 +94,24 @@ export default function OrderDetailsScreen() {
           t1="현재상태"
           t2={current_cart_details?.paymentStatus}
         />
-        <View style={{}}>
-          <Text
-            style={{
-              fontWeight: 'bold',
-              color: '#1B1D1F',
-              fontSize: 18,
-              marginHorizontal: wp('5%'),
-              paddingTop: hp('3%'),
-            }}>
-            배송정보
-          </Text>
-          <View style={styles.border1}></View>
+        <Text
+          style={{
+            fontWeight: 'bold',
+            color: '#1B1D1F',
+            fontSize: 18,
+            marginHorizontal: wp('5%'),
+            paddingTop: hp('3%'),
+          }}>
+          배송정보
+        </Text>
+        <View style={styles.border1}></View>
 
-          <View style={{paddingTop: hp('3.5%')}}>
-            <SecondScreen1
-              t1="예약자"
-              t2={current_cart_details?.shipping_data?.name}
-            />
-          </View>
+        <View style={{paddingTop: hp('3.5%'), zIndex: 1}}>
+          <SecondScreen1
+            t1="예약자"
+            t2={current_cart_details?.shipping_data?.name}
+          />
+
           <View style={styles.border2}></View>
           <SecondScreen1
             t1="연락처"
@@ -123,13 +122,13 @@ export default function OrderDetailsScreen() {
             t1="배송지"
             t2={current_cart_details?.shipping_data?.address}
           />
-          <View style={styles.border2}></View>
-          <ThirdScreen3
-            orderStatus={orderStatus}
-            isOrder={true}
-            currentCartData={current_cart_details}
-          />
         </View>
+        <View style={styles.border2}></View>
+        <ThirdScreen3
+          orderStatus={orderStatus}
+          isOrder={true}
+          currentCartData={current_cart_details}
+        />
       </ScrollView>
     </View>
   );

@@ -7,7 +7,6 @@ import {
   ScrollView,
   TouchableOpacity,
   Button,
-  ToastAndroid,
   Linking,
   Pressable,
   Alert,
@@ -27,6 +26,7 @@ import CustomButton from '../components/common/CustomButton';
 import {navigateTo, goBack} from '../navigation/utils/RootNavigation';
 import FONTSIZE from '../constants/fontSize';
 import Counter from '../components/common/Counter';
+import Toast from 'react-native-simple-toast';
 
 const headerContent = {
   leftItemContents: {
@@ -50,7 +50,7 @@ const headerContent = {
 const Rent = props => {
   const {container, centeredView, modalView, termTitle, termsButtonWrapper} =
     styles;
-  console.log('PROPS', props);
+  // console.log('PROPS', props);
   const {route} = props;
   // const selectedLoc = useSelector(st => st.common.selected_location);
   const subLocations = useSelector(st => st.common.selected_location);
@@ -68,7 +68,7 @@ const Rent = props => {
   console.log('SL', subLocations?.campLink);
 
   const [modalVisible, setModalVisible] = useState(false);
-  console.log('subLocations', subLocations);
+  // console.log('subLocations', subLocations);
   const enableCheckout = () => {
     if (startDate && returnDate) {
       return true;
@@ -95,11 +95,7 @@ const Rent = props => {
       .then(res => {
         if (res) {
           dispatch(setCurrentCheckoutCartDetails(res.data.data));
-          ToastAndroid.showWithGravity(
-            'Checkout In Progress',
-            ToastAndroid.SHORT,
-            ToastAndroid.TOP,
-          );
+          Toast.showWithGravity('Checkout In Progress', Toast.SHORT, Toast.TOP);
           navigateTo('RoomPaymentScreen');
         }
       })
@@ -258,10 +254,10 @@ const Rent = props => {
                 if (isLoggedIn) {
                   navigateTo('CalendarScreen', {type: 'LOCATION'});
                 } else {
-                  ToastAndroid.showWithGravity(
+                  Toast.showWithGravity(
                     'You have to Login to Proceed with Renting Date',
-                    ToastAndroid.LONG,
-                    ToastAndroid.TOP,
+                    Toast.LONG,
+                    Toast.TOP,
                   );
                 }
               }}
@@ -295,10 +291,10 @@ const Rent = props => {
                 if (isLoggedIn) {
                   navigateTo('CalendarScreen', {type: 'LOCATION'});
                 } else {
-                  ToastAndroid.showWithGravity(
+                  Toast.showWithGravity(
                     'You have to Login to Proceed with Renting Date',
-                    ToastAndroid.LONG,
-                    ToastAndroid.TOP,
+                    Toast.LONG,
+                    Toast.TOP,
                   );
                 }
               }}
@@ -497,10 +493,10 @@ const Rent = props => {
             if (enableCheckout()) {
               setModalVisible(true);
             } else {
-              ToastAndroid.showWithGravity("Please Select the Date for Checkout", ToastAndroid.LONG, ToastAndroid.TOP);
+              Toast.showWithGravity("Please Select the Date for Checkout", Toast.LONG, Toast.TOP);
             }
           } else {
-            ToastAndroid.showWithGravity("You have to Login to Proceed Renting", ToastAndroid.LONG, ToastAndroid.TOP);
+            Toast.showWithGravity("You have to Login to Proceed Renting", Toast.LONG, Toast.TOP);
             navigateTo("LoginScreen");
           }
         }} />

@@ -12,7 +12,7 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import React from 'react';
-import {useState} from 'react';
+import { useState } from 'react';
 import Header from '../layout/Header';
 
 const headerContent = {

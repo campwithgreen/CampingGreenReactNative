@@ -79,7 +79,11 @@ import org.apache.tools.ant.taskdefs.condition.Os
  */
 
 project.ext.react = [
+<<<<<<< HEAD
     enableHermes: false,  // clean and rebuild if changing
+=======
+    enableHermes: true,  // clean and rebuild if changing
+>>>>>>> origin/master
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"

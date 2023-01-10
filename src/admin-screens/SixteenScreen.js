@@ -133,7 +133,7 @@ const SixteenScreen = props => {
                       {key?.split('_')[0]}
                     </Text>
                     {result[key]?.map(item => {
-                      console.log('THE ITEM', item, key);
+                      // console.log("THE ITEM", item, key);
                       return (
                         <Comp1
                           flag={item.paymentStatus === 'PAYMENT_DONE'}
@@ -147,7 +147,7 @@ const SixteenScreen = props => {
               })
             ) : (
               <View>
-                <Text style={{color: '#000'}}> NO ORDERS</Text>
+                <Text> NO ORDERS</Text>
               </View>
             )}
           </View>
@@ -160,80 +160,80 @@ const SixteenScreen = props => {
 const Comp1 = ({flag, item}) => {
   const dispatch = useDispatch();
   return (
-    <View
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginHorizontal: wp('5%'),
-        borderWidth: 2,
-        borderColor: flag ? '#4AAC82' : 'lightgrey',
-        backgroundColor: flag ? '#4AAC82' : '#fff',
-        paddingHorizontal: wp('3%'),
-        paddingVertical: wp('2%'),
-        marginTop: hp('3%'),
-        minHeight: hp('12%'),
+    <TouchableOpacity
+      onPress={() => {
+        dispatch(setCurrentCheckoutCartDetails(item));
+        navigateTo('OrderDetailsScreen');
       }}>
-      <View style={{display: 'flex', width: wp('20%')}}>
-        <Text style={[styles.text1, {color: flag ? '#fff' : '#000'}]}>
-          {item?.userId?.firstName}
-        </Text>
-        <Text></Text>
-        <Text></Text>
-      </View>
-      <View style={{display: 'flex', justifyContent: 'space-between'}}>
-        <View style={{display: 'flex', flexDirection: 'row'}}>
-          <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
-            예약번호 :{' '}
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginHorizontal: wp('5%'),
+          borderWidth: 2,
+          borderColor: flag ? '#4AAC82' : 'lightgrey',
+          backgroundColor: flag ? '#4AAC82' : 'white',
+          paddingHorizontal: wp('3%'),
+          paddingVertical: wp('2%'),
+          marginTop: hp('3%'),
+          minHeight: hp('12%'),
+        }}>
+        <View style={{display: 'flex', width: wp('20%')}}>
+          <Text style={[styles.text1, {color: flag ? 'white' : 'black'}]}>
+            {item?.userId?.firstName}
           </Text>
-          <Text style={[styles.text2, {color: flag ? '#fff' : '#000'}]}>
-            {item?._id}
-          </Text>
+          <Text></Text>
+          <Text></Text>
         </View>
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-          }}>
-          <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
-            회원코드 :{' '}
-          </Text>
-          <Text style={[styles.text2, {color: flag ? '#fff' : '#000'}]}>
-            {moment(item?.userId?.createdAt).format('YYYY.MM.DD')}
-          </Text>
+        <View style={{display: 'flex', justifyContent: 'space-between'}}>
+          <View style={{display: 'flex', flexDirection: 'row'}}>
+            <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
+              예약번호 :{' '}
+            </Text>
+            <Text style={[styles.text2, {color: flag ? '#fff' : '#000'}]}>
+              {item?._id}
+            </Text>
+          </View>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+            }}>
+            <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
+              주문 날짜 :{' '}
+            </Text>
+            <Text style={[styles.text2, {color: flag ? '#fff' : '#000'}]}>
+              {moment(item?.userId?.createdAt).format('YYYY.MM.DD')}
+            </Text>
+          </View>
+          <View style={{display: 'flex', flexDirection: 'row'}}>
+            <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
+              예약 캠핑장 :{' '}
+            </Text>
+            <Text style={[styles.text2, {color: flag ? '#fff' : '#000'}]}>
+              {item?.items[0]?.itemId?.title.length > 19
+                ? item?.items[0]?.itemId?.title.substring(0, 19) + '...'
+                : item?.items[0]?.itemId?.title}
+            </Text>
+          </View>
+          <View style={{display: 'flex', flexDirection: 'row'}}>
+            <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
+              지불 상태 :{' '}
+            </Text>
+            <Text style={[styles.text2, {color: flag ? '#fff' : '#000'}]}>
+              {ORDER_STATUS[item?.paymentStatus]}
+            </Text>
+          </View>
         </View>
-        <View style={{display: 'flex', flexDirection: 'row'}}>
-          <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
-            예약 캠핑장 :{' '}
-          </Text>
-          <Text style={[styles.text2, {color: flag ? '#fff' : '#000'}]}>
-            {item?.items[0]?.itemId?.title.length > 19
-              ? item?.items[0]?.itemId?.title.substring(0, 19) + '...'
-              : item?.items[0]?.itemId?.title}
-          </Text>
-        </View>
-        <View style={{display: 'flex', flexDirection: 'row'}}>
-          <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
-            지불 상태 :{' '}
-          </Text>
-          <Text style={[styles.text2, {color: flag ? '#fff' : '#000'}]}>
-            {ORDER_STATUS[item?.paymentStatus]}
-          </Text>
-        </View>
-      </View>
-      <View style={{display: 'flex', alignSelf: 'center'}}>
-        <TouchableOpacity
-          onPress={() => {
-            dispatch(setCurrentCheckoutCartDetails(item));
-            navigateTo('OrderDetailsScreen');
-          }}>
+        <View style={{display: 'flex', alignSelf: 'center'}}>
           <Image
             source={require('../assets/images/icon_movepage.png')}
             style={{height: hp('7%'), width: wp('7%')}}
           />
-        </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

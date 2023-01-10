@@ -2,11 +2,11 @@ import {
   StyleSheet,
   Text,
   View,
-  ToastAndroid,
   ScrollView,
   TouchableOpacity,
   Button,
 } from 'react-native';
+import Toast from 'react-native-simple-toast';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -58,17 +58,13 @@ const NineteenthScreen = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    ToastAndroid.showWithGravity(
-      'Logged Out Successfully',
-      ToastAndroid.LONG,
-      ToastAndroid.TOP,
-    );
+    Toast.showWithGravity('Logged Out Successfully', Toast.LONG, Toast.TOP);
   };
 
   return (
     <View
       style={{
-        backgroundColor: '#fff',
+        backgroundColor: 'white',
         paddingBottom: hp('17%'),
         height: '100%',
       }}>
@@ -79,7 +75,7 @@ const NineteenthScreen = () => {
         <View>
           <Text
             style={{borderBottomWidth: 2, borderBottomColor: '#F8F8F8'}}></Text>
-          <View style={{marginHorizontal: 20}}>
+          <View>
             <Button
               title="Logout"
               onPress={() => {
@@ -89,9 +85,13 @@ const NineteenthScreen = () => {
             />
           </View>
           <View>
-            <AdminSearchInput setUsers={setUsers} setLoading={setLoading} />
+            <AdminSearchInput
+              setUsers={setUsers}
+              setLoading={setLoading}
+              getUser={getUsers}
+            />
           </View>
-          <ScrollView style={{marginTop: hp('5%')}}>
+          <ScrollView style={{marginTop: hp('5%'), marginBottom: hp(8)}}>
             {/* <TextInput
                 style={{
                   borderWidth: 1,
@@ -126,7 +126,7 @@ const NineteenthScreen = () => {
               style={{
                 paddingLeft: wp('4%'),
                 fontWeight: 'bold',
-                color: "#000",
+                color: 'black',
               }}>
               오래된순
             </Text> */}
@@ -137,7 +137,7 @@ const NineteenthScreen = () => {
               users.map((ele, i) => <Comp1 item={ele} key={i} />)
             ) : (
               <View>
-                <Text style={{textAlign: 'center'}}>No User Found</Text>
+                <Text style={{textAlign: 'center'}}>정보가 없습니다</Text>
               </View>
             )}
           </ScrollView>
@@ -157,14 +157,14 @@ const Comp1 = ({flag, item}) => {
         marginHorizontal: wp('5%'),
         borderWidth: 2,
         borderColor: flag ? '#4AAC82' : 'lightgrey',
-        backgroundColor: flag ? '#4AAC82' : '#fff',
+        backgroundColor: flag ? '#4AAC82' : 'white',
         paddingHorizontal: wp('3%'),
         paddingVertical: wp('2%'),
         marginTop: hp('3%'),
       }}>
       <View style={{display: 'flex'}}>
-        <Text style={[styles.text1, {color: flag ? '#fff' : '#000'}]}>
-          {item?.firstName}
+        <Text style={[styles.text1, {color: flag ? 'white' : 'black'}]}>
+          {item?.firstName?.slice(0, 8) || '유저'}
         </Text>
         <Text></Text>
         <Text></Text>
@@ -177,10 +177,10 @@ const Comp1 = ({flag, item}) => {
         }}>
         <View style={{display: 'flex', flexDirection: 'row'}}>
           <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
-            회원코드 :{' '}
+            가입 날짜 :{' '}
           </Text>
-          <Text style={[styles.text2, {color: flag ? '#fff' : '#000'}]}>
-            {item?.createdAt}
+          <Text style={[styles.text2, {color: flag ? 'white' : 'black'}]}>
+            {item?.createdAt?.slice(0, 10)}
           </Text>
         </View>
         <View
@@ -191,7 +191,7 @@ const Comp1 = ({flag, item}) => {
           <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
             전화번호 :{' '}
           </Text>
-          <Text style={[styles.text2, {color: flag ? '#fff' : '#000'}]}>
+          <Text style={[styles.text2, {color: flag ? 'white' : 'black'}]}>
             {item?.phoneNumber}
           </Text>
         </View>
@@ -199,7 +199,7 @@ const Comp1 = ({flag, item}) => {
           <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
             구매내역 :{' '}
           </Text>
-          <Text style={[styles.text2, {color: flag ? '#fff' : '#000'}]}>
+          <Text style={[styles.text2, {color: flag ? 'white' : 'black'}]}>
             별빛 캠핑장 외 {item?.totalOrders} 건
           </Text>
         </View>

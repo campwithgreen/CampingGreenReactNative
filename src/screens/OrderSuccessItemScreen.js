@@ -37,14 +37,14 @@ export default function ThirdScreen() {
   const current_cart_details = useSelector(
     st => st.common.current_cart_details,
   );
-
+  console.log('hello current_cart_details', current_cart_details.itemId);
   useEffect(() => {
     return () => {
       (async function getCartHistory() {
         await getUserCartHistory()
           .then(res => {
             if (res) {
-              console.log('USer History', res.data);
+              // console.log('USer History', res.data);
               dispatch(setUserCartHistory(res.data.data));
             }
           })

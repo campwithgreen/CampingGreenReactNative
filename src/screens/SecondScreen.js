@@ -1,11 +1,5 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  ToastAndroid,
-  Button,
-} from 'react-native';
+import {View, Text, ScrollView, StyleSheet, Button} from 'react-native';
+import Toast from 'react-native-simple-toast';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -21,13 +15,13 @@ import CustomButton from '../components/common/CustomButton';
 import {useDispatch, useSelector} from 'react-redux';
 import COLOR from '../constants/colors';
 import FONTSIZE from '../constants/fontSize';
-import {createOrUpdateCart} from '../apis/cart';
+import {createOrUpdateCart, getUserCartHistory} from '../apis/cart';
 import {setCurrentCheckoutCartDetails} from '../redux/actions/common';
 import {showDefaultErrorAlert} from '../global/global';
 import {navigateTo, goBack} from '../navigation/utils/RootNavigation';
 import Counter from '../components/common/Counter';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {getUserCartHistory} from '../apis/cart';
+
 //객실 정보 스크린 camping room detail screen
 const SecondScreen = () => {
   const {container, centeredView, modalView, termTitle, termsButtonWrapper} =
@@ -119,14 +113,14 @@ const SecondScreen = () => {
       content: '객실 정보',
     },
     rightItemContents: {
-      type: 'image',
+      type: 'cart',
       content: require('../assets/images/cart.png'),
       navigateScreen: () => {
         if (!isLoggedIn) {
-          ToastAndroid.showWithGravity(
+          Toast.showWithGravity(
             'Pls Login to View Cart',
-            ToastAndroid.LONG,
-            ToastAndroid.TOP,
+            Toast.LONG,
+            Toast.TOP,
           );
         } else {
           navigateTo('ProductShoppingBagScreen');
@@ -151,15 +145,15 @@ const SecondScreen = () => {
       if (cartId) {
         await createOrUpdateCart(cartItems, {cartId: cartId})
           .then(res => {
-            console.log('RESPONSE CART', res);
+            // console.log('RESPONSE CART', res);
             if (res) {
               dispatch(setCurrentCheckoutCartDetails(res.data.data));
-              ToastAndroid.showWithGravity(
+              Toast.showWithGravity(
                 'Checkout In Progress',
-                ToastAndroid.SHORT,
-                ToastAndroid.TOP,
+                Toast.SHORT,
+                Toast.TOP,
               );
-              navigateTo('RoomPaymentScreen');
+              navigateTo('RoomPaypmentScreen');
               setModalVisible(false);
             }
           })
@@ -172,13 +166,13 @@ const SecondScreen = () => {
       } else {
         await createOrUpdateCart(cartItems)
           .then(res => {
-            console.log('RESPONSE CART', res);
+            // console.log('RESPONSE CART', res);
             if (res) {
               dispatch(setCurrentCheckoutCartDetails(res.data.data));
-              ToastAndroid.showWithGravity(
+              Toast.showWithGravity(
                 'Checkout In Progress',
-                ToastAndroid.SHORT,
-                ToastAndroid.TOP,
+                Toast.SHORT,
+                Toast.TOP,
               );
               navigateTo('RoomPaymentScreen');
               setModalVisible(false);
@@ -200,13 +194,13 @@ const SecondScreen = () => {
       if (cartId) {
         await createOrUpdateCart(cartItems, {cartId: cartId})
           .then(res => {
-            console.log('RESPONSE CART', res);
+            // console.log('RESPONSE CART', res);
             storeCartId(res.data.data?._id);
             if (res) {
-              ToastAndroid.showWithGravity(
+              Toast.showWithGravity(
                 'Product added to cart',
-                ToastAndroid.SHORT,
-                ToastAndroid.TOP,
+                Toast.SHORT,
+                Toast.TOP,
               );
               navigateTo('ProductShoppingBagScreen');
               setModalVisible(false);
@@ -222,13 +216,13 @@ const SecondScreen = () => {
       } else {
         await createOrUpdateCart(cartItems)
           .then(res => {
-            console.log('RESPONSE CART', res);
+            // console.log('RESPONSE CART', res);
             storeCartId(res.data.data?._id);
             if (res) {
-              ToastAndroid.showWithGravity(
+              Toast.showWithGravity(
                 'Product added to cart',
-                ToastAndroid.SHORT,
-                ToastAndroid.TOP,
+                Toast.SHORT,
+                Toast.TOP,
               );
               navigateTo('ProductShoppingBagScreen');
               setModalVisible(false);
@@ -274,20 +268,13 @@ const SecondScreen = () => {
                     color={COLOR.grey}
                   />
                 </View>
-                <View
-                  style={{
-                    width: '47%',
-                    borderRadius: 7,
-                    borderWidth: 1,
-                    backgroundColor: COLOR.compGreen,
-                    borderColor: COLOR.compGreen,
-                  }}>
+                <View style={{width: '47%'}}>
                   <Button
                     title="바로 대여하기"
                     onPress={() => {
                       handleCheckout();
                     }}
-                    color={Platform.OS === 'android' ? COLOR.compGreen : '#fff'}
+                    color={COLOR.compGreen}
                   />
                 </View>
               </View>
@@ -489,17 +476,17 @@ const SecondScreen = () => {
                 if (enableCheckout()) {
                   setModalVisible(true);
                 } else {
-                  ToastAndroid.showWithGravity(
+                  Toast.showWithGravity(
                     'Please Select the Date for Checkout',
-                    ToastAndroid.LONG,
-                    ToastAndroid.TOP,
+                    Toast.LONG,
+                    Toast.TOP,
                   );
                 }
               } else {
-                ToastAndroid.showWithGravity(
+                Toast.showWithGravity(
                   'You have to Login to Proceed Renting',
-                  ToastAndroid.LONG,
-                  ToastAndroid.TOP,
+                  Toast.LONG,
+                  Toast.TOP,
                 );
                 navigateTo('LoginScreen');
               }

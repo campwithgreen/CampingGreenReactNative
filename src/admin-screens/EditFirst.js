@@ -6,7 +6,6 @@ import {
   ImageBackground,
   ScrollView,
   TouchableOpacity,
-  ToastAndroid,
   Image,
 } from 'react-native';
 import {
@@ -23,6 +22,7 @@ import {showDefaultErrorAlert} from '../global/global';
 import {connect, useDispatch} from 'react-redux';
 import newItem from '../constants/newItem.json';
 import {createNewItemData} from '../redux/actions/common';
+import Toast from 'react-native-simple-toast';
 
 const mapDispatchToProps = (st, ownProps) => {
   const storee = st;
@@ -34,8 +34,6 @@ const mapDispatchToProps = (st, ownProps) => {
 };
 
 const EditFirst = props => {
-  console.log('THE PROPS', props);
-
   const {storee, new_item_data} = props;
   const {type, updateId, product} = props?.route?.params;
   const dispatch = useDispatch();
@@ -45,8 +43,8 @@ const EditFirst = props => {
     dispatch(createNewItemData(newItemHolder));
   }, [type, newItemHolder]);
 
-  console.log('THE STORE ====>', storee);
-  console.log('NEW ITEM DATA', new_item_data);
+  // console.log("THE STORE ====>", storee);
+  // console.log('NEW ITEM DATA', new_item_data);
 
   const headerContent = {
     leftItemContents: {
@@ -56,11 +54,11 @@ const EditFirst = props => {
     },
     middleItemContents: {
       type: 'text',
-      content: type === 'LOCATION' ? '캠핑장 수정하기' : '용품대여 수정하기',
+      content: '용품대여 수정하기',
     },
   };
 
-  const [count, setCount] = useState(product?.stock);
+  const [count, setCount] = useState(product?.stock || 0);
 
   const decrement = () => {
     if (count > 0) {
@@ -68,10 +66,10 @@ const EditFirst = props => {
       setNewItemHolder(updatedItem);
       setCount(i => i - 1);
     } else {
-      ToastAndroid.showWithGravity(
+      Toast.showWithGravity(
         'Stock unit cannot be lower than 0',
-        ToastAndroid.LONG,
-        ToastAndroid.TOP,
+        Toast.LONG,
+        Toast.TOP,
       );
     }
   };
@@ -81,8 +79,8 @@ const EditFirst = props => {
     Object?.keys(product?.specifications)?.map((key, ind) => {
       spp.push({
         id: ind + 1,
-        p1: 'Ex)',
-        p2: '코랄',
+        p1: '',
+        p2: '',
         d1: key,
         d2: product.specifications[key],
         keyAtt: key,
@@ -90,15 +88,15 @@ const EditFirst = props => {
       });
     });
   }
-
+  // console.log('spp', spp);
   const [specification, setSpecification] = useState(spp);
 
   let cc = [];
   product.category.map((cat, ind) => {
     cc.push({
       id: ind + 1,
-      p1: 'Ex)',
-      p2: '코랄',
+      p1: '',
+      p2: '',
       d1: cat,
       d2: cat,
       keyAtt: cat,
@@ -112,8 +110,8 @@ const EditFirst = props => {
   product.tag.map((tagg, ind) => {
     tt.push({
       id: ind + 1,
-      p1: 'Ex)',
-      p2: '코랄',
+      p1: '',
+      p2: '',
       d1: tagg,
       d2: tagg,
       keyAtt: tagg,
@@ -139,8 +137,8 @@ const EditFirst = props => {
       Object?.keys(ac?.add_feature_value)?.map((key, indd) => {
         afv.push({
           id: indd + 1,
-          p1: 'Ex)',
-          p2: '코랄',
+          p1: '',
+          p2: '',
           d1: key,
           d2: ac?.add_feature_value[key],
           keyAtt: key,
@@ -156,17 +154,17 @@ const EditFirst = props => {
   }
   const [additionalCharges, setAdditionalCharges] = useState(af);
 
-  console.log('THE SPEC +++++++++++++++++++', specification);
+  // console.log('THE SPEC +++++++++++++++++++', specification);
 
   const handleDeleteImage = ind => {
     let newCarouselImages = [...carouselImages];
     if (carouselImages.length > 1) {
       newCarouselImages.splice(ind, 1);
     } else {
-      ToastAndroid.showWithGravity(
+      Toast.showWithGravity(
         'Pls add atleast one specification',
-        ToastAndroid.LONG,
-        ToastAndroid.TOP,
+        Toast.LONG,
+        Toast.TOP,
       );
     }
     setCarouselImages(newCarouselImages);
@@ -223,7 +221,7 @@ const EditFirst = props => {
       });
     };
     updateSpecificationstoNewItem();
-    console.log('UPDATED SPEC', updateSpec);
+    // console.log('UPDATED SPEC', updateSpec);
     let updatedItem = {...new_item_data, specifications: updateSpec};
     setNewItemHolder(updatedItem);
   }, [specification]);
@@ -448,7 +446,7 @@ const EditFirst = props => {
                       style={{
                         position: 'absolute',
                         left: '50%',
-                        color: '#fff',
+                        color: 'white',
                         transform: [{translateX: -50}, {translateY: 53}],
                       }}>
                       사진 업로드하기
@@ -697,11 +695,68 @@ const EditFirst = props => {
       <View>
         <TouchableOpacity
           onPress={() => {
+            // let res = false;
+            // if (type == 'LOCATION' || type === 'SUBLOCATION') {
+            //   category.map(item => {
+            //     console.log('into item ', item);
+            //     if (item?.p1 != '') {
+            //       Toast.showWithGravity(
+            //         '빈 필드를 삭제하거나 입력해주세요 ',
+            //         Toast.LONG,
+            //         Toast.TOP,
+            //       );
+            //       res = false;
+            //       return res;
+            //     } else {
+            //       res = true;
+            //       return res;
+            //     }
+            //   });
+
+            //   tag.map(item => {
+            //     // console.log('into item ', item);
+            //     if (item?.p1 != '') {
+            //       Toast.showWithGravity(
+            //         '빈 필드를 삭제하거나 입력해주세요 ',
+            //         Toast.LONG,
+            //         Toast.TOP,
+            //       );
+            //       res = false;
+            //       return res;
+            //     } else {
+            //       res = true;
+            //       return res;
+            //     }
+            //   });
+            //   additionalCharges.map(item => {
+            //     // console.log('into item ', item);
+            //     if (item?.p1 != '') {
+            //       Toast.showWithGravity(
+            //         '빈 필드를 삭제하거나 입력해주세요 ',
+            //         Toast.LONG,
+            //         Toast.TOP,
+            //       );
+            //       res = false;
+            //       return res;
+            //     } else {
+            //       res = true;
+            //       return res;
+            //     }
+            //   });
+            //   if (res) {
+            //     navigateTo('EditSecondScreen', {
+            //       type: type,
+            //       updateId: updateId,
+            //       product: product,
+            //     });
+            //   }
+            // } else {
             navigateTo('EditSecondScreen', {
               type: type,
               updateId: updateId,
               product: product,
             });
+            // }
           }}>
           <View style={styles.btn}>
             <Text style={styles.btnText}>수정 완료</Text>
@@ -759,12 +814,16 @@ const Comp2 = props => {
     let newSpecification = [...specification];
     if (specification.length > 1) {
       newSpecification.splice(ind, 1);
-    } else {
-      ToastAndroid.showWithGravity(
-        'Pls add atleast one specification',
-        ToastAndroid.LONG,
-        ToastAndroid.TOP,
-      );
+    } else if (specification.length == 1) {
+      if (newSpecification.p1 == undefined) {
+        newSpecification.splice(ind);
+      }
+
+      // Toast.showWithGravity(
+      //   'Pls add atleast one specification',
+      //   Toast.LONG,
+      //   Toast.TOP,
+      // );
     }
     setSpecification(newSpecification);
   };
@@ -790,7 +849,7 @@ const Comp2 = props => {
             newSpecification[parInd].add_feature_value[ind].keyAtt = text;
             setSpecification(newSpecification);
           } else {
-            console.log('THE SPECIFICATION INDEX', specification, ind);
+            // console.log('THE SPECIFICATION INDEX', specification, ind);
             let newSpecification = [...specification];
             newSpecification[ind].keyAtt = text;
             setSpecification(newSpecification);
@@ -922,7 +981,7 @@ const Comp3 = props => {
           style={{
             backgroundColor: 'lightgrey',
             borderRadius: 50,
-            color: '#fff',
+            color: 'white',
             fontSize: 24,
             fontWeight: 'bold',
             paddingHorizontal: wp('2.6%'),
@@ -933,7 +992,7 @@ const Comp3 = props => {
           +
         </Text>
       </TouchableOpacity>
-      <Text style={{color: '#000'}}>{t1}</Text>
+      <Text>{t1}</Text>
     </View>
   );
 };
@@ -951,7 +1010,7 @@ const styles = StyleSheet.create({
   },
   text1: {
     fontWeight: 'bold',
-    color: '#000',
+    color: 'black',
     fontSize: 16,
   },
   text2: {

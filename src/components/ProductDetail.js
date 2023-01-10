@@ -78,7 +78,7 @@ const RenderItem = ({item}) => {
 
 const ProductDetail = props => {
   const {product} = props;
-  console.log('DETAIL Product', product);
+  // console.log('DETAIL Product', product);
   const ProductData = [
     {
       specifications: {

@@ -9,7 +9,7 @@ import {LogBox} from 'react-native';
 LogBox.ignoreLogs([
   'Remote debugger',
   'Non-serializable values were found in the navigation state',
-
+  'VirtualizedLists should never be nested inside plain ScrollViews with the same orientation because it can break windowing and other functionality - use another VirtualizedList-backed container instead.',
   'Each child in a list should have a unique "key" prop.',
   "Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.",
   'RCTBridge required dispatch_sync to load RCTDevLoadingView. This may lead to deadlocks',

@@ -6,6 +6,9 @@ install! 'cocoapods', :deterministic_uuids => false
 
 target 'Greencamp' do
   config = use_native_modules!
+  pod 'GoogleMaps'
+  rn_maps_path = '../node_modules/react-native-maps'
+  pod 'react-native-google-maps', :path => rn_maps_path
 
   # Flags change depending on the env values.
   flags = get_default_flags()
@@ -23,9 +26,7 @@ target 'Greencamp' do
     inherit! :complete
     # Pods for testing
   end
-  pod 'GoogleMaps'
-  rn_maps_path = '../node_modules/react-native-maps'
-  pod 'react-native-google-maps', :path => rn_maps_path
+  
   # Enables Flipper.
   #
   # Note that if you have use_frameworks! enabled, Flipper will not work and

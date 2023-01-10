@@ -6,8 +6,8 @@ import {
   TouchableOpacity,
   ScrollView,
   Button,
-  ToastAndroid,
 } from 'react-native';
+import Toast from 'react-native-simple-toast';
 import Header from '../layout/Header';
 import {goBack, navigateTo} from '../navigation/utils/RootNavigation';
 import globalStyle from '../global/globalStyle';
@@ -67,10 +67,10 @@ export const ProfileScreen = props => {
       content: require('../assets/images/cart.png'),
       navigateScreen: () => {
         if (!isLogin) {
-          ToastAndroid.showWithGravity(
+          Toast.showWithGravity(
             'Pls Login to View Cart',
-            ToastAndroid.LONG,
-            ToastAndroid.TOP,
+            Toast.LONG,
+            Toast.TOP,
           );
         } else {
           navigateTo('ProductShoppingBagScreen');
@@ -103,11 +103,7 @@ export const ProfileScreen = props => {
 
   const handleLogout = () => {
     dispatch(logout());
-    ToastAndroid.showWithGravity(
-      'Logged Out Successfully',
-      ToastAndroid.LONG,
-      ToastAndroid.TOP,
-    );
+    Toast.showWithGravity('Logged Out Successfully', Toast.LONG, Toast.TOP);
   };
 
   useEffect(() => {

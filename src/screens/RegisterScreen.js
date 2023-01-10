@@ -6,10 +6,8 @@ import {
   TouchableOpacity,
   ScrollView,
   Button,
-  ToastAndroid,
   Alert,
   Modal,
-  Platform,
 } from 'react-native';
 import Header from '../layout/Header';
 import {goBack, navigateTo} from '../navigation/utils/RootNavigation';
@@ -37,7 +35,7 @@ const headerContent = {
 
 export const RegisterScreen = props => {
   const st = useSelector(st => st);
-  console.log('STORE', st);
+  // console.log('STORE', st);
 
   const dispatch = useDispatch();
   const {
@@ -131,10 +129,10 @@ export const RegisterScreen = props => {
   const handleRegister = async () => {
     if (name && email) {
       if (!validateEmail(email)) {
-        ToastAndroid.showWithGravity(
+        Toast.showWithGravity(
           'Pls enter a vaild email',
-          ToastAndroid.SHORT,
-          ToastAndroid.TOP,
+          Toast.SHORT,
+          Toast.TOP,
         );
       } else {
         console.log('HELLO REGISTER');
@@ -169,10 +167,10 @@ export const RegisterScreen = props => {
           console.log('REGISTER RES', res.data);
           dispatch(setUserData(res.data));
           if (res.data.success) {
-            ToastAndroid.showWithGravity(
+            Toast.showWithGravity(
               'Successfully Registered And Logged In',
-              ToastAndroid.LONG,
-              ToastAndroid.TOP,
+              Toast.LONG,
+              Toast.TOP,
             );
             dispatch(login(true));
             navigateTo('HomeScreen');
@@ -184,10 +182,10 @@ export const RegisterScreen = props => {
           }
         });
     } else {
-      ToastAndroid.showWithGravity(
+      Toast.showWithGravity(
         'Pls check all the terms and consent to register your account',
-        ToastAndroid.SHORT,
-        ToastAndroid.TOP,
+        Toast.SHORT,
+        Toast.TOP,
       );
     }
   };

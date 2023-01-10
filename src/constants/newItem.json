@@ -23,9 +23,10 @@
                         }
                     ],
                     "additional_charges": [],
-                    "latitude": "",
-                    "longitude": "",
-                    "contactNumber": "",
+                    "coordinate":{ "latitude": "",
+                    "longitude": ""},
+          
+                    "phone": "",
                     "locationAddress": "",
                     "price": "",
                     "campLink":"",

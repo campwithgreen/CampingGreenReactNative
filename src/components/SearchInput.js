@@ -5,7 +5,6 @@ import {
   View,
   Image,
   TouchableOpacity,
-  ToastAndroid,
   Keyboard,
 } from 'react-native';
 import {

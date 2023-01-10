@@ -5,7 +5,6 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  ToastAndroid,
 } from 'react-native';
 import {
   heightPercentageToDP,
@@ -27,7 +26,7 @@ const headerContent = {
   middleItemContents: {
     type: 'text',
     content: '예약내역',
-    navigateScreen: 'ProfileScreen',
+    navigateScreen: () => goBack(),
   },
   leftItemContents: {
     type: 'image',
@@ -55,7 +54,7 @@ const RoomReservationListScreen = () => {
   }, Object.create(null));
 
   return (
-    <View style={{backgroundColor: '#fff', height: hp('100%')}}>
+    <View style={{backgroundColor: 'white', height: hp('100%')}}>
       <Header headerContent={headerContent} />
       <Text style={{borderBottomWidth: 1.5, borderBottomColor: '#515151'}} />
       <ScrollView style={{marginBottom: heightPercentageToDP('15%')}}>
@@ -210,7 +209,7 @@ const Comp3 = ({itemData}) => {
         <Text style={styles.comp3Text1}>{directItem.title}</Text>
         {directItem.type === 'LOCATION' && (
           <Text>
-            <Text style={{fontWeight: 'bold', color: '#000'}}>{'hello'} </Text>
+            <Text style={{fontWeight: 'bold'}}>{'hello'} </Text>
             <Text style={styles.comp3Text1}>{'hello'}</Text>
           </Text>
         )}

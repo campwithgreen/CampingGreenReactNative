@@ -1,10 +1,5 @@
-import {
-  StyleSheet,
-  Text,
-  ToastAndroid,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import Toast from 'react-native-simple-toast';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -33,7 +28,8 @@ const ThirdScreen3 = props => {
       })
       .catch(err => {
         console.log('err', err);
-        showDefaultErrorAlert();
+        showDefaultErrorAlert('이미 취소되었습니다.');
+        navigateTo('Product');
       });
   };
 
@@ -48,10 +44,10 @@ const ThirdScreen3 = props => {
           await getAllOrders().then(r => {
             dispatch(setUserCartHistory(r?.data?.data));
           });
-          ToastAndroid.showWithGravity(
+          Toast.showWithGravity(
             'Status Successfully Updated',
-            ToastAndroid.LONG,
-            ToastAndroid.TOP,
+            Toast.LONG,
+            Toast.TOP,
           );
         }
       })

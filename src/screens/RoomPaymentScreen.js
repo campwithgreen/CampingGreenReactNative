@@ -7,8 +7,8 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
-  ToastAndroid,
 } from 'react-native';
+import Toast from 'react-native-simple-toast';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -225,43 +225,43 @@ const RoomPaymentScreen = props => {
                 })
                 .catch(err => {
                   if (err) {
-                    console.log('ROOM PAYMENT ERROR', err);
+                    console.log(' PAYMENT ERROR', err);
                     showDefaultErrorAlert();
                   }
                 });
             } else {
-              ToastAndroid.showWithGravity(
+              Toast.showWithGravity(
                 '요청사항이 입력해 주세요.',
-                ToastAndroid.SHORT,
-                ToastAndroid.TOP,
+                Toast.SHORT,
+                Toast.TOP,
               );
             }
           } else {
-            ToastAndroid.showWithGravity(
+            Toast.showWithGravity(
               '용품대여인 경우 배송지 캠핑예약인 경우에 차량번호를 입력해 주세요)',
-              ToastAndroid.SHORT,
-              ToastAndroid.TOP,
+              Toast.SHORT,
+              Toast.TOP,
             );
           }
         } else {
-          ToastAndroid.showWithGravity(
+          Toast.showWithGravity(
             '전화번호 입력해 주세요.',
-            ToastAndroid.SHORT,
-            ToastAndroid.TOP,
+            Toast.SHORT,
+            Toast.TOP,
           );
         }
       } else {
-        ToastAndroid.showWithGravity(
+        Toast.showWithGravity(
           '예약자 이름 입력해 주세요.',
-          ToastAndroid.SHORT,
-          ToastAndroid.TOP,
+          Toast.SHORT,
+          Toast.TOP,
         );
       }
     } else {
-      ToastAndroid.showWithGravity(
+      Toast.showWithGravity(
         '무통장 입금 체크해 주세요.',
-        ToastAndroid.SHORT,
-        ToastAndroid.TOP,
+        Toast.SHORT,
+        Toast.TOP,
       );
     }
   };

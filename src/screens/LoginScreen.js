@@ -8,7 +8,6 @@ import {
   Button,
   Alert,
   TouchableOpacity,
-  ToastAndroid,
 } from 'react-native';
 import {RFPercentage} from 'react-native-responsive-fontsize';
 import {
@@ -17,6 +16,7 @@ import {
   widthPercentageToDP,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
+import Toast from 'react-native-simple-toast';
 import FormField from '../components/common/FormField';
 import COLOR from '../constants/colors';
 import globalStyle from '../global/globalStyle';
@@ -127,34 +127,33 @@ export default function LoginScreen() {
           dispatch(setUserData(res.data));
           if (res.data.formSubmissionRequired) {
             console.log('ENTERED REGISTER REQUIRED');
-            ToastAndroid.showWithGravity(
+            Toast.showWithGravity(
               'OTP Successfully Sent, Pls verify your number and register you account',
-              ToastAndroid.SHORT,
-              ToastAndroid.TOP,
+              Toast.SHORT,
+              Toast.TOP,
             );
             setGetOtpButtonEnabled(false);
           } else {
             console.log('ENTERED REGISTER REQUIRED 2');
             setOptSent(true);
-            ToastAndroid.showWithGravity(
+            Toast.showWithGravity(
               'OTP Successfully Sent',
-              ToastAndroid.LONG,
-              ToastAndroid.TOP,
+              Toast.LONG,
+              Toast.TOP,
             );
             setGetOtpButtonEnabled(false);
           }
         })
         .catch(err => {
           if (err) {
-            console.log('handleGetOtp>>>> error');
             showDefaultErrorAlert();
           }
         });
     } else {
-      ToastAndroid.showWithGravity(
+      Toast.showWithGravity(
         'Pls, enter a valid phone number !',
-        ToastAndroid.SHORT,
-        ToastAndroid.TOP,
+        Toast.SHORT,
+        Toast.TOP,
       );
     }
   };
@@ -191,25 +190,24 @@ export default function LoginScreen() {
               );
             } else {
               dispatch(login(true));
-              ToastAndroid.showWithGravity(
+              Toast.showWithGravity(
                 'Logged In Successfully',
-                ToastAndroid.LONG,
-                ToastAndroid.TOP,
+                Toast.LONG,
+                Toast.TOP,
               );
               navigateTo('HomeScreen');
             }
           } else {
-            ToastAndroid.showWithGravity(
+            Toast.showWithGravity(
               res.data.message.toUpperCase(),
-              ToastAndroid.LONG,
-              ToastAndroid.TOP,
+              Toast.LONG,
+              Toast.TOP,
             );
           }
         }
       })
       .catch(err => {
         if (err) {
-          console.log('handleLogin>>>>', err);
           showDefaultErrorAlert();
         }
       });
@@ -253,6 +251,7 @@ export default function LoginScreen() {
                     placeholder="1011112222 -없이 숫자만 입력해주세요"
                     onFocus={() => onFocus()}
                     onBlur={() => onBlur()}
+                    keyboardType="number-pad"
                     onChangeText={value => {
                       setPhoneNumber(value);
                     }}
@@ -270,10 +269,10 @@ export default function LoginScreen() {
                     if (getOtpButtonEnabled) {
                       handleGetOtp(phoneNumber);
                     } else {
-                      ToastAndroid.showWithGravity(
+                      Toast.showWithGravity(
                         'OTP has already sent, Pls use it',
-                        ToastAndroid.LONG,
-                        ToastAndroid.TOP,
+                        Toast.LONG,
+                        Toast.TOP,
                       );
                     }
                   }}

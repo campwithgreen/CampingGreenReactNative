@@ -7,7 +7,6 @@ import {
   ScrollView,
   TouchableOpacity,
   FlatList,
-  Platform,
 } from 'react-native';
 import Header from '../layout/Header';
 import {
@@ -26,6 +25,7 @@ import globalStyle from '../global/globalStyle';
 import COLOR from '../constants/colors';
 import {navigateTo} from '../navigation/utils/RootNavigation';
 import DropDownPicker from 'react-native-dropdown-picker';
+import Toast from 'react-native-simple-toast';
 
 export const Product = props => {
   const {container, ddCont} = styles;
@@ -36,12 +36,12 @@ export const Product = props => {
   const st = useSelector(st => st);
   const product = useSelector(st => st.product?.product);
   const isLogin = useSelector(st => st.oauth.isLogin);
-  console.log('STORE', st);
+  // console.log('STORE', st);
 
   const headerContent = {
     leftItemContents: {
       type: 'text',
-      content: 'CAMPING GREEN',
+      content: 'CAMPING GREEEN',
       navigateScreen: 'HomeScreenDetail1',
     },
     rightItemContents: {
@@ -49,10 +49,10 @@ export const Product = props => {
       content: require('../assets/images/cart.png'),
       navigateScreen: () => {
         if (!isLogin) {
-          ToastAndroid.showWithGravity(
+          Toast.showWithGravity(
             'Pls Login to View Cart',
-            ToastAndroid.LONG,
-            ToastAndroid.TOP,
+            Toast.LONG,
+            Toast.TOP,
           );
         } else {
           navigateTo('ProductShoppingBagScreen');
@@ -101,7 +101,7 @@ export const Product = props => {
 
   const filterData = async filterValue => {
     let data = (data = {type: 'PRODUCT'});
-
+    console.log('filterdata', filterValue);
     if (filterValue !== 'all') {
       data = {type: 'PRODUCT', filter: filterValue};
     }
@@ -110,9 +110,10 @@ export const Product = props => {
     await getAllProducts(data)
       .then(res => {
         if (res) {
-          if (res.data.data?.length >= 1) {
-            dispatch(setProductData(res.data.data));
-          }
+          console.log('hello item', res.data.data);
+          // if (res.data.data?.length >= 1) {
+          dispatch(setProductData(res.data.data));
+          // }
           setLoading(false);
         }
       })
@@ -126,6 +127,7 @@ export const Product = props => {
 
   const handleFilter = value => {
     setValue(value);
+
     filterData(value);
   };
 

@@ -53,7 +53,12 @@ const Input = ({
       <TextInput
         style={[
           styles.textinput1,
-          {paddingLeft: wp('3%'), fontWeight: 'bold', color: '#1B1D1F'},
+          {
+            paddingLeft: wp('3%'),
+            fontWeight: 'bold',
+            color: '#1B1D1F',
+            fontSize: RFPercentage(1.6),
+          },
         ]}
         placeholder={t2}
         placeholderTextColor="gray"
@@ -287,7 +292,7 @@ const RoomPaymentScreen = props => {
                   t2={moment(cart.startDate).utc().format('MM-DD-YYYY')}
                 />
                 <Div
-                  t1="대여 시작일"
+                  t1="대여 마지막일"
                   t2={moment(cart.endDate).utc().format('MM-DD-YYYY')}
                 />
               </View>
@@ -368,8 +373,9 @@ const RoomPaymentScreen = props => {
                 styles.textinput1,
                 {
                   height: 60,
-                  textAlignVertical: 'top',
-                  paddingLeft: wp('5%'),
+                  // textAlignVertical: 'top',
+                  paddingLeft: wp('3%'),
+                  fontSize: RFPercentage(1.6),
                 },
               ]}
               onChangeText={value => {

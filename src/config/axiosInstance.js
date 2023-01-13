@@ -2,7 +2,7 @@ import axios from 'axios';
 import store from '../redux/store';
 
 let PROD_BASE_URL = 'https://campinggreen.onrender.com';
-let DEV_BASE_URL = 'http://localhost:9000/';
+let DEV_BASE_URL = 'http://192.168.0.3:9000/';
 // https://campinggreen.onrender.com https://codinghumans.herokuapp.com/
 
 const axiosInstance = axios.create({

@@ -758,7 +758,7 @@ const EditFirst = props => {
             });
             // }
           }}>
-          <View style={styles.btn}>
+          <View style={[styles.btn, {bottom: 0}]}>
             <Text style={styles.btnText}>수정 완료</Text>
           </View>
         </TouchableOpacity>
@@ -1034,7 +1034,7 @@ const styles = StyleSheet.create({
     paddingVertical: hp('2%'),
     width: wp('90%'),
     marginHorizontal: wp('5%'),
-    marginBottom: hp('3%'),
+    // marginBottom: hp('3%'),
   },
   btnText: {
     textAlign: 'center',

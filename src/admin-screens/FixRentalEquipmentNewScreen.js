@@ -927,7 +927,6 @@ const styles = StyleSheet.create({
     paddingVertical: hp('2%'),
     width: wp('90%'),
     marginHorizontal: wp('5%'),
-    marginBottom: hp('5%'),
   },
   btnText: {
     textAlign: 'center',

@@ -62,7 +62,7 @@ const RoomScreen = () => {
   const location = useSelector(st => st.product.location);
 
   const [placeLoc, setPlaceLoc] = useState(location);
-
+  console.log('location, placeLoc', location, placeLoc);
   useEffect(() => {
     setState({...state, markers: placeLoc});
 
@@ -219,10 +219,14 @@ const RoomScreen = () => {
                     },
                   ],
                 };
+                let coordinates = {
+                  latitude: parseFloat(marker.coordinate.latitude),
+                  longitude: parseFloat(marker.coordinate.longitude),
+                };
                 return (
                   <Marker
                     key={index}
-                    coordinate={marker.coordinate}
+                    coordinate={coordinates}
                     onPress={e => onMarkerPress(e)}>
                     <Animated.View style={[styles.markerWrap]}>
                       <Animated.Image

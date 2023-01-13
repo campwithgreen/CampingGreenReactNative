@@ -153,7 +153,7 @@ const SecondScreen = () => {
                 Toast.SHORT,
                 Toast.TOP,
               );
-              navigateTo('RoomPaypmentScreen');
+              navigateTo('RoomPaymentScreen');
               setModalVisible(false);
             }
           })

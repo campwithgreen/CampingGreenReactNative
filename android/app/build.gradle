@@ -79,11 +79,7 @@ import org.apache.tools.ant.taskdefs.condition.Os
  */
 
 project.ext.react = [
-<<<<<<< HEAD
-    enableHermes: false,  // clean and rebuild if changing
-=======
-    enableHermes: true,  // clean and rebuild if changing
->>>>>>> origin/master
+    enableHermes:false,  // clean and rebuild if changing
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -145,7 +141,6 @@ android {
         versionCode 18
         versionName "1.0.0"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
-
         if (isNewArchitectureEnabled()) {
             // We configure the NDK build only if you decide to opt-in for the New Architecture.
             externalNativeBuild {

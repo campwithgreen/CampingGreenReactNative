@@ -15,6 +15,7 @@ import React, {useState} from 'react';
 import {showDefaultErrorAlert} from '../global/global';
 import {useDispatch} from 'react-redux';
 import {searchUser} from '../apis/admin';
+import {RFPercentage} from 'react-native-responsive-fontsize';
 
 const AdminSearchInput = props => {
   const {setUsers, setLoading, getUser} = props;
@@ -50,11 +51,12 @@ const AdminSearchInput = props => {
         style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
+          alignItems: 'center',
           paddingHorizontal: hp(1),
-          paddingVertical: hp(1),
+          paddingVertical: Platform.OS === 'android' ? hp(0) : hp(1),
         }}>
         <TextInput
-          placeholder="search user"
+          placeholder="사용자 이름이나 번호로 검색해주세요."
           style={styles.searchbox}
           onChangeText={value => {
             setSearchText(value);
@@ -83,7 +85,7 @@ const styles = StyleSheet.create({
     // position: 'absolute',
     zIndex: 22,
     backgroundColor: '#fff',
-    width: wp('90%'),
+    width: wp(90),
     marginLeft: 'auto',
     marginRight: 'auto',
     // height: 70,
@@ -91,7 +93,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   searchbox: {
-    fontSize: 18,
+    fontSize: RFPercentage(1.8),
 
     width: wp('80%'),
   },

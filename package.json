@@ -10,7 +10,8 @@
     "test": "jest",
     "lint": "eslint .",
     "up": "git add . && git commit -m 'fix' && git push origin saurav",
-    "postversion": "react-native-version"
+    "postversion": "react-native-version",
+    "androidcb":"cd android && ./gradlew clean && cd .. && npm run android"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.7",

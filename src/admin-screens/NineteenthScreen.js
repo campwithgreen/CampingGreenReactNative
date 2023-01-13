@@ -67,15 +67,30 @@ const NineteenthScreen = () => {
         backgroundColor: 'white',
         paddingBottom: hp('17%'),
         height: '100%',
+        width: wp(100),
       }}>
       <Header headerContent={headerContent} />
       {loading ? (
         <Loader />
       ) : (
-        <View>
-          <Text
-            style={{borderBottomWidth: 2, borderBottomColor: '#F8F8F8'}}></Text>
-          <View>
+        <View
+          style={
+            {
+              // flex: 1,
+              // alignItems: 'center',
+              // justifyContent: 'center',
+              // backgroundColor: 'red',
+              // height: '100%',
+            }
+          }>
+          <View
+            style={{
+              marginTop: hp(2),
+              marginBottom: hp(2),
+              width: wp(90),
+              marginLeft: 'auto',
+              marginRight: 'auto',
+            }}>
             <Button
               title="Logout"
               onPress={() => {
@@ -91,7 +106,17 @@ const NineteenthScreen = () => {
               getUser={getUsers}
             />
           </View>
-          <ScrollView style={{marginTop: hp('5%'), marginBottom: hp(8)}}>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginHorizontal: wp('5%'),
+              marginVertical: hp(1),
+            }}>
+            <Text style={{fontWeight: 'bold'}}>최신순</Text>
+          </View>
+          <ScrollView style={{marginBottom: hp(8)}}>
             {/* <TextInput
                 style={{
                   borderWidth: 1,
@@ -107,32 +132,7 @@ const NineteenthScreen = () => {
                   }
                 }}
               /> */}
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginHorizontal: wp('5%'),
-              }}>
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  paddingTop: wp('5%'),
-                }}>
-                <Text style={{fontWeight: 'bold'}}>최신순</Text>
-                {/* <Text
-              style={{
-                paddingLeft: wp('4%'),
-                fontWeight: 'bold',
-                color: 'black',
-              }}>
-              오래된순
-            </Text> */}
-              </View>
-              <View></View>
-            </View>
+
             {users && users.length >= 1 ? (
               users.map((ele, i) => <Comp1 item={ele} key={i} />)
             ) : (

@@ -6,6 +6,7 @@ import {
   ImageBackground,
   ScrollView,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import {
   heightPercentageToDP as hp,
@@ -228,6 +229,7 @@ const FixRentalSuppliesScreen = props => {
         </ScrollView>
         <View style={styles.btn}>
           <TouchableOpacity
+            style={{width: wp(90), marginLeft: 'auto', marginRight: 'auto'}}
             onPress={() => {
               if (type === 'SUBLOCATION') {
                 addSubLocationData();
@@ -488,10 +490,10 @@ const styles = StyleSheet.create({
   btn: {
     backgroundColor: '#E5E5E5',
     position: 'absolute',
-    bottom: 90,
+    bottom: Platform.OS == 'android' ? 50 : 100,
     paddingVertical: hp('2%'),
-    width: wp('90%'),
-    marginHorizontal: wp('5%'),
+    width: wp(100),
+
     paddingVertical: hp('2%'),
   },
   btnText: {

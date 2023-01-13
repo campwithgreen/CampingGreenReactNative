@@ -65,7 +65,7 @@ const Rent = props => {
   const title = useSelector(st => st.common?.selected_location.title);
   const phone = useSelector(st => st.common?.selected_location.phone);
 
-  console.log('SL', subLocations?.campLink);
+  // console.log('SL', subLocations?.campLink);
 
   const [modalVisible, setModalVisible] = useState(false);
   // console.log('subLocations', subLocations);

@@ -24,7 +24,7 @@ import {addSubLocation, createItem} from '../apis/admin';
 import {showDefaultErrorAlert} from '../global/global';
 import {getAllProducts} from '../apis/product';
 import {setProductData, setLocationData} from '../redux/actions/product';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-toast-message';
 
 const mapStateToProps = (st, ownProps) => {
   const storee = st;
@@ -101,19 +101,21 @@ const FixRentalSuppliesScreen = props => {
         if (res) {
           if (type === 'PRODUCT') {
             fetchAndSetProducts('PRODUCT');
-            Toast.showWithGravity(
-              `${type} CREATED SUCCESSFULLY`,
-              Toast.TOP,
-              Toast.LONG,
-            );
+            Toast.show({
+              type: 'success',
+              text1: `${type} 성공적으로 생성되었습니다.`,
+              visibilityTime: 2000,
+            });
+
             navigateTo('EquipmentRentalScreen');
           } else if (type === 'LOCATION') {
             fetchAndSetProducts('LOCATION');
-            Toast.showWithGravity(
-              `${type} CREATED SUCCESSFULLY`,
-              Toast.TOP,
-              Toast.LONG,
-            );
+            Toast.show({
+              type: 'success',
+              text1: `${type} 성공적으로 생성되었습니다.`,
+              visibilityTime: 2000,
+            });
+
             navigateTo('FourteenthScreen', {newItemCreated: true});
           }
         }
@@ -129,11 +131,12 @@ const FixRentalSuppliesScreen = props => {
       .then(res => {
         if (res) {
           fetchAndSetProducts('LOCATION');
-          Toast.showWithGravity(
-            `${type} ADDED SUCCESSFULLY`,
-            Toast.TOP,
-            Toast.LONG,
-          );
+          Toast.show({
+            type: 'success',
+            text1: `${type} 성공적으로 추가되었습니다.`,
+            visibilityTime: 2000,
+          });
+
           navigateTo('FourteenthScreen');
         }
       })
@@ -303,11 +306,11 @@ const Comp = props => {
     if (allFeatures.length > 1) {
       allFeatures.splice(ind, 1);
     } else {
-      Toast.showWithGravity(
-        'Pls add atleast one specification',
-        Toast.LONG,
-        Toast.TOP,
-      );
+      Toast.show({
+        type: 'info',
+        text1: '한 개이상 specification을 입력해주세요',
+        visibilityTime: 2000,
+      });
     }
     setAllFeatures(newCarouselImages);
   };

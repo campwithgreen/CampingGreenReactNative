@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import React, {useState, useEffect} from 'react';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-toast-message';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -52,11 +52,11 @@ const ProductShoppingBag = props => {
       setProductList(newData);
       setCount(i => i - 1);
     } else {
-      Toast.showWithGravity(
-        'Minimum 1 unit must be for a cart item',
-        Toast.LONG,
-        Toast.TOP,
-      );
+      Toast.show({
+        type: 'info',
+        text1: '최소 한 개 이상 있어야 합니다.',
+        visibilityTime: 2000,
+      });
     }
   };
 

@@ -22,7 +22,7 @@ import {showDefaultErrorAlert} from '../global/global';
 import {connect, useDispatch} from 'react-redux';
 import newItem from '../constants/newItem.json';
 import {createNewItemData} from '../redux/actions/common';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-toast-message';
 
 const mapDispatchToProps = (st, ownProps) => {
   const storee = st;
@@ -66,11 +66,11 @@ const EditFirst = props => {
       setNewItemHolder(updatedItem);
       setCount(i => i - 1);
     } else {
-      Toast.showWithGravity(
-        'Stock unit cannot be lower than 0',
-        Toast.LONG,
-        Toast.TOP,
-      );
+      Toast.show({
+        type: 'error',
+        text1: '0보다 적을 수 없습니다.',
+        visibilityTime: 2000,
+      });
     }
   };
 
@@ -161,11 +161,11 @@ const EditFirst = props => {
     if (carouselImages.length > 1) {
       newCarouselImages.splice(ind, 1);
     } else {
-      Toast.showWithGravity(
-        'Pls add atleast one specification',
-        Toast.LONG,
-        Toast.TOP,
-      );
+      Toast.show({
+        type: 'error',
+        text1: 'Specification을 하나 이상 있어야 합니다.',
+        visibilityTime: 2000,
+      });
     }
     setCarouselImages(newCarouselImages);
   };
@@ -700,11 +700,7 @@ const EditFirst = props => {
             //   category.map(item => {
             //     console.log('into item ', item);
             //     if (item?.p1 != '') {
-            //       Toast.showWithGravity(
-            //         '빈 필드를 삭제하거나 입력해주세요 ',
-            //         Toast.LONG,
-            //         Toast.TOP,
-            //       );
+            //
             //       res = false;
             //       return res;
             //     } else {
@@ -716,11 +712,7 @@ const EditFirst = props => {
             //   tag.map(item => {
             //     // console.log('into item ', item);
             //     if (item?.p1 != '') {
-            //       Toast.showWithGravity(
-            //         '빈 필드를 삭제하거나 입력해주세요 ',
-            //         Toast.LONG,
-            //         Toast.TOP,
-            //       );
+            //
             //       res = false;
             //       return res;
             //     } else {
@@ -731,11 +723,7 @@ const EditFirst = props => {
             //   additionalCharges.map(item => {
             //     // console.log('into item ', item);
             //     if (item?.p1 != '') {
-            //       Toast.showWithGravity(
-            //         '빈 필드를 삭제하거나 입력해주세요 ',
-            //         Toast.LONG,
-            //         Toast.TOP,
-            //       );
+            //
             //       res = false;
             //       return res;
             //     } else {
@@ -818,12 +806,6 @@ const Comp2 = props => {
       if (newSpecification.p1 == undefined) {
         newSpecification.splice(ind);
       }
-
-      // Toast.showWithGravity(
-      //   'Pls add atleast one specification',
-      //   Toast.LONG,
-      //   Toast.TOP,
-      // );
     }
     setSpecification(newSpecification);
   };

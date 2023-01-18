@@ -1,12 +1,12 @@
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { HomeScreen } from '../screens/HomeScreen';
-import { ProfileScreen } from '../screens/ProfileScreen';
-import { ChatScreen } from '../screens/ChatScreen';
-import { HomeScreenDetail1 } from '../screens/HomeScreenDetail1';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {HomeScreen} from '../screens/HomeScreen';
+import {ProfileScreen} from '../screens/ProfileScreen';
+import {ChatScreen} from '../screens/ChatScreen';
+import {HomeScreenDetail1} from '../screens/HomeScreenDetail1';
 import LoginScreen from '../screens/LoginScreen';
-import { Product } from '../screens/Product';
-import { MyScreen } from '../screens/MyScreen';
+import {Product} from '../screens/Product';
+import {MyScreen} from '../screens/MyScreen';
 import SecondScreen from '../screens/SecondScreen';
 import ThirdScreen from '../screens/OrderSuccessItemScreen';
 import ForthScreen from '../screens/OrderSuccessCamp';
@@ -17,7 +17,7 @@ import ProductShoppingBagScreen from '../screens/ProductShoppingBagScreen';
 import RoomPaymentScreen from '../screens/RoomPaymentScreen';
 import RoomReservationListScreen from '../screens/RoomReservationListScreen';
 import Rent from '../screens/Rent';
-import { RegisterScreen } from '../screens/RegisterScreen';
+import {RegisterScreen} from '../screens/RegisterScreen';
 import TermsScreen from '../screens/TermsScreen';
 import EquipmentRentalScreen from '../admin-screens/EquipmentRentalScreen';
 import FixRentalEquipmentScreen from '../admin-screens/FixRentalEquipmentScreen';
@@ -58,6 +58,7 @@ export const HomeNavigation = props => {
       <Stack.Screen name="ProductInfo" component={ProductInfo} />
       <Stack.Screen name="CalendarScreen" component={CalendarScreen} />
       <Stack.Screen name="TermsScreen" component={TermsScreen} />
+
       <Stack.Screen
         name="ProductShoppingBagScreen"
         component={ProductShoppingBagScreen}
@@ -66,7 +67,6 @@ export const HomeNavigation = props => {
     </Stack.Navigator>
   );
 };
-
 
 /**
  * @author
@@ -156,7 +156,6 @@ export const ProfileNavigation = props => {
   );
 };
 
-
 /**
  * @author
  * @function HomeNavigation
@@ -167,11 +166,23 @@ export const AdminProductNavigation = props => {
       initialRouteName="EquipmentRentalScreen"
       screenOptions={AppNavigatorOptions}>
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
-      <Stack.Screen name="EquipmentRentalScreen" component={EquipmentRentalScreen} />
-      <Stack.Screen name="FixRentalEquipmentScreen" component={FixRentalEquipmentScreen} />
-      <Stack.Screen name="FixRentalSuppliesScreen" component={FixRentalSuppliesScreen} />
+      <Stack.Screen
+        name="EquipmentRentalScreen"
+        component={EquipmentRentalScreen}
+      />
+      <Stack.Screen
+        name="FixRentalEquipmentScreen"
+        component={FixRentalEquipmentScreen}
+      />
+      <Stack.Screen
+        name="FixRentalSuppliesScreen"
+        component={FixRentalSuppliesScreen}
+      />
       <Stack.Screen name="UserScreen" component={NineteenthScreen} />
-      <Stack.Screen name="FixRentalEquipmentNewScreen" component={FixRentalEquipmentNewScreen} />
+      <Stack.Screen
+        name="FixRentalEquipmentNewScreen"
+        component={FixRentalEquipmentNewScreen}
+      />
       <Stack.Screen name="OrderDetailsScreen" component={OrderDetailsScreen} />
       <Stack.Screen name="EditFirstScreen" component={EditFirst} />
       <Stack.Screen name="EditSecondScreen" component={EditSecond} />
@@ -191,7 +202,6 @@ export const AdminLocationNavigation = props => {
   );
 };
 
-
 /**
  * @author
  * @function HomeNavigation
@@ -206,4 +216,3 @@ export const AdminOrderNavigation = props => {
     </Stack.Navigator>
   );
 };
-

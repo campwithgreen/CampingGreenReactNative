@@ -1,12 +1,12 @@
 import axios from 'axios';
 import store from '../redux/store';
 
-let PROD_BASE_URL = 'https://campinggreen.onrender.com';
-let DEV_BASE_URL = 'http://192.168.0.3:9000/';
-// https://campinggreen.onrender.com https://codinghumans.herokuapp.com/
+let PROD_BASE_URL = 'https://campinggreen.herokuapp.com/';
+// let DEV_BASE_URL = 'http://192.168.0.3:9000/';
+// https://campinggreen.onrender.com https://codinghumans.herokuapp.com/ https://greencamp.onrender.com
 
 const axiosInstance = axios.create({
-  baseURL: DEV_BASE_URL,
+  baseURL: PROD_BASE_URL,
 });
 
 axiosInstance.interceptors.request.use(async config => {

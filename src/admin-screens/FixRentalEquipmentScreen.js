@@ -19,7 +19,7 @@ import {goBack} from '../navigation/utils/RootNavigation';
 import Header from '../layout/Header';
 import FONTSIZE from '../constants/fontSize';
 import COLOR from '../constants/colors';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-toast-message';
 
 const FixRentalEquipmentScreen = props => {
   let {product} = props?.route?.params;
@@ -45,11 +45,11 @@ const FixRentalEquipmentScreen = props => {
     if (count > 0) {
       setCount(i => i - 1);
     } else {
-      Toast.showWithGravity(
-        'Stock unit cannot be lower than 0',
-        Toast.LONG,
-        Toast.TOP,
-      );
+      Toast.show({
+        type: 'info',
+        text1: '0이하 불가능합니다.',
+        visibilityTime: 2000,
+      });
     }
   };
   return (

@@ -7,7 +7,7 @@ import {
   ScrollView,
   Button,
 } from 'react-native';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-toast-message';
 import Header from '../layout/Header';
 import {goBack, navigateTo} from '../navigation/utils/RootNavigation';
 import globalStyle from '../global/globalStyle';
@@ -67,11 +67,11 @@ export const ProfileScreen = props => {
       content: require('../assets/images/cart.png'),
       navigateScreen: () => {
         if (!isLogin) {
-          Toast.showWithGravity(
-            'Pls Login to View Cart',
-            Toast.LONG,
-            Toast.TOP,
-          );
+          Toast.show({
+            type: 'info',
+            text1: '로그인 필요합니다.',
+            visibilityTime: 2000,
+          });
         } else {
           navigateTo('ProductShoppingBagScreen');
         }
@@ -103,7 +103,11 @@ export const ProfileScreen = props => {
 
   const handleLogout = () => {
     dispatch(logout());
-    Toast.showWithGravity('Logged Out Successfully', Toast.LONG, Toast.TOP);
+    Toast.show({
+      type: 'success',
+      text1: '로그아웃 되었습니다.',
+      visibilityTime: 2000,
+    });
   };
 
   useEffect(() => {

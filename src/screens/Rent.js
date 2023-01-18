@@ -26,7 +26,7 @@ import CustomButton from '../components/common/CustomButton';
 import {navigateTo, goBack} from '../navigation/utils/RootNavigation';
 import FONTSIZE from '../constants/fontSize';
 import Counter from '../components/common/Counter';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-toast-message';
 
 const headerContent = {
   leftItemContents: {
@@ -53,17 +53,17 @@ const Rent = props => {
   // console.log('PROPS', props);
   const {route} = props;
   // const selectedLoc = useSelector(st => st.common.selected_location);
-  const subLocations = useSelector(st => st.common.selected_location);
+  const subLocations = useSelector(st => st?.common?.selected_location);
   const selected_item = useSelector(st => st.common?.selected_item);
   const startDate = useSelector(st => st.common?.start_date);
   const returnDate = useSelector(st => st.common?.return_date);
   const isLoggedIn = useSelector(st => st.oauth?.isLogin);
   const quantity = useSelector(st => st.common?.quantity);
   const description = useSelector(
-    st => st.common?.selected_location.description,
+    st => st?.common?.selected_location?.description,
   );
-  const title = useSelector(st => st.common?.selected_location.title);
-  const phone = useSelector(st => st.common?.selected_location.phone);
+  const title = useSelector(st => st?.common?.selected_location?.title);
+  const phone = useSelector(st => st?.common?.selected_location?.phone);
 
   // console.log('SL', subLocations?.campLink);
 
@@ -95,7 +95,12 @@ const Rent = props => {
       .then(res => {
         if (res) {
           dispatch(setCurrentCheckoutCartDetails(res.data.data));
-          Toast.showWithGravity('Checkout In Progress', Toast.SHORT, Toast.TOP);
+          Toast.show({
+            type: 'info',
+            text1: '체크아웃이 진행중입니다.',
+            visibilityTime: 2000,
+          });
+
           navigateTo('RoomPaymentScreen');
         }
       })
@@ -254,11 +259,11 @@ const Rent = props => {
                 if (isLoggedIn) {
                   navigateTo('CalendarScreen', {type: 'LOCATION'});
                 } else {
-                  Toast.showWithGravity(
-                    'You have to Login to Proceed with Renting Date',
-                    Toast.LONG,
-                    Toast.TOP,
-                  );
+                  Toast.show({
+                    type: 'info',
+                    text1: '로그인 필요합니다.',
+                    visibilityTime: 2000,
+                  });
                 }
               }}
               style={{
@@ -291,11 +296,11 @@ const Rent = props => {
                 if (isLoggedIn) {
                   navigateTo('CalendarScreen', {type: 'LOCATION'});
                 } else {
-                  Toast.showWithGravity(
-                    'You have to Login to Proceed with Renting Date',
-                    Toast.LONG,
-                    Toast.TOP,
-                  );
+                  Toast.show({
+                    type: 'info',
+                    text1: '로그인 필요합니다.',
+                    visibilityTime: 2000,
+                  });
                 }
               }}
               style={{
@@ -323,7 +328,7 @@ const Rent = props => {
               </View>
             </TouchableOpacity>
           </View>
-          <RentDetail subLocations={subLocations.subLocations} />
+          <RentDetail subLocations={subLocations?.subLocations} />
           {subLocations?.specifications?.campIntro && (
             <>
               <View style={{marginTop: wp('7%')}}>
@@ -493,10 +498,10 @@ const Rent = props => {
             if (enableCheckout()) {
               setModalVisible(true);
             } else {
-              Toast.showWithGravity("Please Select the Date for Checkout", Toast.LONG, Toast.TOP);
+            
             }
           } else {
-            Toast.showWithGravity("You have to Login to Proceed Renting", Toast.LONG, Toast.TOP);
+            
             navigateTo("LoginScreen");
           }
         }} />

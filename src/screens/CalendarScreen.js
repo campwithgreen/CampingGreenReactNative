@@ -10,9 +10,9 @@ import CustomCalendar from '../components/common/Calendar';
 import {goBack, navigateTo} from '../navigation/utils/RootNavigation';
 import CustomButton from '../components/common/CustomButton';
 import {useSelector} from 'react-redux';
-import Toast from 'react-native-simple-toast';
-import COLOR from '../constants/colors';
 
+import COLOR from '../constants/colors';
+import Toast from 'react-native-toast-message';
 const headerContent = {
   leftItemContents: {
     type: 'text',
@@ -59,11 +59,11 @@ const CalendarScreen = props => {
               navigateTo('ProductInfo');
             }
           } else {
-            Toast.showWithGravity(
-              'Please Select the Date for Checkout',
-              Toast.LONG,
-              Toast.TOP,
-            );
+            Toast.show({
+              type: 'error',
+              text1: '체크아웃하기 전에 날짜를 선택해주세요.',
+              visibilityTime: 2000,
+            });
           }
         }}
       />

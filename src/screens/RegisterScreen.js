@@ -24,7 +24,7 @@ import {register} from '../apis/auth';
 import {useSelector, useDispatch} from 'react-redux';
 import {login, setUserData} from '../redux/actions/oauth';
 import TermLink from '../components/common/TermLink';
-
+import Toast from 'react-native-toast-message';
 const headerContent = {
   leftItemContents: {
     type: 'image',
@@ -129,11 +129,11 @@ export const RegisterScreen = props => {
   const handleRegister = async () => {
     if (name && email) {
       if (!validateEmail(email)) {
-        Toast.showWithGravity(
-          'Pls enter a vaild email',
-          Toast.SHORT,
-          Toast.TOP,
-        );
+        Toast.show({
+          type: 'error',
+          text1: '유효한 이메일 입력해주세요.',
+          visibilityTime: 2000,
+        });
       } else {
         console.log('HELLO REGISTER');
         setModalVisible(true);
@@ -167,11 +167,12 @@ export const RegisterScreen = props => {
           console.log('REGISTER RES', res.data);
           dispatch(setUserData(res.data));
           if (res.data.success) {
-            Toast.showWithGravity(
-              'Successfully Registered And Logged In',
-              Toast.LONG,
-              Toast.TOP,
-            );
+            Toast.show({
+              type: 'success',
+              text1: '성공적으로 가입되었습니다.',
+              visibilityTime: 2000,
+            });
+
             dispatch(login(true));
             navigateTo('HomeScreen');
           }
@@ -182,11 +183,11 @@ export const RegisterScreen = props => {
           }
         });
     } else {
-      Toast.showWithGravity(
-        'Pls check all the terms and consent to register your account',
-        Toast.SHORT,
-        Toast.TOP,
-      );
+      Toast.show({
+        type: 'error',
+        text1: '모든 약관 동의해주세요.',
+        visibilityTime: 2000,
+      });
     }
   };
 

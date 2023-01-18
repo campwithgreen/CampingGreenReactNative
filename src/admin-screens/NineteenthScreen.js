@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Button,
 } from 'react-native';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-toast-message';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -58,7 +58,11 @@ const NineteenthScreen = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    Toast.showWithGravity('Logged Out Successfully', Toast.LONG, Toast.TOP);
+    Toast.show({
+      type: 'success',
+      text1: '로그아웃 되었습니다.',
+      visibilityTime: 2000,
+    });
   };
 
   return (

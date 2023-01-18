@@ -23,7 +23,7 @@ import {addSubLocation, createItem, updateItem} from '../apis/admin';
 import {showDefaultErrorAlert} from '../global/global';
 import {getAllProducts} from '../apis/product';
 import {setProductData, setLocationData} from '../redux/actions/product';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-toast-message';
 
 const mapStateToProps = (st, ownProps) => {
   const storee = st;
@@ -126,11 +126,12 @@ const EditSecond = props => {
       .then(res => {
         if (res) {
           fetchAndSetProducts(type);
-          Toast.showWithGravity(
-            '성공적으로 수정되었습니다.',
-            Toast.LONG,
-            Toast.TOP,
-          );
+          Toast.show({
+            type: 'success',
+            text1: '성공적으로 수정되었습니다.',
+            visibilityTime: 2000,
+          });
+
           if (type === 'LOCATION') {
             navigateTo('FourteenthScreen');
           } else {
@@ -311,11 +312,11 @@ const Comp = props => {
     if (allFeatures.length > 1) {
       allFeatures.splice(ind, 1);
     } else {
-      Toast.showWithGravity(
-        'Pls add atleast one specification',
-        Toast.LONG,
-        Toast.TOP,
-      );
+      Toast.show({
+        type: 'error',
+        text1: '한 개 이상 specification을 입력해주세요.',
+        visibilityTime: 2000,
+      });
     }
     setAllFeatures(newCarouselImages);
   };

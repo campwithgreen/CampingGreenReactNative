@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-toast-message';
 import React from 'react';
 import {
   heightPercentageToDP as hp,
@@ -53,12 +53,12 @@ const LocationRentalSceen = ({route}) => {
         'Are you sure you want to delete the selected products, This will be permanently deleted if you proceed',
         [
           {
-            text: 'Cancel',
+            text: '취소',
             onPress: () => console.log('Deletion Cancelled'),
             style: 'cancel',
           },
           {
-            text: 'Delete',
+            text: '삭제',
             onPress: async () => {
               await deleteItem(payload)
                 .then(res => {
@@ -77,11 +77,12 @@ const LocationRentalSceen = ({route}) => {
         ],
       );
     } else {
-      Toast.showWithGravity(
-        'Please select at least one item to delete',
-        Toast.TOP,
-        Toast.LONG,
-      );
+      Toast.show({
+        type: 'info',
+        text1: '삭제할 아이템을 먼저 선택해주세요.',
+        visibilityTime: 2000,
+      });
+
       setSelectedProductIds([]);
       setFetch(!fetch);
     }

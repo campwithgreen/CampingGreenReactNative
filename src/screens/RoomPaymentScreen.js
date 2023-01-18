@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-toast-message';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -235,39 +235,40 @@ const RoomPaymentScreen = props => {
                   }
                 });
             } else {
-              Toast.showWithGravity(
-                '요청사항이 입력해 주세요.',
-                Toast.SHORT,
-                Toast.TOP,
-              );
+              Toast.show({
+                type: 'error',
+                text1: '요청사항이 입력해 주세요.',
+                visibilityTime: 2000,
+              });
             }
           } else {
-            Toast.showWithGravity(
-              '용품대여인 경우 배송지 캠핑예약인 경우에 차량번호를 입력해 주세요)',
-              Toast.SHORT,
-              Toast.TOP,
-            );
+            Toast.show({
+              type: 'error',
+              text1:
+                '용품대여인 경우 배송지 캠핑예약인 경우에 차량번호를 입력해 주세요)',
+              visibilityTime: 2000,
+            });
           }
         } else {
-          Toast.showWithGravity(
-            '전화번호 입력해 주세요.',
-            Toast.SHORT,
-            Toast.TOP,
-          );
+          Toast.show({
+            type: 'error',
+            text1: '전화번호 입력해 주세요.',
+            visibilityTime: 2000,
+          });
         }
       } else {
-        Toast.showWithGravity(
-          '예약자 이름 입력해 주세요.',
-          Toast.SHORT,
-          Toast.TOP,
-        );
+        Toast.show({
+          type: 'error',
+          text1: '예약자 이름 입력해 주세요.',
+          visibilityTime: 2000,
+        });
       }
     } else {
-      Toast.showWithGravity(
-        '무통장 입금 체크해 주세요.',
-        Toast.SHORT,
-        Toast.TOP,
-      );
+      Toast.show({
+        type: 'error',
+        text1: '무통장 입금 체크해 주세요.',
+        visibilityTime: 2000,
+      });
     }
   };
 

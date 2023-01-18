@@ -16,7 +16,7 @@ import {
   widthPercentageToDP,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-toast-message';
 import FormField from '../components/common/FormField';
 import COLOR from '../constants/colors';
 import globalStyle from '../global/globalStyle';
@@ -94,8 +94,8 @@ export default function LoginScreen() {
           .catch(err => {
             if (err) {
               console.log('into catch if err useEffect');
-              showDefaultErrorAlert();
-              setLoading(false);
+              // showDefaultErrorAlert();
+              // setLoading(false);
             }
           });
       })();
@@ -127,34 +127,42 @@ export default function LoginScreen() {
           dispatch(setUserData(res.data));
           if (res.data.formSubmissionRequired) {
             console.log('ENTERED REGISTER REQUIRED');
-            Toast.showWithGravity(
-              'OTP Successfully Sent, Pls verify your number and register you account',
-              Toast.SHORT,
-              Toast.TOP,
-            );
+            Toast.show({
+              type: 'success',
+              text1: '인증번호 성공적으로 전송되었습니다. 회원가입 필요합니다.',
+              visibilityTime: 2000,
+            });
+
             setGetOtpButtonEnabled(false);
           } else {
             console.log('ENTERED REGISTER REQUIRED 2');
             setOptSent(true);
-            Toast.showWithGravity(
-              'OTP Successfully Sent',
-              Toast.LONG,
-              Toast.TOP,
-            );
+            Toast.show({
+              type: 'success',
+              text1: '인증번호 성공적으로 전송되었습니다.',
+              visibilityTime: 2000,
+            });
+
             setGetOtpButtonEnabled(false);
           }
         })
         .catch(err => {
           if (err) {
-            showDefaultErrorAlert();
+            Toast.show({
+              type: 'error',
+              text1: '임시 서버 장애 발생! 나중에 시도해 주세요.',
+              visibilityTime: 2000,
+            });
+
+            // showDefaultErrorAlert();
           }
         });
     } else {
-      Toast.showWithGravity(
-        'Pls, enter a valid phone number !',
-        Toast.SHORT,
-        Toast.TOP,
-      );
+      Toast.show({
+        type: 'error',
+        text1: '전화번호가 틀렸습니다.',
+        visibilityTime: 2000,
+      });
     }
   };
 
@@ -190,19 +198,20 @@ export default function LoginScreen() {
               );
             } else {
               dispatch(login(true));
-              Toast.showWithGravity(
-                'Logged In Successfully',
-                Toast.LONG,
-                Toast.TOP,
-              );
+              Toast.show({
+                type: 'success',
+                text1: '로그인 되었습니다',
+                visibilityTime: 2000,
+              });
+
               navigateTo('HomeScreen');
             }
           } else {
-            Toast.showWithGravity(
-              res.data.message.toUpperCase(),
-              Toast.LONG,
-              Toast.TOP,
-            );
+            Toast.show({
+              type: 'info',
+              text1: res.data.message.toUpperCase(),
+              visibilityTime: 2000,
+            });
           }
         }
       })
@@ -269,11 +278,11 @@ export default function LoginScreen() {
                     if (getOtpButtonEnabled) {
                       handleGetOtp(phoneNumber);
                     } else {
-                      Toast.showWithGravity(
-                        'OTP has already sent, Pls use it',
-                        Toast.LONG,
-                        Toast.TOP,
-                      );
+                      Toast.show({
+                        type: 'info',
+                        text1: '인증번호 이미 보냈습니다. 사용해 주세요.',
+                        visibilityTime: 2000,
+                      });
                     }
                   }}
                   underlayColor="transparent">

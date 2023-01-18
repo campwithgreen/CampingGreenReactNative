@@ -22,7 +22,7 @@ import {showDefaultErrorAlert} from '../global/global';
 import {connect, useDispatch} from 'react-redux';
 import newItem from '../constants/newItem.json';
 import {createNewItemData} from '../redux/actions/common';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-toast-message';
 const mapDispatchToProps = (st, ownProps) => {
   const storee = st;
   const new_item_data = st?.common?.new_item_data;
@@ -65,11 +65,11 @@ const FixRentalEquipmentNewScreen = props => {
       setNewItemHolder(updatedItem);
       setCount(i => i - 1);
     } else {
-      Toast.showWithGravity(
-        'Stock unit cannot be lower than 0',
-        Toast.LONG,
-        Toast.TOP,
-      );
+      Toast.show({
+        type: 'info',
+        text1: '0이하 불가능합니다.',
+        visibilityTime: 2000,
+      });
     }
   };
 
@@ -128,11 +128,11 @@ const FixRentalEquipmentNewScreen = props => {
     if (carouselImages.length > 1) {
       newCarouselImages.splice(ind, 1);
     } else {
-      Toast.showWithGravity(
-        'Pls add atleast one specification',
-        Toast.LONG,
-        Toast.TOP,
-      );
+      Toast.show({
+        type: 'info',
+        text1: '한 개이상 specification을 입력해주세요.',
+        visibilityTime: 2000,
+      });
     }
     setCarouselImages(newCarouselImages);
   };
@@ -710,11 +710,11 @@ const Comp2 = props => {
     if (specification.length > 1) {
       newSpecification.splice(ind, 1);
     } else {
-      Toast.showWithGravity(
-        'Pls add atleast one specification',
-        Toast.LONG,
-        Toast.TOP,
-      );
+      Toast.show({
+        type: 'info',
+        text1: '한 개이상 specification을 입력해주세요.',
+        visibilityTime: 2000,
+      });
     }
     setSpecification(newSpecification);
   };

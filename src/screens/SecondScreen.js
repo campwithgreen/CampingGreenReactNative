@@ -1,5 +1,5 @@
 import {View, Text, ScrollView, StyleSheet, Button} from 'react-native';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-toast-message';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -117,11 +117,11 @@ const SecondScreen = () => {
       content: require('../assets/images/cart.png'),
       navigateScreen: () => {
         if (!isLoggedIn) {
-          Toast.showWithGravity(
-            'Pls Login to View Cart',
-            Toast.LONG,
-            Toast.TOP,
-          );
+          Toast.show({
+            type: 'error',
+            text1: '로그인이 필요합니다.',
+            visibilityTime: 2000,
+          });
         } else {
           navigateTo('ProductShoppingBagScreen');
         }
@@ -148,11 +148,12 @@ const SecondScreen = () => {
             // console.log('RESPONSE CART', res);
             if (res) {
               dispatch(setCurrentCheckoutCartDetails(res.data.data));
-              Toast.showWithGravity(
-                'Checkout In Progress',
-                Toast.SHORT,
-                Toast.TOP,
-              );
+              Toast.show({
+                type: 'info',
+                text1: '체크아웃이 진행중입니다.',
+                visibilityTime: 2000,
+              });
+
               navigateTo('RoomPaymentScreen');
               setModalVisible(false);
             }
@@ -169,11 +170,12 @@ const SecondScreen = () => {
             // console.log('RESPONSE CART', res);
             if (res) {
               dispatch(setCurrentCheckoutCartDetails(res.data.data));
-              Toast.showWithGravity(
-                'Checkout In Progress',
-                Toast.SHORT,
-                Toast.TOP,
-              );
+              Toast.show({
+                type: 'info',
+                text1: '체크아웃이 진행중입니다.',
+                visibilityTime: 2000,
+              });
+
               navigateTo('RoomPaymentScreen');
               setModalVisible(false);
             }
@@ -197,11 +199,12 @@ const SecondScreen = () => {
             // console.log('RESPONSE CART', res);
             storeCartId(res.data.data?._id);
             if (res) {
-              Toast.showWithGravity(
-                'Product added to cart',
-                Toast.SHORT,
-                Toast.TOP,
-              );
+              Toast.show({
+                type: 'success',
+                text1: '장바구니에 추가되었습니다.',
+                visibilityTime: 2000,
+              });
+
               navigateTo('ProductShoppingBagScreen');
               setModalVisible(false);
             }
@@ -219,11 +222,12 @@ const SecondScreen = () => {
             // console.log('RESPONSE CART', res);
             storeCartId(res.data.data?._id);
             if (res) {
-              Toast.showWithGravity(
-                'Product added to cart',
-                Toast.SHORT,
-                Toast.TOP,
-              );
+              Toast.show({
+                type: 'success',
+                text1: '장바구니에 추가되었습니다.',
+                visibilityTime: 2000,
+              });
+
               navigateTo('ProductShoppingBagScreen');
               setModalVisible(false);
             }
@@ -476,18 +480,19 @@ const SecondScreen = () => {
                 if (enableCheckout()) {
                   setModalVisible(true);
                 } else {
-                  Toast.showWithGravity(
-                    'Please Select the Date for Checkout',
-                    Toast.LONG,
-                    Toast.TOP,
-                  );
+                  Toast.show({
+                    type: 'info',
+                    text1: '체크아웃을 하기 전에 날짜를 선택해 주세요.',
+                    visibilityTime: 2000,
+                  });
                 }
               } else {
-                Toast.showWithGravity(
-                  'You have to Login to Proceed Renting',
-                  Toast.LONG,
-                  Toast.TOP,
-                );
+                Toast.show({
+                  type: 'info',
+                  text1: '로그인이 필요합니다.',
+                  visibilityTime: 2000,
+                });
+
                 navigateTo('LoginScreen');
               }
             }}

@@ -26,7 +26,7 @@ import FONTSIZE from '../constants/fontSize';
 import COLOR from '../constants/colors';
 import {navigateTo} from '../navigation/utils/RootNavigation';
 import {deleteItem} from '../apis/admin';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-toast-message';
 const headerContent = {
   middleItemContents: {
     type: 'text',
@@ -75,11 +75,12 @@ const EquipmentRentalScreen = () => {
         ],
       );
     } else {
-      Toast.showWithGravity(
-        '아이템을 먼저 선택해 주세요',
-        Toast.TOP,
-        Toast.LONG,
-      );
+      Toast.show({
+        type: 'info',
+        text1: '아이템을 먼저 선택해 주세요',
+        visibilityTime: 2000,
+      });
+
       setSelectedProductIds([]);
     }
   };

@@ -117,7 +117,7 @@ export const HomeScreenDetail1 = props => {
               fontSize: RFPercentage(2.25),
               color: '#55C595',
               paddingLeft: wp('5%'),
-              fontFamily: 'PP Monument Extended',
+
               marginVertical: hp('10%'),
             }}>
             by.{'\n'}Camping Green

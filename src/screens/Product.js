@@ -25,7 +25,7 @@ import globalStyle from '../global/globalStyle';
 import COLOR from '../constants/colors';
 import {navigateTo} from '../navigation/utils/RootNavigation';
 import DropDownPicker from 'react-native-dropdown-picker';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-toast-message';
 
 export const Product = props => {
   const {container, ddCont} = styles;
@@ -49,11 +49,11 @@ export const Product = props => {
       content: require('../assets/images/cart.png'),
       navigateScreen: () => {
         if (!isLogin) {
-          Toast.showWithGravity(
-            'Pls Login to View Cart',
-            Toast.LONG,
-            Toast.TOP,
-          );
+          Toast.show({
+            type: 'info',
+            text1: '로그인 필요합니다.',
+            visibilityTime: 2000,
+          });
         } else {
           navigateTo('ProductShoppingBagScreen');
         }
@@ -134,43 +134,48 @@ export const Product = props => {
   return (
     <View style={container}>
       <Header headerContent={headerContent} />
-      <ScrollView>
-        <View
-          style={[
-            globalStyle.mainContainerWrapper,
-            {marginVertical: hp('4%')},
-          ]}>
-          {!loading && (
-            <View style={ddCont}>
-              <Text
-                style={{
-                  fontSize: FONTSIZE.xl,
-                  fontWeight: 'bold',
-                }}>
-                전체 {product?.length}
-              </Text>
-              <View>
-                <DropDownPicker
-                  open={open}
-                  value={value}
-                  items={items}
-                  setOpen={setOpen}
-                  setValue={setValue}
-                  setItems={setItems}
-                  containerStyle={{
-                    width: wp('35%'),
-                    zIndex: Platform.OS === 'android' ? 10000 : 90000,
-                  }}
-                  onChangeValue={value => {
-                    handleFilter(value);
-                  }}
-                />
-              </View>
+      <View
+        style={[
+          globalStyle.mainContainerWrapper,
+          {marginVertical: hp('2%'), marginBottom: hp(15)},
+        ]}>
+        {!loading && (
+          <View style={[ddCont]}>
+            <Text
+              style={{
+                fontSize: FONTSIZE.xl,
+                fontWeight: 'bold',
+              }}>
+              전체 {product?.length}
+            </Text>
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <DropDownPicker
+                open={open}
+                value={value}
+                items={items}
+                setOpen={setOpen}
+                setValue={setValue}
+                setItems={setItems}
+                containerStyle={{
+                  width: wp('35%'),
+
+                  zIndex: Platform.OS === 'android' ? 10000 : 90000,
+                }}
+                onChangeValue={value => {
+                  handleFilter(value);
+                }}
+              />
             </View>
-          )}
+          </View>
+        )}
+        <ScrollView showsVerticalScrollIndicator={false}>
           {loading ? <Loader /> : <ProductDetail product={product} />}
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </View>
     </View>
   );
 };

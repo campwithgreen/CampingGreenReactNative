@@ -7,7 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-toast-message';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -188,7 +188,12 @@ const ProductShoppingBagScreen = props => {
             // console.log('RESPONSE CART FROM IND DELETE', res);
             if (res) {
               dispatch(setCurrentCheckoutCartDetails(res.data.data));
-              Toast.showWithGravity('Item Deleted', Toast.SHORT, Toast.TOP);
+              Toast.show({
+                type: 'success',
+                text1: '삭제되었습니다.',
+                visibilityTime: 2000,
+              });
+
               await getUserCartHistory(cartId)
                 .then(res => {
                   console.log('CART USER DATA ++++++', res.data);
@@ -243,7 +248,12 @@ const ProductShoppingBagScreen = props => {
             // console.log('RESPONSE CART FROM IND DELETE', res);
             if (res) {
               dispatch(setCurrentCheckoutCartDetails(res.data.data));
-              Toast.showWithGravity('Item Deleted', Toast.SHORT, Toast.TOP);
+              Toast.show({
+                type: 'success',
+                text1: '삭제되었습니다.',
+                visibilityTime: 2000,
+              });
+
               await getUserCartHistory(cartId)
                 .then(res => {
                   console.log('CART USER DATA ++++++', res.data);
@@ -308,11 +318,11 @@ const ProductShoppingBagScreen = props => {
               if (checkedCount >= 1) {
                 handleMultipleDelete(productList, cartPayload);
               } else {
-                Toast.showWithGravity(
-                  'Atleast One Item must be selected for delete',
-                  Toast.SHORT,
-                  Toast.TOP,
-                );
+                Toast.show({
+                  type: 'info',
+                  text1: '최소 한 개 이상 선택하고 삭제해야 합니다.',
+                  visibilityTime: 2000,
+                });
               }
             }}>
             <Text style={{color: '#454C53', alignSelf: 'center'}}>
@@ -439,11 +449,12 @@ const ProductShoppingBagScreen = props => {
         await getUserCartHistory(cartId)
           .then(res => {
             dispatch(setCurrentCheckoutCartDetails(res.data.data));
-            Toast.showWithGravity(
-              'Checkout In Progress',
-              Toast.SHORT,
-              Toast.TOP,
-            );
+            Toast.show({
+              type: 'info',
+              text1: '체크아웃이 진행중입나다.',
+              visibilityTime: 2000,
+            });
+
             navigateTo('RoomPaymentScreen', {
               selectedProducts: cartPayload,
               selectedCurrentCartDetails: selectedCartDetails,

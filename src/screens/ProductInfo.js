@@ -11,7 +11,7 @@ import {
   Platform,
 } from 'react-native';
 import Header from '../layout/Header';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-toast-message';
 import {
   heightPercentageToDP,
   heightPercentageToDP as hp,
@@ -101,11 +101,11 @@ const ProductInfo = props => {
       content: require('../assets/images/cart.png'),
       navigateScreen: () => {
         if (!isLoggedIn) {
-          Toast.showWithGravity(
-            'Pls Login to View Cart',
-            Toast.LONG,
-            Toast.TOP,
-          );
+          Toast.show({
+            type: 'info',
+            text1: '로그인 필요합니다.',
+            visibilityTime: 2000,
+          });
         } else {
           navigateTo('ProductShoppingBagScreen');
         }
@@ -196,11 +196,12 @@ const ProductInfo = props => {
             // console.log('RESPONSE CART', res);
             if (res) {
               dispatch(setCurrentCheckoutCartDetails(res.data.data));
-              Toast.showWithGravity(
-                'Checkout In Progress',
-                Toast.SHORT,
-                Toast.TOP,
-              );
+              Toast.show({
+                type: 'info',
+                text1: '체크아웃이 진행중입니다.',
+                visibilityTime: 2000,
+              });
+
               navigateTo('RoomPaymentScreen');
               setModalVisible(false);
             }
@@ -217,11 +218,12 @@ const ProductInfo = props => {
             // console.log('RESPONSE CART', res);
             if (res) {
               dispatch(setCurrentCheckoutCartDetails(res.data.data));
-              Toast.showWithGravity(
-                'Checkout In Progress',
-                Toast.SHORT,
-                Toast.TOP,
-              );
+              Toast.show({
+                type: 'info',
+                text1: '체크아웃이 진행중입니다.',
+                visibilityTime: 2000,
+              });
+
               navigateTo('RoomPaymentScreen');
               setModalVisible(false);
             }
@@ -246,11 +248,12 @@ const ProductInfo = props => {
             // console.log('RESPONSE CART', res);
             storeCartId(res.data.data?._id);
             if (res) {
-              Toast.showWithGravity(
-                'Product added to cart',
-                Toast.SHORT,
-                Toast.TOP,
-              );
+              Toast.show({
+                type: 'info',
+                text1: '장바구니에 추가되었습니다.',
+                visibilityTime: 2000,
+              });
+
               navigateTo('ProductShoppingBagScreen');
               setModalVisible(false);
             }
@@ -268,11 +271,12 @@ const ProductInfo = props => {
             // console.log('RESPONSE CART', res);
             storeCartId(res.data.data?._id);
             if (res) {
-              Toast.showWithGravity(
-                'Product added to cart',
-                Toast.SHORT,
-                Toast.TOP,
-              );
+              Toast.show({
+                type: 'info',
+                text1: '장바구니에 추가되었습니다.',
+                visibilityTime: 2000,
+              });
+
               navigateTo('ProductShoppingBagScreen');
               setModalVisible(false);
             }
@@ -421,11 +425,11 @@ const ProductInfo = props => {
                     if (isLoggedIn) {
                       navigateTo('CalendarScreen');
                     } else {
-                      Toast.showWithGravity(
-                        'You have to Login to Proceed with Renting Date',
-                        Toast.LONG,
-                        Toast.TOP,
-                      );
+                      Toast.show({
+                        type: 'info',
+                        text1: '로그인 필요합니다.',
+                        visibilityTime: 2000,
+                      });
                     }
                   }}>
                   <Text
@@ -459,11 +463,11 @@ const ProductInfo = props => {
                     if (isLoggedIn) {
                       navigateTo('CalendarScreen');
                     } else {
-                      Toast.showWithGravity(
-                        'You have to Login to Proceed with Renting Date',
-                        Toast.LONG,
-                        Toast.TOP,
-                      );
+                      Toast.show({
+                        type: 'info',
+                        text1: '로그인 필요합니다.',
+                        visibilityTime: 2000,
+                      });
                     }
                   }}>
                   <Text
@@ -870,18 +874,19 @@ const ProductInfo = props => {
                 if (enableCheckout()) {
                   setModalVisible(true);
                 } else {
-                  Toast.showWithGravity(
-                    '날짜를 선택하세요',
-                    Toast.LONG,
-                    Toast.TOP,
-                  );
+                  Toast.show({
+                    type: 'info',
+                    text1: '날짜를 선택하세요',
+                    visibilityTime: 2000,
+                  });
                 }
               } else {
-                Toast.showWithGravity(
-                  '로그인 필요합니다.',
-                  Toast.LONG,
-                  Toast.TOP,
-                );
+                Toast.show({
+                  type: 'info',
+                  text1: '로그인 필요합니다.',
+                  visibilityTime: 2000,
+                });
+
                 navigateTo('LoginScreen');
               }
             }}

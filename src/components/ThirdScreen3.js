@@ -1,5 +1,5 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-toast-message';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -44,11 +44,11 @@ const ThirdScreen3 = props => {
           await getAllOrders().then(r => {
             dispatch(setUserCartHistory(r?.data?.data));
           });
-          Toast.showWithGravity(
-            'Status Successfully Updated',
-            Toast.LONG,
-            Toast.TOP,
-          );
+          Toast.show({
+            type: 'success',
+            text1: '성공적으로 업데이트되었습니다.',
+            visibilityTime: 2000,
+          });
         }
       })
       .catch(err => {

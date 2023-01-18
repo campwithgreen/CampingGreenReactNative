@@ -3,7 +3,7 @@ import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import {useDispatch} from 'react-redux';
 import COLOR from '../../constants/colors';
 import {setQuantity} from '../../redux/actions/common';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-toast-message';
 
 const Counter = props => {
   const {initiaCount = 1} = props;
@@ -18,11 +18,11 @@ const Counter = props => {
       dispatch(setQuantity(count - 1));
       setCount(count - 1);
     } else {
-      Toast.showWithGravity(
-        'Minimum 1 quantity must be there',
-        Toast.LONG,
-        Toast.TOP,
-      );
+      Toast.show({
+        type: 'info',
+        text1: '한 개 이상 있어야 합니다.',
+        visibilityTime: 2000,
+      });
     }
   };
 

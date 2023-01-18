@@ -7,7 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-toast-message';
 import Header from '../layout/Header';
 import HomeScreenDetail from '../components/HomeScreenDetail';
 import {
@@ -53,11 +53,11 @@ export const HomeScreen = props => {
       content: require('../assets/images/cart.png'),
       navigateScreen: () => {
         if (!isLogin) {
-          Toast.showWithGravity(
-            'Pls Login to View Cart',
-            Toast.LONG,
-            Toast.TOP,
-          );
+          Toast.show({
+            type: 'error',
+            text1: '로그인 필요합니다.',
+            visibilityTime: 2000,
+          });
         } else {
           navigateTo('ProductShoppingBagScreen');
         }
@@ -174,7 +174,7 @@ export const HomeScreen = props => {
             </View>
             <TouchableOpacity
               onPress={() => {
-                navigateTo('Rent');
+                navigateTo('RoomScreen');
               }}>
               <Image source={require('../assets/images/image_tent.png')} />
             </TouchableOpacity>

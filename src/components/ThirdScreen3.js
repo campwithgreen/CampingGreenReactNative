@@ -1,10 +1,16 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ActivityIndicator,
+} from 'react-native';
 import Toast from 'react-native-toast-message';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import React from 'react';
+import React, {useState} from 'react';
 import {navigateTo} from '../navigation/utils/RootNavigation';
 import {cancelOrder} from '../apis/cart';
 import {showDefaultErrorAlert} from '../global/global';
@@ -15,7 +21,7 @@ import {setUserCartHistory} from '../redux/actions/common';
 const ThirdScreen3 = props => {
   const dispatch = useDispatch();
   const {currentCartData, isOrder, orderStatus} = props;
-
+  const [isLoading, setIsLoading] = useState(false);
   const handleCancelOrder = async orderId => {
     console.log('CANCELLING', orderId);
 
@@ -44,6 +50,7 @@ const ThirdScreen3 = props => {
           await getAllOrders().then(r => {
             dispatch(setUserCartHistory(r?.data?.data));
           });
+          setIsLoading(false);
           Toast.show({
             type: 'success',
             text1: '성공적으로 업데이트되었습니다.',
@@ -68,16 +75,24 @@ const ThirdScreen3 = props => {
       ) : (
         <View></View>
       )}
+
       <TouchableOpacity
         onPress={() => {
           if (isOrder) {
+            setIsLoading(true);
             handleOrderStatus(orderStatus);
             console.log(orderStatus);
           } else {
             navigateTo('RoomReservationListScreen');
           }
         }}>
-        <Text style={styles.btn2}>주문목록</Text>
+        {isLoading ? (
+          <View style={styles.btn2}>
+            <ActivityIndicator size={20} color={'#56C596'} />
+          </View>
+        ) : (
+          <Text style={styles.btn2}>{isOrder ? '저장하기' : '주문목록'}</Text>
+        )}
       </TouchableOpacity>
     </View>
   );

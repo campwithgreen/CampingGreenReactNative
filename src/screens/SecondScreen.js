@@ -140,7 +140,7 @@ const SecondScreen = () => {
   };
 
   const handleCheckout = async () => {
-    console.log('CHCKOUT ITEMS *****', cartItems);
+    // console.log('CHCKOUT ITEMS *****', cartItems);
     getCartId().then(async cartId => {
       if (cartId) {
         await createOrUpdateCart(cartItems, {cartId: cartId})
@@ -217,6 +217,7 @@ const SecondScreen = () => {
             }
           });
       } else {
+        console.log('hello in else cartItems', cartItems);
         await createOrUpdateCart(cartItems)
           .then(res => {
             // console.log('RESPONSE CART', res);

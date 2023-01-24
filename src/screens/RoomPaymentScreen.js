@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -21,7 +21,7 @@ import COLOR from '../constants/colors';
 import CustomButton from '../components/common/CustomButton';
 import {useSelector, useDispatch} from 'react-redux';
 import moment from 'moment';
-import {checkoutCart} from '../apis/cart';
+import {checkoutCart, getUserCartHistory} from '../apis/cart';
 import {showDefaultErrorAlert} from '../global/global';
 import {navigateTo, goBack} from '../navigation/utils/RootNavigation';
 import FONTSIZE from '../constants/fontSize';
@@ -29,8 +29,6 @@ import globalStyle from '../global/globalStyle';
 import {setCurrentCheckoutCartDetails} from '../redux/actions/common';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setUserCartHistory} from '../redux/actions/common';
-import {getUserCartHistory} from '../apis/cart';
-import {get} from 'react-hook-form';
 
 const Input = ({
   t1,
@@ -54,7 +52,8 @@ const Input = ({
         style={[
           styles.textinput1,
           {
-            paddingLeft: wp('3%'),
+            // paddingLeft: wp('3%'),
+            // padding: hp(2),
             fontWeight: 'bold',
             color: '#1B1D1F',
             fontSize: RFPercentage(1.6),
@@ -68,12 +67,15 @@ const Input = ({
           onChangeText(value);
         }}
         defaultValue={defaultValue}
+        autoCapitalize="none"
+        autoCorrect={false}
       />
     </View>
   );
 };
 
 const RoomPaymentScreen = props => {
+  const isLoggedIn = useSelector(st => st.oauth?.isLogin);
   const headerContent = {
     leftItemContents: {
       type: 'image',
@@ -86,6 +88,21 @@ const RoomPaymentScreen = props => {
       type: 'text',
       content: '주문/결제',
       navigateScreen: 'HomeScreenDetail1',
+    },
+    rightItemContents: {
+      type: 'cart',
+      content: require('../assets/images/cart.png'),
+      navigateScreen: () => {
+        if (!isLoggedIn) {
+          Toast.show({
+            type: 'error',
+            text1: '로그인이 필요합니다.',
+            visibilityTime: 2000,
+          });
+        } else {
+          navigateTo('ProductShoppingBagScreen');
+        }
+      },
     },
   };
 
@@ -133,6 +150,29 @@ const RoomPaymentScreen = props => {
     }
   };
 
+  const refreshCart = async () => {
+    getCartId().then(async cartId => {
+      console.log('HI CART ID', cartId);
+      if (cartId) {
+        await getUserCartHistory(cartId)
+          .then(res => {
+            dispatch(setCurrentCheckoutCartDetails(res.data.data));
+          })
+          .catch(err => {
+            console.log('err', err);
+            showDefaultErrorAlert(err?.response?.data?.error);
+          });
+      } else {
+        setCurrentCheckoutCartDetails(null);
+      }
+    });
+  };
+  useEffect(() => {
+    return () => {
+      refreshCart();
+    };
+  }, []);
+
   const Comp = ({t1, t2, p}) => {
     return (
       <View
@@ -173,7 +213,7 @@ const RoomPaymentScreen = props => {
         name: name,
         phoneNumber: `+82${phoneNumber}`,
         address: address,
-        remarks: remarks,
+        remarks: remarks || '',
       };
 
       let query = {
@@ -193,13 +233,14 @@ const RoomPaymentScreen = props => {
       if (name) {
         if (phoneNumber) {
           if (address) {
-            if (remarks) {
+            if (remarks || true) {
               await checkoutCart(mainPayload, query)
                 .then(res => {
                   if (res) {
                     console.log('CART CHECKOUT ++++', res);
                     if (res?.data?.newCartId) {
                       storeCartId(res?.data?.newCartId);
+                      console.log('res.data in RoomPayemntScrn', res.data);
                     } else {
                       removeCartId();
                     }
@@ -579,11 +620,13 @@ const styles = StyleSheet.create({
   ph1: {paddingHorizontal: wp('5%'), color: '#454C53'},
   textinput1: {
     width: wp('65%'),
-    height: '80%',
+    // height: '80%',
     borderWidth: 1,
     color: '#454C53',
     borderColor: 'lightgrey',
+    padding: hp(2),
   },
+
   textinput2: {
     borderWidth: 1,
     width: wp('20%'),

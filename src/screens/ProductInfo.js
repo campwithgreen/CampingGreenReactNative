@@ -58,7 +58,8 @@ const mapStateToProps = (state, ownProps) => {
 const ProductInfo = props => {
   const {container} = styles;
   const user_data = useSelector(st => st.oauth?.user_data?.data);
-  console.log('user_data', user_data);
+  const store = useSelector(st => st.common);
+  // console.log('store', store);
   const {
     selected_item,
     startDate,
@@ -243,6 +244,7 @@ const ProductInfo = props => {
     getCartId().then(async cartId => {
       console.log('THE CART ID =>', cartId);
       if (cartId != null || cartId == null) {
+        console.log('TcartItems =>', cartItems);
         await createOrUpdateCart(cartItems, {cartId: cartId})
           .then(res => {
             // console.log('RESPONSE CART', res);

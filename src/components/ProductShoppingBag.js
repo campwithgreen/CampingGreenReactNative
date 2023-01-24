@@ -73,15 +73,26 @@ const ProductShoppingBag = props => {
   return (
     <View>
       <View style={styles.view1}>
-        <CheckBox
-          value={item.isSelected}
-          onValueChange={value => {
-            let newData = [...productList];
-            newData[index].isSelected = value;
-            setProductList(newData);
-          }}
-          style={styles.checkbox}
-        />
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <CheckBox
+            value={item.isSelected}
+            onValueChange={value => {
+              let newData = [...productList];
+              newData[index].isSelected = value;
+              setProductList(newData);
+            }}
+            style={styles.checkbox}
+          />
+          {item?.itemId?.parentTitle && (
+            <Text style={{color: '#000', marginLeft: 10}}>
+              {item?.itemId?.parentTitle}
+            </Text>
+          )}
+        </View>
         <TouchableOpacity
           onPress={() => {
             handleIndividualCartItemDelete(item?._id, cartPayload);

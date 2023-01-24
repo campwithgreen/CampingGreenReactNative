@@ -177,7 +177,9 @@ export const ProfileScreen = props => {
                 <TouchableOpacity
                   onPress={() => {
                     if (isLogin) {
-                      navigateTo('RoomReservationListScreen');
+                      navigateTo('RoomReservationListScreen', {
+                        type: 'PRODUCT',
+                      });
                     } else {
                       alert('로그인 후에 조회 가능한 서비스입니다. ');
                     }
@@ -189,7 +191,9 @@ export const ProfileScreen = props => {
                 <TouchableOpacity
                   onPress={() => {
                     if (isLogin) {
-                      navigateTo('RoomReservationListScreen');
+                      navigateTo('RoomReservationListScreen', {
+                        type: 'SUBLOCATION',
+                      });
                     } else {
                       alert('로그인 후에 조회 가능한 서비스입니다. ');
                     }

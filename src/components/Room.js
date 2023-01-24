@@ -20,8 +20,8 @@ const Room = ({item, cardHeight}) => {
       style={{height: cardHeight}}
       onPress={() => {
         dispatch(setSelectedLocation(item));
-        console.log('clicked>>>>>>>>>', item);
-        navigateTo('Rent', {subLocations: item});
+
+        navigateTo('Rent', {subLocations: item, type: item?.type});
       }}>
       <View
         style={{

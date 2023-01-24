@@ -38,6 +38,7 @@ const mapStateToProps = (state, ownProps) => {
   const cart_history = state.common?.cart_history;
   const main_cart_items = state.common?.main_cart_items;
   const current_cart_details = state?.common.current_cart_details;
+
   const store = state;
   return {
     isLogin,
@@ -53,17 +54,16 @@ const ProductShoppingBagScreen = props => {
   const [cartMainData, setCartMainData] = useState(cart_history);
 
   const [loading, setLoading] = useState(false);
-
+  const isLoggedIn = useSelector(st => st.oauth?.isLogin);
   const {isLogin, cart_history, main_cart_items, current_cart_details, store} =
     props;
 
-  console.log('store', store);
+  // console.log('store', store);
 
   const headerContent = {
     middleItemContents: {
       type: 'text',
       content: '주문/결제',
-      navigateScreen: 'HomeScreenDetail1',
     },
     leftItemContents: {
       type: 'image',
@@ -72,8 +72,22 @@ const ProductShoppingBagScreen = props => {
         goBack();
       },
     },
+    rightItemContents: {
+      type: 'cart',
+      content: require('../assets/images/cart.png'),
+      navigateScreen: () => {
+        if (!isLoggedIn) {
+          Toast.show({
+            type: 'error',
+            text1: '로그인이 필요합니다.',
+            visibilityTime: 2000,
+          });
+        } else {
+          navigateTo('ProductShoppingBagScreen');
+        }
+      },
+    },
   };
-
   const [isSelected, setIsSelected] = useState(false);
   const [checkedCount, setCheckedCount] = useState(0);
   const [productList, setProductList] = useState([]);
@@ -86,13 +100,13 @@ const ProductShoppingBagScreen = props => {
     let cartPayload;
     if (productList) {
       cartPayload = JSON.parse(JSON.stringify(productList));
-      console.log('CART PAYLOAD INIT', cartPayload);
+      // console.log('CART PAYLOAD INIT', cartPayload);
       cartPayload.map(item => {
         item.itemId = item.itemId?._id;
       });
 
       setCartPayload(cartPayload);
-      console.log('CART PAYLOAD', cartPayload);
+      // console.log('CART PAYLOAD', cartPayload);
 
       let displayAmount = 0;
       let displayTotalAmount = 0;
@@ -121,6 +135,7 @@ const ProductShoppingBagScreen = props => {
         await getUserCartHistory()
           .then(res => {
             if (res) {
+              // console.log('res>>>>', res.data);
               setCartMainData(res.data.data);
 
               dispatch(setUserCartHistory(res.data.data));
@@ -152,10 +167,11 @@ const ProductShoppingBagScreen = props => {
                   }
                 });
               }
-              console.log('bagData =====================', bagData);
+
               bagData[0]?.items.map(item => {
                 item.isSelected = false;
               });
+              // console.log('bagData =====================', bagData[0]);
               setProductList(bagData[0]?.items);
               setLoading(false);
             }
@@ -173,8 +189,9 @@ const ProductShoppingBagScreen = props => {
   const handleIndividualCartItemDelete = (ID, cartPayload) => {
     var removeIndex = cartPayload.map(item => item?._id).indexOf(ID);
     ~removeIndex && cartPayload.splice(removeIndex, 1);
-    console.log('Delete Payload', cartPayload);
+    console.log('Delete Payload removeIndex', removeIndex, ID, cartPayload);
     setLoading(true);
+    setLoading(false);
     getCartId().then(async cartId => {
       console.log('Cart Id IN DELETE', cartId);
       if (cartId) {
@@ -185,7 +202,7 @@ const ProductShoppingBagScreen = props => {
           {cartId: cartId},
         )
           .then(async res => {
-            // console.log('RESPONSE CART FROM IND DELETE', res);
+            console.log('RESPONSE CART FROM IND DELETE', res.data.data);
             if (res) {
               dispatch(setCurrentCheckoutCartDetails(res.data.data));
               Toast.show({
@@ -193,7 +210,6 @@ const ProductShoppingBagScreen = props => {
                 text1: '삭제되었습니다.',
                 visibilityTime: 2000,
               });
-
               await getUserCartHistory(cartId)
                 .then(res => {
                   console.log('CART USER DATA ++++++', res.data);
@@ -215,6 +231,8 @@ const ProductShoppingBagScreen = props => {
             }
             setLoading(false);
           });
+      } else {
+        console.log('into cart else');
       }
     });
   };
@@ -311,6 +329,7 @@ const ProductShoppingBagScreen = props => {
               style={{
                 fontWeight: '600',
                 color: '#454C53',
+                marginLeft: 10,
               }}>{`전체선택 (${checkedCount}/${productList?.length})`}</Text>
           </View>
           <TouchableOpacity
@@ -389,6 +408,7 @@ const ProductShoppingBagScreen = props => {
   const getCartId = async () => {
     try {
       const cartId = await AsyncStorage.getItem('@cart_id');
+      console.log('getCartId', cartId);
       return cartId != null ? cartId : null;
     } catch (e) {
       console.log('getting cart error', e);
@@ -423,67 +443,77 @@ const ProductShoppingBagScreen = props => {
   const handleCheckout = async (IDS, cartPayload) => {
     let newIds = [...IDS];
 
-    console.log('IDS', IDS);
-    console.log('HEY CARTPAYLOAD', cartPayload);
-
-    newIds.forEach(ids => {
-      if (!ids?.isSelected) {
-        var removeIndex = cartPayload.map(item => item?._id).indexOf(ids?._id);
-        ~removeIndex && cartPayload.splice(removeIndex, 1);
+    let countLocationType = 0;
+    let countProductType = 0;
+    IDS.map(item => {
+      console.log('item.type', item);
+      if (item.isSelected) {
+        if (item.itemId.type == 'SUBLOCATION') {
+          countLocationType++;
+        } else {
+          countProductType++;
+        }
       }
     });
 
-    console.log('SELECTED CART CHECKOUT IDS', cartPayload);
+    if (countLocationType > 0 && countProductType > 0) {
+      Toast.show({
+        type: 'error',
+        text1: '캠핑용품과 캠핑장을 동시에 예약불가능합니다.',
+        text2: '각각 따로 예약해야 합니다.',
+        visibilityTime: 2000,
+      });
+      return;
+    } else {
+      newIds.forEach(ids => {
+        if (!ids?.isSelected) {
+          var removeIndex = cartPayload
+            .map(item => item?._id)
+            .indexOf(ids?._id);
+          ~removeIndex && cartPayload.splice(removeIndex, 1);
+        }
+      });
 
-    let selectedCartDetails = {
-      ...current_cart_details,
-      items: productList.filter(it => it.isSelected),
-      totalAmount: displayAmount,
-      shippingAmount: 0,
-      finalAmount: displayTotalAmount,
-    };
+      console.log('SELECTED CART CHECKOUT IDS', cartPayload);
 
-    getCartId().then(async cartId => {
-      console.log('HI CART ID', cartId);
-      if (cartId) {
-        await getUserCartHistory(cartId)
-          .then(res => {
-            dispatch(setCurrentCheckoutCartDetails(res.data.data));
-            Toast.show({
-              type: 'info',
-              text1: '체크아웃이 진행중입나다.',
-              visibilityTime: 2000,
+      let selectedCartDetails = {
+        ...current_cart_details,
+        items: productList.filter(it => it.isSelected),
+        totalAmount: displayAmount,
+        shippingAmount: 0,
+        finalAmount: displayTotalAmount,
+      };
+
+      getCartId().then(async cartId => {
+        console.log('HI CART ID', cartId);
+        if (cartId) {
+          await getUserCartHistory(cartId)
+            .then(res => {
+              dispatch(setCurrentCheckoutCartDetails(res.data.data));
+              Toast.show({
+                type: 'info',
+                text1: '체크아웃이 진행중입나다.',
+                visibilityTime: 2000,
+              });
+
+              navigateTo('RoomPaymentScreen', {
+                selectedProducts: cartPayload,
+                selectedCurrentCartDetails: selectedCartDetails,
+              });
+            })
+            .catch(err => {
+              console.log('err', err);
+              showDefaultErrorAlert(err?.response?.data?.error);
             });
-
-            navigateTo('RoomPaymentScreen', {
-              selectedProducts: cartPayload,
-              selectedCurrentCartDetails: selectedCartDetails,
-            });
-          })
-          .catch(err => {
-            console.log('err', err);
-            showDefaultErrorAlert(err?.response?.data?.error);
-          });
-        // await createOrUpdateCart({
-        //   items: cartPayload
-        // }, { cartId: cartId })
-        //   .then(res => {
-        //     console.log("RESPONSE CART", res);
-        //     if (res) {
-
-        //     }
-        //   })
-        //   .catch(err => {
-        //     if (err) {
-        //       showDefaultErrorAlert(err?.response?.data?.error);
-        //     }
-        //   });
-      }
-    });
+        } else {
+          setCurrentCheckoutCartDetails(null);
+        }
+      });
+    }
   };
 
-  console.log('SELCTED CART PAYLOAD', cartPayload);
-  console.log('PRODUCT LIST', productList?.length);
+  // console.log('SELCTED CART PAYLOAD', cartPayload);
+  // console.log('PRODUCT LIST', productList?.length);
 
   useEffect(() => {
     return () => {

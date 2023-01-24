@@ -22,21 +22,9 @@ import {setCurrentCheckoutCartDetails} from '../redux/actions/common';
 import {navigateTo} from '../navigation/utils/RootNavigation';
 import {ORDER_STATUS} from '../utils/constants.json';
 
-const headerContent = {
-  middleItemContents: {
-    type: 'text',
-    content: '예약내역',
-    navigateScreen: () => goBack(),
-  },
-  leftItemContents: {
-    type: 'image',
-    content: require('../assets/images/icon_cancel.png'),
-    navigateScreen: 'ProfileScreen',
-  },
-};
-
-const RoomReservationListScreen = () => {
+const RoomReservationListScreen = ({route}) => {
   let cart_history = useSelector(st => st?.common?.cart_history);
+  const isLoggedIn = useSelector(st => st.oauth?.isLogin);
   //filtering not to show checkout pending items
   cart_history = cart_history?.filter(
     item => item.paymentStatus !== 'CHECKOUT_PENDING',
@@ -52,7 +40,34 @@ const RoomReservationListScreen = () => {
     ].push(a);
     return r;
   }, Object.create(null));
-
+  const headerContent = {
+    middleItemContents: {
+      type: 'text',
+      content: '예약내역',
+      navigateScreen: () => goBack(),
+    },
+    leftItemContents: {
+      type: 'image',
+      content: require('../assets/images/icon_cancel.png'),
+      navigateScreen: 'ProfileScreen',
+    },
+    rightItemContents: {
+      type: 'cart',
+      content: require('../assets/images/cart.png'),
+      navigateScreen: () => {
+        if (!isLoggedIn) {
+          Toast.show({
+            type: 'error',
+            text1: '로그인이 필요합니다.',
+            visibilityTime: 2000,
+          });
+        } else {
+          navigateTo('ProductShoppingBagScreen');
+        }
+      },
+    },
+  };
+  console.log('result', result, route.params.type);
   return (
     <View style={{backgroundColor: 'white', height: hp('100%')}}>
       <Header headerContent={headerContent} />
@@ -62,15 +77,23 @@ const RoomReservationListScreen = () => {
           Object?.keys(result)?.map(key => {
             return (
               <View style={globalStyle.mainContainerWrapper} key={key}>
-                <Comp1 date={key.split('_')[0]} total={result[key]?.length} />
                 {result[key]?.map(it => {
+                  console.log('it', it.items[0].itemId.type);
                   return (
                     <View key={it?.items[0]._id}>
-                      <Comp2
-                        btnText={result[key][0].paymentStatus}
-                        itemData={it}
-                      />
-                      <Comp3 key={it?.items[0]._id} itemData={it} />
+                      {route?.params?.type === it.items[0].itemId.type && (
+                        <>
+                          <Comp1
+                            date={key.split('_')[0]}
+                            total={result[key]?.length}
+                          />
+                          <Comp2
+                            btnText={result[key][0].paymentStatus}
+                            itemData={it}
+                          />
+                          <Comp3 key={it?.items[0]._id} itemData={it} />
+                        </>
+                      )}
                     </View>
                   );
                 })}

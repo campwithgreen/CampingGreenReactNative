@@ -40,7 +40,7 @@ const headerContent = {
 
 export default function LoginScreen() {
   const st = useSelector(st => st);
-  console.log('STORE ++++++++++++++++++++', st);
+  // console.log('STORE ++++++++++++++++++++', st);
 
   const {
     container,

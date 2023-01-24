@@ -58,7 +58,8 @@ export const HomeNavigation = props => {
       <Stack.Screen name="ProductInfo" component={ProductInfo} />
       <Stack.Screen name="CalendarScreen" component={CalendarScreen} />
       <Stack.Screen name="TermsScreen" component={TermsScreen} />
-
+      <Stack.Screen name="RoomScreen" component={RoomScreen} />
+      <Stack.Screen name="Product" component={Product} />
       <Stack.Screen
         name="ProductShoppingBagScreen"
         component={ProductShoppingBagScreen}

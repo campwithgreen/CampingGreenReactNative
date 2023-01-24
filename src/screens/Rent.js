@@ -53,8 +53,10 @@ const Rent = props => {
   // console.log('PROPS', props);
   const {route} = props;
   // const selectedLoc = useSelector(st => st.common.selected_location);
+  const type = props?.route?.params?.type || '';
   const subLocations = useSelector(st => st?.common?.selected_location);
   const selected_item = useSelector(st => st.common?.selected_item);
+
   const startDate = useSelector(st => st.common?.start_date);
   const returnDate = useSelector(st => st.common?.return_date);
   const isLoggedIn = useSelector(st => st.oauth?.isLogin);
@@ -64,12 +66,15 @@ const Rent = props => {
   );
   const title = useSelector(st => st?.common?.selected_location?.title);
   const phone = useSelector(st => st?.common?.selected_location?.phone);
-
+  console.log('helo', type);
   // console.log('SL', subLocations?.campLink);
 
   const [modalVisible, setModalVisible] = useState(false);
   // console.log('subLocations', subLocations);
   const enableCheckout = () => {
+    if (startDate === returnDate && type === 'LOCATION') {
+      return false;
+    }
     if (startDate && returnDate) {
       return true;
     }
@@ -90,7 +95,7 @@ const Rent = props => {
         },
       ],
     };
-    console.log('CHCKOUT ITEMS', cartItems);
+
     await createOrUpdateCart(cartItems)
       .then(res => {
         if (res) {
@@ -328,7 +333,10 @@ const Rent = props => {
               </View>
             </TouchableOpacity>
           </View>
-          <RentDetail subLocations={subLocations?.subLocations} />
+          {enableCheckout() && (
+            <RentDetail subLocations={subLocations?.subLocations} />
+          )}
+
           {subLocations?.specifications?.campIntro && (
             <>
               <View style={{marginTop: wp('7%')}}>

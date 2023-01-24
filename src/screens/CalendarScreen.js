@@ -37,6 +37,9 @@ const CalendarScreen = props => {
   const type = route?.params?.type || 'PRODUCT';
 
   const enableCheckout = () => {
+    if (startDate === returnDate && type === 'LOCATION') {
+      return false;
+    }
     if (startDate && returnDate) {
       return true;
     }
@@ -59,11 +62,20 @@ const CalendarScreen = props => {
               navigateTo('ProductInfo');
             }
           } else {
-            Toast.show({
-              type: 'error',
-              text1: '체크아웃하기 전에 날짜를 선택해주세요.',
-              visibilityTime: 2000,
-            });
+            if (startDate === returnDate && type === 'LOCATION') {
+              Toast.show({
+                type: 'error',
+                text1: '체크인 날짜와 체크아웃 날짜가 같습니다. ',
+                text2: '체크아웃 날짜를 다른 날짜로 선택하세요.',
+                visibilityTime: 2000,
+              });
+            } else {
+              Toast.show({
+                type: 'error',
+                text1: '체크아웃하기 전에 날짜를 선택해주세요.',
+                visibilityTime: 2000,
+              });
+            }
           }
         }}
       />

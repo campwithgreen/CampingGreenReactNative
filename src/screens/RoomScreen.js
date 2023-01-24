@@ -62,7 +62,7 @@ const RoomScreen = () => {
   const location = useSelector(st => st.product.location);
 
   const [placeLoc, setPlaceLoc] = useState(location);
-  console.log('location, placeLoc', location, placeLoc);
+  // console.log('location, placeLoc', location, placeLoc);
   useEffect(() => {
     setState({...state, markers: placeLoc});
 

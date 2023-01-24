@@ -151,8 +151,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerIcon: {
-    height: Platform.OS == 'android' ? hp('4%') : hp('3%'),
-    width: Platform.OS == 'android' ? hp('4%') : hp('3%'),
+    height: Platform.OS == 'android' ? hp('3%') : hp('3%'),
+    width: Platform.OS == 'android' ? hp('3%') : hp('3%'),
   },
   headerTitle: {
     fontWeight: '900',

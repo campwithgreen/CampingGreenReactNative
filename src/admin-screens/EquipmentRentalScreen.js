@@ -98,7 +98,7 @@ const EquipmentRentalScreen = () => {
       await getAllProducts(data)
         .then(res => {
           if (res) {
-            console.log('product ===>', res);
+            // console.log('product ===>', res);
             dispatch(setProductData(res.data.data));
             setLoading(false);
           }

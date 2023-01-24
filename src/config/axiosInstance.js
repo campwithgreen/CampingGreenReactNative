@@ -3,7 +3,7 @@ import store from '../redux/store';
 
 let PROD_BASE_URL = 'https://campinggreen.herokuapp.com/';
 // let DEV_BASE_URL = 'http://192.168.0.3:9000/';
-// https://campinggreen.onrender.com https://codinghumans.herokuapp.com/ https://greencamp.onrender.com
+// https://campinggreen.herokuapp.com/
 
 const axiosInstance = axios.create({
   baseURL: PROD_BASE_URL,

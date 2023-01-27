@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Button,
+  Linking,
 } from 'react-native';
 import Toast from 'react-native-toast-message';
 import Header from '../layout/Header';
@@ -27,7 +28,16 @@ import moment from 'moment';
 export const ProfileScreen = props => {
   const st = useSelector(st => st);
   // console.log('STORE', st);
-
+  const phoneNumber = '01079275475';
+  const dialCall = number => {
+    let phoneNumber = '';
+    if (Platform.OS === 'android') {
+      phoneNumber = `tel:${number}`;
+    } else {
+      phoneNumber = `telprompt:${number}`;
+    }
+    Linking.openURL(phoneNumber);
+  };
   const dispatch = useDispatch();
 
   const isLogin = useSelector(st => st?.oauth?.isLogin);
@@ -159,7 +169,7 @@ export const ProfileScreen = props => {
 
                     <TouchableOpacity
                       onPress={() => {
-                        navigateTo('RoomReservationListScreen');
+                        navigateTo('RoomReservationRecentScreen');
                       }}>
                       <Text style={statusText}>{pendingCart}건 입금대기</Text>
                     </TouchableOpacity>
@@ -210,7 +220,13 @@ export const ProfileScreen = props => {
                   <Text style={secondText}>고객센터</Text>
                 </View>
                 <View style={secondTextWrapper}>
-                  <Text style={secondTextII}>상담원 연결</Text>
+                  <Text
+                    onPress={() => {
+                      dialCall(phoneNumber);
+                    }}
+                    style={secondTextII}>
+                    상담원 연결
+                  </Text>
                 </View>
                 <View style={secondTextWrapper}>
                   <Text style={secondTextII}>카카오톡 채널로 연결</Text>

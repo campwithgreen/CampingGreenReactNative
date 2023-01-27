@@ -22,7 +22,7 @@ import {setCurrentCheckoutCartDetails} from '../redux/actions/common';
 import {navigateTo} from '../navigation/utils/RootNavigation';
 import {ORDER_STATUS} from '../utils/constants.json';
 
-const RoomReservationListScreen = ({route}) => {
+const RoomReservationRecentScreen = ({route}) => {
   let cart_history = useSelector(st => st?.common?.cart_history);
   const isLoggedIn = useSelector(st => st.oauth?.isLogin);
   //filtering not to show checkout pending items
@@ -77,23 +77,15 @@ const RoomReservationListScreen = ({route}) => {
           Object?.keys(result)?.map(key => {
             return (
               <View style={globalStyle.mainContainerWrapper} key={key}>
+                <Comp1 date={key.split('_')[0]} total={result[key]?.length} />
                 {result[key]?.map(it => {
-                  console.log('it', it.items[0].itemId.type);
                   return (
                     <View key={it?.items[0]._id}>
-                      {route?.params?.type === it.items[0].itemId.type && (
-                        <>
-                          <Comp1
-                            date={key.split('_')[0]}
-                            total={result[key]?.length}
-                          />
-                          <Comp2
-                            btnText={result[key][0].paymentStatus}
-                            itemData={it}
-                          />
-                          <Comp3 key={it?.items[0]._id} itemData={it} />
-                        </>
-                      )}
+                      <Comp2
+                        btnText={result[key][0].paymentStatus}
+                        itemData={it}
+                      />
+                      <Comp3 key={it?.items[0]._id} itemData={it} />
                     </View>
                   );
                 })}
@@ -158,7 +150,7 @@ const Comp2 = ({btnText, itemData}) => {
   );
 };
 
-export default RoomReservationListScreen;
+export default RoomReservationRecentScreen;
 
 const styles = StyleSheet.create({
   compView: {
@@ -256,10 +248,10 @@ const Comp3 = ({itemData}) => {
               }>{`수량 ${itemData?.items[0]?.units}개`}</Text>
           </View>
           {/* <View>
-            <View style={{ height: hp("5%"), width: wp("25%"), padding: 10, backgroundColor: COLOR.black }}>
-              <Text style={{ color: COLOR.white, fontSize: FONTSIZE.l, justifyContent: "center", alignItems: "center" }}>STATUS</Text>
-            </View>
-          </View> */}
+              <View style={{ height: hp("5%"), width: wp("25%"), padding: 10, backgroundColor: COLOR.black }}>
+                <Text style={{ color: COLOR.white, fontSize: FONTSIZE.l, justifyContent: "center", alignItems: "center" }}>STATUS</Text>
+              </View>
+            </View> */}
         </View>
       </View>
     </View>

@@ -126,6 +126,7 @@ const ProductInfo = props => {
   const [payloadItems, setPayloadItems] = useState([]);
 
   const getCartId = async () => {
+    // removeCartId();
     try {
       const cartId = await AsyncStorage.getItem('@cart_id');
       console.log('cartId>>>', cartId);
@@ -159,6 +160,10 @@ const ProductInfo = props => {
       await getCartId().then(async cartId => {
         if (cartId) {
           await getUserCartHistory(cartId, false).then(res => {
+            console.log('hello', res.data);
+            if (res?.data?.data == null) {
+              removeCartId();
+            }
             if (res) {
               setPayloadItems([
                 ...res?.data?.data?.items,

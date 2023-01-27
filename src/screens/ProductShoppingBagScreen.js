@@ -555,7 +555,7 @@ const ProductShoppingBagScreen = props => {
           />
         ) : (
           <View style={styles.emptyCartWrapper}>
-            <Text style={styles.emptyCartText}>No Items Added to Cart</Text>
+            <Text style={styles.emptyCartText}>장바구니가 비워 있습니다.</Text>
           </View>
         )}
       </ScrollView>

@@ -29,6 +29,7 @@ import SixteenScreen from '../admin-screens/SixteenScreen';
 import FourteenthScreen from '../admin-screens/FourteenthScreen';
 import EditFirst from '../admin-screens/EditFirst';
 import EditSecond from '../admin-screens/EditSecond';
+import RoomReservationRecentScreen from '../screens/RoomReservationRecentScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -151,6 +152,10 @@ export const ProfileNavigation = props => {
       <Stack.Screen
         name="RoomReservationListScreen"
         component={RoomReservationListScreen}
+      />
+      <Stack.Screen
+        name="RoomReservationRecentScreen"
+        component={RoomReservationRecentScreen}
       />
       <Stack.Screen name="RoomPaymentScreen" component={RoomPaymentScreen} />
     </Stack.Navigator>

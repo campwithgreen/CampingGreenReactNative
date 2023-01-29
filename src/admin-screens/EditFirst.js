@@ -822,6 +822,7 @@ const Comp2 = props => {
           height: '80%',
           paddingLeft: wp('3%'),
           fontWeight: '600',
+          color: 'black',
         }}
         placeholder={p1}
         defaultValue={d1}
@@ -846,6 +847,7 @@ const Comp2 = props => {
             height: '80%',
             paddingLeft: wp('3%'),
             fontWeight: '600',
+            color: 'black',
           }}
           placeholder={p2}
           defaultValue={d2}
@@ -866,7 +868,7 @@ const Comp2 = props => {
         onPress={() => {
           handleDeleteSpecification();
         }}>
-        <Text style={{fontWeight: '600'}}>{t1}</Text>
+        <Text style={{fontWeight: '600', color: 'black'}}>{t1}</Text>
       </TouchableOpacity>
     </View>
   );

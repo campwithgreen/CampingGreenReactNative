@@ -627,6 +627,7 @@ const EditFirst = props => {
                       width: wp('70%'),
                       marginLeft: wp('5%'),
                       fontWeight: '600',
+                      color: 'black',
                     }}
                     placeholder={'AC Title'}
                     defaultValue={additionalCharges[index]?.add_feature_title}
@@ -822,6 +823,7 @@ const Comp2 = props => {
           height: '80%',
           paddingLeft: wp('3%'),
           fontWeight: '600',
+          color: 'black',
         }}
         placeholder={p1}
         defaultValue={d1}
@@ -846,6 +848,7 @@ const Comp2 = props => {
             height: '80%',
             paddingLeft: wp('3%'),
             fontWeight: '600',
+            color: 'black',
           }}
           placeholder={p2}
           defaultValue={d2}
@@ -1010,6 +1013,7 @@ const styles = StyleSheet.create({
     borderColor: 'lightgrey',
     width: wp('70%'),
     height: '80%',
+    color: 'black',
   },
   btn: {
     backgroundColor: '#E5E5E5',

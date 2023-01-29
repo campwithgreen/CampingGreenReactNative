@@ -531,5 +531,6 @@ const styles = StyleSheet.create({
     borderColor: 'lightgrey',
     width: '100%',
     height: '80%',
+    color: 'black',
   },
 });

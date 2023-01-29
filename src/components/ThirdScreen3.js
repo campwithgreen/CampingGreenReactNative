@@ -83,7 +83,7 @@ const ThirdScreen3 = props => {
             handleOrderStatus(orderStatus);
             console.log(orderStatus);
           } else {
-            navigateTo('RoomReservationListScreen');
+            navigateTo('RoomReservationRecentScreen');
           }
         }}>
         {isLoading ? (

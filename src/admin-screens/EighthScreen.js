@@ -150,6 +150,7 @@ const Comp2 = ({p1, p2, t1}) => {
           height: '80%',
           paddingLeft: wp('3%'),
           fontWeight: '600',
+          color: 'black',
         }}
         placeholder={p1}
       />
@@ -160,6 +161,7 @@ const Comp2 = ({p1, p2, t1}) => {
           height: '80%',
           paddingLeft: wp('3%'),
           fontWeight: '600',
+          color: 'black',
         }}
         placeholder={p2}
       />
@@ -324,6 +326,7 @@ const styles = StyleSheet.create({
     borderColor: 'lightgrey',
     width: wp('70%'),
     height: '80%',
+    color: 'black',
   },
   btn: {
     backgroundColor: '#E5E5E5',

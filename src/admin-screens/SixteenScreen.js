@@ -146,8 +146,8 @@ const SixteenScreen = props => {
                 );
               })
             ) : (
-              <View>
-                <Text> NO ORDERS</Text>
+              <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                <Text style={{color: 'black'}}> 데이터가 없습니다. </Text>
               </View>
             )}
           </View>

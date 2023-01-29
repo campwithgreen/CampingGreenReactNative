@@ -38,6 +38,16 @@ export const ProfileScreen = props => {
     }
     Linking.openURL(phoneNumber);
   };
+  const kakaoChannel = () => {
+    const URL = 'http://pf.kakao.com/_RDxmRxj';
+    Linking.canOpenURL(URL).then(supported => {
+      if (supported) {
+        Linking.openURL(URL);
+      } else {
+        alert('Url 열 수 없습니다.: ' + URL);
+      }
+    });
+  };
   const dispatch = useDispatch();
 
   const isLogin = useSelector(st => st?.oauth?.isLogin);
@@ -229,7 +239,13 @@ export const ProfileScreen = props => {
                   </Text>
                 </View>
                 <View style={secondTextWrapper}>
-                  <Text style={secondTextII}>카카오톡 채널로 연결</Text>
+                  <Text
+                    onPress={() => {
+                      kakaoChannel();
+                    }}
+                    style={secondTextII}>
+                    카카오톡 채널로 연결
+                  </Text>
                 </View>
                 {isLogin && (
                   <View style={buttonWrapper}>

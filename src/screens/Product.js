@@ -30,7 +30,7 @@ import Toast from 'react-native-toast-message';
 export const Product = props => {
   const {container, ddCont} = styles;
   const dispatch = useDispatch();
-
+  console.log('props', props);
   const [loading, setLoading] = useState(false);
 
   const st = useSelector(st => st);
@@ -81,7 +81,30 @@ export const Product = props => {
         });
     })();
   }, []);
+  useEffect(() => {
+    const unsubscribe = props.navigation.addListener('focus', () => {
+      (async function getAllProductsData() {
+        let data = {type: 'PRODUCT'};
+        setLoading(true);
+        await getAllProducts(data)
+          .then(res => {
+            if (res) {
+              // console.log('product', res);
+              dispatch(setProductData(res.data.data));
+              setLoading(false);
+            }
+          })
+          .catch(err => {
+            if (err) {
+              showDefaultErrorAlert();
+              setLoading(false);
+            }
+          });
+      })();
+    });
 
+    return unsubscribe;
+  }, []);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('all');
 
@@ -181,7 +204,7 @@ export const Product = props => {
 };
 
 const styles = StyleSheet.create({
-  container: {backgroundColor: COLOR.white},
+  container: {backgroundColor: COLOR.white, flex: 1},
   ddCont: {
     display: 'flex',
     flexDirection: 'row',

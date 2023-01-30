@@ -158,6 +158,7 @@ const SixteenScreen = props => {
 };
 
 const Comp1 = ({flag, item}) => {
+  console.log('user', item);
   const dispatch = useDispatch();
   return (
     <TouchableOpacity

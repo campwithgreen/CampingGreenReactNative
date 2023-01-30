@@ -229,6 +229,7 @@ const ThirteenScreen = () => {
               color: 'black',
             }}
             placeholder="설명 추가 …"
+            placeholderTextColor={'gray'}
           />
           <Comp7 t1="사진 추가하기" />
         </View>
@@ -371,6 +372,7 @@ const Comp6 = ({placeholder1, placeholder2, text}) => {
           },
         ]}
         placeholder={placeholder1}
+        placeholderTextColor={'gray'}
       />
       <TextInput
         style={[
@@ -383,6 +385,7 @@ const Comp6 = ({placeholder1, placeholder2, text}) => {
           },
         ]}
         placeholder={placeholder2}
+        placeholderTextColor={'gray'}
       />
       <Text style={{color: '#000'}}>{text}</Text>
     </View>

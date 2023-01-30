@@ -361,6 +361,7 @@ const Comp = props => {
           </ImageBackground>
           <TextInput
             placeholder="Add Feature Title…"
+            placeholderTextColor={'gray'}
             style={{
               paddingLeft: wp('10%'),
               backgroundColor: 'white',
@@ -376,6 +377,7 @@ const Comp = props => {
           />
           <TextInput
             placeholder="설명 추가 …"
+            placeholderTextColor={'gray'}
             style={{
               paddingLeft: wp('10%'),
               backgroundColor: 'white',

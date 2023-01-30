@@ -27,7 +27,7 @@ import {showDefaultErrorAlert} from '../global/global';
 import {useDispatch, useSelector} from 'react-redux';
 import {login, setUserData, setUserToken} from '../redux/actions/oauth';
 import {setUserCartHistory} from '../redux/actions/common';
-import {getUserCartHistory} from '../apis/cart';
+import {fetchCurrentCartItems, getUserCartHistory} from '../apis/cart';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const headerContent = {
@@ -53,7 +53,7 @@ export default function LoginScreen() {
     buttonWrapper,
   } = styles;
   const dispatch = useDispatch();
-
+  const user_data = useSelector(st => st.oauth?.user_data?.data);
   const [phoneNumber, setPhoneNumber] = useState(null);
   const [otp, setOtp] = useState(null);
   const [otpAutoFocus, setOtpAutoFocus] = useState(false);
@@ -73,10 +73,36 @@ export default function LoginScreen() {
   };
 
   useEffect(() => {
+    const getCartIdFromDb = async () => {
+      try {
+        const result = await fetchCurrentCartItems(user_data._id);
+        if (result.data.success) {
+          storeCartId(result.data.data[0]._id);
+        } else {
+          storeCartId(null);
+        }
+      } catch (e) {
+        console.log('getting cart error', e);
+      }
+      console.log('Done.');
+    };
+
+    getCartIdFromDb();
+
     if (isLogin && role == 'USER') {
       navigateTo('HomeScreen');
     }
+    return () => {};
   }, [isLogin]);
+
+  const storeCartId = async value => {
+    console.log('VALUE CARTID', value);
+    try {
+      await AsyncStorage.setItem('@cart_id', value);
+    } catch (e) {
+      console.log('STORING CART ID ERROR', e);
+    }
+  };
 
   useEffect(() => {
     if (isLogin) {
@@ -198,13 +224,14 @@ export default function LoginScreen() {
               );
             } else {
               dispatch(login(true));
+
               Toast.show({
                 type: 'success',
                 text1: '로그인 되었습니다',
                 visibilityTime: 2000,
               });
 
-              navigateTo('HomeScreen');
+              // navigateTo('HomeScreen');
             }
           } else {
             Toast.show({
@@ -258,6 +285,7 @@ export default function LoginScreen() {
                       padding: 10,
                     }}
                     placeholder="1011112222 -없이 숫자만 입력해주세요"
+                    placeholderTextColor={'gray'}
                     onFocus={() => onFocus()}
                     onBlur={() => onBlur()}
                     keyboardType="number-pad"

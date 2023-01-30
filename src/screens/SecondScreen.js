@@ -150,7 +150,7 @@ const SecondScreen = () => {
               dispatch(setCurrentCheckoutCartDetails(res.data.data));
               Toast.show({
                 type: 'info',
-                text1: '체크아웃이 진행중입니다.',
+                text1: '체크인이 진행중입니다.',
                 visibilityTime: 2000,
               });
 
@@ -172,7 +172,7 @@ const SecondScreen = () => {
               dispatch(setCurrentCheckoutCartDetails(res.data.data));
               Toast.show({
                 type: 'info',
-                text1: '체크아웃이 진행중입니다.',
+                text1: '체크인이 진행중입니다.',
                 visibilityTime: 2000,
               });
 

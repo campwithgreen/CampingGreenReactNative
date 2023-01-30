@@ -16,6 +16,7 @@ import {RFPercentage} from 'react-native-responsive-fontsize';
 import {navigateTo} from '../navigation/utils/RootNavigation';
 import {useDispatch} from 'react-redux';
 import {setSelectedItem} from '../redux/actions/common';
+import {showDefaultErrorAlert} from '../global/global';
 
 const RenderItem = ({item}) => {
   const dispatch = useDispatch();
@@ -24,8 +25,12 @@ const RenderItem = ({item}) => {
     <View style={{marginTop: hp('2.5%'), width: wp('43%')}}>
       <TouchableOpacity
         onPress={() => {
-          dispatch(setSelectedItem(item));
-          navigateTo('ProductInfo', item);
+          if (item.stock <= 0) {
+            showDefaultErrorAlert('잔여수량이 없습니다.');
+          } else {
+            dispatch(setSelectedItem(item));
+            navigateTo('ProductInfo', item);
+          }
         }}>
         <Image
           source={{
@@ -130,16 +135,33 @@ const ProductDetail = props => {
   ];
 
   return (
-    <FlatList
-      style={{paddingBottom: hp('25%')}}
-      numColumns={2}
-      showsHorizontalScrollIndicator={false}
-      data={product}
-      columnWrapperStyle={{display: 'flex', justifyContent: 'space-between'}}
-      renderItem={({item}) => {
-        return <RenderItem item={item} key={item.id} />;
-      }}
-    />
+    <>
+      {product.length > 0 ? (
+        <FlatList
+          style={{paddingBottom: hp('25%')}}
+          numColumns={2}
+          showsHorizontalScrollIndicator={false}
+          data={product}
+          columnWrapperStyle={{
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+          renderItem={({item}) => {
+            return <RenderItem item={item} key={item.id} />;
+          }}
+        />
+      ) : (
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: hp(40),
+          }}>
+          <Text style={{color: '#000'}}>매칭된 용품이 없습니다.</Text>
+        </View>
+      )}
+    </>
   );
 };
 

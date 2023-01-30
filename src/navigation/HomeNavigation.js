@@ -66,6 +66,10 @@ export const HomeNavigation = props => {
         component={ProductShoppingBagScreen}
       />
       <Stack.Screen name="RoomPaymentScreen" component={RoomPaymentScreen} />
+      <Stack.Screen
+        name="RoomReservationRecentScreen"
+        component={RoomReservationRecentScreen}
+      />
     </Stack.Navigator>
   );
 };
@@ -93,6 +97,10 @@ export const ProductNavigation = props => {
         component={ProductShoppingBagScreen}
       />
       <Stack.Screen name="RoomPaymentScreen" component={RoomPaymentScreen} />
+      <Stack.Screen
+        name="RoomReservationRecentScreen"
+        component={RoomReservationRecentScreen}
+      />
     </Stack.Navigator>
   );
 };
@@ -121,6 +129,10 @@ export const LocationNavigation = props => {
       <Stack.Screen
         name="RoomReservationListScreen"
         component={RoomReservationListScreen}
+      />
+      <Stack.Screen
+        name="RoomReservationRecentScreen"
+        component={RoomReservationRecentScreen}
       />
       <Stack.Screen name="RoomPaymentScreen" component={RoomPaymentScreen} />
     </Stack.Navigator>
@@ -192,6 +204,10 @@ export const AdminProductNavigation = props => {
       <Stack.Screen name="OrderDetailsScreen" component={OrderDetailsScreen} />
       <Stack.Screen name="EditFirstScreen" component={EditFirst} />
       <Stack.Screen name="EditSecondScreen" component={EditSecond} />
+      <Stack.Screen
+        name="RoomReservationRecentScreen"
+        component={RoomReservationRecentScreen}
+      />
     </Stack.Navigator>
   );
 };

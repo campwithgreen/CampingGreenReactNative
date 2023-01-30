@@ -24,6 +24,7 @@ import {getUserCartHistory} from '../apis/cart';
 import {showDefaultErrorAlert} from '../global/global';
 import {setUserCartHistory} from '../redux/actions/common';
 import moment from 'moment';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const ProfileScreen = props => {
   const st = useSelector(st => st);
@@ -121,8 +122,11 @@ export const ProfileScreen = props => {
     });
   }
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    const keys = await AsyncStorage.getAllKeys();
+    await AsyncStorage.multiRemove(keys);
     dispatch(logout());
+
     Toast.show({
       type: 'success',
       text1: '로그아웃 되었습니다.',
@@ -198,7 +202,7 @@ export const ProfileScreen = props => {
                   onPress={() => {
                     if (isLogin) {
                       navigateTo('RoomReservationListScreen', {
-                        type: 'PRODUCT',
+                        type: 'SUBLOCATION',
                       });
                     } else {
                       alert('로그인 후에 조회 가능한 서비스입니다. ');
@@ -212,7 +216,7 @@ export const ProfileScreen = props => {
                   onPress={() => {
                     if (isLogin) {
                       navigateTo('RoomReservationListScreen', {
-                        type: 'SUBLOCATION',
+                        type: 'PRODUCT',
                       });
                     } else {
                       alert('로그인 후에 조회 가능한 서비스입니다. ');

@@ -250,6 +250,7 @@ const Comp2 = ({p1, p2, t1, att, attValue}) => {
           color: 'black',
         }}
         placeholder={p1}
+        placeholderTextColor={'gray'}
         defaultValue={att}
       />
       <TextInput
@@ -262,6 +263,7 @@ const Comp2 = ({p1, p2, t1, att, attValue}) => {
           color: 'black',
         }}
         placeholder={p2}
+        placeholderTextColor={'gray'}
         defaultValue={attValue}
       />
       <Text style={{fontWeight: '600'}}>{t1}</Text>

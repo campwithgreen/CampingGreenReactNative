@@ -151,6 +151,7 @@ const Comp6 = ({placeholder1, placeholder2, text}) => {
           },
         ]}
         placeholder={placeholder1}
+        placeholderTextColor={'gray'}
       />
       <TextInput
         style={[
@@ -163,6 +164,7 @@ const Comp6 = ({placeholder1, placeholder2, text}) => {
           },
         ]}
         placeholder={placeholder2}
+        placeholderTextColor={'gray'}
       />
       <Text style={{color: '#000'}}>{text}</Text>
     </View>

@@ -75,10 +75,12 @@ const RoomReservationListScreen = ({route}) => {
       <ScrollView style={{marginBottom: heightPercentageToDP('15%')}}>
         {result && Object?.keys(result)?.length >= 1 ? (
           Object?.keys(result)?.map(key => {
+            console.log('result', result);
             return (
               <View style={globalStyle.mainContainerWrapper} key={key}>
                 {result[key]?.map(it => {
                   console.log('it', it.items[0].itemId.type);
+
                   return (
                     <View key={it?.items[0]._id}>
                       {route?.params?.type === it.items[0].itemId.type && (
@@ -102,7 +104,7 @@ const RoomReservationListScreen = ({route}) => {
           })
         ) : (
           <View style={styles.emptyCartWrapper}>
-            <Text style={styles.emptyCartText}>No Orders Has Been Made</Text>
+            <Text style={styles.emptyCartText}>예약 내역이 없습니다. </Text>
           </View>
         )}
       </ScrollView>
@@ -220,6 +222,7 @@ const styles = StyleSheet.create({
   emptyCartText: {
     textAlign: 'center',
     fontSize: FONTSIZE.xl,
+    color: '#000',
   },
 });
 

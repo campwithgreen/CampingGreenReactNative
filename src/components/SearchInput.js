@@ -63,6 +63,7 @@ const SearchInput = () => {
     <View style={styles.view1}>
       <TextInput
         placeholder="보리보리 울캠핑보장"
+        placeholderTextColor={'gray'}
         style={styles.searchbox}
         onChangeText={value => {
           setSearchText(value);

@@ -588,6 +588,7 @@ const FixRentalEquipmentNewScreen = props => {
                       color: 'black',
                     }}
                     placeholder={'AC Title'}
+                    placeholderTextColor={'gray'}
                     defaultValue={additionalCharges[index]?.add_feature_title}
                     onChangeText={text => {
                       let newSpecification = [...additionalCharges];
@@ -736,6 +737,7 @@ const Comp2 = props => {
           color: 'black',
         }}
         placeholder={p1}
+        placeholderTextColor={'gray'}
         defaultValue={specification[ind]?.keyAtt}
         onChangeText={text => {
           if (type === 'additionalCharges') {
@@ -761,6 +763,7 @@ const Comp2 = props => {
             color: 'black',
           }}
           placeholder={p2}
+          placeholderTextColor={'gray'}
           defaultValue={specification[ind]?.valueAtt}
           onChangeText={text => {
             if (type === 'additionalCharges') {

@@ -12,7 +12,7 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import React from 'react';
-import { useState } from 'react';
+import {useState} from 'react';
 import Header from '../layout/Header';
 
 const headerContent = {
@@ -109,6 +109,7 @@ const EleventhScreen = () => {
             paddingLeft: wp('3%'),
             marginTop: wp('3%'),
             marginHorizontal: wp('5%'),
+            color: 'black',
           }}
           placeholder="설명 추가 …"
         />
@@ -146,8 +147,10 @@ const Comp6 = ({placeholder1, placeholder2, text}) => {
             marginRight: wp('3%'),
             backgroundColor: '#F8F8F8',
             paddingLeft: wp('3%'),
+            color: 'black',
           },
         ]}
+        placeholderTextColor={'gray'}
         placeholder={placeholder1}
       />
       <TextInput
@@ -161,6 +164,7 @@ const Comp6 = ({placeholder1, placeholder2, text}) => {
           },
         ]}
         placeholder={placeholder2}
+        placeholderTextColor={'gray'}
       />
       <Text style={{color: '#000'}}>{text}</Text>
     </View>
@@ -288,6 +292,7 @@ const styles = StyleSheet.create({
     borderColor: 'lightgrey',
     width: wp('70%'),
     height: 35,
+    color: 'black',
   },
   btn: {
     backgroundColor: '#E5E5E5',

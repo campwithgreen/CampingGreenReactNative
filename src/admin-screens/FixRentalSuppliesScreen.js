@@ -361,6 +361,7 @@ const Comp = props => {
               height: 35,
               color: 'grey',
             }}
+            placeholderTextColor={'gray'}
             onChangeText={value => {
               let newCarouImage = [...allFeatures];
               newCarouImage[imgIndx].FeatureName = value;
@@ -369,6 +370,7 @@ const Comp = props => {
           />
           <TextInput
             placeholder="설명 추가 …"
+            placeholderTextColor={'gray'}
             style={{
               paddingLeft: wp('10%'),
               backgroundColor: 'white',
@@ -531,5 +533,6 @@ const styles = StyleSheet.create({
     borderColor: 'lightgrey',
     width: '100%',
     height: '80%',
+    color: 'black',
   },
 });

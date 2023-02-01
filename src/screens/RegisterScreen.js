@@ -254,6 +254,7 @@ export const RegisterScreen = props => {
                 type="text"
                 label="이름"
                 placeholder="김그린"
+                placeholderTextColor={'gray'}
                 onChange={value => {
                   getName(value);
                 }}
@@ -263,7 +264,8 @@ export const RegisterScreen = props => {
                 keyboardType="email-address"
                 type="text"
                 label="이메일"
-                placeholder=""
+                placeholder="이메일을 입력해주세요."
+                placeholderTextColor={'gray'}
                 onChange={value => {
                   getEmail(value);
                 }}

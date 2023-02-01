@@ -44,7 +44,6 @@ const RoomReservationRecentScreen = ({route}) => {
     middleItemContents: {
       type: 'text',
       content: '예약내역',
-      navigateScreen: () => goBack(),
     },
     leftItemContents: {
       type: 'image',

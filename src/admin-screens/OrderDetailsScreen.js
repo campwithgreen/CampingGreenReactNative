@@ -119,7 +119,11 @@ export default function OrderDetailsScreen() {
           />
           <View style={styles.border2}></View>
           <SecondScreen1
-            t1="배송지"
+            t1={
+              current_cart_details?.items[0]?.itemId.type === 'PRODUCT'
+                ? '배송지'
+                : '차량번호'
+            }
             t2={current_cart_details?.shipping_data?.address}
           />
         </View>

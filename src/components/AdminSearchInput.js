@@ -57,6 +57,7 @@ const AdminSearchInput = props => {
         }}>
         <TextInput
           placeholder="사용자 이름이나 번호로 검색해주세요."
+          placeholderTextColor={'gray'}
           style={styles.searchbox}
           onChangeText={value => {
             setSearchText(value);

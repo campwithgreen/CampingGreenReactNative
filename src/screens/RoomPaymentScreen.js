@@ -233,55 +233,47 @@ const RoomPaymentScreen = props => {
       if (name) {
         if (phoneNumber) {
           if (address) {
-            if (remarks || true) {
-              await checkoutCart(mainPayload, query)
-                .then(res => {
-                  if (res) {
-                    console.log('CART CHECKOUT ++++', res);
-                    if (res?.data?.newCartId) {
-                      storeCartId(res?.data?.newCartId);
-                      console.log('res.data in RoomPayemntScrn', res.data);
-                    } else {
-                      removeCartId();
-                    }
-                    getCartId().then(cartId => {
-                      console.log(
-                        '*********************THE CART ID ******************',
-                        cartId,
-                      );
-                    });
-                    dispatch(setCurrentCheckoutCartDetails(res.data.data));
-                    navigateTo('ThirdScreen');
+            await checkoutCart(mainPayload, query)
+              .then(res => {
+                if (res) {
+                  console.log('CART CHECKOUT ++++', res);
+                  if (res?.data?.newCartId) {
+                    storeCartId(res?.data?.newCartId);
+                    console.log('res.data in RoomPayemntScrn', res.data);
+                  } else {
+                    removeCartId();
+                  }
+                  getCartId().then(cartId => {
+                    console.log(
+                      '*********************THE CART ID ******************',
+                      cartId,
+                    );
+                  });
+                  dispatch(setCurrentCheckoutCartDetails(res.data.data));
+                  navigateTo('ThirdScreen');
 
-                    //for storing order history
-                    (async function getCartHistory() {
-                      await getUserCartHistory()
-                        .then(res => {
-                          if (res) {
-                            dispatch(setUserCartHistory(res.data.data));
-                          }
-                        })
-                        .catch(err => {
-                          if (err) {
-                            showDefaultErrorAlert(err?.response?.data?.error);
-                          }
-                        });
-                    })();
-                  }
-                })
-                .catch(err => {
-                  if (err) {
-                    console.log(' PAYMENT ERROR', err);
-                    showDefaultErrorAlert();
-                  }
-                });
-            } else {
-              Toast.show({
-                type: 'error',
-                text1: '요청사항이 입력해 주세요.',
-                visibilityTime: 2000,
+                  //for storing order history
+                  (async function getCartHistory() {
+                    await getUserCartHistory()
+                      .then(res => {
+                        if (res) {
+                          dispatch(setUserCartHistory(res.data.data));
+                        }
+                      })
+                      .catch(err => {
+                        if (err) {
+                          showDefaultErrorAlert(err?.response?.data?.error);
+                        }
+                      });
+                  })();
+                }
+              })
+              .catch(err => {
+                if (err) {
+                  console.log(' PAYMENT ERROR', err);
+                  showDefaultErrorAlert(err?.response?.data?.error);
+                }
               });
-            }
           } else {
             Toast.show({
               type: 'error',
@@ -391,7 +383,11 @@ const RoomPaymentScreen = props => {
           </View> */}
 
           <Input
-            t1="배송지"
+            t1={
+              current_cart_details?.items[0]?.itemId.type === 'PRODUCT'
+                ? '배송지'
+                : '차량번호'
+            }
             t2="캠핑 예약인 경우 차량번호를 입력해주세요"
             onChangeText={value => {
               setAddress(value);
@@ -407,7 +403,7 @@ const RoomPaymentScreen = props => {
               배송{'\n'}메세지
             </Text>
             <TextInput
-              placeholderTextColor="#454C53"
+              placeholderTextColor={'gray'}
               placeholder={
                 '별도 요청사항이 없으실 경우, \n 공란으로 비워주세요'
               }

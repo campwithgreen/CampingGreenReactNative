@@ -110,6 +110,7 @@ const TenthScreen = () => {
             paddingLeft: wp('3%'),
             marginTop: wp('3%'),
             marginHorizontal: wp('5%'),
+            color: 'black',
           }}
           placeholder="설명 추가 …"
         />
@@ -150,6 +151,7 @@ const Comp6 = ({placeholder1, placeholder2, text}) => {
           },
         ]}
         placeholder={placeholder1}
+        placeholderTextColor={'gray'}
       />
       <TextInput
         style={[
@@ -162,6 +164,7 @@ const Comp6 = ({placeholder1, placeholder2, text}) => {
           },
         ]}
         placeholder={placeholder2}
+        placeholderTextColor={'gray'}
       />
       <Text style={{color: '#000'}}>{text}</Text>
     </View>
@@ -289,6 +292,7 @@ const styles = StyleSheet.create({
     borderColor: 'lightgrey',
     width: wp('70%'),
     height: 35,
+    color: 'black',
   },
   btn: {
     backgroundColor: '#E5E5E5',

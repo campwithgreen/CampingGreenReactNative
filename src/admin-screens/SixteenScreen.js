@@ -147,7 +147,7 @@ const SixteenScreen = props => {
               })
             ) : (
               <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                <Text style={{color: '#000'}}>데이터가 없습니다. </Text>
+                <Text style={{color: 'black'}}> 데이터가 없습니다. </Text>
               </View>
             )}
           </View>
@@ -158,6 +158,7 @@ const SixteenScreen = props => {
 };
 
 const Comp1 = ({flag, item}) => {
+  console.log('user', item);
   const dispatch = useDispatch();
   return (
     <TouchableOpacity

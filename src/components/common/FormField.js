@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -7,7 +7,7 @@ import {
   TouchableHighlight,
   Button,
 } from 'react-native';
-import { RFPercentage } from 'react-native-responsive-fontsize';
+import {RFPercentage} from 'react-native-responsive-fontsize';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -24,16 +24,16 @@ export default function FormField(props) {
     keyboardType,
     validate,
     disabled,
-    autoFocus
+    autoFocus,
   } = props;
-  const { formlabel, inputcontainer } = styles;
+  const {formlabel, inputcontainer} = styles;
   const [lineColor, setLineColor] = useState(COLOR.black);
   const onFocus = () => setLineColor(COLOR.compGreen);
   const onBlur = () => {
     setLineColor(COLOR.black);
   };
 
-  console.log("IS D", disabled);
+  console.log('IS D', disabled);
 
   switch (type) {
     case 'textButton':
@@ -53,8 +53,8 @@ export default function FormField(props) {
                 onFocus={() => onFocus()}
                 onBlur={() => onBlur()}
                 keyboardType="number-pad"
-                onChangeText={value => { }}
-                onSubmitEditing={() => { }}
+                onChangeText={value => {}}
+                onSubmitEditing={() => {}}
               />
             </View>
             <TouchableHighlight
@@ -65,7 +65,7 @@ export default function FormField(props) {
                 borderBottomColor: lineColor,
                 width: '30%',
               }}
-              onPress={() => { }}
+              onPress={() => {}}
               underlayColor="transparent">
               <View
                 style={{
@@ -107,6 +107,7 @@ export default function FormField(props) {
               }}
               editable={disabled}
               placeholder={placeholder}
+              placeholderTextColor={'gray'}
               autoFocus={autoFocus}
             />
           </View>

@@ -27,7 +27,11 @@ import Footer from '../components/Footer';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import CustomButton from '../components/common/CustomButton';
 import Counter from '../components/common/Counter';
-import {createOrUpdateCart, getUserCartHistory} from '../apis/cart';
+import {
+  createOrUpdateCart,
+  fetchCurrentCartItems,
+  getUserCartHistory,
+} from '../apis/cart';
 import {showDefaultErrorAlert} from '../global/global';
 import {
   setCurrentCheckoutCartDetails,
@@ -204,7 +208,7 @@ const ProductInfo = props => {
               dispatch(setCurrentCheckoutCartDetails(res.data.data));
               Toast.show({
                 type: 'info',
-                text1: '체크아웃이 진행중입니다.',
+                text1: '대여 진행중입니다.',
                 visibilityTime: 2000,
               });
 
@@ -226,7 +230,7 @@ const ProductInfo = props => {
               dispatch(setCurrentCheckoutCartDetails(res.data.data));
               Toast.show({
                 type: 'info',
-                text1: '체크아웃이 진행중입니다.',
+                text1: '대여 진행중입니다.',
                 visibilityTime: 2000,
               });
 
@@ -268,7 +272,7 @@ const ProductInfo = props => {
           .catch(err => {
             if (err) {
               console.log('ERROR>>>', err);
-              showDefaultErrorAlert();
+              showDefaultErrorAlert(err.response.data.error);
               setModalVisible(false);
             }
           });
@@ -291,7 +295,7 @@ const ProductInfo = props => {
           .catch(err => {
             if (err) {
               console.log('ERROR', err);
-              showDefaultErrorAlert();
+              showDefaultErrorAlert(err.response.data.error);
               setModalVisible(false);
             }
           });

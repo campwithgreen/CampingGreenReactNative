@@ -409,7 +409,7 @@ const FixRentalEquipmentNewScreen = props => {
                       style={{
                         position: 'absolute',
                         left: '50%',
-                        color: 'white',
+                        color: 'black',
                         transform: [{translateX: -50}, {translateY: 53}],
                       }}>
                       사진 업로드하기
@@ -585,8 +585,10 @@ const FixRentalEquipmentNewScreen = props => {
                       width: wp('70%'),
                       marginLeft: wp('5%'),
                       fontWeight: '600',
+                      color: 'black',
                     }}
                     placeholder={'AC Title'}
+                    placeholderTextColor={'gray'}
                     defaultValue={additionalCharges[index]?.add_feature_title}
                     onChangeText={text => {
                       let newSpecification = [...additionalCharges];
@@ -732,8 +734,10 @@ const Comp2 = props => {
           paddingLeft: wp('3%'),
           fontWeight: '600',
           padding: 10,
+          color: 'black',
         }}
         placeholder={p1}
+        placeholderTextColor={'gray'}
         defaultValue={specification[ind]?.keyAtt}
         onChangeText={text => {
           if (type === 'additionalCharges') {
@@ -756,8 +760,10 @@ const Comp2 = props => {
             paddingLeft: wp('3%'),
             fontWeight: '600',
             padding: 10,
+            color: 'black',
           }}
           placeholder={p2}
+          placeholderTextColor={'gray'}
           defaultValue={specification[ind]?.valueAtt}
           onChangeText={text => {
             if (type === 'additionalCharges') {
@@ -921,6 +927,7 @@ const styles = StyleSheet.create({
     width: wp('70%'),
     height: '80%',
     padding: 10,
+    color: 'black',
   },
   btn: {
     backgroundColor: '#E5E5E5',

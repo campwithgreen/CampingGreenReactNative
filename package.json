@@ -8,7 +8,7 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "up": "git add . && git commit -m 'fix last cart bugs' && git push origin saurav-new",
+    "up": "git add . && git commit -m 'pull from saurav' && git push origin saurav-new",
     "postversion": "react-native-version",
     "androidcb": "cd android && ./gradlew clean && cd .. && npm run android"
   },

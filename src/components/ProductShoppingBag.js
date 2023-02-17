@@ -88,7 +88,7 @@ const ProductShoppingBag = props => {
             style={styles.checkbox}
           />
           {item?.itemId?.parentTitle && (
-            <Text style={{color: '#000', marginLeft: 10}}>
+            <Text style={{color: 'black', marginLeft: 10}}>
               {item?.itemId?.parentTitle}
             </Text>
           )}

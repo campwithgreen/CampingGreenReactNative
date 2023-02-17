@@ -6,7 +6,7 @@ let DEV_BASE_URL = 'http://192.168.219.100:9000/';
 // https://campinggreen.herokuapp.com/
 
 const axiosInstance = axios.create({
-  baseURL: DEV_BASE_URL,
+  baseURL: PROD_BASE_URL,
 });
 
 axiosInstance.interceptors.request.use(async config => {

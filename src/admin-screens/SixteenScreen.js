@@ -81,7 +81,7 @@ const SixteenScreen = props => {
   }, []);
 
   return (
-    <View style={{backgroundColor: COLOR.white, minHeight: hp('100%')}}>
+    <View style={{backgroundColor: '#fff', minHeight: hp('100%')}}>
       <Header headerContent={headerContent} />
       <Text style={{borderBottomWidth: 2, borderBottomColor: '#F8F8F8'}}></Text>
       {loading ? (
@@ -181,48 +181,36 @@ const Comp1 = ({flag, item}) => {
           minHeight: hp('12%'),
         }}>
         <View style={{display: 'flex', width: wp('20%')}}>
-          <Text style={[styles.text1, {color: flag ? 'white' : 'black'}]}>
-            {item?.userId?.firstName}
-          </Text>
+          <Text style={[styles.text1]}>{item?.userId?.firstName}</Text>
           <Text></Text>
           <Text></Text>
         </View>
         <View style={{display: 'flex', justifyContent: 'space-between'}}>
           <View style={{display: 'flex', flexDirection: 'row'}}>
-            <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
-              예약번호 :{' '}
-            </Text>
-            <Text style={[styles.text2, {color: flag ? '#fff' : '#000'}]}>
-              {item?._id}
-            </Text>
+            <Text style={[styles.text3]}>예약번호 : </Text>
+            <Text style={[styles.text2]}>{item?._id}</Text>
           </View>
           <View
             style={{
               display: 'flex',
               flexDirection: 'row',
             }}>
-            <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
-              주문 날짜 :{' '}
-            </Text>
-            <Text style={[styles.text2, {color: flag ? '#fff' : '#000'}]}>
+            <Text style={[styles.text3]}>주문 날짜 : </Text>
+            <Text style={[styles.text2]}>
               {moment(item?.userId?.createdAt).format('YYYY.MM.DD')}
             </Text>
           </View>
           <View style={{display: 'flex', flexDirection: 'row'}}>
-            <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
-              예약 캠핑장 :{' '}
-            </Text>
-            <Text style={[styles.text2, {color: flag ? '#fff' : '#000'}]}>
+            <Text style={[styles.text3]}>예약 캠핑장 : </Text>
+            <Text style={[styles.text2]}>
               {item?.items[0]?.itemId?.title.length > 19
                 ? item?.items[0]?.itemId?.title.substring(0, 19) + '...'
                 : item?.items[0]?.itemId?.title}
             </Text>
           </View>
           <View style={{display: 'flex', flexDirection: 'row'}}>
-            <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
-              지불 상태 :{' '}
-            </Text>
-            <Text style={[styles.text2, {color: flag ? '#fff' : '#000'}]}>
+            <Text style={[styles.text3]}>지불 상태 : </Text>
+            <Text style={[styles.text2]}>
               {ORDER_STATUS[item?.paymentStatus]}
             </Text>
           </View>
@@ -296,24 +284,27 @@ const styles = StyleSheet.create({
   dateWithBoldLine: {
     fontWeight: 'bold',
     fontSize: 18,
-    color: '#000',
+    color: 'black',
     marginHorizontal: wp('5%'),
     paddingTop: hp('2%'),
     paddingBottom: hp('1%'),
     borderBottomWidth: 4,
-    borderBottomColor: '#000',
+    borderBottomColor: 'black',
   },
   text1: {
     fontSize: FONTSIZE.m,
     fontWeight: 'bold',
+    color: 'black',
   },
   text2: {
     fontSize: FONTSIZE.sm,
     fontWeight: 'bold',
+    color: 'black',
   },
   text3: {
     fontSize: FONTSIZE.sm,
     fontWeight: 'bold',
+    color: 'black',
   },
   comp2View: {
     backgroundColor: '#E5E5E5',
@@ -335,6 +326,6 @@ const styles = StyleSheet.create({
   btntxt2: {
     fontWeight: 'bold',
     fontSize: 16,
-    color: '#000',
+    color: 'black',
   },
 });

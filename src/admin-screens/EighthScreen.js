@@ -195,7 +195,7 @@ const Comp3 = ({t1}) => {
         }}>
         +
       </Text>
-      <Text style={{color: '#000'}}>{t1}</Text>
+      <Text style={{color: 'black'}}>{t1}</Text>
     </View>
   );
 };
@@ -224,7 +224,7 @@ const ImageComp = () => {
             paddingVertical: 2,
             textAlign: 'center',
             textAlignVertical: 'center',
-            color: '#000',
+            color: 'black',
           }}>
           1
         </Text>
@@ -310,7 +310,7 @@ const styles = StyleSheet.create({
   },
   text1: {
     fontWeight: 'bold',
-    color: '#000',
+    color: 'black',
     fontSize: 16,
   },
   text2: {
@@ -344,6 +344,6 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     fontWeight: 'bold',
     fontSize: 20,
-    color: '#000000',
+    color: 'black000',
   },
 });

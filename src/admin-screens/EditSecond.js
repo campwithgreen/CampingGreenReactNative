@@ -517,7 +517,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     fontWeight: 'bold',
     fontSize: 20,
-    color: '#000000',
+    color: 'black000',
   },
   view1: {
     display: 'flex',
@@ -544,6 +544,6 @@ const styles = StyleSheet.create({
     borderColor: 'lightgrey',
     width: '100%',
     height: '80%',
-    color: '#000',
+    color: 'black',
   },
 });

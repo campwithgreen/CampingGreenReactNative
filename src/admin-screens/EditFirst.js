@@ -426,20 +426,21 @@ const EditFirst = props => {
                       </Text>
                       <Text></Text>
                     </View>
-                    {imgIndx !== 0 && (
+                    {imgIndx !== '' && (
                       <TouchableOpacity
+                        style={{
+                          zIndex: 9999999,
+                          right: 0,
+                          position: 'absolute',
+                        }}
                         onPress={() => {
                           handleDeleteImage(imgIndx);
                         }}>
-                        <Text
-                          style={{
-                            color: COLOR.white,
-                            transform: [{rotate: '45deg'}],
-                            fontSize: 40,
-                            position: 'absolute',
-                            right: 5,
-                            top: -35,
-                          }}></Text>
+                        <Image
+                          resizeMode="contain"
+                          style={{width: 30, height: 30}}
+                          source={require('../assets/images/cancel.png')}
+                        />
                       </TouchableOpacity>
                     )}
                     <Text
@@ -1017,6 +1018,7 @@ const styles = StyleSheet.create({
     width: wp('70%'),
     height: '80%',
     color: 'black',
+    padding: Platform.OS == 'ios' ? 10 : 10,
   },
   btn: {
     backgroundColor: '#E5E5E5',

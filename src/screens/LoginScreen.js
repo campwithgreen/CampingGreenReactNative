@@ -231,7 +231,7 @@ export default function LoginScreen() {
                 visibilityTime: 2000,
               });
 
-              // navigateTo('HomeScreen');
+              navigateTo('HomeScreen');
             }
           } else {
             Toast.show({

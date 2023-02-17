@@ -118,7 +118,7 @@ const NineteenthScreen = () => {
               marginHorizontal: wp('5%'),
               marginVertical: hp(1),
             }}>
-            <Text style={{fontWeight: 'bold'}}>최신순</Text>
+            <Text style={{fontWeight: 'bold', color: 'black'}}>최신순</Text>
           </View>
           <ScrollView style={{marginBottom: hp(8)}}>
             {/* <TextInput
@@ -141,7 +141,9 @@ const NineteenthScreen = () => {
               users.map((ele, i) => <Comp1 item={ele} key={i} />)
             ) : (
               <View>
-                <Text style={{textAlign: 'center'}}>정보가 없습니다</Text>
+                <Text style={{textAlign: 'center', color: 'black'}}>
+                  정보가 없습니다
+                </Text>
               </View>
             )}
           </ScrollView>
@@ -167,7 +169,7 @@ const Comp1 = ({flag, item}) => {
         marginTop: hp('3%'),
       }}>
       <View style={{display: 'flex'}}>
-        <Text style={[styles.text1, {color: flag ? 'white' : 'black'}]}>
+        <Text style={[styles.text1]}>
           {item?.firstName?.slice(0, 8) || '유저'}
         </Text>
         <Text></Text>
@@ -180,30 +182,20 @@ const Comp1 = ({flag, item}) => {
           paddingLeft: wp('5%'),
         }}>
         <View style={{display: 'flex', flexDirection: 'row'}}>
-          <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
-            가입 날짜 :{' '}
-          </Text>
-          <Text style={[styles.text2, {color: flag ? 'white' : 'black'}]}>
-            {item?.createdAt?.slice(0, 10)}
-          </Text>
+          <Text style={[styles.text3]}>가입 날짜 : </Text>
+          <Text style={[styles.text2]}>{item?.createdAt?.slice(0, 10)}</Text>
         </View>
         <View
           style={{
             display: 'flex',
             flexDirection: 'row',
           }}>
-          <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
-            전화번호 :{' '}
-          </Text>
-          <Text style={[styles.text2, {color: flag ? 'white' : 'black'}]}>
-            {item?.phoneNumber}
-          </Text>
+          <Text style={[styles.text3]}>전화번호 : </Text>
+          <Text style={[styles.text2]}>{item?.phoneNumber}</Text>
         </View>
         <View style={{display: 'flex', flexDirection: 'row'}}>
-          <Text style={[styles.text3, {color: flag ? 'lightgrey' : ''}]}>
-            구매내역 :{' '}
-          </Text>
-          <Text style={[styles.text2, {color: flag ? 'white' : 'black'}]}>
+          <Text style={[styles.text3]}>구매내역 : </Text>
+          <Text style={[styles.text2]}>
             별빛 캠핑장 외 {item?.totalOrders} 건
           </Text>
         </View>
@@ -270,14 +262,17 @@ const styles = StyleSheet.create({
   text1: {
     fontSize: 14,
     fontWeight: 'bold',
+    color: 'black',
   },
   text2: {
     fontSize: 12,
     fontWeight: 'bold',
+    color: 'black',
   },
   text3: {
     fontSize: 10,
     fontWeight: 'bold',
+    color: 'black',
   },
   comp2View: {
     backgroundColor: '#E5E5E5',
@@ -298,6 +293,6 @@ const styles = StyleSheet.create({
   btntxt2: {
     fontWeight: 'bold',
     fontSize: 16,
-    color: '#000',
+    color: 'black',
   },
 });

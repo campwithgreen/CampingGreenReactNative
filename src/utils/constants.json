@@ -30,5 +30,11 @@
         "DELIVERY_DONE":"배송 완료",
         "RESERVATION_COMPLETED":"이용완료",
         "CANCELLED":"취소완료"
+    },
+    "COMMUNITY":{
+        "FETCH_POST":"FETCH_POST",
+        "UPDATE_LIKE":"UPDATE_LIKE",
+        "RESET_UPDATE_LIKE":"RESET_UPDATE_LIKE"
+       
     }
 }   

@@ -266,7 +266,7 @@ const ImageComp = () => {
           paddingVertical: 2,
           textAlign: 'center',
           textAlignVertical: 'center',
-          color: '#000',
+          color: 'black',
           position: 'absolute',
           left: 0,
           top: 0,
@@ -387,7 +387,7 @@ const Comp6 = ({placeholder1, placeholder2, text}) => {
         placeholder={placeholder2}
         placeholderTextColor={'gray'}
       />
-      <Text style={{color: '#000'}}>{text}</Text>
+      <Text style={{color: 'black'}}>{text}</Text>
     </View>
   );
 };
@@ -439,7 +439,7 @@ const ImageComp8 = () => {
           paddingVertical: 2,
           textAlign: 'center',
           textAlignVertical: 'center',
-          color: '#000',
+          color: 'black',
           position: 'absolute',
           left: 0,
           top: 0,
@@ -494,7 +494,7 @@ const styles = StyleSheet.create({
   },
   text1: {
     fontWeight: 'bold',
-    color: '#000',
+    color: 'black',
     fontSize: 16,
     textAlignVertical: 'center',
   },
@@ -529,6 +529,6 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     fontWeight: 'bold',
     fontSize: 20,
-    color: '#000000',
+    color: 'black000',
   },
 });

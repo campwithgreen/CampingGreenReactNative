@@ -130,7 +130,7 @@ const FixRentalEquipmentNewScreen = props => {
     } else {
       Toast.show({
         type: 'info',
-        text1: '한 개이상 specification을 입력해주세요.',
+        text1: '한 개이상 사진을 입력해주세요.',
         visibilityTime: 2000,
       });
     }
@@ -389,20 +389,21 @@ const FixRentalEquipmentNewScreen = props => {
                       </Text>
                       <Text></Text>
                     </View>
-                    {imgIndx !== 0 && (
+                    {imgIndx !== '' && (
                       <TouchableOpacity
+                        style={{
+                          zIndex: 9999999,
+                          right: 0,
+                          position: 'absolute',
+                        }}
                         onPress={() => {
                           handleDeleteImage(imgIndx);
                         }}>
-                        <Text
-                          style={{
-                            color: COLOR.white,
-                            transform: [{rotate: '45deg'}],
-                            fontSize: 40,
-                            position: 'absolute',
-                            right: 5,
-                            top: -35,
-                          }}></Text>
+                        <Image
+                          resizeMode="contain"
+                          style={{width: 30, height: 30}}
+                          source={require('../assets/images/cancel.png')}
+                        />
                       </TouchableOpacity>
                     )}
                     <Text
@@ -449,7 +450,7 @@ const FixRentalEquipmentNewScreen = props => {
                             Pic Image
                           </Text>
                         </View>
-                        {imgIndx !== 0 && (
+                        {imgIndx !== '' && (
                           <TouchableOpacity
                             onPress={() => {
                               handleDeleteImage(imgIndx);
@@ -714,7 +715,7 @@ const Comp2 = props => {
     } else {
       Toast.show({
         type: 'info',
-        text1: '한 개이상 specification을 입력해주세요.',
+        text1: '상세설명에 필드를 한 개나 이상 입력해주세요.',
         visibilityTime: 2000,
       });
     }
@@ -890,7 +891,7 @@ const Comp3 = props => {
           +
         </Text>
       </TouchableOpacity>
-      <Text style={{color: '#000'}}>{t1}</Text>
+      <Text style={{color: 'black'}}>{t1}</Text>
     </View>
   );
 };

@@ -2,9 +2,11 @@ import React from 'react';
 import {Image, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {
+  AdminCommunityNavigation,
   AdminLocationNavigation,
   AdminOrderNavigation,
   AdminProductNavigation,
+  CommunityNavigation,
   HomeNavigation,
   LocationNavigation,
   ProductNavigation,
@@ -30,6 +32,7 @@ import FixRentalSuppliesScreen from '../admin-screens/FixRentalSuppliesScreen';
 import NineteenthScreen from '../admin-screens/NineteenthScreen';
 import FourteenthScreen from '../admin-screens/FourteenthScreen';
 import SixteenScreen from '../admin-screens/SixteenScreen';
+import AdminReportPostScreen from '../admin-screens/ReportPostAdmin';
 
 const Tab = createBottomTabNavigator();
 
@@ -119,6 +122,25 @@ const HomeTabNavigation = props => {
             },
             ...AppNavigatorOptions,
           };
+        } else if (name === 'AdminReportPost') {
+          return {
+            tabBarIcon: () => {
+              return (
+                <Image
+                  style={tabIcon}
+                  source={require('../assets/communityIcons/communityIcon.png')}
+                />
+              );
+            },
+            tabBarLabel: '글 신고',
+            tabBarStyle: {
+              height: 70,
+            },
+            tabBarItemStyle: {
+              padding: 7,
+            },
+            ...AppNavigatorOptions,
+          };
         } else if (name === 'AdminUserScreen') {
           return {
             tabBarIcon: () => {
@@ -150,6 +172,7 @@ const HomeTabNavigation = props => {
       />
       {/* <Tab.Screen name="AdminLocationScreen" component={FourteenthScreen} /> */}
       <Tab.Screen name="AdminOrderScreen" component={AdminOrderNavigation} />
+      <Tab.Screen name="AdminReportPost" component={AdminCommunityNavigation} />
       <Tab.Screen name="AdminUserScreen" component={NineteenthScreen} />
     </Tab.Navigator>
   ) : (
@@ -175,6 +198,7 @@ const HomeTabNavigation = props => {
               padding: 7,
             },
             ...AppNavigatorOptions,
+            unmountOnBlur: true,
           };
         } else if (name === 'Heart') {
           return {
@@ -190,10 +214,12 @@ const HomeTabNavigation = props => {
             tabBarStyle: {
               // height: 70,
             },
+
             tabBarItemStyle: {
               padding: 7,
             },
             ...AppNavigatorOptions,
+            unmountOnBlur: true,
           };
         } else if (name === 'Location') {
           return {
@@ -212,15 +238,16 @@ const HomeTabNavigation = props => {
             tabBarItemStyle: {
               padding: 7,
             },
+            unmountOnBlur: true,
             ...AppNavigatorOptions,
           };
-        } else if (name === 'Chat') {
+        } else if (name === 'Community') {
           return {
             tabBarIcon: () => {
               return (
                 <Image
                   style={tabIcon}
-                  source={require('../assets/images/chat.png')}
+                  source={require('../assets/communityIcons/communityIcon.png')}
                 />
               );
             },
@@ -231,6 +258,7 @@ const HomeTabNavigation = props => {
             tabBarItemStyle: {
               padding: 7,
             },
+            unmountOnBlur: true,
             ...AppNavigatorOptions,
           };
         } else if (name === 'Profile') {
@@ -250,6 +278,7 @@ const HomeTabNavigation = props => {
             tabBarItemStyle: {
               padding: 7,
             },
+            unmountOnBlur: true,
             ...AppNavigatorOptions,
           };
         }
@@ -257,7 +286,7 @@ const HomeTabNavigation = props => {
       <Tab.Screen name="Home" component={HomeNavigation} />
       <Tab.Screen name="Heart" component={ProductNavigation} />
       <Tab.Screen name="Location" component={LocationNavigation} />
-      {/* <Tab.Screen name="Chat" component={ChatScreen} /> */}
+      <Tab.Screen name="Community" component={CommunityNavigation} />
       <Tab.Screen name="Profile" component={ProfileNavigation} />
     </Tab.Navigator>
   );

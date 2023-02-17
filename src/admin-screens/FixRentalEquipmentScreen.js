@@ -317,7 +317,7 @@ const Comp3 = ({t1, selectedProduct, setSelectedProduct, addImage}) => {
           +
         </Text>
       </TouchableOpacity>
-      <Text style={{color: '#000'}}>{t1}</Text>
+      <Text style={{color: 'black'}}>{t1}</Text>
     </View>
   );
 };
@@ -334,7 +334,7 @@ const styles = StyleSheet.create({
   },
   text1: {
     fontWeight: 'bold',
-    color: '#000',
+    color: 'black',
     fontSize: 16,
   },
   text2: {
@@ -368,6 +368,6 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     fontWeight: 'bold',
     fontSize: 20,
-    color: '#000000',
+    color: 'black000',
   },
 });

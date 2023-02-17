@@ -117,7 +117,7 @@ const Comp1 = ({item}) => {
             position: 'absolute',
             top: 1,
             left: 0,
-            color: '#000',
+            color: 'black',
             fontWeight: 'bold',
             paddingHorizontal: wp('2%'),
             paddingVertical: wp('1%'),
@@ -252,6 +252,6 @@ const styles = StyleSheet.create({
   btntxt2: {
     fontWeight: 'bold',
     fontSize: 16,
-    color: '#000',
+    color: 'black',
   },
 });

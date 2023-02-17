@@ -482,7 +482,7 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     textAlign: 'center',
     textAlignVertical: 'center',
-    color: '#000',
+    color: 'black',
   },
   cross: {
     color: '#fff',
@@ -506,7 +506,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     fontWeight: 'bold',
     fontSize: 20,
-    color: '#000000',
+    color: 'black000',
   },
   view1: {
     display: 'flex',
@@ -515,7 +515,7 @@ const styles = StyleSheet.create({
   },
   text1: {
     fontWeight: 'bold',
-    color: '#000',
+    color: 'black',
     fontSize: 16,
   },
   text2: {

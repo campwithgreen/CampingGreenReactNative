@@ -30,6 +30,12 @@ import FourteenthScreen from '../admin-screens/FourteenthScreen';
 import EditFirst from '../admin-screens/EditFirst';
 import EditSecond from '../admin-screens/EditSecond';
 import RoomReservationRecentScreen from '../screens/RoomReservationRecentScreen';
+import CommunityScreen from '../screens/UserCommunity/CommunityScreen';
+import CreateUserPostScreen from '../screens/UserCommunity/CreateUserPostScreen';
+import UserPostDetailScreen from '../screens/UserCommunity/UserPostDetailScreen';
+import FullImageViewScreen from '../screens/UserCommunity/FullImageViewScreen';
+import AdminReportPostScreen from '../admin-screens/ReportPostAdmin';
+import AdminReportPostDetailScreen from '../admin-screens/AdminReportPostDetailScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -49,7 +55,7 @@ export const HomeNavigation = props => {
       screenOptions={AppNavigatorOptions}>
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-      <Stack.Screen name="ChatScreen" component={ChatScreen} />
+
       <Stack.Screen name="HomeScreenDetail1" component={HomeScreenDetail1} />
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="MyScreen" component={MyScreen} />
@@ -70,6 +76,27 @@ export const HomeNavigation = props => {
         name="RoomReservationRecentScreen"
         component={RoomReservationRecentScreen}
       />
+    </Stack.Navigator>
+  );
+};
+export const CommunityNavigation = props => {
+  return (
+    <Stack.Navigator
+      initialRouteName="CommunityScreen"
+      screenOptions={AppNavigatorOptions}>
+      <Stack.Screen name="CommunityScreen" component={CommunityScreen} />
+
+      <Stack.Screen name="CreatePost" component={CreateUserPostScreen} />
+      <Stack.Screen
+        name="UserPostDetailScreen"
+        component={UserPostDetailScreen}
+      />
+      <Stack.Screen
+        name="FullImageViewScreen"
+        component={FullImageViewScreen}
+      />
+      <Stack.Screen name="HomeScreen" component={HomeScreen} />
+      <Stack.Screen name="LoginScreen" component={LoginScreen} />
     </Stack.Navigator>
   );
 };
@@ -148,7 +175,9 @@ export const ProfileNavigation = props => {
     <Stack.Navigator
       initialRouteName="ProfileScreen"
       screenOptions={AppNavigatorOptions}>
+      <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+      <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="MyScreen" component={MyScreen} />
       <Stack.Screen name="SecondScreen" component={SecondScreen} />
       <Stack.Screen name="ThirdScreen" component={ThirdScreen} />
@@ -235,6 +264,19 @@ export const AdminOrderNavigation = props => {
       screenOptions={AppNavigatorOptions}>
       <Stack.Screen name="SixteenScreen" component={SixteenScreen} />
       <Stack.Screen name="OrderDetailsScreen" component={OrderDetailsScreen} />
+    </Stack.Navigator>
+  );
+};
+export const AdminCommunityNavigation = props => {
+  return (
+    <Stack.Navigator
+      initialRouteName="AdminReportPost"
+      screenOptions={AppNavigatorOptions}>
+      <Stack.Screen name="AdminReportPost" component={AdminReportPostScreen} />
+      <Stack.Screen
+        name="AdminReportPostDetailScreen"
+        component={AdminReportPostDetailScreen}
+      />
     </Stack.Navigator>
   );
 };

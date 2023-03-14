@@ -25,6 +25,7 @@ import {showDefaultErrorAlert} from '../global/global';
 import {setUserCartHistory} from '../redux/actions/common';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {deleteAccount} from '../apis/auth';
 
 export const ProfileScreen = props => {
   const st = useSelector(st => st);
@@ -53,7 +54,8 @@ export const ProfileScreen = props => {
 
   const isLogin = useSelector(st => st?.oauth?.isLogin);
   const userName = useSelector(st => st?.oauth?.user_data?.data?.firstName);
-
+  const userData = useSelector(st => st?.oauth?.user_data?.data);
+  console.log('userdata', userData);
   const {
     firstContainer,
     companyText,
@@ -151,11 +153,37 @@ export const ProfileScreen = props => {
       })();
     }
   }, [isLogin]);
+  const requestTodeleteAccount = async userid => {
+    console.log('userid', userid);
+    await deleteAccount({userId: userid}).then(res => {
+      if (res.status == 200) {
+        if (res.data.success === true) {
+          Toast.show({
+            type: 'success',
+            text1: '관리자에게 요청 보냈습니다. 15일이내 계정이 삭제됩니다.',
+            visibilityTime: 2000,
+          });
+        } else {
+          Toast.show({
+            type: 'success',
+            text1: res.data.msg,
+            visibilityTime: 2000,
+          });
+        }
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: '인터넷 상태를 확인해 주세요.',
+          visibilityTime: 2000,
+        });
+      }
+    });
+  };
 
   return (
     <View style={parentContainer}>
       <Header headerContent={headerContent} />
-      <ScrollView>
+      <ScrollView style={{marginBottom: 50}}>
         <View style={innerContainer}>
           <View style={firstContainer}>
             <View style={globalStyle.mainContainerWrapper}>
@@ -251,6 +279,19 @@ export const ProfileScreen = props => {
                     카카오톡 채널로 연결
                   </Text>
                 </View>
+
+                {isLogin && (
+                  <View style={secondTextWrapper}>
+                    <Text
+                      onPress={() => {
+                        requestTodeleteAccount(userData._id);
+                      }}
+                      style={secondTextII}>
+                      탈퇴하기
+                    </Text>
+                  </View>
+                )}
+
                 {isLogin && (
                   <View style={buttonWrapper}>
                     <Button

@@ -1,13 +1,16 @@
-import axiosInstance from "../config/axiosInstance";
+import axiosInstance from '../config/axiosInstance';
 
 export function authDoor(data) {
-    return axiosInstance.post("v2/auth/authDoor", data);
+  return axiosInstance.post('v2/auth/authDoor', data);
 }
 
 export function verifyOtp(data) {
-    return axiosInstance.post("v2/auth/verifyotp", data);
+  return axiosInstance.post('v2/auth/verifyotp', data);
 }
 
 export function register(data) {
-    return axiosInstance.post("v2/auth/register", data);
+  return axiosInstance.post('v2/auth/register', data);
+}
+export function deleteAccount(userId) {
+  return axiosInstance.post('v2/auth/deleteaccount', userId);
 }

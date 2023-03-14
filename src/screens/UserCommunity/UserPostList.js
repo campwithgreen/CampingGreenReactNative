@@ -6,8 +6,10 @@ import {
   ScrollView,
   Alert,
   TouchableOpacity,
-  useWindowDimensions,
+  Dimensions,
   Animated,
+  Platform,
+  Pressable,
 } from 'react-native';
 import {Avatar} from '@rneui/themed';
 import React, {useState, useEffect, useRef} from 'react';
@@ -27,8 +29,8 @@ const UserPostList = ({postData}) => {
   const user = useSelector(st => st?.oauth?.user_data?.data);
   const [currentUser, setCurrentUser] = useState(user);
   const scrollX = useRef(new Animated.Value(0)).current;
-  let {width: windowWidth, height: windowHeight} = useWindowDimensions();
-  windowHeight = windowHeight - 300;
+  const windowWidth = Dimensions.get('window').width;
+  const windowHeight = Dimensions.get('window').height;
 
   useEffect(() => {
     setCurrentUser(user);
@@ -118,14 +120,21 @@ const UserPostList = ({postData}) => {
             }}>
             {postData?.imageList?.map(img => {
               return (
-                <TouchableOpacity
+                <Pressable
                   onPress={() => {
                     navigateTo('UserPostDetailScreen', {
                       data: postData,
                     });
                   }}>
                   <Animated.View
-                    style={{width: windowWidth - 34.1601, height: 270}}
+                    style={{
+                      resizeMode: 'contain',
+                      width:
+                        Platform.OS == 'android'
+                          ? windowWidth - 30
+                          : windowWidth - 34.1601,
+                      height: 270,
+                    }}
                     key={img}>
                     <Image
                       source={{uri: img}}
@@ -133,11 +142,14 @@ const UserPostList = ({postData}) => {
                         resizeMode: 'cover',
                         borderRadius: 3,
                         height: 270,
-                        width: windowWidth - 34.1601,
+                        width:
+                          Platform.OS == 'android'
+                            ? windowWidth - 30
+                            : windowWidth - 34.1601,
                       }}
                     />
                   </Animated.View>
-                </TouchableOpacity>
+                </Pressable>
               );
             })}
           </ScrollView>

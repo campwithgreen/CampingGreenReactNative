@@ -10,7 +10,7 @@ import {
   KeyboardAvoidingView,
   Animated,
   ActivityIndicator,
-  useWindowDimensions,
+  Dimensions,
   Modal,
 } from 'react-native';
 import React, {useState, useEffect, useRef} from 'react';
@@ -49,9 +49,8 @@ const UserPostDetailScreen = ({route}) => {
   const [loading, setLoading] = useState(false);
   const scrollX = useRef(new Animated.Value(0)).current;
 
-  let {width: windowWidth, height: windowHeight} = useWindowDimensions();
-  windowHeight = windowHeight - 300;
-
+  const windowWidth = Dimensions.get('window').width;
+  const windowHeight = Dimensions.get('window').height;
   const [commentData, setCommentData] = useState({
     commentContent: '',
     postId: postData._id,
@@ -403,14 +402,20 @@ const UserPostDetailScreen = ({route}) => {
               {postData?.imageList?.map(img => (
                 <Animated.View
                   style={{
-                    width: windowWidth - 34.1601,
+                    width:
+                      Platform.OS == 'android'
+                        ? windowWidth - 30
+                        : windowWidth - 34.1601,
                     height: 270,
                   }}
                   key={img.fileLocation}>
                   <TouchableOpacity
                     style={{
                       height: 270,
-                      width: windowWidth - 34.1601,
+                      width:
+                        Platform.OS == 'android'
+                          ? windowWidth - 30
+                          : windowWidth - 34.1601,
                     }}
                     onPress={() => {
                       navigateTo('FullImageViewScreen', {data: img});
@@ -421,7 +426,10 @@ const UserPostDetailScreen = ({route}) => {
                         resizeMode: 'cover',
                         borderRadius: 3,
                         height: 270,
-                        width: windowWidth - 34.1601,
+                        width:
+                          Platform.OS == 'android'
+                            ? windowWidth - 30
+                            : windowWidth - 34.1601,
                       }}
                     />
                   </TouchableOpacity>

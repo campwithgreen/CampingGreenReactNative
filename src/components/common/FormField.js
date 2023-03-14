@@ -49,7 +49,7 @@ export default function FormField(props) {
                   borderBottomColor: lineColor,
                   width: '100%',
                 }}
-                placeholderTextColor="gray"
+                placeholderTextColor="grey"
                 onFocus={() => onFocus()}
                 onBlur={() => onBlur()}
                 keyboardType="number-pad"
@@ -107,7 +107,7 @@ export default function FormField(props) {
               }}
               editable={disabled}
               placeholder={placeholder}
-              placeholderTextColor={'gray'}
+              placeholderTextColor="grey"
               autoFocus={autoFocus}
             />
           </View>

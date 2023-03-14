@@ -1,9 +1,10 @@
 import axios from 'axios';
 import store from '../redux/store';
 
-let PROD_BASE_URL = 'https://campinggreen.herokuapp.com/';
-let DEV_BASE_URL = 'http://192.168.219.100:9000/';
+let PROD_BASE_URL = 'https://campinggreen-new.herokuapp.com/';
+let DEV_BASE_URL = 'http://localhost:9000/';
 // https://campinggreen.herokuapp.com/
+//new https://campinggreen-new.herokuapp.com/
 
 const axiosInstance = axios.create({
   baseURL: PROD_BASE_URL,
